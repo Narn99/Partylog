@@ -4,3 +4,11 @@
 
 예정
 - lint통해 코드 컨벤션학습
+
+23.7.11
+- jetpack compose codelab 학습
+- 아이디어 회의 진행
+
+예정
+- jetpack compose 학습
+- 생일축하 구체화
