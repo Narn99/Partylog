@@ -9,6 +9,10 @@
 - jetpack compose codelab 학습
 - 아이디어 회의 진행
 
+23.7.12
+- 아이디어 주제 선정
+- 아이디어 주제 구체화
+
 예정
 - jetpack compose 학습
-- 생일축하 구체화
+- 아이디어 주제 구체화
