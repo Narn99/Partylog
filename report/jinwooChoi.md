@@ -16,5 +16,9 @@
 23.7.13
 - 아이디어 구체화 진행
 
+23.7.14
+- jetpack Compose 학습
+- Jira 운영방식 선정
+
 예정
 - jetpack compose 학습
