@@ -1,0 +1,39 @@
+/* LogInPage.css */
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+  height: 100vh;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 50%;  
+}
+
+.content h1 {
+  margin-bottom: 20px;
+}
+
+.content p {
+  margin-bottom: 20px;
+}
+
+.content img {
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 300px;
+  background-color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
