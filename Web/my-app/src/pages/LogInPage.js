@@ -17,7 +17,7 @@ const LogInPage = () => {
   
     return (
       <div>
-        <img src={kakaoButton} onClick={handlekakaoLogin}/>
+        <img src={kakaoButton} alt="카카오버튼" onClick={handlekakaoLogin}/>
       </div>
     )
     

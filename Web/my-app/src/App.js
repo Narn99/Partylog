@@ -8,9 +8,9 @@ import Home from './pages/Home'
 import MyPage from './pages/MyPage'
 import LogInPage from './pages/LogInPage'
 import SearchFriend from './pages/SearchFriend'
-import KakaoRedirectHandler from './components/KakaoCallback';
+// import KakaoRedirectHandler from './components/KakaoCallback';
 import SearchIcon from '@mui/icons-material/Search';
-
+import KakaoCallback from './pages/kakaoCallback';
 
 function App() {
   return (
@@ -48,7 +48,8 @@ function App() {
         <Route path="/loginpage" element={<LogInPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/searchfriends" element={<SearchFriend />} />
-        <Route path="/auth" element={<KakaoRedirectHandler />} />
+        {/* <Route path="/auth" element={<KakaoRedirectHandler />} /> */}
+        <Route path="/kakaoCallback" element={<KakaoCallback />} />
       </Routes>
     </Router>
   )

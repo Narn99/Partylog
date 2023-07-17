@@ -1,19 +1,12 @@
 package com.ssafy.partylog.api.controller;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.partylog.api.model.KakaoProfile;
 import com.ssafy.partylog.api.model.OAuthToken;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 
@@ -26,12 +19,17 @@ public class TestController {
         return "Hello";
     }
 
+    @PostMapping("/oauth/token")
+    public ResponseEntity<String> getKakaoToken(@RequestParam("grant_type") String grant_type, @RequestParam("grant_type") String client_id, @RequestParam("grant_type") String redirect_uri, @RequestParam("grant_type") String code) {
+
+        String result = "완료";
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
+
 
     @GetMapping("/auth/kakao")
     public String kakaoCallback(@RequestParam String code) {
-
 //        return "카카오 인증코드 응답"+code;
-
         //RestTemplate : http요청을 편리하게 해줌
         RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -40,7 +38,7 @@ public class TestController {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "69deca5e46403a1f3c26cc03c04334c4");
-        params.add("redirect_uri", "http://localhost:9999/partylog/test/auth/kakao");
+        params.add("redirect_uri", "http://localhost:3000/partylog/test/auth/kakao");
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest =
