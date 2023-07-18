@@ -1,7 +1,14 @@
 package com.ssafy.partylog.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.partylog.api.domain.UserEntity;
+import com.ssafy.partylog.api.model.KakaoProfile;
 import com.ssafy.partylog.api.model.OAuthToken;
+import com.ssafy.partylog.api.repository.UserRepository;
+import com.ssafy.partylog.api.service.UserService;
+import com.ssafy.partylog.api.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -9,10 +16,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.sql.Date;
 
 @RestController
 @RequestMapping("/test")
-public class TestController {
+public class  TestController {
+
+    private UserServiceImpl us;
+
+    public TestController(UserServiceImpl us) {
+        this.us = us;
+    }
 
     @GetMapping("/hello")
     public String test() {
@@ -38,7 +52,7 @@ public class TestController {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "69deca5e46403a1f3c26cc03c04334c4");
-        params.add("redirect_uri", "http://localhost:3000/partylog/test/auth/kakao");
+        params.add("redirect_uri", "http://localhost:9999/partylog/test/auth/kakao");
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest =
@@ -82,23 +96,32 @@ public class TestController {
                 String.class
         );
 
-        return "카카오 사용자정보"+response2.getBody();
-
-//        //ObjectMapper : JSON파일을 Object로 변환
-//        ObjectMapper objMapper2 = new ObjectMapper();
-//        KakaoProfile kakaoProfile = null;
-//
-//        try {
-//            kakaoProfile = objMapper2.readValue(response2.getBody(), KakaoProfile.class);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        System.out.println("닉네임" + kakaoProfile.getProperties().getNickname());
-//        System.out.println("생일" + kakaoProfile.getKakao_account().getBirthday());
-//
-//
 //        return "카카오 사용자정보"+response2.getBody();
+
+        //ObjectMapper : JSON파일을 Object로 변환
+        ObjectMapper objMapper2 = new ObjectMapper();
+        KakaoProfile kakaoProfile = null;
+
+        try {
+            kakaoProfile = objMapper2.readValue(response2.getBody(), KakaoProfile.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // 정보를 DB애 저장하기 위해 먼저 틀을 만든다.
+        UserEntity user  = new UserEntity();
+        user.setUserNickname(kakaoProfile.getProperties().getNickname());
+        user.setUserId(kakaoProfile.getId());
+        user.setUserProfile(kakaoProfile.getProperties().getProfile_image());
+        String[] s = kakaoProfile.getKakao_account().getBirthday().split("");
+        String day = "1995-" + s[0]+s[1]+"-"+s[2]+s[3];
+        user.setUserBirthday(Date.valueOf(day));
+
+        // 정보를 DB에 저장
+        us.addUser(user);
+
+
+        return "카카오 사용자정보"+response2.getBody();
     }
 
 }

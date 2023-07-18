@@ -22,12 +22,11 @@ public class KakaoLoginController {
         this.kakaoLoginService = kakaoLoginService;
     }
 
-    @GetMapping("/oauth/token")
+    @GetMapping("/login")
     public ResponseEntity<HashMap<String, Object>> kakaoLogin(@RequestParam("code") String code) throws Exception {
 
         String access_Token = kakaoLoginService.getAccessToken(code);
         HashMap<String, Object> userInfo = kakaoLoginService.getUserInfo(access_Token);
-
         return new ResponseEntity<HashMap<String, Object>>(userInfo, HttpStatus.OK);
     }
 }
