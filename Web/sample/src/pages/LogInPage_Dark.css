@@ -10,7 +10,7 @@ body {
   align-items: center;
   margin: 20px 0;
   text-align: center;
-  /* background: #fbb3c2; */
+  background: rgb(30, 30, 30);
   overflow: hidden;
   background-image: url(../image/TempBg.png);
 }
@@ -29,6 +29,10 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
 } */
+
+p {
+  color: white;
+}
 
 h1 span {
   display: inline-block;
@@ -64,23 +68,23 @@ body:hover span {
 
 span:nth-child(4n) {
   color: hsl(50, 75%, 55%);
-  text-shadow: 1px 1px hsl(50, 75%, 45%), 2px 2px hsl(50, 45%, 45%),
-    3px 3px hsl(50, 45%, 45%), 4px 4px hsl(50, 75%, 45%);
+  text-shadow: 1px 1px 12px hsl(50, 75%, 45%), 2px 2px 12px hsl(50, 45%, 45%),
+    3px 3px 12px hsl(50, 45%, 45%), 4px 4px 12px hsl(50, 75%, 45%);
 }
 span:nth-child(4n-1) {
   color: hsl(135, 35%, 55%);
-  text-shadow: 1px 1px hsl(135, 35%, 45%), 2px 2px hsl(135, 35%, 45%),
-    3px 3px hsl(135, 35%, 45%), 4px 4px hsl(135, 35%, 45%);
+  text-shadow: 1px 1px 12px hsl(135, 35%, 45%), 2px 2px 12px hsl(135, 35%, 45%),
+    3px 3px 12px hsl(135, 35%, 45%), 4px 4px 12px hsl(135, 35%, 45%);
 }
 span:nth-child(4n-2) {
   color: hsl(155, 35%, 60%);
-  text-shadow: 1px 1px hsl(155, 25%, 50%), 2px 2px hsl(155, 25%, 50%),
-    3px 3px hsl(155, 25%, 50%), 4px 4px hsl(140, 25%, 50%);
+  text-shadow: 1px 1px 12px hsl(155, 25%, 50%), 2px 2px 12px hsl(155, 25%, 50%),
+    3px 3px 12px hsl(155, 25%, 50%), 4px 4px 12px hsl(112, 25%, 50%);
 }
 span:nth-child(4n-3) {
   color: hsl(30, 65%, 60%);
-  text-shadow: 1px 1px hsl(30, 45%, 50%), 2px 2px hsl(30, 45%, 50%),
-    3px 3px hsl(30, 45%, 50%), 4px 4px hsl(30, 45%, 50%);
+  text-shadow: 1px 1px 12px hsl(30, 45%, 50%), 2px 2px 12px hsl(30, 45%, 50%),
+    3px 3px 12px hsl(30, 45%, 50%), 4px 4px 12px hsl(30, 45%, 50%);
 }
 
 h1 span:nth-child(2) {
