@@ -39,3 +39,8 @@ __오전 회의__<br>
 어제 : 카카오API문서보기, AWS jar파일 단순 배포 연습<br>
 오늘 : JDB추가작성<br>
 내일 : webRTC공부해오기, JPA/hibernate 공부하고 DB입력 코드 리뷰<br>
+
+### 230719 - API 명세 작성하기, JPA/hibernate 공부
+어제 : DB추가작성<br>
+오늘 : API 명세 작성하기, JPA/hibernate 공부<br>
+내일 : webRTC공부<br>
