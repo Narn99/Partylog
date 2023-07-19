@@ -1,13 +1,14 @@
 package com.ssafy.partylog.api.service;
 
-import com.ssafy.partylog.api.table.User;
-import com.ssafy.partylog.api.model.UserDto;
+import com.ssafy.partylog.api.Entity.User;
+import com.ssafy.partylog.api.request.UserRequest;
+import com.ssafy.partylog.api.response.UserResponse;
 
 import java.util.HashMap;
 
 public interface UserService {
 
-    public User registUser(UserDto userInfo) throws Exception;
+    public UserResponse registUser(UserRequest userInfo) throws Exception;
 
     public String getAccessToken(String code) throws Exception;
 

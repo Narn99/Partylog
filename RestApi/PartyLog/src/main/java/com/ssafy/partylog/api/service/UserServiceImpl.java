@@ -2,9 +2,10 @@ package com.ssafy.partylog.api.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.partylog.api.table.User;
-import com.ssafy.partylog.api.model.UserDto;
+import com.ssafy.partylog.api.Entity.User;
+import com.ssafy.partylog.api.request.UserRequest;
 import com.ssafy.partylog.api.repository.UserRepository;
+import com.ssafy.partylog.api.response.UserResponse;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -27,14 +28,11 @@ public class UserServiceImpl implements UserService {
     private static final String CLIENT_SECRET = "ItCyhePKvJ6XBwnMgjWEsM4tiG9QDPqA";
 
     @Override
-    public User registUser(UserDto userInfo) throws Exception {
-        User user = User.builder()
-                .userId(userInfo.getUserId())
-                .userBirthday(userInfo.getUserBirthday())
-                .userNickname(userInfo.getUserNickname())
-                .userProfile(userInfo.getUserProfile())
-                .build();
-        return userRepository.save(user);
+    public UserResponse registUser(UserRequest userInfo) throws Exception {
+        User user = userInfo.toEntity();
+        User userEntity = userRepository.save(user);
+        UserResponse userResponse = new UserResponse(userEntity);
+        return userResponse;
     }
 
     @Override

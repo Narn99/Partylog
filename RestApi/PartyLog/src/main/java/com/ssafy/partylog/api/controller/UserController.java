@@ -1,7 +1,6 @@
 package com.ssafy.partylog.api.controller;
 
-import com.ssafy.partylog.api.table.User;
-import com.ssafy.partylog.api.model.UserDto;
+import com.ssafy.partylog.api.request.UserRequest;
 import com.ssafy.partylog.api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +18,15 @@ public class UserController {
     }
 
     @PostMapping("/regist")
-    public ResponseEntity<HashMap<String, Object>> registUser(@RequestBody UserDto userInfo) throws Exception {
+    public ResponseEntity<HashMap<String, Object>> registUser(@RequestBody UserRequest userInfo) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<>();
-        System.out.println("회원가입: " + userInfo);
-        User result = userService.registUser(userInfo);
-        System.out.println(result);
+        String message = "";
+        if(userService.registUser(userInfo) != null) {
+            message = "회원가입 성공";
+        } else {
+            message = "회원가입 실패";
+        }
+        resultMap.put("msg", message);
         return new ResponseEntity<HashMap<String, Object>>(resultMap, HttpStatus.OK);
     }
 

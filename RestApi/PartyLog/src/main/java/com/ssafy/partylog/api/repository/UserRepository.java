@@ -1,6 +1,6 @@
 package com.ssafy.partylog.api.repository;
 
-import com.ssafy.partylog.api.table.User;
+import com.ssafy.partylog.api.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
