@@ -2,7 +2,7 @@ import React from "react";
 import kakaoButton from "../assets/kakao_login_large_narrow.png";
 import googleplay from "../assets/googleplay.png";
 import "./LogInPage.css";
-import Cake from "../image/Cake.png";
+// import Cake from "../image/Cake.png";
 
 const LogInPage = () => {
   const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
@@ -44,15 +44,15 @@ const LogInPage = () => {
           <span>Y</span>
           <span>!</span>
         </h1>
-        <p>친구들과 당신의 소중한 날을 기념하세요</p>
+        <p style={{ fontFamily: 'HakgyoansimWoojuR', fontSize: '20px' }}>친구들과 당신의 소중한 날을 기념하세요</p>
         <img src={kakaoButton} onClick={handlekakaoLogin} alt="Kakao Login" />
-        <p>앱을 다운로드하세요</p>
+        <p style={{ fontFamily: 'HakgyoansimWoojuR', fontSize: '20px' }}>앱을 다운로드하세요</p>
         <div className="download-container">
           <img
             src={googleplay}
             alt="Download on Google Play"
             className="googleplay-image"
-            style={{ width: "100px", height: "auto" }}
+            style={{ width: "360px", height: "auto" }}
           />
         </div>
       </div>
