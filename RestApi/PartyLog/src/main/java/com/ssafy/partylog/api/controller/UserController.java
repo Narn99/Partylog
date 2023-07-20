@@ -1,6 +1,7 @@
 package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.request.UserRequest;
+import com.ssafy.partylog.api.response.UserResponse;
 import com.ssafy.partylog.api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,9 @@ public class UserController {
     public ResponseEntity<HashMap<String, Object>> registUser(@RequestBody UserRequest userInfo) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<>();
         String message = "";
-        if(userService.registUser(userInfo) != null) {
+        UserResponse userResponse = userService.registUser(userInfo);
+        System.out.println(userResponse);
+        if(userResponse != null) {
             message = "회원가입 성공";
         } else {
             message = "회원가입 실패";
