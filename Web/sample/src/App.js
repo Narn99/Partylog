@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import KakaoRedirectHandler from "./components/KakaoCallback";
 import MyPage from "./pages/MyPage";
+
 function App() {
   return (
     <Router>

@@ -1,23 +1,23 @@
 @import url(https://fonts.googleapis.com/css?family=Signika:700,300,600);
 
-html,
+/* html,
 body {
   height: 100%;
-}
+} */
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 20px 0;
   text-align: center;
-  /* background: #fbb3c2; */
-  overflow: hidden;
+  /* background: rgb(255, 255, 255); */
+  background: rgb(31, 31, 31);
   background-image: url(../image/TempBg.png);
 }
 
 h1 {
   font-size: 5em;
-  font: bold 7.5vw/1.6 "Signika", sans-serif;
+  font: bold 7vw/1.5 "Signika", sans-serif;
   user-select: none;
   margin-top: 8px;
   margin-bottom: 8px;
@@ -46,9 +46,10 @@ h1 span {
     transform: translateY(1px) rotate(2deg);
   }
 }
-body:hover span {
+h1:hover span {
   animation: bounce 0.6s;
 }
+
 @keyframes bounce {
   0%,
   100% {
@@ -64,23 +65,23 @@ body:hover span {
 
 span:nth-child(4n) {
   color: hsl(50, 75%, 55%);
-  text-shadow: 1px 1px hsl(50, 75%, 45%), 2px 2px hsl(50, 45%, 45%),
-    3px 3px hsl(50, 45%, 45%), 4px 4px hsl(50, 75%, 45%);
+  text-shadow: 1px 1px 10px hsl(50, 75%, 45%), 2px 2px 10px hsl(50, 45%, 45%),
+    3px 3px 10px hsl(50, 45%, 45%), 4px 4px 10px hsl(50, 75%, 45%);
 }
 span:nth-child(4n-1) {
   color: hsl(135, 35%, 55%);
-  text-shadow: 1px 1px hsl(135, 35%, 45%), 2px 2px hsl(135, 35%, 45%),
-    3px 3px hsl(135, 35%, 45%), 4px 4px hsl(135, 35%, 45%);
+  text-shadow: 1px 1px 10px hsl(135, 35%, 45%), 2px 2px 10px hsl(135, 35%, 45%),
+    3px 3px 10px hsl(135, 35%, 45%), 4px 4px 10px hsl(135, 35%, 45%);
 }
 span:nth-child(4n-2) {
   color: hsl(155, 35%, 60%);
-  text-shadow: 1px 1px hsl(155, 25%, 50%), 2px 2px hsl(155, 25%, 50%),
-    3px 3px hsl(155, 25%, 50%), 4px 4px hsl(140, 25%, 50%);
+  text-shadow: 1px 1px 10px hsl(155, 25%, 50%), 2px 2px 10px hsl(155, 25%, 50%),
+    3px 3px 10px hsl(155, 25%, 50%), 4px 4px 10px hsl(140, 25%, 50%);
 }
 span:nth-child(4n-3) {
   color: hsl(30, 65%, 60%);
-  text-shadow: 1px 1px hsl(30, 45%, 50%), 2px 2px hsl(30, 45%, 50%),
-    3px 3px hsl(30, 45%, 50%), 4px 4px hsl(30, 45%, 50%);
+  text-shadow: 1px 1px 10px hsl(30, 45%, 50%), 2px 2px 10px hsl(30, 45%, 50%),
+    3px 3px 10px hsl(30, 45%, 50%), 4px 4px 10px hsl(30, 45%, 50%);
 }
 
 h1 span:nth-child(2) {
@@ -127,4 +128,12 @@ h1 span:nth-child(15) {
 }
 h1 span:nth-child(16) {
   animation-delay: 0.75s;
+}
+
+img {
+  width: 100%;
+  max-width: 300px;
+  max-height: 80px;
+  object-fit: contain;
+  cursor: pointer;
 }
