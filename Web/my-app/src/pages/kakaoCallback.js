@@ -15,7 +15,7 @@ const KakaoCallback = () => {
   }, []);
 
   const kakaoLogin = (code) => {
-    axios.get(`http://localhost:8080/partylog/kakao/oauth/token?code=${code}`).then((res) => {
+    axios.get(`http://localhost:8080/partylog/user/login?code=${code}`).then((res) => {
       console.log(res);
       navigate("/");
     });
