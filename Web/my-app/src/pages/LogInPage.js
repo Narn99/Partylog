@@ -9,7 +9,8 @@ const LogInPage = () => {
     // Redirect URL로 이동하면서 빈화면과 함께 인가코드가 발급됨(인가코드는 파라미터에)
     const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`
     const REDIRECT_URI = `${process.env.REACT_APP_REDIRECT_URL}`
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+    const scope = "profile_nickname, profile_image, account_email, birthday, talk_message, friends";
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${scope}`;
     
     const handlekakaoLogin = () => {
       window.location.href = KAKAO_AUTH_URL;

@@ -1,6 +1,5 @@
 package com.ssafy.partylog.api.service;
 
-import com.ssafy.partylog.api.Entity.User;
 import com.ssafy.partylog.api.request.UserRequest;
 import com.ssafy.partylog.api.response.UserResponse;
 
@@ -10,7 +9,7 @@ public interface UserService {
 
     public UserResponse registUser(UserRequest userInfo) throws Exception;
 
-    public String getAccessToken(String code) throws Exception;
+    public String getKakaoAccessToken(String code) throws Exception;
 
-    public HashMap<String, Object> getUserInfo(String access_Token) throws Exception;
+    public HashMap<String, Object> getKakaoUserInfo(String kakao_Access_Token) throws Exception;
 }
