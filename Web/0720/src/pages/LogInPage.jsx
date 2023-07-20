@@ -1,7 +1,7 @@
 import React from "react";
 import kakaoButton from "../assets/kakao_login_large_narrow.png";
 import googleplay from "../assets/googleplay.png";
-import "./LogInPage.css";
+import "../css/LogInPage.css";
 import { Grid, Container } from "@mui/material";
 
 const LogInPage = () => {
