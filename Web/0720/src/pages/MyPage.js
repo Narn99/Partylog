@@ -1,9 +1,8 @@
 import React from "react";
-import "..css/MyPage.css";
-
+import "../css/MyPage.css";
 function MyPage(props) {
     return (
-        <div>
+        <div className="test">
             <h1>Partylog</h1>
             
             
