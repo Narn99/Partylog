@@ -2,7 +2,7 @@ import React from "react";
 import kakaoButton from "../assets/kakao_login_large_narrow.png";
 import googleplay from "../assets/googleplay.png";
 import "../css/LogInPage.css";
-import { Grid, Container } from "@mui/material";
+import { Grid, Container, useMediaQuery, useTheme } from "@mui/material";
 
 const LogInPage = () => {
   const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
@@ -36,22 +36,63 @@ const LogInPage = () => {
     },
   ];
 
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const loginWindowPadding = isSmallScreen
+    ? "5px"
+    : isMediumScreen
+    ? "10px"
+    : isLargeScreen
+    ? "15px"
+    : "20px";
+
+  const loginButtonMargin = isSmallScreen
+    ? "30px"
+    : isMediumScreen
+    ? "30px"
+    : isLargeScreen
+    ? "25px"
+    : "40px";
+
+  const titlePadding = isSmallScreen
+    ? "80px"
+    : isMediumScreen
+    ? "50px"
+    : isLargeScreen
+    ? "20px"
+    : "0";
+
+  const titleFontSize = isSmallScreen
+    ? 'bold 11vw/1.9 "Signika", sans-serif'
+    : isMediumScreen
+    ? 'bold 9vw/1.7 "Signika", sans-serif'
+    : 'bold 7vw/1.5 "Signika", sans-serif';
+
   const word1 = "PartyLog"
     .split("")
     .map((char, index) => <span style={styles[index % 4]}>{char}</span>);
   const word2 = "HAPPY BIRTHDAY!"
     .split("")
     .map((char, index) => <span style={styles[index % 4]}>{char}</span>);
-
   return (
     <Container maxWidth={false}>
       <div className="loginpage-container">
         <div className="loginpage-content" id="content">
-          <div className="loginpage-title">
+          <div
+            className="loginpage-title"
+            style={{ padding: `${titlePadding} 0` }}
+          >
             <Grid container justifyContent={"center"}>
               <Grid item>
                 <div className="logo">
-                  <h1 id="PartyLog" className="loginpage-h1">
+                  <h1
+                    id="PartyLog"
+                    className="loginpage-h1"
+                    style={{ font: titleFontSize }}
+                  >
                     {word1}
                   </h1>
                 </div>
@@ -60,7 +101,9 @@ const LogInPage = () => {
             <Grid container justifyContent={"center"}>
               <Grid item>
                 <div className="animated-happybirthday">
-                  <h1 className="loginpage-h1">{word2}</h1>
+                  <h1 className="loginpage-h1" style={{ font: titleFontSize }}>
+                    {word2}
+                  </h1>
                 </div>
               </Grid>
             </Grid>
@@ -74,11 +117,16 @@ const LogInPage = () => {
                   borderRadius: "30px",
                   backgroundColor: "#f5e7e9",
                   boxShadow: "1px 1px 20px #d38494",
-                  padding: "20px",
+                  padding: loginWindowPadding,
                   marginTop: "30px",
                 }}
               >
-                <div style={{ marginBottom: "40px", marginTop: "30px" }}>
+                <div
+                  style={{
+                    marginBottom: loginButtonMargin,
+                    marginTop: loginButtonMargin,
+                  }}
+                >
                   <Grid container justifyContent={"center"}>
                     <Grid item container xs={10} justifyContent={"center"}>
                       <div className="kakao-button">
@@ -86,7 +134,11 @@ const LogInPage = () => {
                           src={kakaoButton}
                           onClick={handlekakaoLogin}
                           alt="Kakao Login"
-                          style={{ boxShadow: "1px 1px 30px #fbb3c2" }}
+                          style={{
+                            boxShadow: "1px 1px 30px #fbb3c2",
+                            borderRadius: "20px",
+                          }}
+                          class="loginpage-img"
                         />
                       </div>
                     </Grid>
@@ -96,6 +148,7 @@ const LogInPage = () => {
                   style={{
                     border: "1px solid #fbb3c2",
                     // boxShadow: "10px 10px 20px #fbb3c2 ",
+                    margin: "10px 0",
                   }}
                 />
                 <div
@@ -115,6 +168,7 @@ const LogInPage = () => {
                           src={googleplay}
                           alt="Download on Google Play"
                           className="googleplay-image"
+                          class="loginpage-img"
                           style={{
                             maxWidth: "200px",
                             boxShadow: "1px 1px 30px #fbb3c2",
