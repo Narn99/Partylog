@@ -2,9 +2,11 @@ package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.Entity.User;
 import com.ssafy.partylog.api.request.UserRequest;
+import com.ssafy.partylog.api.response.FollowResponse;
 import com.ssafy.partylog.api.service.FollowService;
 import com.ssafy.partylog.api.service.UserService;
 import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@Tag(name = "FollowController", description = "팔로우 관련 API")
 public class FollowController {
 
     private FollowService followService;
@@ -25,6 +28,7 @@ public class FollowController {
     }
 
     @PostMapping("/addFollow/{followeeNo}")
+    @Operation(summary = "팔로우하기", description = "팔로우를 합니다.")
     public ResponseEntity<HashMap<String, Object>> addFollow(@PathVariable int followeeNo) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<>();
         // 메시지 저장
@@ -37,6 +41,7 @@ public class FollowController {
     }
 
     @DeleteMapping("/removeFollow/{followeeNo}")
+    @Operation(summary = "팔로우 해제", description = "팔로우를 해제합니다.")
     public ResponseEntity<HashMap<String, Object>> removeFollow(@PathVariable int followeeNo) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<>();
         // 메시지 저장
@@ -51,17 +56,19 @@ public class FollowController {
 
     //나를 팔로우 하는 사람 목록 가져오기
     @GetMapping("/searchFollowerList/{limit}/{offset}")
-    public ResponseEntity<List<User>> searchFollowerList(@PathVariable int limit, @PathVariable int offset) throws Exception{
-        List<User> list = followService.searchFollowerList(limit, offset);
+    @Operation(summary = "팔로워리스트", description = "나를 팔로우한 사람 목록")
+    public ResponseEntity<List<FollowResponse>> searchFollowerList(@PathVariable int limit, @PathVariable int offset) throws Exception{
+        List<FollowResponse> list = followService.searchFollowerList(limit, offset);
 
-        return new ResponseEntity<List<User>>(list, HttpStatus.OK);
+        return new ResponseEntity<List<FollowResponse>>(list, HttpStatus.OK);
     }
 
     //내가 팔로우 하는 사람 목록 가져오기
     @GetMapping("/searchFolloweeList/{limit}/{offset}")
-    public ResponseEntity<List<User>> searchFolloweeList(@PathVariable int limit, @PathVariable int offset) throws Exception{
-        List<User> list = followService.searchFolloweeList(limit, offset);
+    @Operation(summary = "팔로이리스트", description = "내가 팔로우한 사람 목록")
+    public ResponseEntity<List<FollowResponse>> searchFolloweeList(@PathVariable int limit, @PathVariable int offset) throws Exception{
+        List<FollowResponse> list = followService.searchFolloweeList(limit, offset);
 
-        return new ResponseEntity<List<User>>(list, HttpStatus.OK);
+        return new ResponseEntity<List<FollowResponse>>(list, HttpStatus.OK);
     }
 }
