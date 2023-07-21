@@ -36,12 +36,13 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public List<User> getFollowerLIst() throws Exception {
+    public List<User> searchFollowerList() throws Exception {
         return null;
     }
 
     @Override
-    public List<User> getFolloweeLIst() throws Exception {
+    public List<User> searchFolloweeList() throws Exception {
         return null;
     }
+
 }

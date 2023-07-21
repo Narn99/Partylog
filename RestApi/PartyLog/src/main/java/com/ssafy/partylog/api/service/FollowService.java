@@ -10,8 +10,8 @@ public interface FollowService {
 
     public void removeFollow(int followeeId) throws Exception;
 
-    public List<User> getFollowerLIst() throws Exception;
+    public List<User> searchFollowerList() throws Exception;
 
-    public List<User> getFolloweeLIst() throws Exception;
+    public List<User> searchFolloweeList() throws Exception;
 
 }
