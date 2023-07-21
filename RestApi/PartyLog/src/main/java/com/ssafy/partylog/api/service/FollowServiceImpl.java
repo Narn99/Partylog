@@ -2,7 +2,7 @@ package com.ssafy.partylog.api.service;
 
 
 import com.ssafy.partylog.api.Entity.Follow;
-import com.ssafy.partylog.api.Entity.User;
+import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.repository.FollowRepository;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +36,12 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public List<User> getFollowerLIst() throws Exception {
+    public List<UserEntity> getFollowerLIst() throws Exception {
         return null;
     }
 
     @Override
-    public List<User> getFolloweeLIst() throws Exception {
+    public List<UserEntity> getFolloweeLIst() throws Exception {
         return null;
     }
 }

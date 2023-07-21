@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name="user")
 @Getter
 @ToString
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_no")
@@ -25,7 +25,7 @@ public class User {
     private String userProfile;
 
     @Builder
-    public User(int userNo, String userId, Date userBirthday, String userNickname, String userProfile) {
+    public UserEntity(int userNo, String userId, Date userBirthday, String userNickname, String userProfile) {
         this.userNo = userNo;
         this.userId = userId;
         this.userBirthday = userBirthday;
@@ -34,7 +34,7 @@ public class User {
     }
 
     // 기본 생성자 없으면 빨간줄 떠서 넣음
-    public User() {
+    public UserEntity() {
         
     }
 }

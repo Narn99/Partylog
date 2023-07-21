@@ -1,6 +1,6 @@
 package com.ssafy.partylog.api.service;
 
-import com.ssafy.partylog.api.Entity.User;
+import com.ssafy.partylog.api.Entity.UserEntity;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ public interface FollowService {
 
     public void removeFollow(int followeeId) throws Exception;
 
-    public List<User> getFollowerLIst() throws Exception;
+    public List<UserEntity> getFollowerLIst() throws Exception;
 
-    public List<User> getFolloweeLIst() throws Exception;
+    public List<UserEntity> getFolloweeLIst() throws Exception;
 
 }

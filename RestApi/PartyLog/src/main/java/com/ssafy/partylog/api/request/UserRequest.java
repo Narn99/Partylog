@@ -1,6 +1,5 @@
 package com.ssafy.partylog.api.request;
 
-import com.ssafy.partylog.api.Entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +12,8 @@ import java.util.Date;
 @Setter
 @ToString
 public class UserRequest {
-    @Schema(description = "카카오 고유 ID", nullable = false, example = "2913103441")
-    private String userId;
+    @Schema(description = "사용자 번호", nullable = false, example = "0001")
+    private String userNo;
     @Schema(description = "사용자 생일", nullable = false, example = "1996-03-15")
     private Date userBirthday;
     @Schema(description = "사용자 닉네임", nullable = false, example = "김싸피")
@@ -23,20 +22,20 @@ public class UserRequest {
     private String userProfile;
 
     @Builder
-    public UserRequest(String userId, Date userBirthday, String userNickname, String userProfile) {
-        this.userId = userId;
+    public UserRequest(String userNo, Date userBirthday, String userNickname, String userProfile) {
+        this.userNo = userNo;
         this.userBirthday = userBirthday;
         this.userNickname = userNickname;
         this.userProfile = userProfile;
     }
 
     // dto -> entity로 변환
-    public User toEntity() {
-        return User.builder()
-                .userId(this.userId)
-                .userBirthday(this.userBirthday)
-                .userNickname(this.userNickname)
-                .userProfile(this.userProfile)
-                .build();
-    }
+//    public UserEntity toEntity() {
+//        return UserEntity.builder()
+//                .userNo(Integer.parseInt(this.userNo))
+//                .userBirthday(this.userBirthday)
+//                .userNickname(this.userNickname)
+//                .userProfile(this.userProfile)
+//                .build();
+//    }
 }
