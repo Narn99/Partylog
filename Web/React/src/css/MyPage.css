@@ -35,12 +35,28 @@
   border-radius: 50px;
 }
 
-
-
-.MyPage-content {
+.MyPage-profile {
   display: flex;
   flex-direction: column;
-  align-items: center;  /* Align items in the center */
-  width: 50%;
-  margin: 0 auto;
+  align-items: center;  
+  width: 30%;
+  margin: 0 ;
 }
+/* 프로필 사진&닉네임&팔로잉 팔로워&타이머&라이브로 이동 버튼 한 세트로 묶여있어요 */
+
+
+.MyPage {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.MyPage-side {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1000px; /* or whatever width you want */
+  margin-top: -20px;
+}
+
+/* 여기 조정해서 칩이랑 버튼 배치해야되요 */
