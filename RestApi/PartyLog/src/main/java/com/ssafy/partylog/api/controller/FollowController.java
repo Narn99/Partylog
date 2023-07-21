@@ -1,5 +1,6 @@
 package com.ssafy.partylog.api.controller;
 
+import com.ssafy.partylog.api.Entity.User;
 import com.ssafy.partylog.api.request.UserRequest;
 import com.ssafy.partylog.api.service.FollowService;
 import com.ssafy.partylog.api.service.UserService;
@@ -11,19 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
 public class FollowController {
-//    private UserService userService;
 
     private FollowService followService;
 
-//    private FollowController(UserService userService) {
-//        this.userService = userService;
-//    }
-
-//    private FollowController(){}
     private FollowController(FollowService followService) {
         this.followService = followService;
     }
@@ -34,7 +30,6 @@ public class FollowController {
         // 메시지 저장
         String message = "팔로우 하셨습니다.";
         resultMap.put("msg", message);
-        System.out.println(followeeNo);
         // 팔로우 등록
         followService.addFollow(followeeNo);
 
@@ -52,5 +47,21 @@ public class FollowController {
         followService.removeFollow(followeeNo);
 
         return new ResponseEntity<HashMap<String, Object>>(resultMap, HttpStatus.OK);
+    }
+
+    //나를 팔로우 하는 사람 목록 가져오기
+    @GetMapping("/searchFollowerList/{limit}/{offset}")
+    public ResponseEntity<List<User>> searchFollowerList(@PathVariable int limit, @PathVariable int offset) throws Exception{
+        List<User> list = followService.searchFollowerList(limit, offset);
+
+        return new ResponseEntity<List<User>>(list, HttpStatus.OK);
+    }
+
+    //내가 팔로우 하는 사람 목록 가져오기
+    @GetMapping("/searchFolloweeList/{limit}/{offset}")
+    public ResponseEntity<List<User>> searchFolloweeList(@PathVariable int limit, @PathVariable int offset) throws Exception{
+        List<User> list = followService.searchFolloweeList(limit, offset);
+
+        return new ResponseEntity<List<User>>(list, HttpStatus.OK);
     }
 }

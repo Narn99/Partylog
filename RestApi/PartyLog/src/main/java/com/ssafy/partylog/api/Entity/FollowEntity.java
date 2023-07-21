@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Setter
 @ToString
 @Table(name="follow")
-public class Follow {
+public class FollowEntity {
     @Id
     @Column(name="follow_no")
     private int followNo;
@@ -25,11 +25,11 @@ public class Follow {
     private int followeeNo;
 
     @Builder
-    public Follow(int followerNo, int followeeNo) {
+    public FollowEntity(int followerNo, int followeeNo) {
         this.followerNo = followerNo;
         this.followeeNo = followeeNo;
     }
 
-    public Follow() {
+    public FollowEntity() {
     }
 }

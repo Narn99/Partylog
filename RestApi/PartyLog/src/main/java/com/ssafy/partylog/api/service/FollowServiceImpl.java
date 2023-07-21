@@ -1,7 +1,7 @@
 package com.ssafy.partylog.api.service;
 
 
-import com.ssafy.partylog.api.Entity.Follow;
+import com.ssafy.partylog.api.Entity.FollowEntity;
 import com.ssafy.partylog.api.Entity.User;
 import com.ssafy.partylog.api.repository.FollowRepository;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ public class FollowServiceImpl implements FollowService {
         // JWT 토큰 디코딩으로 사용자 id 알아내기
         int followerNo = 1;
 
-        Follow follow = new Follow(followerNo, followeeNo);
-        followRepository.save(follow);
+        FollowEntity followEntity = new FollowEntity(followerNo, followeeNo);
+        followRepository.save(followEntity);
     }
 
     @Transactional
@@ -31,18 +31,28 @@ public class FollowServiceImpl implements FollowService {
         // JWT 토큰 디코딩으로 사용자 id 알아내기
         int followerNo = 1;
 
-        Follow follow = new Follow(followerNo, followeeNo);
+        FollowEntity followEntity = new FollowEntity(followerNo, followeeNo);
         followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo);
     }
 
     @Override
-    public List<User> searchFollowerList() throws Exception {
-        return null;
+    //나를 팔로우한 사람 목록 가져오기
+    public List<User> searchFollowerList(int limit, int offset) throws Exception {
+        // JWT 토큰 디코딩으로 사용자 id 알아내기
+        int followerNo = 1;
+
+        List<User> list = followRepository.findByFolloweeNo(followerNo, limit, offset);
+        return list;
     }
 
     @Override
-    public List<User> searchFolloweeList() throws Exception {
-        return null;
+    //내가 팔로우한 사람 목록 가져오기
+    public List<User> searchFolloweeList(int limit, int offset) throws Exception {
+        // JWT 토큰 디코딩으로 사용자 id 알아내기
+        int followeeNo = 1;
+
+        List<User> list = followRepository.findByFollowerNo(followeeNo, limit, offset);
+        return list;
     }
 
 }
