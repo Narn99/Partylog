@@ -16,6 +16,7 @@ export default function SearchFriend() {
       <InputBase
         sx={{ ml: 1, flex: 1 }}
         placeholder="친구 검색"
+        style={{ fontFamily: 'HakgyoansimWoojuR' }}
         inputProps={{ 'aria-label': 'search your friend' }}
       />
       <IconButton type="button" sx={{ p: '10px' }} aria-label="search">

@@ -1,4 +1,46 @@
 .test {
   text-align: center;
-  
+
+}
+
+.MyPage-header {
+  display: grid;
+  grid-template-columns: 3fr 4fr 1fr; 
+  align-items: center;
+  /* gap: 20px;  */
+}
+
+.MyPage-settingimg {
+  margin-left: 80px;
+  width: 80px;
+  height: 80px;
+}
+
+.MyPage-profileimg {
+  width: 300px;
+  height: 300px;
+}
+
+.MyPage-nickname {
+  font-family: 'HakgyoansimWoojuR';
+  font-size: 30px;
+}
+
+.MyPage-button {
+  font-family: 'HakgyoansimWoojuR';
+  font-size: 20px;
+  background-color: #fbb3c2;
+  color: #9a4059;
+  border: none;
+  border-radius: 50px;
+}
+
+
+
+.MyPage-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* Align items in the center */
+  width: 50%;
+  margin: 0 auto;
 }
