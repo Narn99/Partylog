@@ -4,19 +4,19 @@ import "../components/Timmer"
 import CountdownTimer from "../components/Timmer";
 
 function MyPage(props) {
-    const [targetDate, setTargetDate] = useState("2024-01-01");
+  const [targetDateTime, setTargetDateTime] = useState("2024-01-01T00:00");
 
   const handleChange = (event) => {
-    setTargetDate(event.target.value);
+    setTargetDateTime(event.target.value);
   };
-    return (
-        <div className="test">
-            <h1 className="loginpage-h1">Partylog</h1>
-            <input type="date" value={targetDate} onChange={handleChange} />
-            <CountdownTimer targetDate={targetDate} />
-            
-        </div>
-    );
+
+  return (
+    <div className="test">
+      <h1 className="loginpage-h1">Partylog</h1>
+      <input type="datetime-local" value={targetDateTime} onChange={handleChange} />
+      <CountdownTimer targetDateTime={targetDateTime} />
+    </div>
+  );
 }
 
 export default MyPage;

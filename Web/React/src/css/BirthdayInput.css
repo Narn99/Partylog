@@ -1,7 +1,6 @@
 .center {
   text-align: center;
-  background-image: url(../image/TempBg.png);
-
+  
 }
 
 .cake-image {
@@ -22,7 +21,8 @@
 .submit-button {
   display: block;
   margin: 20px auto;
-  width: 200px;
+  width: 300px;
+  height: auto;
   padding: 10px;
   border-radius: 5px;
   background-color: #fbb3c2;

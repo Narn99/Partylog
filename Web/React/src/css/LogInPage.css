@@ -142,7 +142,7 @@ body {
   animation-delay: 0.75s;
 }
 
-img {
+.loginpage-img {
   width: 100%;
   max-width: 300px;
   max-height: 80px;

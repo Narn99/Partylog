@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-const CountdownTimer = ({ targetDate }) => {
+const CountdownTimer = ({ targetDateTime }) => {
   const calculateTimeLeft = () => {
-    let diff = +new Date(targetDate) - +new Date();
+    let diff = +new Date(targetDateTime) - +new Date();
     let timeLeft = {};
 
     if (diff > 0) {
@@ -28,7 +28,7 @@ const CountdownTimer = ({ targetDate }) => {
 
   return (
     <div>
-      {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
+      {timeLeft.days}일 {timeLeft.hours}시간 {timeLeft.minutes}분 {timeLeft.seconds}초
       
     </div>
   );
