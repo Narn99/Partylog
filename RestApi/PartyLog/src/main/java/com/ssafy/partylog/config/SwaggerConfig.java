@@ -17,8 +17,8 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("Springdoc 테스트")
-                .description("Swagger 테스트")
+                .title("PartyLog")
+                .description("SSAFY 9기 공통 프로젝트 팀A501 API 명세서")
                 .version("1.0.0");
     }
 }
