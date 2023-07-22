@@ -87,3 +87,13 @@
   border-radius: 50px;
   margin-left: 800px;
 }
+
+.ProfileSetting-button {
+  font-family: 'HakgyoansimWoojuR';
+  font-size: 25px;
+  background-color: #fbb3c2;
+  color: #9a4059;
+  border: none;
+  border-radius: 30px;
+
+}
