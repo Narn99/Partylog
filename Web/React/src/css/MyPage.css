@@ -23,16 +23,28 @@
 
 .MyPage-nickname {
   font-family: 'HakgyoansimWoojuR';
-  font-size: 30px;
+  font-size: 40px;
+  margin-bottom: 10px;
 }
 
-.MyPage-button {
+.MyPage-follow {
   font-family: 'HakgyoansimWoojuR';
-  font-size: 20px;
+  font-size: 25px;
+  margin-top: 10px;
+}
+
+
+.MyPage-live-button {
+  font-family: 'HakgyoansimWoojuR';
+  font-size: 35px;
   background-color: #fbb3c2;
   color: #9a4059;
   border: none;
-  border-radius: 50px;
+  border-radius: 80px;
+  margin-top: 50px;
+  width: 200px; 
+  height: 80px; 
+  display: inline-block; 
 }
 
 .MyPage-profile {
@@ -53,10 +65,25 @@
 
 .MyPage-side {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
-  width: 1000px; /* or whatever width you want */
+  
   margin-top: -20px;
+  flex-grow: 1;
 }
-
 /* 여기 조정해서 칩이랑 버튼 배치해야되요 */
+
+/* .MyPage-chips {
+  margin-right: 600px;
+} */
+
+
+.MyPage-message-button {
+  font-family: 'HakgyoansimWoojuR';
+  font-size: 30px;
+  background-color: #fbb3c2;
+  color: #9a4059;
+  border: none;
+  border-radius: 50px;
+  margin-left: 800px;
+}

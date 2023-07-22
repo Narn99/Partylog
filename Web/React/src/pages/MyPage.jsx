@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "../css/MyPage.css";
 import "../components/Timmer"
 import CountdownTimer from "../components/Timmer";
@@ -27,19 +28,21 @@ function MyPage(props) {
      
       <div className="MyPage">
         <div className="MyPage-profile">
-        <img src={molru} alt="profileimg" className="MyPage-profileimg"/>
-        <p className="MyPage-nickname">몰루?!</p>
-        <p>팔로잉|팔로워</p>
+        <Link to="/profile-setting"> {/* ProfileSetting 컴포넌트로 이동하는 Link */}
+          <img src={molru} alt="profileimg" className="MyPage-profileimg" />
+        </Link>
+        <p className="MyPage-nickname">몰?루</p>
+        <p className="MyPage-follow">팔로잉|팔로워</p>
       
       <input type="datetime-local" value={targetDateTime} onChange={handleChange} />
       <CountdownTimer targetDateTime={targetDateTime} />
 
-      <button className="MyPage-button">라이브로 이동</button>
+      <button className="MyPage-live-button">라이브로 이동</button>
       </div>
        
       <div className="MyPage-side">
       <YearChip />
-      <button className="MyPage-button">메시지 작성</button>
+      <button className="MyPage-message-button">메시지 작성</button>
       {/* <img src={board} alt="messageboard" className=""/> */}
       </div>
       </div>
