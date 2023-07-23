@@ -9,7 +9,7 @@ export default function SearchFriend() {
   return (
     <Paper
       component="form"
-      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 600,
+      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: { xs: '100%', md: '600px', sm: '400px' },
       borderRadius: '20px', backgroundColor: '#F2E5E6'
      }}
     >
