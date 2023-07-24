@@ -7,6 +7,7 @@ import SearchFriend from "../components/SearchFriend";
 import molru from "../assets/molru.webp";
 import YearChip from "../components/YearChip";
 // import board from "../assets/board.png"
+import MessageBoard from "../components/MessageBoard"
 
 function MyPage(props) {
   const [targetDateTime, setTargetDateTime] = useState("2024-01-01T00:00");
@@ -47,6 +48,7 @@ function MyPage(props) {
           </button>
         </div>
 
+        <div>
         <div className="MyPage-side">
           <YearChip />
           <button className="MyPage-message-button">
@@ -54,7 +56,9 @@ function MyPage(props) {
             <br />
             작성
           </button>
-          {/* <img src={board} alt="messageboard" className=""/> */}
+          </div> 
+          
+          <MessageBoard />
         </div>
       </div>
     </div>
