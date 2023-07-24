@@ -31,8 +31,8 @@ public class FollowServiceImpl implements FollowService {
         int followerNo = 1;
 
         FollowEntity followEntity = new FollowEntity(followerNo, followeeNo);
-        System.out.println(followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo));
-//        followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo);
+//        System.out.println(followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo));
+        followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo);
     }
 
     //나를 팔로우한 사람 목록 가져오기
