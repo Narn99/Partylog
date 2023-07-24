@@ -23,18 +23,22 @@ public class UserEntity {
     private String userNickname;
     @Column(name="user_profile")
     private String userProfile;
+    @Column(name="W_refreshtoken")
+    private String Wrefreshtoken;
+    @Column(name="A_refreshtoken")
+    private String Arefreshtoken;
 
     @Builder
-    public UserEntity(int userNo, String userId, Date userBirthday, String userNickname, String userProfile) {
+    public UserEntity(int userNo, String userId, Date userBirthday, String userNickname, String userProfile, String Wrefreshtoken, String Arefreshtoken) {
         this.userNo = userNo;
         this.userId = userId;
         this.userBirthday = userBirthday;
         this.userNickname = userNickname;
         this.userProfile = userProfile;
+        this. Wrefreshtoken = Wrefreshtoken;
+        this.Arefreshtoken = Arefreshtoken;
     }
 
     // 기본 생성자 없으면 빨간줄 떠서 넣음
-    public UserEntity() {
-        
-    }
+    public UserEntity() {}
 }

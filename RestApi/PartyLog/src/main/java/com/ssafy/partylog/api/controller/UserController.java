@@ -70,6 +70,7 @@ public class UserController {
                 isNewUser = false;
                 accessToken = jwtTokenProvider.createToken(user.get().getUserNo(), "access_token", "user");
                 refreshToken = jwtTokenProvider.createToken(user.get().getUserNo(), "refresh_token", "user");
+                userService.addRefreshToken(user.get().getUserNo(), "web", refreshToken);
             } else { // 생일 정보가 없는 경우
                 userResponse = new UserResponse(
                         user.get().getUserNo(),
@@ -109,5 +110,11 @@ public class UserController {
         resultMap.put("code", "200");
         resultMap.put("msg", "회원가입 성공");
         return new ResponseEntity<HashMap<String, Object>>(resultMap, HttpStatus.OK);
+    }
+
+    @PostMapping("/mypage/{userNo}")
+    public ResponseEntity<String> searchUserInfo(@PathVariable("userNo") int userNo) throws Exception {
+        System.out.println("마이페이지: " + userNo);
+        return new ResponseEntity<String>("성공", HttpStatus.OK);
     }
 }

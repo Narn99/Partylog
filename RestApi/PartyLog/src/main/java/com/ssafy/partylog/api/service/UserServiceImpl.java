@@ -149,4 +149,30 @@ public class UserServiceImpl implements UserService {
     public Optional<UserEntity> searchUserInfoByKakaoUserId(String userId) throws Exception {
         return userRepository.findByUserId(userId);
     }
+
+    @Override
+    public void addRefreshToken(int userNo, String type, String refreshToken) throws Exception {
+        Optional<UserEntity> userEntity = userRepository.findByUserNo(userNo);
+        UserEntity user = null;
+        if(type.equals("web")) {
+            user = UserEntity.builder()
+                    .userNo(userEntity.get().getUserNo())
+                    .userId(userEntity.get().getUserId())
+                    .userNickname(userEntity.get().getUserNickname())
+                    .userBirthday(userEntity.get().getUserBirthday())
+                    .userProfile(userEntity.get().getUserProfile())
+                    .Wrefreshtoken(refreshToken)
+                    .build();
+        } else {
+            user = UserEntity.builder()
+                    .userNo(userEntity.get().getUserNo())
+                    .userId(userEntity.get().getUserId())
+                    .userNickname(userEntity.get().getUserNickname())
+                    .userBirthday(userEntity.get().getUserBirthday())
+                    .userProfile(userEntity.get().getUserProfile())
+                    .Arefreshtoken(refreshToken)
+                    .build();
+        }
+        userRepository.save(user);
+    }
 }
