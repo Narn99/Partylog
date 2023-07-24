@@ -7,15 +7,15 @@ import java.util.Optional;
 
 public interface UserService {
 
-    public String searchKakaoAccessToken(String code) throws Exception;
+    String searchKakaoAccessToken(String code) throws Exception;
 
-    public String searchKakaoUserInfo(String kakao_Access_Token) throws Exception;
+    String searchKakaoUserInfo(String kakao_Access_Token) throws Exception;
 
-    public UserEntity addKakaoUserId(String kakao_auth_id) throws Exception;
+    UserEntity searchUserInfoByKakaoUserId(String userId) throws Exception;
 
-    public void addUser(UserRequest userInfo) throws Exception;
+    String createToken(int userNo, String type) throws Exception;
 
-    public Optional<UserEntity> searchUserInfoByKakaoUserId(String userId) throws Exception;
+    void addUser(UserRequest userInfo) throws Exception;
 
-    public void addRefreshToken(int userNo, String type, String refreshToken) throws Exception;
+    void addRefreshToken(int userNo, String refreshToken) throws Exception;
 }

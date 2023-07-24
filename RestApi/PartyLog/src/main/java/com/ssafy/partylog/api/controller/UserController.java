@@ -2,18 +2,15 @@ package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.request.UserRequest;
-import com.ssafy.partylog.api.response.UserResponse;
 import com.ssafy.partylog.api.service.UserService;
-import com.ssafy.partylog.token.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
-import java.util.Optional;
 
 
 @RestController
@@ -22,11 +19,9 @@ import java.util.Optional;
 public class UserController {
 
     private UserService userService;
-    private final JwtTokenProvider jwtTokenProvider;
 
-    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @GetMapping("/login")
@@ -37,63 +32,22 @@ public class UserController {
 //            @ApiResponse(responseCode = "400", description = "Invalid"),
 //            @ApiResponse(responseCode = "404", description = "Not found")
 //    })
-    public ResponseEntity<HashMap<String, Object>> loginUser(@RequestParam("code") String code) throws Exception {
+    public ResponseEntity<String> login(@RequestParam("code") String code) throws Exception {
         System.out.println("카카오 인증 코드: " + code);
-
-        UserResponse userResponse = null;
-        boolean isNewUser = true; // 신규 유저 여부 확인
-        String accessToken = ""; // 액세스 토큰
-        String refreshToken = ""; // 리프레시 토큰
-        HashMap<String, Object> resultMap = new HashMap<>(); // 반환값 저장
-
-        // 카카오 토큰 발급
-        String kakao_Access_Token = userService.searchKakaoAccessToken(code);
-        if(kakao_Access_Token.equals("")) { // 토큰 발급에 실패 했을 경우
-            resultMap.put("code", 400);
-            resultMap.put("msg", "카카오 토큰 발급에 실패했습니다.");
-            return new ResponseEntity<>(resultMap, HttpStatus.OK);
+        String kakaoUserId = userService.searchKakaoAccessToken(code);
+        String accessToken = "";
+        String refreshToken = "";
+        UserEntity user = userService.searchUserInfoByKakaoUserId(kakaoUserId);
+        if(user != null) {
+            accessToken = userService.createToken(user.getUserNo(), "access-token");
+            refreshToken = userService.createToken(user.getUserNo(), "refresh-token");
+            userService.addRefreshToken(user.getUserNo(), refreshToken);
+            System.out.println(accessToken);
+            System.out.println(refreshToken);
+        } else {
+            System.out.println("프론트로 리턴");
         }
-
-        // 카카오 고유 아이디 얻기
-        String kakao_auth_id = userService.searchKakaoUserInfo(kakao_Access_Token);
-
-        // 카카오 고유 아이디와 매칭되는 User 정보 검색
-        Optional<UserEntity> user = userService.searchUserInfoByKakaoUserId(kakao_auth_id);
-        if(user.isPresent()) { // 해당 카카오 ID가 DB에 존재 할 경우
-            if(user.get().getUserBirthday() != null) { // 생일 정보가 존재 하는 경우
-                userResponse = new UserResponse(
-                        user.get().getUserNo(),
-                        user.get().getUserBirthday(),
-                        user.get().getUserNickname(),
-                        user.get().getUserProfile()
-                        );
-                isNewUser = false;
-                accessToken = jwtTokenProvider.createToken(user.get().getUserNo(), "access_token", "user");
-                refreshToken = jwtTokenProvider.createToken(user.get().getUserNo(), "refresh_token", "user");
-                userService.addRefreshToken(user.get().getUserNo(), "web", refreshToken);
-            } else { // 생일 정보가 없는 경우
-                userResponse = new UserResponse(
-                        user.get().getUserNo(),
-                        null,
-                        null,
-                        null
-                );
-            }
-        } else { // 해당 카카오 ID가 DB에 없는 경우
-            UserEntity userEntity = userService.addKakaoUserId(kakao_auth_id);
-            userResponse = new UserResponse(
-                    userEntity.getUserNo(),
-                    null,
-                    null,
-                    null
-            );
-        }
-
-        resultMap.put("isNewUser", isNewUser);
-        resultMap.put("access_token", accessToken);
-        resultMap.put("refresh_token", refreshToken);
-        resultMap.put("userInfo", userResponse);
-        return new ResponseEntity<HashMap<String, Object>>(resultMap, HttpStatus.OK);
+        return new ResponseEntity<String>(accessToken, HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -112,9 +66,8 @@ public class UserController {
         return new ResponseEntity<HashMap<String, Object>>(resultMap, HttpStatus.OK);
     }
 
-    @PostMapping("/mypage/{userNo}")
-    public ResponseEntity<String> searchUserInfo(@PathVariable("userNo") int userNo) throws Exception {
-        System.out.println("마이페이지: " + userNo);
-        return new ResponseEntity<String>("성공", HttpStatus.OK);
+    @PostMapping("/mypage")
+    public ResponseEntity<String> searchUserInfo(Authentication authentication) throws Exception {
+        return new ResponseEntity<String>("사용자 번호: " + authentication.getName(), HttpStatus.OK);
     }
 }

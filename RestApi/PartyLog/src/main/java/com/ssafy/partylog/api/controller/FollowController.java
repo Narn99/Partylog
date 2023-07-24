@@ -2,7 +2,6 @@ package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.response.FollowResponse;
 import com.ssafy.partylog.api.service.FollowService;
-import com.ssafy.partylog.token.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -20,8 +19,6 @@ import java.util.List;
 public class FollowController {
 
     private FollowService followService;
-
-    private JwtTokenProvider jwtTokenProvider;
 
     private FollowController(FollowService followService) {
         this.followService = followService;
