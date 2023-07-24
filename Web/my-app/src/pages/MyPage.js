@@ -5,8 +5,8 @@ function MyPage(props) {
     useEffect(() => {
         console.log("내 정보 불러오기");
         const userNo = 1013;
-        const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDEzIiwidHlwZSI6ImFjY2Vzc190b2tlbiIsInJvbGVzIjoidXNlciIsImlhdCI6MTY5MDE3NzI0MSwiZXhwIjoxNjkwMTc5MDQxfQ.eDTA6C2Es_eXvFxZv0YWc16BpLFZUlDY-APhyvf21hU"
-        const refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDEzIiwidHlwZSI6InJlZnJlc2hfdG9rZW4iLCJyb2xlcyI6InVzZXIiLCJpYXQiOjE2OTAxNjQwMTAsImV4cCI6MTY5MTM3MzYxMH0.5G23J05EXDR3wj_4PDhCxLOcD9799bG7K3YUDGTIYmM"
+        const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDEzIiwidHlwZSI6ImFjY2Vzc190b2tlbiIsInJvbGVzIjoidXNlciIsImlhdCI6MTY5MDE4NjMwMCwiZXhwIjoxNjkwMTg4MTAwfQ.kAUpwvCiyd169ZWwno3HiuSTyFDwjLQxSLugQMnAUI0"
+        // const refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDEzIiwidHlwZSI6InJlZnJlc2hfdG9rZW4iLCJyb2xlcyI6InVzZXIiLCJpYXQiOjE2OTAxNjQwMTAsImV4cCI6MTY5MTM3MzYxMH0.5G23J05EXDR3wj_4PDhCxLOcD9799bG7K3YUDGTIYmM"
         axios.defaults.headers.common['Authorization'] = `${accessToken}`
         axios.post(
             `http://localhost:8080/partylog/user/mypage/${userNo}`
@@ -18,9 +18,9 @@ function MyPage(props) {
         // eslint-disable-next-line
       }, []);
 
-      const getMyInfo = () => {
+    //   const getMyInfo = () => {
 
-      }
+    //   }
 
     return (
         <div>
