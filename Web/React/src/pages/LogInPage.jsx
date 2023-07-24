@@ -1,5 +1,5 @@
 import React from "react";
-import kakaoButton from "../assets/kakao_login_large_narrow.png";
+import kakaoButton from "../assets/kakao_login.svg";
 import googleplay from "../assets/googleplay.png";
 import "../css/LogInPage.css";
 import { Grid, Container, useMediaQuery, useTheme } from "@mui/material";
