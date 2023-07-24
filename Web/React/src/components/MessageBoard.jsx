@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import board2 from "../assets/board2.jpeg"
+import board from "../assets/board.jpg"
 import message from "../assets/message.jpg"
 import "../css/MemoBoard.css";
 
@@ -30,9 +30,9 @@ const MemoBoard = () => {
   };
 
   return (
-    <div className="memo-board" style={{ backgroundImage: `url(${board2})` }}>
+    <div className="memo-board" style={{ backgroundImage: `url(${board})` }}>
       {/* 메모 보드 이미지 */}
-      <img src={board2} alt="Memo Board" />
+      {/* <img src={board} alt="Memo Board" /> */}
 
       {/* 메모 이미지들을 배열로 매핑하여 렌더링합니다. */}
       {memoImages.map((memo, index) => (
