@@ -1,12 +1,10 @@
 package com.ssafy.partylog.api.repository;
 
 import com.ssafy.partylog.api.Entity.FollowEntity;
-import com.ssafy.partylog.api.Entity.User;
 import com.ssafy.partylog.api.response.FollowResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 import java.util.List;
 
