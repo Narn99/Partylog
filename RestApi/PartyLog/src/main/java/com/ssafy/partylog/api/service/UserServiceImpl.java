@@ -2,10 +2,9 @@ package com.ssafy.partylog.api.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.partylog.api.Entity.User;
+import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.repository.UserRepository;
 import com.ssafy.partylog.api.request.UserRequest;
-import com.ssafy.partylog.api.response.UserResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,15 +32,7 @@ public class UserServiceImpl implements UserService {
     private String CLIENT_SECRET;
 
     @Override
-    public UserResponse registUser(UserRequest userInfo) throws Exception {
-        User user = userInfo.toEntity();
-        User userEntity = userRepository.save(user);
-        UserResponse userResponse = new UserResponse(userEntity);
-        return userResponse;
-    }
-
-    @Override
-    public String getKakaoAccessToken(String code) throws Exception {
+    public String searchKakaoAccessToken(String code) throws Exception {
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -56,11 +48,9 @@ public class UserServiceImpl implements UserService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-
             sb.append("&client_id=" + CLIENT_ID); // REST_API키 본인이 발급받은 key 넣어주기
             sb.append("&redirect_uri=" + REDIRECT_URI); // REDIRECT_URI 본인이 설정한 주소 넣어주기
             sb.append("&client_secret=" + CLIENT_SECRET); // REDIRECT_URI 본인이 설정한 주소 넣어주기
-
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -95,9 +85,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public HashMap<String, Object> getKakaoUserInfo(String access_Token) throws Exception {
+    public String searchKakaoUserInfo(String access_Token) throws Exception {
         // 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
         HashMap<String, Object> userInfo = new HashMap<String, Object>();
+        String kakao_auth_id = "";
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
         try {
@@ -122,6 +113,7 @@ public class UserServiceImpl implements UserService {
                 ObjectMapper objectMapper = new ObjectMapper();
                 // JSON String -> Map
                 userInfo = (HashMap<String, Object>) objectMapper.readValue(result, new TypeReference<Map<String, Object>>() {});
+                kakao_auth_id = userInfo.get("id").toString();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -129,6 +121,32 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return userInfo;
+        return kakao_auth_id;
+    }
+
+    @Override
+    public UserEntity addKakaoUserId(String kakao_auth_id) throws Exception {
+        UserEntity userEntity = UserEntity.builder()
+                .userId(kakao_auth_id)
+                .build();
+        return userRepository.save(userEntity);
+    }
+
+    @Override
+    public void addUser(UserRequest userRequest) throws Exception {
+        Optional<UserEntity> userEntity = userRepository.findByUserNo(Integer.parseInt(userRequest.getUserNo()));
+        UserEntity user = UserEntity.builder()
+                .userNo(Integer.parseInt(userRequest.getUserNo()))
+                .userId(userEntity.get().getUserId())
+                .userNickname(userRequest.getUserNickname())
+                .userBirthday(userRequest.getUserBirthday())
+                .userProfile(userRequest.getUserProfile())
+                .build();
+        userRepository.save(user);
+    }
+
+    @Override
+    public Optional<UserEntity> searchUserInfoByKakaoUserId(String userId) throws Exception {
+        return userRepository.findByUserId(userId);
     }
 }

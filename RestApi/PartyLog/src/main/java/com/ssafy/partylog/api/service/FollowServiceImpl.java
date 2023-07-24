@@ -1,8 +1,6 @@
 package com.ssafy.partylog.api.service;
 
-
 import com.ssafy.partylog.api.Entity.FollowEntity;
-import com.ssafy.partylog.api.Entity.User;
 import com.ssafy.partylog.api.repository.FollowRepository;
 import com.ssafy.partylog.api.response.FollowResponse;
 import org.springframework.stereotype.Service;
@@ -37,7 +35,6 @@ public class FollowServiceImpl implements FollowService {
         followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo);
     }
 
-    @Override
     //나를 팔로우한 사람 목록 가져오기
     public List<FollowResponse> searchFollowerList(int limit, int offset) throws Exception {
         // JWT 토큰 디코딩으로 사용자 id 알아내기

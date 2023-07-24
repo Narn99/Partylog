@@ -1,16 +1,11 @@
 package com.ssafy.partylog.api.controller;
 
-import com.ssafy.partylog.api.Entity.User;
-import com.ssafy.partylog.api.request.UserRequest;
 import com.ssafy.partylog.api.response.FollowResponse;
 import com.ssafy.partylog.api.service.FollowService;
-import com.ssafy.partylog.api.service.UserService;
-import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;

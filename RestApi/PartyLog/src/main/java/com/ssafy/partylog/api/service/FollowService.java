@@ -1,6 +1,6 @@
 package com.ssafy.partylog.api.service;
 
-import com.ssafy.partylog.api.Entity.User;
+import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.response.FollowResponse;
 
 import java.util.List;
