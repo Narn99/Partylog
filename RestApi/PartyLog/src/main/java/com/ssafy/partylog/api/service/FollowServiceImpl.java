@@ -33,8 +33,8 @@ public class FollowServiceImpl implements FollowService {
         int followerNo = 1;
 
         FollowEntity followEntity = new FollowEntity(followerNo, followeeNo);
-        System.out.println(followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo));
-//        followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo);
+//        System.out.println(followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo));
+        followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo);
     }
 
     @Override
