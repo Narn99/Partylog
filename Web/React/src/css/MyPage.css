@@ -1,11 +1,10 @@
 .test {
   text-align: center;
-
 }
 
 .MyPage-header {
   display: grid;
-  grid-template-columns: 3fr 4fr 1fr; 
+  grid-template-columns: 3fr 4fr 1fr;
   align-items: center;
   /* gap: 20px;  */
 }
@@ -22,40 +21,38 @@
 }
 
 .MyPage-nickname {
-  font-family: 'HakgyoansimWoojuR';
+  font-family: "MaplestoryOTFLight";
   font-size: 40px;
   margin-bottom: 10px;
 }
 
 .MyPage-follow {
-  font-family: 'HakgyoansimWoojuR';
+  font-family: "MaplestoryOTFLight";
   font-size: 25px;
   margin-top: 10px;
 }
 
-
 .MyPage-live-button {
-  font-family: 'HakgyoansimWoojuR';
-  font-size: 35px;
+  font-family: "MaplestoryOTFBold";
+  font-size: 30px;
   background-color: #fbb3c2;
-  color: #9a4059;
+  color: white;
   border: none;
   border-radius: 80px;
   margin-top: 50px;
-  width: 200px; 
-  height: 80px; 
-  display: inline-block; 
+  width: 200px;
+  height: 80px;
+  display: inline-block;
 }
 
 .MyPage-profile {
   display: flex;
   flex-direction: column;
-  align-items: center;  
+  align-items: center;
   width: 30%;
-  margin: 0 ;
+  margin: 0;
 }
 /* 프로필 사진&닉네임&팔로잉 팔로워&타이머&라이브로 이동 버튼 한 세트로 묶여있어요 */
-
 
 .MyPage {
   display: flex;
@@ -67,7 +64,7 @@
   display: flex;
   /* justify-content: space-between; */
   align-items: center;
-  
+
   margin-top: -20px;
   flex-grow: 1;
 }
@@ -77,23 +74,22 @@
   margin-right: 600px;
 } */
 
-
 .MyPage-message-button {
-  font-family: 'HakgyoansimWoojuR';
-  font-size: 30px;
+  font-family: "MaplestoryOTFBold";
+  font-size: 25px;
   background-color: #fbb3c2;
-  color: #9a4059;
+  color: white;
   border: none;
+  width: 100px;
   border-radius: 50px;
   margin-left: 800px;
 }
 
 .ProfileSetting-button {
-  font-family: 'HakgyoansimWoojuR';
+  font-family: "MaplestoryOTFBold";
   font-size: 25px;
   background-color: #fbb3c2;
-  color: #9a4059;
+  color: white;
   border: none;
   border-radius: 30px;
-
 }
