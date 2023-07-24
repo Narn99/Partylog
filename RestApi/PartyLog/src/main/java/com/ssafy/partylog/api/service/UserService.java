@@ -16,4 +16,6 @@ public interface UserService {
     public void addUser(UserRequest userInfo) throws Exception;
 
     public Optional<UserEntity> searchUserInfoByKakaoUserId(String userId) throws Exception;
+
+    public void addRefreshToken(int userNo, String type, String refreshToken) throws Exception;
 }
