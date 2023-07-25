@@ -1,15 +1,16 @@
 package com.ssafy.partylog.api.Entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name="user")
 @Getter
+@Setter
 @ToString
+@NoArgsConstructor
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +39,4 @@ public class UserEntity {
         this. Wrefreshtoken = Wrefreshtoken;
         this.Arefreshtoken = Arefreshtoken;
     }
-
-    // 기본 생성자 없으면 빨간줄 떠서 넣음
-    public UserEntity() {}
 }

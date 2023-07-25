@@ -6,17 +6,22 @@ import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.repository.UserRepository;
 import com.ssafy.partylog.api.request.UserRequest;
 import com.ssafy.partylog.common.util.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -37,12 +42,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public String searchKakaoAccessToken(String code) throws Exception {
+    public UserEntity searchKakaoAccessToken(String code) throws Exception {
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
         String result = "";
-        String kakaoUserId = "";
+        UserEntity user = null;
 
         URL url = new URL(reqURL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -67,7 +72,8 @@ public class UserServiceImpl implements UserService {
         while ((line = br.readLine()) != null) {
             result += line;
         }
-//            System.out.println("response body : " + result);
+        br.close();
+        bw.close();
 
         // jackson objectmapper 객체 생성
         ObjectMapper objectMapper = new ObjectMapper();
@@ -78,20 +84,18 @@ public class UserServiceImpl implements UserService {
         access_Token = jsonMap.get("access_token").toString();
         refresh_Token = jsonMap.get("refresh_token").toString();
 
-        System.out.println("access_token : " + access_Token);
-        System.out.println("refresh_token : " + refresh_Token);
+        log.info("카카오 access_token: {}", access_Token);
+        log.info("카카오 refresh_token: {}", refresh_Token);
 
-        br.close();
-        bw.close();
+        // 카카오 토큰을 이용하여 카카오 유저 정보 가져오기
+        user = searchKakaoUserInfo(access_Token);
 
-        kakaoUserId = searchKakaoUserInfo(access_Token);
-
-        return kakaoUserId;
+        return user;
     }
 
     @Override
-    public String searchKakaoUserInfo(String access_Token) throws Exception {
-        String kakao_auth_id = "";
+    public UserEntity searchKakaoUserInfo(String access_Token) throws Exception {
+        String kakaoId = "";
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
         URL url = new URL(reqURL);
@@ -109,31 +113,45 @@ public class UserServiceImpl implements UserService {
         while ((line = br.readLine()) != null) {
             result += line;
         }
+        br.close();
 
         // jackson objectmapper 객체 생성
         ObjectMapper objectMapper = new ObjectMapper();
         // JSON String -> Map
         HashMap<String, Object> userInfo = (HashMap<String, Object>) objectMapper.readValue(result, new TypeReference<Map<String, Object>>() {});
-        kakao_auth_id = userInfo.get("id").toString();
-        return kakao_auth_id;
+        Map<String, Object> properties = (Map<String, Object>) userInfo.get("properties");
+        kakaoId = userInfo.get("id").toString();
+
+        // DB에 카카오 아이디가 없다면 저장
+        Optional<UserEntity> userEntity = userRepository.findByUserId(kakaoId);
+        UserEntity response = null;
+        if(!userEntity.isPresent()) {
+            UserEntity request = UserEntity.builder()
+                    .userId(kakaoId)
+                    .userNickname((String) properties.get("nickname"))
+                    .userProfile((String) properties.get("profile_image"))
+                    .build();
+            response = userRepository.save(request);
+        } else {
+            response = userEntity.get();
+        }
+        return response;
     }
 
     @Override
-    public void addUser(UserRequest userRequest) throws Exception {
-        Optional<UserEntity> userEntity = userRepository.findByUserNo(Integer.parseInt(userRequest.getUserNo()));
-        UserEntity user = UserEntity.builder()
-                .userNo(Integer.parseInt(userRequest.getUserNo()))
-                .userId(userEntity.get().getUserId())
-                .userNickname(userRequest.getUserNickname())
-                .userBirthday(userRequest.getUserBirthday())
-                .userProfile(userRequest.getUserProfile())
-                .build();
-        userRepository.save(user);
-    }
-
-    @Override
-    public UserEntity searchUserInfoByKakaoUserId(String userId) throws Exception {
-        return userRepository.findByUserId(userId).get();
+    public boolean join(UserRequest userRequest) throws Exception {
+        try {
+            userRepository.findByUserNo(userRequest.getUserNo()).ifPresent(item -> {
+                item.setUserBirthday(userRequest.getUserBirthday());
+                userRepository.save(item);
+            });
+        } catch (Exception e) {
+            log.error("회원가입 실패했습니다.");
+            e.printStackTrace();
+            return false;
+        }
+        log.info("회원가입 성공");
+        return true;
     }
 
     @Override
@@ -148,7 +166,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addRefreshToken(int userNo, String refreshToken) throws Exception {
+    public void saveRefreshToken(int userNo, String refreshToken) throws Exception {
         Optional<UserEntity> userEntity = userRepository.findByUserNo(userNo);
         UserEntity user = UserEntity.builder()
                 .userNo(userEntity.get().getUserNo())
@@ -159,5 +177,10 @@ public class UserServiceImpl implements UserService {
                 .Wrefreshtoken(refreshToken)
                 .build();
         userRepository.save(user);
+    }
+
+    @Override
+    public UserEntity searchUserInfoByUserNo(int userNo) throws Exception {
+        return userRepository.findByUserNo(userNo).get();
     }
 }

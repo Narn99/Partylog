@@ -3,7 +3,6 @@ package com.ssafy.partylog.common.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
@@ -20,7 +19,7 @@ public class JwtUtil {
     }
     public static String createJwt(int userNo, String type, String secretkey, Long validTime) {
         Claims claims = Jwts.claims();
-        claims.put("userNo", String.valueOf(userNo));
+        claims.put("userId", String.valueOf(userNo));
         claims.put("type", type);
 
         return Jwts.builder()

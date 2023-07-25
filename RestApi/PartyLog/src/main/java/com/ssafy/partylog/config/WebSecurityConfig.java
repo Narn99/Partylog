@@ -30,7 +30,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/user/login", "/user/add").permitAll()
+                .antMatchers("/user/login", "/user/join").permitAll()
                 .antMatchers(HttpMethod.POST, "/**").authenticated()
                 .and()
                 .sessionManagement()
