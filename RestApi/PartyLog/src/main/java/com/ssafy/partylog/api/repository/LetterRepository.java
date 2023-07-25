@@ -18,7 +18,6 @@ public interface LetterRepository extends JpaRepository<LetterEntity, Long> {
 
     @Query(value = "SELECT * FROM letter WHERE letter_receiver = ?1 AND year(letter_reg_date) = ?2 ORDER BY letter_reg_date DESC LIMIT ?3 OFFSET ?4", nativeQuery = true)
     List<LetterResponse> getLettersByReceiver(int userNo, int year, int offset, int limit);
-
-
-
+    @Query(value = "SELECT * FROM letter WHERE letter_id = ?1", nativeQuery = true)
+    LetterResponse getLettersByLetterId(String letterId);
 }

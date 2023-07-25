@@ -10,6 +10,6 @@ public interface LetterService {
     void addLetter(LetterRequest letter);
     void deleteLetter(String letterNo);
     List<LetterResponse> searchLetterList(String type, int year, int offset, int limit);
-//    LetterResponse detailLetter(String letterNo);
+    LetterResponse searchLetterById(String letterId);
 
 }
