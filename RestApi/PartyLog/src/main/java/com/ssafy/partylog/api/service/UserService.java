@@ -16,4 +16,6 @@ public interface UserService {
     void saveRefreshToken(int userNo, String refreshToken) throws Exception;
 
     UserEntity searchUserInfoByUserNo(int userNo) throws Exception;
+
+    void logout(int userNo) throws Exception;
 }

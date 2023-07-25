@@ -9,17 +9,17 @@ import java.util.Date;
 public class JwtUtil {
 
     public static String getUserNo(String token, String secretkey) {
-        return Jwts.parser().setSigningKey(secretkey).parseClaimsJws(token)
+        return Jwts.parserBuilder().setSigningKey(secretkey).build().parseClaimsJws(token)
                 .getBody().get("userNo", String.class);
     }
 
     public static boolean isExpired(String token, String secretkey) {
-        return Jwts.parser().setSigningKey(secretkey).parseClaimsJws(token)
+        return Jwts.parserBuilder().setSigningKey(secretkey).build().parseClaimsJws(token)
                 .getBody().getExpiration().before(new Date());
     }
     public static String createJwt(int userNo, String type, String secretkey, Long validTime) {
         Claims claims = Jwts.claims();
-        claims.put("userId", String.valueOf(userNo));
+        claims.put("userNo", String.valueOf(userNo));
         claims.put("type", type);
 
         return Jwts.builder()

@@ -183,4 +183,18 @@ public class UserServiceImpl implements UserService {
     public UserEntity searchUserInfoByUserNo(int userNo) throws Exception {
         return userRepository.findByUserNo(userNo).get();
     }
+
+    @Override
+    public void logout(int userNo) throws Exception {
+        try {
+            userRepository.findByUserNo(userNo).ifPresent(item -> {
+                item.setWrefreshtoken(null);
+                userRepository.save(item);
+            });
+        } catch (Exception e) {
+            log.error("로그아웃 실패");
+            e.printStackTrace();
+        }
+        log.info("로그아웃 성공");
+    }
 }

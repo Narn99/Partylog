@@ -99,4 +99,12 @@ public class UserController {
     public ResponseEntity<String> searchUserInfo(Authentication authentication) throws Exception {
         return new ResponseEntity<>("사용자 번호: " + authentication.getName(), HttpStatus.OK);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity logout(Authentication authentication) throws Exception {
+        // DB에 저장된 refreshToken 값 제거
+        log.info("사용자 번호: {}", authentication.getName());
+        userService.logout(Integer.parseInt(authentication.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
