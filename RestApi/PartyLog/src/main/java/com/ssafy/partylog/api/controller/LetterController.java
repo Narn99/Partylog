@@ -29,6 +29,7 @@ public class LetterController {
     @PostMapping("/send")
     @Operation(summary = "편지보내기", description = "다른 유저에게 편지 보내기")
     public ResponseEntity<?> addLetter(@RequestBody LetterRequest letterRequest) {
+        //제목 10글자 이상 제한.
         letterService.addLetter(letterRequest);
         return new ResponseEntity<Void> (HttpStatus.OK);
     }
