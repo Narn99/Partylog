@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import board from "../assets/board.svg"
-import message from "../assets/message.jpg"
+import message from "../assets/message.png"
 import "../css/MemoBoard.css";
 
 const MemoBoard = () => {
   // 메모 이미지들의 정보를 배열로 정의합니다.
   const [memoImages, setMemoImages] = useState([
     // 기존에 저장되어 있는 메모 이미지 정보들을 배열로 초기화합니다.
-    { top: '100px', left: '50px', imageSrc: '../assets/message.jpg', altText: 'Memo 1' },
-    { top: '200px', left: '200px', imageSrc: '../assets/message.jpg', altText: 'Memo 2' },
+    { top: '100px', left: '50px', imageSrc: '../assets/message.png', altText: 'Memo 1' },
+    { top: '200px', left: '200px', imageSrc: '../assets/message.png', altText: 'Memo 2' },
     // 추가적인 메모 이미지들을 원하는 만큼 배열에 추가합니다.
   ]);
 
@@ -21,7 +21,7 @@ const MemoBoard = () => {
     const newMemo = {
       top: newTop,
       left: newLeft,
-      imageSrc: '../assets/message.jpg', // 새로운 메모 이미지의 경로
+      imageSrc: '../assets/message.png', // 새로운 메모 이미지의 경로
       altText: 'New Memo', // 새로운 메모 이미지의 대체 텍스트
     };
 

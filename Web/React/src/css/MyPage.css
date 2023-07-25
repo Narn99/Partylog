@@ -62,7 +62,7 @@
 
 .MyPage-side {
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   align-items: center;
 
   margin-top: -20px;
@@ -82,7 +82,7 @@
   border: none;
   width: 100px;
   border-radius: 50px;
-  margin-left: 800px;
+  /* margin-left: 800px; */
 }
 
 .ProfileSetting-button {

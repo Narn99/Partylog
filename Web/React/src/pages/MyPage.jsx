@@ -30,20 +30,20 @@ function MyPage(props) {
         <img src={molru} alt="settingimg" className="MyPage-settingimg" />
       </div>
 
-      <Grid container spacing={1} className="MyPage">
-      <Grid container direction="column" className="MyPage-profile">
-      <Grid item>
+    <Grid container spacing={1} className="MyPage">
+      <Grid item xs={12} md={4}>
+       <Grid container direction="column" className="MyPage-profile">
+       <Grid item>
           <Link to="/profile-setting">
             {" "}
-            {/* ProfileSetting 컴포넌트로 이동하는 Link */}
             <img src={molru} alt="profileimg" className="MyPage-profileimg" />
           </Link>
+       </Grid>
+          <Grid item>
+            <p className="MyPage-nickname">몰?루</p>
           </Grid>
           <Grid item>
-          <p className="MyPage-nickname">몰?루</p>
-          </Grid>
-          <Grid item>
-          <p className="MyPage-follow">팔로잉|팔로워</p>
+            <p className="MyPage-follow">팔로잉|팔로워</p>
           </Grid>
 
           <Grid item>
@@ -54,43 +54,48 @@ function MyPage(props) {
           />
           </Grid>
           <Grid item>
-          <CountdownTimer targetDateTime={targetDateTime} />
+            <CountdownTimer targetDateTime={targetDateTime} />
           </Grid>
           <Grid item>  
-           <button className="MyPage-live-button" style={{ cursor: "pointer" }}>
+            <button className="MyPage-live-button" style={{ cursor: "pointer" }}>
             라이브로
             <br />
             이동
-          </button>
+            </button>
           </Grid>
-          
-        </div>
-        <div>
-          <div className="MyPage-side">
-            <YearChip />
-            <Button
-              className="MyPage-message-button"
-              onClick={handleModalOpen}
-              style={{
-                cursor: "pointer",
-                backgroundColor: "#fbb3c2",
-                color: "white",
-                fontFamily: "MaplestoryOTFBold",
-                borderRadius: "50px",
-              }}
-            >
-              메시지 작성
-            </Button>
-          </div>
-          <MessageModal
-            modalOpen={modalOpen}
-            handleModalClose={handleModalClose}
-          />
-
-          <MessageBoard />
-        </div>
+        </Grid>
+    </Grid> 
+        
+    <Grid item xs={12} md={8}>
+  <Grid container>
+    <Grid item xs={12} md={11}>
+      <div className="MyPage-side">
+        <YearChip />
+        <Button
+          className="MyPage-message-button"
+          onClick={handleModalOpen}
+          style={{
+            cursor: "pointer",
+            backgroundColor: "#fbb3c2",
+            color: "white",
+            fontFamily: "MaplestoryOTFBold",
+            borderRadius: "50px",
+          }}
+        >
+          메시지 작성
+        </Button>
       </div>
-    </div>
+    </Grid>
+    <Grid item xs={12} md={8}>
+      <MessageModal modalOpen={modalOpen} handleModalClose={handleModalClose} />
+      <MessageBoard />
+    </Grid>
+  </Grid>
+</Grid>
+
+    </Grid>
+
+    </div>  
   );
 }
 
