@@ -8,5 +8,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="white">#FFFFFFFF</color>
     <string name="app_name">partylog</string>
+    <string name="first_greeting">친구들과 같이 생일을 축하해요</string>
     <style name="Theme.Partylog" parent="android:Theme.Material.Light.NoActionBar"/>
 </resources>
