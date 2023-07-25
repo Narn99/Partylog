@@ -1,12 +1,11 @@
 .center {
   text-align: center;
-  
 }
 
 .cake-image {
   display: block;
   margin: 0 auto;
-  width: 300px;
+  width: 250px;
   height: auto;
 }
 
@@ -25,8 +24,9 @@
   height: auto;
   padding: 10px;
   border-radius: 5px;
-  background-color: #fbb3c2;
-  color: #9a4059;
+  /* background-color: #fbb3c2; */
+  /* color: #9a4059; */
   border: none;
   cursor: pointer;
+  font-size: 20px;
 }
