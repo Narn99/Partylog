@@ -53,10 +53,11 @@ public class LetterServiceImpl implements LetterService {
         }
         return list;
     }
-//
-//    @Override
-//    public LetterResponse detailLetter(String letterNo) {
-//        return null;
-//    }
+
+    @Override
+    public LetterResponse searchLetterById(String letterId) {
+        LetterResponse letter = letterRepository.getLettersByLetterId(letterId);
+        return letter;
+    }
 
 }

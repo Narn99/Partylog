@@ -2,7 +2,6 @@ package com.ssafy.partylog.api.controller;
 
 
 import com.ssafy.partylog.api.request.LetterRequest;
-import com.ssafy.partylog.api.response.FollowResponse;
 import com.ssafy.partylog.api.response.LetterResponse;
 import com.ssafy.partylog.api.service.LetterService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +28,7 @@ public class LetterController {
 
     @PostMapping("/send")
     @Operation(summary = "편지보내기", description = "다른 유저에게 편지 보내기")
-    public ResponseEntity<?> addLetter(@RequestBody LetterRequest letterRequest) throws Exception {
+    public ResponseEntity<?> addLetter(@RequestBody LetterRequest letterRequest) {
         letterService.addLetter(letterRequest);
         return new ResponseEntity<Void> (HttpStatus.OK);
     }
@@ -44,12 +43,17 @@ public class LetterController {
     @GetMapping("/list/{type}/{year}/{offset}/{limit}")
     @Operation(summary = "편지리스트", description = "편지리스트 불러오기")
     @Parameter(name="type", description="allowed : writer / receiver")
-    public ResponseEntity<?> deleteLetter(@PathVariable String type, @PathVariable int year, @PathVariable int offset, @PathVariable int limit)  {
+    public ResponseEntity<?> searchLetterList(@PathVariable String type, @PathVariable int year, @PathVariable int offset, @PathVariable int limit)  {
         List<LetterResponse> list = letterService.searchLetterList(type, year, offset, limit);
         return new ResponseEntity<List<LetterResponse>>(list, HttpStatus.OK);
     }
 
-
+    @GetMapping("/detail/{letterId}")
+    @Operation(summary = "편지상세보기", description = "편지1개 상세보기")
+    public ResponseEntity<?> searchLetterById(@PathVariable String letterId)  {
+        LetterResponse letter = letterService.searchLetterById(letterId);
+        return new ResponseEntity<LetterResponse>(letter, HttpStatus.OK);
+    }
 
 
 }
