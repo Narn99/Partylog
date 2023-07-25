@@ -16,9 +16,11 @@ const KakaoCallback = () => {
 
   const kakaoLogin = (code) => {
     axios.get(`http://localhost:8080/partylog/user/login?code=${code}`).then((res) => {
-      if(res.data.isNewUser) {
+      if(res.data.accessToken == null) {
         console.log("회원가입 페이지로 이동시키기");
+        console.log(res.data)
       } else {
+        console.log("로그인 성공")
         console.log(res)
         navigate("/");
       }
