@@ -7,9 +7,9 @@ import CountdownTimer from "../components/Timmer";
 import SearchFriend from "../components/SearchFriend";
 import molru from "../assets/molru.webp";
 import YearChip from "../components/YearChip";
-// import board from "../assets/board.png"
 import MessageBoard from "../components/MessageBoard";
 import MessageModal from "../components/MessageModal";
+import Grid from '@mui/material/Grid';
 
 function MyPage(props) {
   const [targetDateTime, setTargetDateTime] = useState("2024-01-01T00:00");
@@ -30,28 +30,40 @@ function MyPage(props) {
         <img src={molru} alt="settingimg" className="MyPage-settingimg" />
       </div>
 
-      <div className="MyPage">
-        <div className="MyPage-profile">
+      <Grid container spacing={1} className="MyPage">
+      <Grid container direction="column" className="MyPage-profile">
+      <Grid item>
           <Link to="/profile-setting">
             {" "}
             {/* ProfileSetting 컴포넌트로 이동하는 Link */}
             <img src={molru} alt="profileimg" className="MyPage-profileimg" />
           </Link>
+          </Grid>
+          <Grid item>
           <p className="MyPage-nickname">몰?루</p>
+          </Grid>
+          <Grid item>
           <p className="MyPage-follow">팔로잉|팔로워</p>
+          </Grid>
 
+          <Grid item>
           <input
             type="datetime-local"
             value={targetDateTime}
             onChange={handleChange}
           />
+          </Grid>
+          <Grid item>
           <CountdownTimer targetDateTime={targetDateTime} />
-
-          <button className="MyPage-live-button" style={{ cursor: "pointer" }}>
+          </Grid>
+          <Grid item>  
+           <button className="MyPage-live-button" style={{ cursor: "pointer" }}>
             라이브로
             <br />
             이동
           </button>
+          </Grid>
+          
         </div>
         <div>
           <div className="MyPage-side">

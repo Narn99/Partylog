@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import board from "../assets/board.jpg"
+import board from "../assets/board.svg"
 import message from "../assets/message.jpg"
 import "../css/MemoBoard.css";
 

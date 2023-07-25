@@ -4,6 +4,7 @@ import LogInPage from "./pages/LogInPage";
 import KakaoRedirectHandler from "./components/KakaoCallback";
 import BirthdayInput from "./pages/BirthdayInput";
 import MyPage from "./pages/MyPage";
+import ProfileSetting from "./pages/ProfileSetting"
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/birthdayinput" element={<BirthdayInput />} />
         <Route path="/mypage" element={<MyPage />} />
         {/* 추후 mypage는 유저 구분을 위해 '/mypage/:username'같은 식으로 바꿔야함. */}
+        <Route path="/profile-setting" element={<ProfileSetting />} />
       </Routes>
     </Router>
   );
