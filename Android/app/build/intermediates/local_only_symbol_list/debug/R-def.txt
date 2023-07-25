@@ -10,6 +10,10 @@ color white
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_login_kakaologin
+drawable ic_login_logo
+font font
+font maplestory_bold
+font maplestory_light
 mipmap ic_launcher
 mipmap ic_launcher_round
 string app_name

@@ -16,6 +16,10 @@
         "source": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-main-43:\\mipmap-hdpi\\ic_launcher.webp"
     },
     {
+        "merged": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-merged_res-41:\\drawable_ic_login_kakaologin.xml.flat",
+        "source": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-main-43:\\drawable\\ic_login_kakaologin.xml"
+    },
+    {
         "merged": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-merged_res-41:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
         "source": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-main-43:\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
@@ -24,8 +28,8 @@
         "source": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-main-43:\\mipmap-xxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.ssafy.partylog.app-merged_res-41:/drawable_ic_login_kakaologin.xml.flat",
-        "source": "com.ssafy.partylog.app-main-43:/drawable/ic_login_kakaologin.xml"
+        "merged": "com.ssafy.partylog.app-merged_res-41:/font_maplestory_bold.ttf.flat",
+        "source": "com.ssafy.partylog.app-main-43:/font/maplestory_bold.ttf"
     },
     {
         "merged": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-merged_res-41:\\drawable-v24_ic_launcher_foreground.xml.flat",
@@ -40,12 +44,24 @@
         "source": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-main-43:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
     },
     {
+        "merged": "com.ssafy.partylog.app-merged_res-41:/font_maplestory_light.ttf.flat",
+        "source": "com.ssafy.partylog.app-main-43:/font/maplestory_light.ttf"
+    },
+    {
         "merged": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-merged_res-41:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-main-43:\\mipmap-xxhdpi\\ic_launcher_round.webp"
     },
     {
+        "merged": "com.ssafy.partylog.app-merged_res-41:/font_font.xml.flat",
+        "source": "com.ssafy.partylog.app-main-43:/font/font.xml"
+    },
+    {
         "merged": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-merged_res-41:\\mipmap-mdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-main-43:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "com.ssafy.partylog.app-merged_res-41:/drawable_ic_login_logo.png.flat",
+        "source": "com.ssafy.partylog.app-main-43:/drawable/ic_login_logo.png"
     },
     {
         "merged": "C:\\Users\\SSAFY\\.gradle\\daemon\\8.0\\com.ssafy.partylog.app-merged_res-41:\\drawable_ic_launcher_background.xml.flat",

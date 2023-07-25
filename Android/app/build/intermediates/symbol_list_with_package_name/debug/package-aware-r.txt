@@ -54,6 +54,7 @@ dimen notification_top_pad_large_text
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_login_kakaologin
+drawable ic_login_logo
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low
@@ -66,6 +67,9 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+font font
+font maplestory_bold
+font maplestory_light
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
 id accessibility_custom_action_1

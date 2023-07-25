@@ -20,14 +20,4 @@
       </configuration>
     </facet>
   </component>
-  <component name="ModuleClassLoaderOverlays">
-    <paths>
-      <option value="C:\Users\SSAFY\AppData\Local\Temp\overlay17876260288677538714" />
-      <option value="C:\Users\SSAFY\AppData\Local\Temp\overlay4328352787989780876" />
-      <option value="C:\Users\SSAFY\AppData\Local\Temp\overlay17233297583929374973" />
-      <option value="C:\Users\SSAFY\AppData\Local\Temp\overlay2913494812795746768" />
-      <option value="C:\Users\SSAFY\AppData\Local\Temp\overlay11188492887130259223" />
-      <option value="C:\Users\SSAFY\AppData\Local\Temp\overlay336256377499695935" />
-    </paths>
-  </component>
 </module>
