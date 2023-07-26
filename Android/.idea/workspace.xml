@@ -9,11 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1525f36b-031f-4a84-990e-5bc41eaa7917" name="Changes" comment="[A-Feat] 색상 설정 및 카카오 로그인 하단 패딩 추가&#10;&#10;Ticket-No: S09P12A501-73">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="1525f36b-031f-4a84-990e-5bc41eaa7917" name="Changes" comment="[A-Hotfix] 머지 후 파일 깨짐 현상 해결" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,6 +79,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2Ss7Q7FAgHZqNBBmVip0pNJzzvY" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -98,7 +97,7 @@
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
     "last_directory_selection": "D:/real_pjt/Android/app/src/main/res/drawable",
-    "last_opened_file_path": "D:/real_pjt/Android/app"
+    "last_opened_file_path": "D:/real_pjt/Android"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -221,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1690267660638</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="[A-Hotfix] 머지 후 파일 깨짐 현상 해결">
+      <created>1690334600455</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1690334600455</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -268,6 +274,7 @@
     <MESSAGE value="[A-Feat] 로그인 화면 레이아웃 구성 및 에셋 추가" />
     <MESSAGE value="S09P12A501-73 [A-Feat] 폰트 에셋 추가" />
     <MESSAGE value="[A-Feat] 색상 설정 및 카카오 로그인 하단 패딩 추가&#10;&#10;Ticket-No: S09P12A501-73" />
-    <option name="LAST_COMMIT_MESSAGE" value="[A-Feat] 색상 설정 및 카카오 로그인 하단 패딩 추가&#10;&#10;Ticket-No: S09P12A501-73" />
+    <MESSAGE value="[A-Hotfix] 머지 후 파일 깨짐 현상 해결" />
+    <option name="LAST_COMMIT_MESSAGE" value="[A-Hotfix] 머지 후 파일 깨짐 현상 해결" />
   </component>
 </project>
