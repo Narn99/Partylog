@@ -1,4 +1,4 @@
-package com.ssafy.partylog.api.model;
+package com.ssafy.partylog.api.request;
 
 import lombok.Data;
 
