@@ -97,6 +97,7 @@ public class UserController {
 
     @PostMapping("/mypage")
     public ResponseEntity<String> searchUserInfo(Authentication authentication) throws Exception {
+        System.out.println(authentication);
         return new ResponseEntity<>("사용자 번호: " + authentication.getName(), HttpStatus.OK);
     }
 
