@@ -21,3 +21,5 @@ jpa/hibernate를 통해서 db연결
 카카오 api를 통한 정보를 저장
 23-07-25
 도커 공부
+23-07-27
+openvidu 학습
