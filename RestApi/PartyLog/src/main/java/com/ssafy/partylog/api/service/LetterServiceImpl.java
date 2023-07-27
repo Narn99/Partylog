@@ -37,9 +37,8 @@ public class LetterServiceImpl implements LetterService {
 
     @Override
     public void deleteLetter(String letterId) {
-        if (letterRepository.getLettersByLetterId(letterId).getLetter_writer() == loginUserNo) {
             letterRepository.deleteByLetterId(letterId);
-        }
+            letterRepository.deleteByLetterId(letterId);
     }
 
     @Override
