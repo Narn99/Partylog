@@ -18,19 +18,24 @@ const KakaoCallback = () => {
    axios
       .get(`${SERVER_API_URL}/user/login?code=${code}`)
       .then((res) => {
-        console.log(res)
-        var userInfo = {
-          "userNo" : res.data.userNo,
-          "userNickname" : res.data.userNickname,
-          "userBirthday" : res.data.userBirthday,
-          "userProfile" : res.data.userProfile,
-        };
-        localStorage.setItem("accessToken", res.data.accessToken);
-        localStorage.setItem("refreshToken", res.data.refreshToken);
-        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        if(res.data.accessToken == null) {
+          navigate("/birthdayinput")
+        } else {
+          var userInfo = {
+            "userNo" : res.data.userNo,
+            "userNickname" : res.data.userNickname,
+            "userBirthday" : res.data.userBirthday,
+            "userProfile" : res.data.userProfile,
+          };
+          localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
+          localStorage.setItem("userInfo", JSON.stringify(userInfo));
+          navigate("/mypage");
+        }
+
         // 로그인이 완료되면 마이페이지로 이동
         // 추후에 토큰은 백엔드로 전송하고, 백엔드로부터 액세스 코드를 새로 받아서 쿠키에 저장하는 것으로 바꿀 것.
-        navigate("/mypage");
+        
       })
       .catch((e) => {
         console.log(e);
