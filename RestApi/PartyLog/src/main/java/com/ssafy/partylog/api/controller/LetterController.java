@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,9 +29,10 @@ public class LetterController {
 
     @PostMapping("/send")
     @Operation(summary = "편지보내기", description = "다른 유저에게 편지 보내기")
-    public ResponseEntity<?> addLetter(@RequestBody LetterRequest letterRequest) {
+    public ResponseEntity<?> addLetter(@RequestBody LetterRequest letterRequest, Authentication authentication) {
         //제목 10글자 이상 제한.
-        letterService.addLetter(letterRequest);
+        int loginUserNo = Integer.parseInt(authentication.getName());
+        letterService.addLetter(letterRequest, loginUserNo);
         return new ResponseEntity<Void> (HttpStatus.OK);
     }
 
@@ -44,8 +46,9 @@ public class LetterController {
     @GetMapping("/list/{type}/{year}/{offset}/{limit}")
     @Operation(summary = "편지리스트", description = "편지리스트 불러오기")
     @Parameter(name="type", description="allowed : writer / receiver")
-    public ResponseEntity<?> searchLetterList(@PathVariable String type, @PathVariable int year, @PathVariable int offset, @PathVariable int limit)  {
-        List<LetterResponse> list = letterService.searchLetterList(type, year, offset, limit);
+    public ResponseEntity<?> searchLetterList(@PathVariable String type, @PathVariable int year, @PathVariable int offset, @PathVariable int limit, Authentication authentication)  {
+        int loginUserNo = Integer.parseInt(authentication.getName());
+        List<LetterResponse> list = letterService.searchLetterList(type, year, offset, limit, loginUserNo);
         return new ResponseEntity<List<LetterResponse>>(list, HttpStatus.OK);
     }
 
