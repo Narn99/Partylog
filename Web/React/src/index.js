@@ -19,15 +19,11 @@ const theme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-<<<<<<< HEAD
-    <App />
-=======
-  <React.StrictMode>
+  // <React.StrictMode>
     <ThemeProvider theme={theme}>
-      {/* <Provider store={store}> */}
+      
       <App />
-      {/* </Provider> */}
+      
     </ThemeProvider>
-  </React.StrictMode>
->>>>>>> Web-MyPage
+  // </React.StrictMode>
 );

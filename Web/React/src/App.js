@@ -4,12 +4,9 @@ import LogInPage from "./pages/LogInPage";
 import KakaoRedirectHandler from "./components/KakaoCallback";
 import BirthdayInput from "./pages/BirthdayInput";
 import MyPage from "./pages/MyPage";
-<<<<<<< HEAD
 import ProfileSetting from "./pages/ProfileSetting"
 import MyFriend from "./pages/MyFriend"
-=======
-import ProfileSetting from "./pages/ProfileSetting";
->>>>>>> Web-MyPage
+
 
 function App() {
   return (
