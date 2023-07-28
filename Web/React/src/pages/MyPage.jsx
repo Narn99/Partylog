@@ -106,7 +106,9 @@ function MyPage() {
                 <p className="MyPage-nickname">몰?루</p>
               </Grid>
               <Grid item>
+                <Link to="/myfriend" className="myLink">
                 <p className="MyPage-follow">팔로잉|팔로워</p>
+                </Link>
               </Grid>
 
               <Grid item>
