@@ -15,6 +15,8 @@ import StickyNoteG from "../components/StickyNote/StickyNoteG";
 import StickyNoteO from "../components/StickyNote/StickyNoteO";
 import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
+import MessageBoard from "../components/MessageBoard";
+// import { useMediaQuery, useTheme } from "@mui/material";
 
 // 창을 열 때마다 StickyNote가 바뀌게 설정
 
@@ -34,6 +36,14 @@ const getRandomStickyNote = () => {
 function MyPage() {
   const [modalTitle, setModalTitle] = useState("");
   const [modalDescription, setModalDescription] = useState("");
+
+  // const theme = useTheme();
+  // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  // const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  // const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  //
+  // props로 위의 화면 크기에 대한 값을 하위 컴포넌트에 전달해서 크기 바뀌게 하기 가능
+  // 해당 크기를 경곗값으로 놓는 변수
 
   const [randomStickyNote, setRandomStickyNote] = useState(
     getRandomStickyNote()
@@ -71,31 +81,32 @@ function MyPage() {
     <div className="MyPageBody">
       <NavBar />
       <Grid container spacing={1} className="MyPage" marginTop={"15px"}>
-        <Grid container item xs={12} md={3} justifyContent={"center"}>
+        <Grid container item xs={12} md={4} justifyContent={"center"}>
           <div>
             <Grid
               container
               direction="column"
               className="MyPage-profile"
               alignItems={"center"}
+              justifyContent={"space-evenly"}
             >
-              <Grid item>
-                <Link to="/profile-setting">
-                  {" "}
-                  <img
-                    src={molru}
-                    alt="profileimg"
-                    className="MyPage-profileimg"
-                  />
-                </Link>
+              <Grid item container justifyContent={"center"}>
+                <Grid container item justifyContent={"center"} sm={11}>
+                  <Link to="/profile-setting">
+                    {" "}
+                    <img
+                      src={molru}
+                      alt="profileimg"
+                      className="MyPage-profileimg"
+                    />
+                  </Link>
+                </Grid>
               </Grid>
               <Grid item>
                 <p className="MyPage-nickname">몰?루</p>
               </Grid>
               <Grid item>
-                <Link to="/myfriend" className="myLink">
                 <p className="MyPage-follow">팔로잉|팔로워</p>
-                </Link>
               </Grid>
 
               <Grid item>
@@ -134,50 +145,50 @@ function MyPage() {
           </div>
         </Grid>
 
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={7}>
           <div>
-            <Grid container>
-              <Grid item xs={12} md={11}>
-                <div
-                  className="MyPage-side"
-                  style={{ paddingTop: "10px", paddingBottom: "10px" }}
+            <Grid container item xs={12}>
+              <div
+                className="MyPage-side"
+                style={{ paddingTop: "10px", paddingBottom: "10px" }}
+              >
+                <Grid
+                  container
+                  justifyContent={"flex-start"}
+                  alignItems={"center"}
                 >
-                  <Grid
-                    container
-                    justifyContent={"flex-start"}
-                    alignItems={"center"}
-                  >
-                    <div className="yearchips-div">
-                      <YearChip />
-                    </div>
-                  </Grid>
-                  <Grid
-                    container
-                    justifyContent={"flex-end"}
-                    alignItems={"center"}
-                  >
-                    <div className="create-message-div">
-                      <Button
-                        className="create-message-button"
-                        onClick={handleModalOpen}
-                        variant="contained"
-                        style={{
-                          fontFamily: "MaplestoryOTFBold",
-                          fontSize: "20px",
-                          color: "white",
-                          borderRadius: "40px",
-                          texShadow: "0.1px 0.1px 4px #e892a4",
-                        }}
-                      >
-                        메시지 작성
-                      </Button>
-                    </div>
-                  </Grid>
-                </div>
-              </Grid>
-              <Grid item xs={12} md={8}>
-                {/* <MessageBoard /> */}
-              </Grid>
+                  <div className="yearchips-div">
+                    <YearChip />
+                  </div>
+                </Grid>
+                <Grid
+                  container
+                  justifyContent={"flex-end"}
+                  alignItems={"center"}
+                >
+                  <div className="create-message-div">
+                    <Button
+                      className="create-message-button"
+                      onClick={handleModalOpen}
+                      variant="contained"
+                      style={{
+                        fontFamily: "MaplestoryOTFBold",
+                        fontSize: "20px",
+                        color: "white",
+                        borderRadius: "40px",
+                        texShadow: "0.1px 0.1px 4px #e892a4",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      메시지 작성
+                    </Button>
+                  </div>
+                </Grid>
+              </div>
+            </Grid>
+
+            <Grid container item xs={12}>
+              <MessageBoard />
             </Grid>
           </div>
         </Grid>
