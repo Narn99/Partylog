@@ -18,7 +18,7 @@ import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
 import MessageBoard from "../components/MessageBoard";
 // import { useMediaQuery, useTheme } from "@mui/material";
 
-// 창을 열 때마다 StickyNote가 바뀌게 설정
+// 모달창을 열 때마다 StickyNote가 바뀌게 설정
 
 const stickyNotes = [
   StickyNoteY,

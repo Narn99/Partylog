@@ -13,7 +13,7 @@ const stickyNotes = [
   StickyNotePurple,
 ];
 
-const getRandomStickyNote = () => {
+const getRandomStickyNote = (user) => {
   const randomIndex = Math.floor(Math.random() * stickyNotes.length);
   return stickyNotes[randomIndex];
 };
