@@ -1,16 +1,10 @@
+/* CSS로 강제로 크기 조절을 해둔게 많아서, 추후에 반응형을 위해 수정해야합니다. */
+
 .test {
   text-align: center;
 }
 
-.MyPage-header {
-  display: grid;
-  grid-template-columns: 3fr 4fr 1fr;
-  align-items: center;
-  /* gap: 20px;  */
-}
-
 .MyPage-settingimg {
-  margin-left: 80px;
   width: 80px;
   height: 80px;
 }
@@ -18,11 +12,15 @@
 .MyPage-profileimg {
   width: 300px;
   height: 300px;
+  border-radius: 50%;
+  border: 0.1px solid rgb(230, 230, 230);
+  /* box-shadow: 0.1px 0.1px 50px #fbb3c2; */
 }
 
 .MyPage-nickname {
   font-family: "MaplestoryOTFLight";
   font-size: 40px;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
@@ -30,20 +28,10 @@
   font-family: "MaplestoryOTFLight";
   font-size: 25px;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
+/* 
 
-.MyPage-live-button {
-  font-family: "MaplestoryOTFBold";
-  font-size: 30px;
-  background-color: #fbb3c2;
-  color: white;
-  border: none;
-  border-radius: 80px;
-  margin-top: 50px;
-  width: 200px;
-  height: 80px;
-  display: inline-block;
-}
 
 .MyPage-profile {
   display: flex;
@@ -74,16 +62,18 @@
   margin-right: 600px;
 } */
 
-.MyPage-message-button {
+/* .MyPage-message-button {
   font-family: "MaplestoryOTFBold";
-  font-size: 25px;
+  font-size: 1.5rem;
   background-color: #fbb3c2;
   color: white;
   border: none;
-  width: 100px;
+  width: 150px;
+  height: 60px;
   border-radius: 50px;
-  /* margin-left: 800px; */
-}
+  cursor: pointer;
+  text-shadow: 0.1px 0.1px 2px #e892a4;
+} */
 
 .ProfileSetting-button {
   font-family: "MaplestoryOTFBold";
