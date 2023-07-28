@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
 import FollowTabs from '../components/FollowTabs';
+import { Link } from "react-router-dom";
 
 const Box1 = styled(Box)(({ theme }) => ({
   backgroundColor: '#fbb3c2',
@@ -31,7 +32,9 @@ function MyFriend(props) {
  
   return (
     <div>
-       <NavBar />
+     <Link to="/mypage" className="myLink"> 
+      <NavBar />
+     </Link>
 
       <div>
       <Grid container spacing={2}>
