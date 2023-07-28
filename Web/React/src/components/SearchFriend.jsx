@@ -13,6 +13,7 @@ export default function SearchFriend() {
         display: "flex",
         alignItems: "center",
         borderRadius: "20px",
+        width: "100%",
         minWidth: "150px",
         backgroundColor: "#F2E5E6",
       }}

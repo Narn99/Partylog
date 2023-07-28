@@ -19,9 +19,6 @@ const theme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-<<<<<<< HEAD
-    <App />
-=======
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       {/* <Provider store={store}> */}
@@ -29,5 +26,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       {/* </Provider> */}
     </ThemeProvider>
   </React.StrictMode>
->>>>>>> Web-MyPage
 );
