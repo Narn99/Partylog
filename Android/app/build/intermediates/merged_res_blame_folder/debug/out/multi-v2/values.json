@@ -38,23 +38,6 @@
                     }
                 },
                 {
-                    "source": "D:\\real_pjt\\Android\\app\\src\\main\\res\\values\\colors.xml",
-                    "from": {
-                        "startLines": "7,2,3,4,5,6,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "293,57,105,153,201,247,336",
-                        "endColumns": "41,46,46,46,44,44,41",
-                        "endOffsets": "330,99,147,195,241,287,373"
-                    },
-                    "to": {
-                        "startLines": "5,8,9,10,11,12,13",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "370,544,591,638,685,730,775",
-                        "endColumns": "41,46,46,46,44,44,41",
-                        "endOffsets": "407,586,633,680,725,770,812"
-                    }
-                },
-                {
                     "source": "C:\\Users\\SSAFY\\.gradle\\caches\\transforms-3\\6694b81dd04d243fe4cb23acf87798ef\\transformed\\lifecycle-viewmodel-2.5.1\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -86,23 +69,6 @@
                         "startOffsets": "5852",
                         "endColumns": "53",
                         "endOffsets": "5901"
-                    }
-                },
-                {
-                    "source": "D:\\real_pjt\\Android\\app\\src\\main\\res\\values\\strings.xml",
-                    "from": {
-                        "startLines": "1,2",
-                        "startColumns": "4,4",
-                        "startOffsets": "17,64",
-                        "endColumns": "45,59",
-                        "endOffsets": "58,119"
-                    },
-                    "to": {
-                        "startLines": "103,112",
-                        "startColumns": "4,4",
-                        "startOffsets": "6162,6690",
-                        "endColumns": "45,59",
-                        "endOffsets": "6203,6745"
                     }
                 },
                 {
@@ -159,23 +125,6 @@
                     }
                 },
                 {
-                    "source": "D:\\real_pjt\\Android\\app\\src\\main\\res\\values\\themes.xml",
-                    "from": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "59",
-                        "endColumns": "85",
-                        "endOffsets": "140"
-                    },
-                    "to": {
-                        "startLines": "146",
-                        "startColumns": "4",
-                        "startOffsets": "8571",
-                        "endColumns": "84",
-                        "endOffsets": "8651"
-                    }
-                },
-                {
                     "source": "C:\\Users\\SSAFY\\.gradle\\caches\\transforms-3\\b09802ee217b0e93cf80e497c880b784\\transformed\\startup-runtime-1.1.1\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -190,6 +139,57 @@
                         "startOffsets": "6079",
                         "endColumns": "82",
                         "endOffsets": "6157"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\SSAFY\\Desktop\\pjt\\Android\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "7,2,3,4,5,6,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "293,57,105,153,201,247,336",
+                        "endColumns": "41,46,46,46,44,44,41",
+                        "endOffsets": "330,99,147,195,241,287,373"
+                    },
+                    "to": {
+                        "startLines": "5,8,9,10,11,12,13",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "370,544,591,638,685,730,775",
+                        "endColumns": "41,46,46,46,44,44,41",
+                        "endOffsets": "407,586,633,680,725,770,812"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\SSAFY\\Desktop\\pjt\\Android\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1,2",
+                        "startColumns": "4,4",
+                        "startOffsets": "17,64",
+                        "endColumns": "45,59",
+                        "endOffsets": "58,119"
+                    },
+                    "to": {
+                        "startLines": "103,112",
+                        "startColumns": "4,4",
+                        "startOffsets": "6162,6690",
+                        "endColumns": "45,59",
+                        "endOffsets": "6203,6745"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\SSAFY\\Desktop\\pjt\\Android\\app\\src\\main\\res\\values\\themes.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "59",
+                        "endColumns": "85",
+                        "endOffsets": "140"
+                    },
+                    "to": {
+                        "startLines": "146",
+                        "startColumns": "4",
+                        "startOffsets": "8571",
+                        "endColumns": "84",
+                        "endOffsets": "8651"
                     }
                 },
                 {

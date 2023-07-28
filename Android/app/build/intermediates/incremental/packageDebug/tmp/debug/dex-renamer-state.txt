@@ -1,10 +1,10 @@
-#Wed Jul 26 10:21:39 KST 2023
-base.0=D\:\\real_pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=D\:\\real_pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.2=D\:\\real_pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\15\\classes.dex
-base.3=D\:\\real_pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\5\\classes.dex
-base.4=D\:\\real_pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\9\\classes.dex
-base.5=D\:\\real_pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
+#Fri Jul 28 16:05:54 KST 2023
+base.0=C\:\\Users\\SSAFY\\Desktop\\pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=C\:\\Users\\SSAFY\\Desktop\\pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.2=C\:\\Users\\SSAFY\\Desktop\\pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\15\\classes.dex
+base.3=C\:\\Users\\SSAFY\\Desktop\\pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\5\\classes.dex
+base.4=C\:\\Users\\SSAFY\\Desktop\\pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\9\\classes.dex
+base.5=C\:\\Users\\SSAFY\\Desktop\\pjt\\Android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=15/classes.dex
