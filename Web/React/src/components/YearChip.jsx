@@ -21,6 +21,8 @@ export default function ClickableChips() {
     console.info("You clicked the Chip.");
   };
 
+  // 추후에 연도별로 나눠서 데이터를 받을 수 있어야 하므로, 연도에 따른 데이터를 처리할 수 있도록 재사용 가능하게 수정해야합니다.
+
   return (
     <ThemeProvider theme={theme}>
       <Stack direction="row" spacing={1}>
@@ -35,6 +37,7 @@ export default function ClickableChips() {
               selected === "전체 연도"
                 ? "MaplestoryOTFBold"
                 : "MaplestoryOTFLight",
+            textshadow: "0.1px 0.1px 5px #e892a4;",
           }}
         />
         <Chip
@@ -46,6 +49,7 @@ export default function ClickableChips() {
             color: selected === "2023" ? "#ffffff" : undefined,
             fontFamily:
               selected === "2023" ? "MaplestoryOTFBold" : "MaplestoryOTFLight",
+            textshadow: "0.1px 0.1px 5px #e892a4;",
           }}
         />
       </Stack>
