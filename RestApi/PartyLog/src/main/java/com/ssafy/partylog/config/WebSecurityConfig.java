@@ -1,12 +1,12 @@
 package com.ssafy.partylog.config;
 
 import com.ssafy.partylog.api.service.UserService;
-import com.ssafy.partylog.common.util.JwtFilter;
+import com.ssafy.partylog.util.JwtExceptionFilter;
+import com.ssafy.partylog.util.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,13 +30,15 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/user/login", "/user/join").permitAll()
-                .antMatchers(HttpMethod.POST, "/**").authenticated()
+                .antMatchers("/user/login", "/user/join", "/test/login").permitAll()
+                .anyRequest().authenticated()
+//                .antMatchers(HttpMethod.POST, "/**").authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtFilter(userService, JWT_SECRET_KEY), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(userService, JWT_SECRET_KEY), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
                 .build();
 
     }

@@ -1,4 +1,4 @@
-package com.ssafy.partylog.common.util;
+package com.ssafy.partylog.util;
 
 import com.ssafy.partylog.api.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserService userService;
 
@@ -32,21 +32,21 @@ public class JwtFilter extends OncePerRequestFilter {
         log.info("authorization: {}", authorization);
 
         // token 안보내면 Block
-        if(authorization == null || !authorization.startsWith("Bearer ")) {
-            log.error("authorization을 잘못 보냈습니다.");
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        if(authorization == null || !authorization.startsWith("Bearer ")) {
+//            log.error("토큰을 잘못 보냈습니다.");
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         // Token 꺼내기
         String token = authorization.split(" ")[1];
 
         // Tokken Expired되었는지 여부
-        if(JwtUtil.isExpired(token, secretkey)) {
-            log.error("Token이 만료 되었습니다.");
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        if(JwtUtil.isExpired(token, secretkey)) {
+//            log.error("Token이 만료 되었습니다.");
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         // UserNo Token에서 꺼내기
         String userNo = JwtUtil.getUserNo(token, secretkey);
