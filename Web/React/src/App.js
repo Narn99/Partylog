@@ -7,6 +7,7 @@ import MyPage from "./pages/MyPage";
 import ProfileSetting from "./pages/ProfileSetting"
 import MyFriend from "./pages/MyFriend"
 
+
 function App() {
   return (
     <Router>
@@ -14,7 +15,7 @@ function App() {
         <Route path="/" element={<LogInPage />} />
         <Route path="/auth" element={<KakaoRedirectHandler />} />
         <Route path="/birthdayinput" element={<BirthdayInput />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="mypage/:userNo" element={<MyPage />} />
         {/* 추후 mypage는 유저 구분을 위해 '/mypage/:username'같은 식으로 바꿔야함. */}
         <Route path="/profile-setting" element={<ProfileSetting />} />
         <Route path="/myfriend" element={<MyFriend />} />

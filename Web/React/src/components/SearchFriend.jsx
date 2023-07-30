@@ -12,8 +12,8 @@ export default function SearchFriend() {
         p: "2px 4px",
         display: "flex",
         alignItems: "center",
-        width: { xs: "100%", md: "600px", sm: "400px" },
         borderRadius: "20px",
+        minWidth: "150px",
         backgroundColor: "#F2E5E6",
       }}
     >
