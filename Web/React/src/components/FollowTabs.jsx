@@ -6,10 +6,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Button from '@mui/material/Button';
 import FollowTabsStyles from "../css/FollowTabsStyles.css";
+import { useFollow } from '../context/FollowContext'
+
 
 function FollowTabs() {
   const [tabValue, setTabValue] = useState(0);
-  let [followings, setFollowings] = useState(['following1', 'following2', 'following3']);
+  
+  const { followings, setFollowings } = useFollow(); // 팔로잉 목록을 컨텍스트에서 가져옵니다.
   const followers = ['follower1', 'follower2', 'follower3'];
 
   const handleChange = (event, newValue) => {
