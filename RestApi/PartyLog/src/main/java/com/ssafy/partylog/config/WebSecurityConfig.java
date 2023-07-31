@@ -1,7 +1,6 @@
 package com.ssafy.partylog.config;
 
 import com.ssafy.partylog.api.service.UserService;
-import com.ssafy.partylog.util.JwtExceptionFilter;
 import com.ssafy.partylog.util.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +29,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/user/login", "/user/join", "/test/login").permitAll()
+                .antMatchers("/user/login**", "/user/join").permitAll()
                 .anyRequest().authenticated()
 //                .antMatchers(HttpMethod.POST, "/**").authenticated()
                 .and()
@@ -38,9 +37,8 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(userService, JWT_SECRET_KEY), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
+//                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
                 .build();
-
     }
 
 }

@@ -29,24 +29,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("authorization: {}", authorization);
+        log.info("JwtAuthenticationFilter token: {}", authorization);
 
         // token 안보내면 Block
-//        if(authorization == null || !authorization.startsWith("Bearer ")) {
-//            log.error("토큰을 잘못 보냈습니다.");
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+        if(authorization == null || !authorization.startsWith("Bearer ")) {
+            log.error("토큰을 잘못 보냈습니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // Token 꺼내기
         String token = authorization.split(" ")[1];
 
         // Tokken Expired되었는지 여부
-//        if(JwtUtil.isExpired(token, secretkey)) {
-//            log.error("Token이 만료 되었습니다.");
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+        if(JwtUtil.isExpired(token, secretkey)) {
+            log.error("Token이 만료 되었습니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // UserNo Token에서 꺼내기
         String userNo = JwtUtil.getUserNo(token, secretkey);

@@ -5,7 +5,6 @@ import com.ssafy.partylog.api.response.ErrorResponse;
 import com.ssafy.partylog.exception.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,9 +21,6 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch(NullPointerException e) {
-            log.error("토큰 값이 null 입니다.");
-            setErrorResponse(response, ErrorCode.NO_TOKEN);
         } catch (ExpiredJwtException e) {
             //토큰의 유효기간 만료
             log.error("만료된 토큰입니다");
@@ -41,9 +37,9 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         response.setStatus(errorCode.getStatus());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         ErrorResponse errorResponse = new ErrorResponse(errorCode.getCode(), errorCode.getMessage());
-        try{
+        try {
             response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
-        }catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
