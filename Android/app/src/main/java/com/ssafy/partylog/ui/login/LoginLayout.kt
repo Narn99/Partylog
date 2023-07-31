@@ -1,6 +1,7 @@
 package com.ssafy.partylog.ui.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -32,10 +33,8 @@ import com.ssafy.partylog.ui.theme.loginTextColor
 import com.ssafy.partylog.ui.theme.maplestory
 
 @Composable
-fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory,
-        loginViewModel: LoginViewModel = viewModel()
+fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory
 ) {
-    val loginState by loginViewModel.uiState.collectAsState()
 
     Surface(modifier = modifier.fillMaxHeight()) {
         Image(painter = painterResource(id = R.drawable.bg_login_activity), contentDescription = "bg_login",
@@ -46,27 +45,30 @@ fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory,
                     .weight(1f)
                     .fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom) {
-                Header(modifier, font)
+                TitleFrame(modifier, font)
             }
 
             Column(modifier = modifier
                 .weight(1f)
                 .fillMaxWidth(), verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally) {
-                Login(modifier)
+                LoginFrame(modifier)
             }
 
         }
     }
 }
 @Composable
-fun Login(modifier: Modifier) {
+fun LoginFrame(modifier: Modifier,
+          loginViewModel: LoginViewModel = viewModel()) {
+    val loginState by loginViewModel.uiState.collectAsState()
     Image(imageVector = ImageVector.vectorResource(id = R.drawable.ic_login_kakaologin),
         contentDescription = "kakaoLogin",
-        modifier = modifier.padding(bottom = 124.dp))
+        modifier = modifier.padding(bottom = 124.dp).clickable {
+        })
 }
 @Composable
-fun Header(modifier: Modifier = Modifier, font: FontFamily) {
+fun TitleFrame(modifier: Modifier = Modifier, font: FontFamily) {
     Image(painter = painterResource(id = R.drawable.ic_login_logo), contentDescription = "login",
         modifier = modifier
             .padding(bottom = 20.dp)
