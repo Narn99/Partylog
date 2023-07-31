@@ -41,14 +41,15 @@ function BirthdayInput(props) {
       }
     )
     .then((res) => {
-      // 추후에 code 넘겨서 200일 때만 넘어가게 변경하겠음
       console.log(res)
-      if(res.data.accessToken != null) {
-        console.log("회원가입 성공")
-        var userNo = res.data.userNo;
-        navigate(`/mypage/${userNo}`);
+      if(res.data.code === "200") {
+        var userInfo = res.data.userInfo;
+        // 토큰 저장
+        localStorage.setItem("access-token", res.headers.get("authorization"));
+        localStorage.setItem("refresh-token", res.headers.get("refresh-token"));
+        navigate(`/mypage/${userInfo.userNo}`);
       } else {
-        console.log("회원가입에 실패했습니다.")
+        console.log("회원가입에 실패했습니다.");
       }
     })
     .catch((e) => {
