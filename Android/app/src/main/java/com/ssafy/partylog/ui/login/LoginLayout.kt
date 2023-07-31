@@ -32,7 +32,7 @@ fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory,
           onKakaoSelected: () -> Unit = {}
 ) {
 
-        Image(painter = painterResource(id = R.drawable.bg_login_activity), contentDescription = "bg_login",
+        Image(painter = painterResource(id = R.drawable.bg_login_compose), contentDescription = "bg_login",
         modifier = modifier.fillMaxSize(), contentScale = ContentScale.Fit)
         Column() {
             Column(horizontalAlignment = Alignment.CenterHorizontally,
