@@ -13,6 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+
 
 @Slf4j
 @RestController
@@ -34,32 +38,50 @@ public class UserController {
 //            @ApiResponse(responseCode = "400", description = "Invalid"),
 //            @ApiResponse(responseCode = "404", description = "Not found")
 //    })
-    public ResponseEntity<UserResponse> login(@RequestParam("code") String code) throws Exception {
-        log.info("카카오 인증 코드: {}", code);
+    public ResponseEntity<HashMap<String,Object>> login(@RequestParam("code") String authCode, HttpServletResponse response) throws Exception {
+        HashMap<String,Object> resultMap = new HashMap<>();
+        log.info("카카오 인증 코드: {}", authCode);
+        
+        String code = "";
+        String message = "";
+        UserResponse userInfo = null;
         String accessToken = null;
         String refreshToken = null;
 
         // 카카오 로그인 과정을 통해 생일을 제외한 유저정보  DB에 저장
-        UserEntity user = userService.searchKakaoAccessToken(code);
+        UserEntity user = userService.searchKakaoAccessToken(authCode);
         log.info("사용자 정보: {}", user);
         if(user.getUserBirthday() != null) {
+            // 유저 정보 저장
+            userInfo = UserResponse.builder()
+                    .userNo(user.getUserNo())
+                    .userBirthday(user.getUserBirthday())
+                    .userNickname(user.getUserNickname())
+                    .userProfile(user.getUserProfile())
+                    .build();
+            // 토큰 생성
             accessToken = userService.createToken(user.getUserNo(), "access-token");
             refreshToken = userService.createToken(user.getUserNo(), "refresh-token");
             userService.saveRefreshToken(user.getUserNo(), refreshToken);
             log.info("엑세스 토큰: {}", accessToken);
             log.info("리프레시 토큰: {}", refreshToken);
+            
+            // code, message 저장
+            code = "200";
+            message = "로그인 성공";
+        } else {
+            code = "400";
+            message = "회원가입이 필요한 계정입니다.";
         }
 
-        UserResponse response = UserResponse.builder()
-                .userNo(user.getUserNo())
-                .userBirthday(user.getUserBirthday())
-                .userNickname(user.getUserNickname())
-                .userProfile(user.getUserProfile())
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+        // response 값 저장
+        resultMap.put("code", code);
+        resultMap.put("message", message);
+        resultMap.put("userInfo", userInfo);
+        response.setHeader("authorization", "Bearer " + accessToken);
+        response.setHeader("refresh-token", "Bearer " + refreshToken);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<HashMap<String,Object>>(resultMap, HttpStatus.OK);
     }
 
     @PostMapping("/join")
@@ -95,6 +117,29 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/recreateAccessToken")
+    public ResponseEntity<HashMap<String, String>> recreateAccessToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap<String, String> resultMap = new HashMap<>();
+        String code = "";
+        String message = "";
+        String refreshToken = request.getHeader("Authorization").split(" ")[1];
+        String accessToken = userService.searchRefreshToken(refreshToken);
+
+        if(accessToken == null) { // refreshToken이 DB 값과 다른 경우
+            code = "400";
+            message = "유효하지 않은 refreshToken 입니다.";
+        } else {
+            code = "200";
+            message = "accessToken 재발급 완료";
+        }
+
+        resultMap.put("code", code);
+        resultMap.put("message", message);
+        response.setHeader("authorization", "Bearer " + accessToken);
+        response.setHeader("refresh-token", "Bearer " + refreshToken);
+        return new ResponseEntity<HashMap<String, String>>(resultMap, HttpStatus.OK);
+    }
+
     @PostMapping("/mypage")
     public ResponseEntity<String> searchUserInfo(Authentication authentication) throws Exception {
         System.out.println(authentication);
@@ -102,10 +147,22 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity logout(Authentication authentication) throws Exception {
+    public ResponseEntity<HashMap<String, String>> logout(Authentication authentication) throws Exception {
+        HashMap<String, String> resultMap = new HashMap<>();
         // DB에 저장된 refreshToken 값 제거
+        String code = "";
+        String message = "";
         log.info("사용자 번호: {}", authentication.getName());
-        userService.logout(Integer.parseInt(authentication.getName()));
-        return new ResponseEntity<>(HttpStatus.OK);
+        if(userService.logout(Integer.parseInt(authentication.getName()))) { // 로그아웃 성공
+            code = "200";
+            message = "로그아웃 성공";
+        } else { // 로그아웃 실패
+            code = "400";
+            message = "로그아웃 실패";
+        }
+
+        resultMap.put("code", code);
+        resultMap.put("message", message);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }

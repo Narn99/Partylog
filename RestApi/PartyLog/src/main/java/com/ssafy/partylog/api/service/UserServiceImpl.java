@@ -158,11 +158,11 @@ public class UserServiceImpl implements UserService {
     public String createToken(int userNo, String type) throws Exception {
         long tokenValidTime = 0L;
         if(type.equals("access-token")) {
-//            tokenValidTime = 30 * 60 * 1000L; // Access 토큰 유효시간 30분
-            tokenValidTime = 2 * 60 * 1000L; // Access 토큰 유효시간 30분
+            tokenValidTime = 30 * 60 * 1000L; // Access 토큰 유효시간 30분
+//            tokenValidTime = 2 * 60 * 1000L; // Access 토큰 유효시간 30분
         } else {
-//            tokenValidTime = 14 * 24 * 60 * 60 * 1000L; // Access 토큰 유효시간 2주
-            tokenValidTime = 5* 60 * 1000L; // Access 토큰 유효시간 2주
+            tokenValidTime = 14 * 24 * 60 * 60 * 1000L; // Access 토큰 유효시간 2주
+//            tokenValidTime = 5* 60 * 1000L; // Access 토큰 유효시간 2주
         }
         return JwtUtil.createJwt(userNo, type, JWT_SECRET_KEY, tokenValidTime);
     }
@@ -187,16 +187,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logout(int userNo) throws Exception {
+    public String searchRefreshToken(String requestToken) throws Exception {
+        String userNo = JwtUtil.getUserNo(requestToken, JWT_SECRET_KEY);
+        Optional<UserEntity> user = userRepository.findByUserNo(Integer.parseInt(userNo));
+        String DBRefreshToken = user.get().getWrefreshtoken();
+        if(requestToken.equals(DBRefreshToken)) {
+            return createToken(Integer.parseInt(userNo), "access-token");
+        }
+        return null;
+    }
+
+    @Override
+    public boolean logout(int userNo) throws Exception {
         try {
             userRepository.findByUserNo(userNo).ifPresent(item -> {
                 item.setWrefreshtoken(null);
                 userRepository.save(item);
             });
         } catch (Exception e) {
-            log.error("로그아웃 실패");
             e.printStackTrace();
+            return false;
         }
-        log.info("로그아웃 성공");
+        return true;
     }
 }
