@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, memo, useRef } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import "../css/MyPage.css";
@@ -17,6 +17,13 @@ import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
 import MessageBoard from "../components/MessageBoard";
 // import { useMediaQuery, useTheme } from "@mui/material";
+
+// 그리드로 설정하긴 했는데.. 화면 줄어들 때 메시지보드만 줄어드는건 문제가 있어보임.
+// md나 lg쯤부터 세로정렬로 바꾸던가 해야할 것 같음. 프로필이 가로로 보이다가 더 줄어들면 세로정렬되는 식이 좋을 것 같음.
+// BreakPoint를 이용해서 점점 세로로 옮기는 형식.
+
+// 계속 상위 컴포넌트인 MyPage가 리렌더링 되면서 하위 컴포넌트인 Message들이 리렌더링 됨.
+// 이거 나중에 Redux를 써야 막을 수 있을까...
 
 // 모달창을 열 때마다 StickyNote가 바뀌게 설정
 
@@ -43,11 +50,82 @@ function MyPage() {
   // const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   //
   // props로 위의 화면 크기에 대한 값을 하위 컴포넌트에 전달해서 크기 바뀌게 하기 가능
-  // 해당 크기를 경곗값으로 놓는 변수
+  // 해당 크기를 경곗값으로 하여 삼항연산으로 작성하면 breaking point 기준으로 바뀌게 할 수 있음
 
   const [randomStickyNote, setRandomStickyNote] = useState(
     getRandomStickyNote()
   );
+
+  // 아랫 부분은 메시지 작성하면 추가하는 로직, 추후에 API로 백엔드로 보내고 다시 받는거로 바꿔야함.
+  // 현재는 messages라는 배열에 새로 추가하는 것 뿐.
+
+  const MemoizedMessageBoard = memo(MessageBoard);
+
+  const [messages, setMessages] = useState([
+    {
+      userNo: "1",
+      profile: molru,
+      nickname: "야로나",
+      title: "몰?루",
+    },
+    { userNo: "2", profile: null, nickname: "앗차뜨겁다", title: "앗" },
+    {
+      userNo: "3",
+      profile: null,
+      nickname: "김치김치냡냡햡햡챱챱",
+      title: "김치김치냠냠챱챱챱챱",
+    },
+    {
+      userNo: "4",
+      profile: null,
+      nickname: "감자",
+      title: "김치",
+    },
+    {
+      userNo: "5",
+      profile: null,
+      nickname: "밥밥",
+      title: "얍얍",
+    },
+    {
+      userNo: "6",
+      profile: null,
+      nickname: "밥밥",
+      title: "얍얍",
+    },
+    {
+      userNo: "7",
+      profile: null,
+      nickname: "밥밥",
+      title: "얍얍",
+    },
+    {
+      userNo: "8",
+      profile: null,
+      nickname: "밥밥",
+      title: "얍얍",
+    },
+    {
+      userNo: "9",
+      profile: null,
+      nickname: "밥밥",
+      title: "얍얍",
+    },
+  ]);
+
+  const nowModalTitle = useRef(modalTitle);
+  nowModalTitle.current = modalTitle;
+
+  const handleSubmitModalText = useCallback(() => {
+    const newMessage = {
+      userNo: messages.length + 1,
+      profile: null,
+      nickname: `김치맨${messages.length + 1}호`,
+      title: nowModalTitle.current,
+    };
+
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  }, [messages]);
 
   // 제출 버튼을 누르거나 페이지를 벗어나지 않는 한, 모달을 껐다 켜도 내용이 임시저장 돼있게 설정
 
@@ -188,7 +266,7 @@ function MyPage() {
             </Grid>
 
             <Grid container item xs={12}>
-              <MessageBoard />
+              <MemoizedMessageBoard messages={messages} />
             </Grid>
           </div>
         </Grid>
@@ -205,6 +283,7 @@ function MyPage() {
         setModalDescription={setModalDescription}
         randomStickyNote={randomStickyNote}
         onChangeModalText={handleChangeModalText}
+        onSubmitText={handleSubmitModalText}
       />
     </div>
   );

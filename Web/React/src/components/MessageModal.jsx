@@ -30,12 +30,14 @@ function MessageModal(props) {
     setModalDescription,
     onChangeModalText,
     randomStickyNote,
+    onSubmitText,
   } = props;
 
   // 제출 버튼 클릭 시, 내용 비우기 + 모달창 닫기
 
   const handleSubmitModalText = () => {
     onChangeModalText("", "");
+    onSubmitText();
     handleModalClose();
   };
 
