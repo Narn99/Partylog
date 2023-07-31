@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.repository.UserRepository;
 import com.ssafy.partylog.api.request.UserRequest;
-import com.ssafy.partylog.util.JwtUtil;
+import com.ssafy.partylog.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -190,9 +190,11 @@ public class UserServiceImpl implements UserService {
     public String searchRefreshToken(String requestToken) throws Exception {
         String userNo = JwtUtil.getUserNo(requestToken, JWT_SECRET_KEY);
         Optional<UserEntity> user = userRepository.findByUserNo(Integer.parseInt(userNo));
-        String DBRefreshToken = user.get().getWrefreshtoken();
-        if(requestToken.equals(DBRefreshToken)) {
-            return createToken(Integer.parseInt(userNo), "access-token");
+        if(user.isPresent()) {
+            String DBRefreshToken = user.get().getWrefreshtoken();
+            if(requestToken.equals(DBRefreshToken)) {
+                return createToken(Integer.parseInt(userNo), "access-token");
+            }
         }
         return null;
     }
