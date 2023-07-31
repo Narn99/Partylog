@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,13 +25,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ssafy.partylog.R
 import com.ssafy.partylog.ui.theme.PartylogTheme
 import com.ssafy.partylog.ui.theme.loginTextColor
 import com.ssafy.partylog.ui.theme.maplestory
 
 @Composable
-fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory) {
+fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory,
+        loginViewModel: LoginViewModel = viewModel()
+) {
+    val loginState by loginViewModel.uiState.collectAsState()
+
     Surface(modifier = modifier.fillMaxHeight()) {
         Image(painter = painterResource(id = R.drawable.bg_login_activity), contentDescription = "bg_login",
         modifier = modifier.fillMaxSize(), contentScale = ContentScale.Fit)
@@ -39,33 +46,42 @@ fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory) {
                     .weight(1f)
                     .fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom) {
-                Image(painter = painterResource(id = R.drawable.ic_login_logo), contentDescription = "login",
-                modifier = modifier
-                    .padding(bottom = 20.dp)
-                    .padding(horizontal = 47.dp)
-                    .fillMaxWidth(),
-                contentScale = ContentScale.FillWidth)
-                Text(text = stringResource(id =R.string.first_greeting),
-                    textAlign = TextAlign.Center,
-                    fontSize = 16.sp,
-                    fontFamily = font, fontWeight = FontWeight.Light,
-                    color = loginTextColor,
-                    modifier = modifier
-                        .padding(bottom = 20.dp)
-                        .fillMaxWidth())
+                Header(modifier, font)
             }
 
             Column(modifier = modifier
                 .weight(1f)
                 .fillMaxWidth(), verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(imageVector = ImageVector.vectorResource(id = R.drawable.ic_login_kakaologin),
-                    contentDescription = "kakaoLogin",
-                    modifier = modifier.padding(bottom = 124.dp))
+                Login(modifier)
             }
 
         }
     }
+}
+@Composable
+fun Login(modifier: Modifier) {
+    Image(imageVector = ImageVector.vectorResource(id = R.drawable.ic_login_kakaologin),
+        contentDescription = "kakaoLogin",
+        modifier = modifier.padding(bottom = 124.dp))
+}
+@Composable
+fun Header(modifier: Modifier = Modifier, font: FontFamily) {
+    Image(painter = painterResource(id = R.drawable.ic_login_logo), contentDescription = "login",
+        modifier = modifier
+            .padding(bottom = 20.dp)
+            .padding(horizontal = 47.dp)
+            .fillMaxWidth(),
+        contentScale = ContentScale.FillWidth)
+    Text(text = stringResource(id =R.string.first_greeting),
+        textAlign = TextAlign.Center,
+        fontSize = 16.sp,
+        fontFamily = font, fontWeight = FontWeight.Light,
+        color = loginTextColor,
+        modifier = modifier
+            .padding(bottom = 20.dp)
+            .fillMaxWidth())
+
 }
 @Composable
 @Preview(showBackground = true)
