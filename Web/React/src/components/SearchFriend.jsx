@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import Paper from "@mui/material/Paper";
-import InputBase from "@mui/material/InputBase";
-import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
-import SearchIcon from "@mui/icons-material/Search";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import { useFollow } from "../context/FollowContext"
-
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import { useFollow } from "../context/FollowContext";
 
 export default function SearchFriend() {
   // 더미 데이터
@@ -28,56 +23,41 @@ export default function SearchFriend() {
   };
 
   // 팔로우 버튼 클릭 처리
-  const { setFollowings } = useFollow();
+  const { followings, setFollowings } = useFollow(); // 팔로잉 목록을 컨텍스트에서 가져옵니다.
 
   const handleFollow = (nickname) => {
-    setFollowings(prevFollowing => [...prevFollowing,  nickname ]);
-    // 팔로우 로직 구현
+    if (!followings.includes(nickname)) {
+      setFollowings(prevFollowing => [...prevFollowing, nickname]);
+       // 팔로우 로직 구현, 닉네임 중복방지
+    }
   };
 
   return (
     <div>
-      <Paper
-        component="form"
-        sx={{
-          p: "2px 4px",
-          display: "flex",
-          alignItems: "center",
-          borderRadius: "20px",
-          minWidth: "150px",
-          backgroundColor: "#F2E5E6",
-        }}
-      >
-        <InputBase
-          sx={{ ml: 1, flex: 1 }}
-          placeholder="친구 검색"
-          inputProps={{ "aria-label": "search your friend" }}
-          style={{ fontFamily: "MaplestoryOTFLight" }}
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-      </Paper>
-      {searchTerm && (
-        <Paper
-          sx={{
-            mt: 1,
-            p: "10px",
-            backgroundColor: "#F2E5E6",
-          }}
-        >
-          <List>
-            {searchResults.map((result, index) => (
-              <ListItem key={index} sx={{ py: 1, display: 'flex', justifyContent: 'space-between' }}>
-                {result.userNickname}
-                <Button variant="outlined" onClick={() => handleFollow(result.userNickname)}>팔로우</Button>
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
-      )}
+      <Autocomplete
+        options={searchResults}
+        getOptionLabel={(option) => option.userNickname}
+        fullWidth // 전체 너비 차지
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            placeholder="친구 검색"
+            value={searchTerm}
+            onChange={handleSearch}
+            variant="outlined"
+            fullWidth // 전체 너비 차지
+            style={{ fontFamily: "MaplestoryOTFLight" }}
+          />
+        )}
+        renderOption={(props, option) => (
+          <li {...props}>
+            {option.userNickname}
+            <Button variant="outlined" onClick={() => handleFollow(option.userNickname)}>
+              팔로우
+            </Button>
+          </li>
+        )}
+      />
     </div>
   );
 }
