@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
@@ -30,22 +31,33 @@ import com.ssafy.partylog.ui.theme.maplestory
 @Composable
 fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory) {
     Surface(modifier = modifier.fillMaxHeight()) {
+        Image(painter = painterResource(id = R.drawable.bg_login_activity), contentDescription = "bg_login",
+        modifier = modifier.fillMaxSize(), contentScale = ContentScale.Fit)
         Column() {
             Column(horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier.weight(1f).fillMaxWidth(),
+                modifier = modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom) {
                 Image(painter = painterResource(id = R.drawable.ic_login_logo), contentDescription = "login",
-                modifier = modifier.padding(bottom = 20.dp).padding(horizontal = 47.dp).fillMaxWidth(),
+                modifier = modifier
+                    .padding(bottom = 20.dp)
+                    .padding(horizontal = 47.dp)
+                    .fillMaxWidth(),
                 contentScale = ContentScale.FillWidth)
                 Text(text = stringResource(id =R.string.first_greeting),
                     textAlign = TextAlign.Center,
                     fontSize = 16.sp,
                     fontFamily = font, fontWeight = FontWeight.Light,
                     color = loginTextColor,
-                    modifier = modifier.padding(bottom = 20.dp).fillMaxWidth())
+                    modifier = modifier
+                        .padding(bottom = 20.dp)
+                        .fillMaxWidth())
             }
 
-            Column(modifier = modifier.weight(1f).fillMaxWidth(), verticalArrangement = Arrangement.Bottom,
+            Column(modifier = modifier
+                .weight(1f)
+                .fillMaxWidth(), verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(imageVector = ImageVector.vectorResource(id = R.drawable.ic_login_kakaologin),
                     contentDescription = "kakaoLogin",
