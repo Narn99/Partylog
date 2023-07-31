@@ -6,10 +6,11 @@ import BirthdayInput from "./pages/BirthdayInput";
 import MyPage from "./pages/MyPage";
 import ProfileSetting from "./pages/ProfileSetting"
 import MyFriend from "./pages/MyFriend"
-
+import { FollowProvider } from "./context/FollowContext"
 
 function App() {
   return (
+    <FollowProvider>
     <Router>
       <Routes>
         <Route path="/" element={<LogInPage />} />
@@ -21,6 +22,7 @@ function App() {
         <Route path="/myfriend" element={<MyFriend />} />
       </Routes>
     </Router>
+    </FollowProvider>
   );
 }
 
