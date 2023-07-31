@@ -1,4 +1,5 @@
 package com.ssafy.partylog.ui.login
 
-class LoginState {
-}
+data class LoginState (
+    var test:String = ""
+        )
