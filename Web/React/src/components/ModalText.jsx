@@ -1,9 +1,7 @@
 import React, { memo } from "react";
 import Typography from "@mui/material/Typography";
 import { Grid, TextField, createTheme, useMediaQuery } from "@mui/material";
-// import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { styled } from "@mui/system";
-// import Button from "@mui/material/Button";
 
 const StyledTextarea = styled(TextField)(
   ({ theme }) => `

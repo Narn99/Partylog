@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
-import "../css/MyPage.css";
+import "../css/UserPage.css";
 import "../components/Timmer";
 import CountdownTimer from "../components/Timmer";
 import molru from "../assets/molru.webp";
@@ -16,15 +16,6 @@ import StickyNoteO from "../components/StickyNote/StickyNoteO";
 import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
 import MessageBoard from "../components/MessageBoard";
-// import { useSelector } from "react-redux";
-// import { useMediaQuery, useTheme } from "@mui/material";
-
-// 그리드로 설정하긴 했는데.. 화면 줄어들 때 메시지보드만 줄어드는건 문제가 있어보임.
-// md나 lg쯤부터 세로정렬로 바꾸던가 해야할 것 같음. 프로필이 가로로 보이다가 더 줄어들면 세로정렬되는 식이 좋을 것 같음.
-// BreakPoint를 이용해서 점점 세로로 옮기는 형식.
-
-// 계속 상위 컴포넌트인 MyPage가 리렌더링 되면서 하위 컴포넌트인 Message들이 리렌더링 됨.
-// 이거 나중에 Redux를 써야 막을 수 있을까...
 
 // 모달창을 열 때마다 StickyNote가 바뀌게 설정
 
@@ -41,7 +32,7 @@ const getRandomStickyNote = () => {
   return stickyNotes[randomIndex];
 };
 
-function MyPage() {
+function UserPage() {
   // const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   // const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -54,25 +45,7 @@ function MyPage() {
     getRandomStickyNote()
   );
 
-  // 아랫 부분은 메시지 작성하면 추가하는 로직, 추후에 API로 백엔드로 보내고 다시 받는거로 바꿔야함.
-  // 현재는 messages라는 배열에 새로 추가하는 것 뿐.
-
   const MemoizedMessageBoard = memo(MessageBoard);
-
-  // const modalTitle = useSelector((state) => state.modalTitle);
-
-  // const handleSubmitModalText = useCallback(() => {
-  //   const newMessage = {
-  //     userNo: messages.length + 1,
-  //     profile: null,
-  //     nickname: `김치맨${messages.length + 1}호`,
-  //     title: modalTitle,
-  //   };
-
-  //   setMessages((prevMessages) => [...prevMessages, newMessage]);
-  // }, [messages, modalTitle]);
-
-  // 제출 버튼을 누르거나 페이지를 벗어나지 않는 한, 모달을 껐다 켜도 내용이 임시저장 돼있게 설정
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -93,15 +66,15 @@ function MyPage() {
   };
 
   return (
-    <div className="MyPageBody">
+    <div className="UserPageBody">
       <NavBar />
-      <Grid container spacing={1} className="MyPage" marginTop={"15px"}>
+      <Grid container spacing={1} className="UserPage" marginTop={"15px"}>
         <Grid container item xs={12} md={4} justifyContent={"center"}>
           <div>
             <Grid
               container
               direction="column"
-              className="MyPage-profile"
+              className="UserPage-profile"
               alignItems={"center"}
               justifyContent={"space-evenly"}
             >
@@ -112,16 +85,16 @@ function MyPage() {
                     <img
                       src={molru}
                       alt="profileimg"
-                      className="MyPage-profileimg"
+                      className="UserPage-profileimg"
                     />
                   </Link>
                 </Grid>
               </Grid>
               <Grid item>
-                <p className="MyPage-nickname">몰?루</p>
+                <p className="UserPage-nickname">몰?루</p>
               </Grid>
               <Grid item>
-                <p className="MyPage-follow">팔로잉|팔로워</p>
+                <p className="UserPage-follow">팔로잉|팔로워</p>
               </Grid>
 
               <Grid item>
@@ -164,7 +137,7 @@ function MyPage() {
           <div>
             <Grid container item xs={12}>
               <div
-                className="MyPage-side"
+                className="UserPage-side"
                 style={{ paddingTop: "10px", paddingBottom: "10px" }}
               >
                 <Grid
@@ -221,4 +194,4 @@ function MyPage() {
   );
 }
 
-export default MyPage;
+export default UserPage;

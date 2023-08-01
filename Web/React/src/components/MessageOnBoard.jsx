@@ -7,8 +7,7 @@ import StickyNote1 from "../assets/Sticky-Note-01-Yellow.png";
 
 import { Grid } from "@mui/material";
 
-// 현재 모달에서 메시지 작성을 할 경우, 글자를 입력할 때마다 이쪽 포스트잇 이미지들이 리렌더링되는 이슈가 있음.
-// 일단 노트 색을 하나로 통일해서 리렌더링돼도 안 변한 것처럼 보이게 해둠..
+// 메시지보드에 뜨는 메시지 색을 알록달록하게 하니까 더 보기 안 좋아서 노란색으로 통일해둠..
 
 // const stickyNotes = [
 //   StickyNote1,
@@ -22,10 +21,6 @@ import { Grid } from "@mui/material";
 //   const randomIndex = Math.floor(Math.random() * stickyNotes.length);
 //   return stickyNotes[randomIndex];
 // };
-
-// 메시지 남긴 사람 프로필 이미지, 이름과 메시지 제목 필요
-// 메시지 보드 안에 배치되는 메시지
-// 랜덤 StickyNote를 불러오고, 그 위에 다른 정보가 뜨도록
 
 function MessageOnBoard(props) {
   // const RandomStickyNote = getRandomStickyNote();
@@ -55,7 +50,6 @@ function MessageOnBoard(props) {
         alt=""
         style={{ width: "100%", height: "100%", objectFit: "contain" }}
       />
-      {/* <RandomStickyNote /> */}
       <div
         style={{
           position: "absolute",
@@ -88,8 +82,8 @@ function MessageOnBoard(props) {
               src={user.profile}
               alt=""
               style={{
-                width: "40px",
-                height: "40px",
+                width: "30px",
+                height: "30px",
                 borderRadius: "999px",
                 overflow: "hidden",
               }}

@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
 import FollowTabs from '../components/FollowTabs';
-import { Link } from "react-router-dom";
+
 
 const Box1 = styled(Box)(({ theme }) => ({
   backgroundColor: '#fbb3c2',
@@ -13,11 +13,11 @@ const Box1 = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   position: 'relative',
   [theme.breakpoints.down('sm')]: {
-    height: '200px',
+    height: '500px',
     width: '100%',
   },
   [theme.breakpoints.between('sm', 'md')]: {
-    height: '300px',
+    height: '500px',
     width: '100%',
   },
   [theme.breakpoints.up('md')]: {
@@ -27,14 +27,13 @@ const Box1 = styled(Box)(({ theme }) => ({
 }));
 
 
-
 function MyFriend(props) {
  
   return (
     <div>
-     <Link to="/mypage" className="myLink"> 
+     
       <NavBar />
-     </Link>
+     
 
       <div>
       <Grid container spacing={2}>

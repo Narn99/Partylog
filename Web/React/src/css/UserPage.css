@@ -1,6 +1,6 @@
 /* CSS로 강제로 크기 조절을 하나로 해둔게 많아서, 추후에 반응형을 위해 수정해야합니다.
 이미지를 넣은건 그리드에 따라 크기가 줄어드는데, 폰트 크기같은게 안 바뀌니까 글이 있는 쪽만 쭉 길어지고 있음.
-MyPage에서 is 크기 Screen들을 써서 크기에 따른 style을 만들어서 적용하도록 합시다.
+UserPage에서 is 크기 Screen들을 써서 크기에 따른 style을 만들어서 적용하도록 합시다.
 className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어놓고 바꾼다던가,
 혹은 리액트 컴포넌트 자체에 css 적어놓고 동적으로 바꾸던가. 
 */
@@ -9,13 +9,13 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
   text-align: center;
 }
 
-.MyPage-settingimg {
+.UserPage-settingimg {
   width: 80px;
   height: 80px;
 }
 
 /* 반응형 구성하려면 이미지 크기 조절해야됨 */
-.MyPage-profileimg {
+.UserPage-profileimg {
   object-fit: fill;
   width: 100%;
   max-width: 320px;
@@ -26,14 +26,14 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
   /* box-shadow: 0.1px 0.1px 50px #fbb3c2; */
 }
 
-.MyPage-nickname {
+.UserPage-nickname {
   font-family: "MaplestoryOTFLight";
   font-size: 40px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.MyPage-follow {
+.UserPage-follow {
   font-family: "MaplestoryOTFLight";
   font-size: 25px;
   margin-top: 10px;
@@ -42,7 +42,7 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
 /* 
 
 
-.MyPage-profile {
+.UserPage-profile {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,13 +51,13 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
 }
 /* 프로필 사진&닉네임&팔로잉 팔로워&타이머&라이브로 이동 버튼 한 세트로 묶여있어요 */
 
-.MyPage {
+.UserPage {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-.MyPage-side {
+.UserPage-side {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,11 +67,11 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
 }
 /* 여기 조정해서 칩이랑 버튼 배치해야되요 */
 
-/* .MyPage-chips {
+/* .UserPage-chips {
   margin-right: 600px;
 } */
 
-/* .MyPage-message-button {
+/* .UserPage-message-button {
   font-family: "MaplestoryOTFBold";
   font-size: 1.5rem;
   background-color: #fbb3c2;
