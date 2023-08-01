@@ -1,54 +1,115 @@
-import React, { useState } from 'react';
-import board from "../assets/board.svg"
-import message from "../assets/message.png"
-import "../css/MemoBoard.css";
+import React, { useState, useEffect, useCallback } from "react";
+import MessageOnBoard from "./MessageOnBoard";
+import Board from "../assets/Frame_21.png";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { useSelector } from "react-redux";
 
-const MemoBoard = () => {
-  // 메모 이미지들의 정보를 배열로 정의합니다.
-  const [memoImages, setMemoImages] = useState([
-    // 기존에 저장되어 있는 메모 이미지 정보들을 배열로 초기화합니다.
-    { top: '100px', left: '50px', imageSrc: '../assets/message.png', altText: 'Memo 1' },
-    { top: '200px', left: '200px', imageSrc: '../assets/message.png', altText: 'Memo 2' },
-    // 추가적인 메모 이미지들을 원하는 만큼 배열에 추가합니다.
-  ]);
+function MessageBoard() {
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  // 새로운 메모 이미지를 추가하는 함수입니다.
-  const addMemo = () => {
-    // 랜덤한 위치를 계산하여 새로운 메모를 추가합니다.
-    const newTop = Math.floor(Math.random() * 400) + 'px'; // 0 ~ 400px 사이의 랜덤한 값
-    const newLeft = Math.floor(Math.random() * 600) + 'px'; // 0 ~ 600px 사이의 랜덤한 값
+  const [carouselPages, setCarouselPages] = useState([]);
+  const [carouselPageMessages, setCarouselPageMessages] = useState([]);
 
-    const newMemo = {
-      top: newTop,
-      left: newLeft,
-      imageSrc: '../assets/message.png', // 새로운 메모 이미지의 경로
-      altText: 'New Memo', // 새로운 메모 이미지의 대체 텍스트
-    };
+  const messages = useSelector((state) => {
+    return state.messagesData.messages;
+  });
 
-    // 새로운 메모를 기존의 메모 이미지 배열에 추가합니다.
-    setMemoImages((prevMemoImages) => [...prevMemoImages, newMemo]);
+  const updateCarouselMessages = useCallback(() => {
+    const messagesPerPage = isSmallScreen ? 4 : isLargeScreen ? 6 : 8;
+    const carouselPage = Math.ceil(messages.length / messagesPerPage);
+    const carouselPages =
+      carouselPage < 1
+        ? [0]
+        : Array.from({ length: carouselPage }, (_, i) => i);
+
+    const updatedCarouselPageMessages = carouselPages.map((pageIndex) => {
+      const startIndex = pageIndex * messagesPerPage;
+      const endIndex = Math.min(startIndex + messagesPerPage, messages.length);
+      return messages.slice(startIndex, endIndex);
+    });
+
+    setCarouselPages(carouselPages);
+    setCarouselPageMessages(updatedCarouselPageMessages);
+  }, [isSmallScreen, isLargeScreen, messages]);
+
+  useEffect(() => {
+    updateCarouselMessages();
+  }, [updateCarouselMessages]);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 1,
+    slidesToScroll: 1,
   };
 
   return (
-    <div className="memo-board" style={{ backgroundImage: `url(${board})` }}>
-      {/* 메모 보드 이미지 */}
-      {/* <img src={board} alt="Memo Board" /> */}
-
-      {/* 메모 이미지들을 배열로 매핑하여 렌더링합니다. */}
-      {memoImages.map((memo, index) => (
-        <div
-          key={index}
-          className="memo"
-          style={{ top: memo.top, left: memo.left }}
-        >
-          <img src={message} alt={"message"} />
+    <div
+      style={{
+        width: "100%",
+        height: "500px",
+        backgroundColor: "#a27e4f",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: "40px",
+      }}
+    >
+      <div
+        style={{
+          width: "94%",
+          height: "91%",
+          backgroundImage: `url(${Board})`,
+          borderRadius: "30px",
+          objectFit: "fill",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ width: "95%", height: "95%" }}>
+          <Slider {...settings}>
+            {carouselPages.map((pageIndex) => (
+              <div key={pageIndex} style={{ width: "100%", height: "100%" }}>
+                <Grid
+                  container
+                  justifyContent={"flex-start"}
+                  alignItems={"center"}
+                  spacing={1}
+                >
+                  {carouselPageMessages[pageIndex].map((user) => (
+                    <Grid
+                      item
+                      xs={6}
+                      sm={4}
+                      lg={3}
+                      key={`MessageOnBoard-${user.userNo}`}
+                      style={{
+                        position: "relative",
+                        width: "90%",
+                        height: "90%",
+                        objectFit: "fill",
+                        minHeight: "170px",
+                        marginTop: "30px",
+                      }}
+                    >
+                      <MessageOnBoard user={user} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
+            ))}
+          </Slider>
         </div>
-      ))}
-
-      {/* 추가 버튼을 만들고 버튼을 누르면 새로운 메모를 추가합니다. */}
-      <button onClick={addMemo}>새로운 메모 추가</button>
+      </div>
     </div>
   );
-};
+}
 
-export default MemoBoard;
+export default MessageBoard;

@@ -21,7 +21,9 @@
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.14.1",
     "react-scripts": "5.0.1",
+    "react-slick": "^0.29.0",
     "save": "^2.9.0",
+    "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.11",
     "web-vitals": "^2.1.4"
   },

@@ -1,33 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 import Typography from "@mui/material/Typography";
-import { Grid, createTheme, useMediaQuery } from "@mui/material";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
+import { Grid, TextField, createTheme, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
-// import Button from "@mui/material/Button";
 
-const pink = {
-  100: "#FFD9DF",
-  200: "#FFB1C2",
-  400: "#D7718B",
-  500: "#B85872",
-  600: "#9A4059",
-  900: "#5F112C",
-};
-
-const grey = {
-  50: "#f6f8fa",
-  100: "#eaeef2",
-  200: "#d0d7de",
-  300: "#afb8c1",
-  400: "#8c959f",
-  500: "#6e7781",
-  600: "#57606a",
-  700: "#424a53",
-  800: "#32383f",
-  900: "#24292f",
-};
-
-const StyledTextarea = styled(TextareaAutosize)(
+const StyledTextarea = styled(TextField)(
   ({ theme }) => `
     width: 320px;
     font-family: IBM Plex Sans, sans-serif;
@@ -36,29 +12,11 @@ const StyledTextarea = styled(TextareaAutosize)(
     line-height: 1.5;
     padding: 12px;
     width: 100%;
-    border-radius: 12px 12px 0 12px;
-    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-    background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-    border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
-    box-shadow: 0px 2px 2px ${
-      theme.palette.mode === "dark" ? grey[900] : grey[50]
+    background: transparent;
     };
-  
-    &:hover {
-      border-color: ${pink[400]};
-    }
-  
-    &:focus {
-      border-color: ${pink[400]};
-      box-shadow: 0 0 0 3px ${
-        theme.palette.mode === "dark" ? pink[500] : pink[200]
-      };
-    }
-  
-    // firefox
-    &:focus-visible {
-      outline: 0;
-    }
+
+    & .MuiInputBase-input:focus {
+      outline: none; /* 입력 요소가 포커스를 받을 때 포커스 테두리를 제거합니다. */
   `
 );
 
@@ -69,9 +27,10 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "90%",
   height: "90%",
+  marginTop: "20px",
 };
 
-function ModalText() {
+function ModalText(props) {
   const theme = createTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -87,11 +46,31 @@ function ModalText() {
     ? "30px"
     : "40px";
 
+  const { modalTitle, modalDescription, onChangeModalText } = props;
+
+  const handleChangeTitle = (event) => {
+    const { value } = event.target;
+    if (value.length > 10) {
+      alert("제목은 10자까지 입력 가능합니다.");
+    }
+    const truncatedValue = value.slice(0, 10);
+    onChangeModalText(truncatedValue, modalDescription);
+  };
+
+  const handleChangeDescription = (event) => {
+    const { value } = event.target;
+    if (value.length > 200) {
+      alert("내용은 200자까지 입력 가능합니다.");
+    }
+    const truncatedValue = value.slice(0, 200);
+    onChangeModalText(modalTitle, truncatedValue);
+  };
+
   return (
     <div style={style}>
       <Grid container>
         <Grid item xs={12}>
-          <Typography id="modal-modal-title" variant="h6" component="h1">
+          <Typography id="modal-modal-title" variant="p">
             제목 (최대 10자)
           </Typography>
         </Grid>
@@ -100,14 +79,18 @@ function ModalText() {
             Grid
             item
             maxRows={1}
+            multiline
+            variant="standard"
             id="modal-modal-title"
             aria-label="modal-modal-title"
-            placeholder="남길 제목을 입력해주세요."
-            maxLength={10}
+            placeholder="제목을 입력해주세요."
+            // maxLength={10}
+            value={modalTitle}
+            onChange={handleChangeTitle}
           />
         </Grid>
         <Grid item xs={12}>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }} variant="p">
             내용 (최대 200자)
           </Typography>
         </Grid>
@@ -115,13 +98,16 @@ function ModalText() {
           <StyledTextarea
             Grid
             item
+            multiline
             id="modal-modal-description"
             aria-label="modal-modal-description"
-            minRows={2}
+            minRows={textMaxRow}
             maxRows={textMaxRow}
-            placeholder="남길 메시지를 입력해주세요."
+            placeholder="메시지를 입력해주세요."
             variant="standard"
-            maxLength={200}
+            // maxLength={200}
+            value={modalDescription}
+            onChange={handleChangeDescription}
           />
         </Grid>
       </Grid>
@@ -129,4 +115,4 @@ function ModalText() {
   );
 }
 
-export default ModalText;
+export default memo(ModalText);

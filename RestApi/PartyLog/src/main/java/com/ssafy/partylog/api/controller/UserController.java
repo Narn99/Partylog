@@ -6,12 +6,21 @@ import com.ssafy.partylog.api.response.UserResponse;
 import com.ssafy.partylog.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 
 @Slf4j
@@ -29,50 +38,67 @@ public class UserController {
     @GetMapping("/login")
     @Operation(summary = "로그인", description = "로그인을 진행합니다.")
     @Parameter(name = "code", description = "카카오에서 발급해준 인증코드")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
-//            @ApiResponse(responseCode = "400", description = "Invalid"),
-//            @ApiResponse(responseCode = "404", description = "Not found")
-//    })
-    public ResponseEntity<UserResponse> login(@RequestParam("code") String code) throws Exception {
-        log.info("카카오 인증 코드: {}", code);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
+            @ApiResponse(responseCode = "400", description = "Invalid"),
+    })
+    public ResponseEntity<HashMap<String,Object>> login(@RequestParam("code") String authCode, HttpServletResponse response) throws Exception {
+        HashMap<String,Object> resultMap = new HashMap<>();
+        log.info("카카오 인증 코드: {}", authCode);
+        
+        String code = "";
+        String message = "";
+        UserResponse userInfo = null;
         String accessToken = null;
         String refreshToken = null;
 
         // 카카오 로그인 과정을 통해 생일을 제외한 유저정보  DB에 저장
-        UserEntity user = userService.searchKakaoAccessToken(code);
+        UserEntity user = userService.searchKakaoAccessToken(authCode);
         log.info("사용자 정보: {}", user);
-        if(user.getUserBirthday() != null) {
-            accessToken = userService.createToken(user.getUserNo(), "access-token");
-            refreshToken = userService.createToken(user.getUserNo(), "refresh-token");
-            userService.saveRefreshToken(user.getUserNo(), refreshToken);
-            log.info("엑세스 토큰: {}", accessToken);
-            log.info("리프레시 토큰: {}", refreshToken);
-        }
-
-        UserResponse response = UserResponse.builder()
+        // 유저 정보 저장
+        userInfo = UserResponse.builder()
                 .userNo(user.getUserNo())
                 .userBirthday(user.getUserBirthday())
                 .userNickname(user.getUserNickname())
                 .userProfile(user.getUserProfile())
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
                 .build();
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        if(user.getUserBirthday() != null) {
+            // 토큰 생성
+            accessToken = userService.createToken(user.getUserNo(), "access-token");
+            refreshToken = userService.createToken(user.getUserNo(), "refresh-token");
+            userService.saveRefreshToken(user.getUserNo(), refreshToken);
+            log.info("엑세스 토큰: {}", accessToken);
+            code = "200";
+            message = "로그인 성공";
+        } else {
+            code = "201";
+            message = "생일 정보입력 요청";
+        }
+
+        // response 값 저장
+        resultMap.put("code", code);
+        resultMap.put("message", message);
+        resultMap.put("userInfo", userInfo);
+        response.setHeader("authorization", "Bearer " + accessToken);
+        response.setHeader("refresh-token", "Bearer " + refreshToken);
+
+        return new ResponseEntity<HashMap<String,Object>>(resultMap, HttpStatus.OK);
     }
 
     @PostMapping("/join")
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
     @Parameter(name = "userInfo", description = "회원가입 시 받는 회원정보")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserResponse.class)))),
-//            @ApiResponse(responseCode = "400", description = "Invalid"),
-//            @ApiResponse(responseCode = "404", description = "Not found")
-//    })
-    public ResponseEntity<UserResponse> join(@RequestBody UserRequest userRequest) throws Exception {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
+            @ApiResponse(responseCode = "400", description = "Invalid"),
+    })
+    public ResponseEntity<HashMap<String, Object>> join(@RequestBody UserRequest userRequest, HttpServletResponse response) throws Exception {
+        HashMap<String,Object> resultMap = new HashMap<>();
         log.info("회원가입 요청값: {}", userRequest);
-        UserEntity user = null;
+        String code = "";
+        String message = "";
+        UserResponse userInfo = null;
         String accessToken = null;
         String refreshToken = null;
         if(userService.join(userRequest)) {
@@ -80,19 +106,53 @@ public class UserController {
             accessToken = userService.createToken(userRequest.getUserNo(), "access-token");
             refreshToken = userService.createToken(userRequest.getUserNo(), "refresh-token");
             userService.saveRefreshToken(userRequest.getUserNo(), refreshToken);
-            // 회원 정보 검색
-            user = userService.searchUserInfoByUserNo(userRequest.getUserNo());
+            UserEntity user = userService.searchUserInfoByUserNo(userRequest.getUserNo());
+            code = "200";
+            message = "회원가입에 성공하였습니다.";
+            userInfo = UserResponse.builder()
+                    .userNo(user.getUserNo())
+                    .userBirthday(user.getUserBirthday())
+                    .userNickname(user.getUserNickname())
+                    .userProfile(user.getUserProfile())
+                    .build();
+        } else {
+            code = "400";
+            message = "회원가입에 실패했습니다.";
         }
 
-        UserResponse response = UserResponse.builder()
-                .userNo(user.getUserNo())
-                .userBirthday(user.getUserBirthday())
-                .userNickname(user.getUserNickname())
-                .userProfile(user.getUserProfile())
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        resultMap.put("code", code);
+        resultMap.put("message", message);
+        resultMap.put("userInfo", userInfo);
+        response.setHeader("authorization", "Bearer " + accessToken);
+        response.setHeader("refresh-token", "Bearer " + refreshToken);
+        return new ResponseEntity<HashMap<String, Object>>(resultMap, HttpStatus.OK);
+    }
+
+    @GetMapping("/recreateAccessToken")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
+            @ApiResponse(responseCode = "400", description = "Invalid"),
+    })
+    public ResponseEntity<HashMap<String, String>> recreateAccessToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap<String, String> resultMap = new HashMap<>();
+        String code = "";
+        String message = "";
+        String refreshToken = request.getHeader("Authorization").split(" ")[1];
+        String accessToken = userService.searchRefreshToken(refreshToken);
+
+        if(accessToken == null) { // refreshToken이 DB 값과 다른 경우
+            code = "400";
+            message = "유효하지 않은 refreshToken 입니다.";
+        } else {
+            code = "200";
+            message = "accessToken 재발급 완료";
+        }
+
+        resultMap.put("code", code);
+        resultMap.put("message", message);
+        response.setHeader("authorization", "Bearer " + accessToken);
+        response.setHeader("refresh-token", "Bearer " + refreshToken);
+        return new ResponseEntity<HashMap<String, String>>(resultMap, HttpStatus.OK);
     }
 
     @PostMapping("/mypage")
@@ -102,10 +162,26 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity logout(Authentication authentication) throws Exception {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
+            @ApiResponse(responseCode = "400", description = "Invalid"),
+    })
+    public ResponseEntity<HashMap<String, String>> logout(Authentication authentication) throws Exception {
+        HashMap<String, String> resultMap = new HashMap<>();
         // DB에 저장된 refreshToken 값 제거
+        String code = "";
+        String message = "";
         log.info("사용자 번호: {}", authentication.getName());
-        userService.logout(Integer.parseInt(authentication.getName()));
-        return new ResponseEntity<>(HttpStatus.OK);
+        if(userService.logout(Integer.parseInt(authentication.getName()))) { // 로그아웃 성공
+            code = "200";
+            message = "로그아웃 성공";
+        } else { // 로그아웃 실패
+            code = "400";
+            message = "로그아웃 실패";
+        }
+
+        resultMap.put("code", code);
+        resultMap.put("message", message);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }

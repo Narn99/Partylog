@@ -2,26 +2,14 @@ import React from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
-import StickyNoteY from "../components/StickyNote/StickyNoteY";
-import StickyNoteG from "../components/StickyNote/StickyNoteG";
-import StickyNoteO from "../components/StickyNote/StickyNoteO";
-import StickyNotePink from "../components/StickyNote/StickyNotePink";
-import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
 import ModalText from "./ModalText";
 import { Button } from "@mui/material";
-
-const stickyNotes = [
-  StickyNoteY,
-  StickyNoteG,
-  StickyNoteO,
-  StickyNotePink,
-  StickyNotePurple,
-];
-
-const getRandomStickyNote = () => {
-  const randomIndex = Math.floor(Math.random() * stickyNotes.length);
-  return stickyNotes[randomIndex];
-};
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setModalData,
+  resetModalData,
+  addMessageData,
+} from "../actions/actions";
 
 const style = {
   position: "fixed",
@@ -38,8 +26,30 @@ const style = {
   // p: 4,
 };
 
-function MessageModal({ modalOpen, handleModalClose }) {
-  const RandomStickyNote = getRandomStickyNote();
+function MessageModal(props) {
+  const { modalOpen, handleModalClose, randomStickyNote } = props;
+
+  const modalTitle = useSelector((state) => state.modalData.modalTitle);
+  const modalDescription = useSelector(
+    (state) => state.modalData.modalDescription
+  );
+  console.log(modalTitle);
+  console.log(modalDescription);
+
+  const dispatch = useDispatch();
+
+  const handleChangeModalText = (modalTitleText, modalDescriptionText) => {
+    dispatch(setModalData(modalTitleText, modalDescriptionText));
+  };
+
+  // 제출 버튼 클릭 시, 내용 비우기 + 모달창 닫기
+
+  const handleSubmitModalText = () => {
+    handleModalClose();
+    dispatch(addMessageData(modalTitle, modalDescription));
+    dispatch(resetModalData());
+  };
+
   return (
     <Modal
       open={modalOpen}
@@ -48,31 +58,40 @@ function MessageModal({ modalOpen, handleModalClose }) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Grid container>
-          <RandomStickyNote
-            Grid
-            item
-            xs={4}
-            // style={{ width: "100%", height: "100%" }}
-          ></RandomStickyNote>
-        </Grid>
-        <ModalText />
+        {modalOpen && (
+          <Grid container>
+            {randomStickyNote}
+            {/* <RandomStickyNote
+              Grid
+              item
+              xs={4}
+              // style={{ width: "100%", height: "100%" }}
+            ></RandomStickyNote> */}
+          </Grid>
+        )}
+        <ModalText
+          modalTitle={modalTitle}
+          modalDescription={modalDescription}
+          onChangeModalText={handleChangeModalText}
+        />
         <Grid item container justifyContent={"center"}>
           <Button
             className="MyPage-message-button"
             type="submit"
+            onClick={handleSubmitModalText}
             style={{
               cursor: "pointer",
               backgroundColor: "#fbb3c2",
               color: "white",
-              fontFamily: "MaplestoryOTFLight",
-              fontSize: "20px",
+              fontFamily: "MaplestoryOTFBold",
+              width: "120px",
+              fontSize: "25px",
               borderRadius: "50px",
               marginTop: "20px",
               padding: "10px",
             }}
           >
-            보낼게
+            보내기
           </Button>
         </Grid>
       </Box>
