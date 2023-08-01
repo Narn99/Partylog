@@ -81,4 +81,7 @@ dependencies {
     //okhttp
     implementation "com.squareup.okhttp3:okhttp:4.11.0"
     implementation "com.squareup.okhttp3:logging-interceptor:4.11.0"
+
+    //카카오로그인
+    implementation "com.kakao.sdk:v2-user:2.15.0"
 }
