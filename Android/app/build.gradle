@@ -11,6 +11,9 @@ android {
     namespace 'com.ssafy.partylog'
     compileSdk 33
 
+    buildFeatures {
+        buildConfig = true
+    }
     defaultConfig {
         applicationId "com.ssafy.partylog"
         minSdk 24
