@@ -23,12 +23,11 @@ export default function SearchFriend() {
   };
 
   // 팔로우 버튼 클릭 처리
-  const { followings, setFollowings } = useFollow(); // 팔로잉 목록을 컨텍스트에서 가져옵니다.
+  const { followings, setFollowings } = useFollow();
 
   const handleFollow = (nickname) => {
     if (!followings.includes(nickname)) {
       setFollowings(prevFollowing => [...prevFollowing, nickname]);
-       // 팔로우 로직 구현, 닉네임 중복방지
     }
   };
 
@@ -52,8 +51,9 @@ export default function SearchFriend() {
         renderOption={(props, option) => (
           <li {...props}>
             {option.userNickname}
-            <Button variant="outlined" onClick={() => handleFollow(option.userNickname)}>
-              팔로우
+            <Button variant={followings.includes(option.userNickname) ? 'text' : 'outlined'}
+             onClick={() => handleFollow(option.userNickname)}>
+            {followings.includes(option.userNickname) ? '팔로우됨' : '팔로우'}
             </Button>
           </li>
         )}

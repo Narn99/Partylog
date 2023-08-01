@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Button from '@mui/material/Button';
 import FollowTabsStyles from "../css/FollowTabsStyles.css";
 import { useFollow } from '../context/FollowContext'
+import Box from '@mui/material/Box';
 
 
 function FollowTabs() {
@@ -32,6 +33,7 @@ function FollowTabs() {
         <Tab label="팔로워" style={FollowTabsStyles.tab}/>
       </Tabs>
 
+      <Box style={{ maxHeight: '450px', overflow: 'auto' }}> {/* 스크롤이 가능한 부분을 Box로 감쌉니다. */}
       {tabValue === 0 && (
         followings.length > 0 ? (
           <List className='tabs'>
@@ -52,9 +54,10 @@ function FollowTabs() {
             {followers.map((follower) => (
               <ListItem key={follower}>
                 <ListItemText primary={follower} />
-                <Button onClick={() => handleFollow(follower)} color="primary">
-                  팔로잉
-                </Button>
+                <Button onClick={() => handleFollow(follower)} 
+                 variant={followings.includes(follower) ? 'text' : 'outlined'}>
+                  {followings.includes(follower) ? '팔로우됨' : '팔로우'}
+                 </Button>
               </ListItem>
             ))}
           </List>
@@ -62,7 +65,8 @@ function FollowTabs() {
           <p>아직 팔로워가 없습니다.</p>
         )
       )}
-
+ 
+      </Box>
     </div>
   );
 }

@@ -13,11 +13,11 @@ const Box1 = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   position: 'relative',
   [theme.breakpoints.down('sm')]: {
-    height: '200px',
+    height: '500px',
     width: '100%',
   },
   [theme.breakpoints.between('sm', 'md')]: {
-    height: '300px',
+    height: '500px',
     width: '100%',
   },
   [theme.breakpoints.up('md')]: {
