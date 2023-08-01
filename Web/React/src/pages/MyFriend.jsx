@@ -39,8 +39,8 @@ function MyFriend(props) {
       <Grid container spacing={2}>
         <Grid item sm={12} md={3}>
           <Grid container direction="column" justifyContent="center" alignItems="center">
-            <img src={molru} alt="profileimg" className="MyPage-profileimg" />
-            <p className="MyPage-nickname">몰?루</p>
+            <img src={molru} alt="profileimg" className="UserPage-profileimg" />
+            <p className="UserPage-nickname">몰?루</p>
           </Grid>
         </Grid>
    

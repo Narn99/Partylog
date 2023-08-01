@@ -94,7 +94,9 @@ function UserPage() {
                 <p className="UserPage-nickname">몰?루</p>
               </Grid>
               <Grid item>
-                <p className="UserPage-follow">팔로잉|팔로워</p>
+                <Link to="/myfriend" className="myLink">
+                 <p className="UserPage-follow">팔로잉|팔로워</p>
+                </Link>
               </Grid>
 
               <Grid item>
