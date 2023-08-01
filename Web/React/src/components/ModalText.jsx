@@ -48,13 +48,7 @@ function ModalText(props) {
     ? "30px"
     : "40px";
 
-  const {
-    modalTitle,
-    modalDescription,
-    setModalTitle,
-    setModalDescription,
-    onChangeModalText,
-  } = props;
+  const { modalTitle, modalDescription, onChangeModalText } = props;
 
   const handleChangeTitle = (event) => {
     const { value } = event.target;
@@ -62,7 +56,6 @@ function ModalText(props) {
       alert("제목은 10자까지 입력 가능합니다.");
     }
     const truncatedValue = value.slice(0, 10);
-    setModalTitle(truncatedValue);
     onChangeModalText(truncatedValue, modalDescription);
   };
 
@@ -72,7 +65,6 @@ function ModalText(props) {
       alert("내용은 200자까지 입력 가능합니다.");
     }
     const truncatedValue = value.slice(0, 200);
-    setModalDescription(truncatedValue);
     onChangeModalText(modalTitle, truncatedValue);
   };
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, memo, useRef } from "react";
+import React, { useState, memo } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import "../css/MyPage.css";
@@ -16,6 +16,7 @@ import StickyNoteO from "../components/StickyNote/StickyNoteO";
 import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
 import MessageBoard from "../components/MessageBoard";
+// import { useSelector } from "react-redux";
 // import { useMediaQuery, useTheme } from "@mui/material";
 
 // 그리드로 설정하긴 했는데.. 화면 줄어들 때 메시지보드만 줄어드는건 문제가 있어보임.
@@ -41,9 +42,6 @@ const getRandomStickyNote = () => {
 };
 
 function MyPage() {
-  const [modalTitle, setModalTitle] = useState("");
-  const [modalDescription, setModalDescription] = useState("");
-
   // const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   // const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -61,81 +59,20 @@ function MyPage() {
 
   const MemoizedMessageBoard = memo(MessageBoard);
 
-  const [messages, setMessages] = useState([
-    {
-      userNo: "1",
-      profile: molru,
-      nickname: "야로나",
-      title: "몰?루",
-    },
-    { userNo: "2", profile: null, nickname: "앗차뜨겁다", title: "앗" },
-    {
-      userNo: "3",
-      profile: null,
-      nickname: "김치김치냡냡햡햡챱챱",
-      title: "김치김치냠냠챱챱챱챱",
-    },
-    {
-      userNo: "4",
-      profile: null,
-      nickname: "감자",
-      title: "김치",
-    },
-    {
-      userNo: "5",
-      profile: null,
-      nickname: "밥밥",
-      title: "얍얍",
-    },
-    {
-      userNo: "6",
-      profile: null,
-      nickname: "밥밥",
-      title: "얍얍",
-    },
-    {
-      userNo: "7",
-      profile: null,
-      nickname: "밥밥",
-      title: "얍얍",
-    },
-    {
-      userNo: "8",
-      profile: null,
-      nickname: "밥밥",
-      title: "얍얍",
-    },
-    {
-      userNo: "9",
-      profile: null,
-      nickname: "밥밥",
-      title: "얍얍",
-    },
-  ]);
+  // const modalTitle = useSelector((state) => state.modalTitle);
 
-  const nowModalTitle = useRef(modalTitle);
-  nowModalTitle.current = modalTitle;
+  // const handleSubmitModalText = useCallback(() => {
+  //   const newMessage = {
+  //     userNo: messages.length + 1,
+  //     profile: null,
+  //     nickname: `김치맨${messages.length + 1}호`,
+  //     title: modalTitle,
+  //   };
 
-  const handleSubmitModalText = useCallback(() => {
-    const newMessage = {
-      userNo: messages.length + 1,
-      profile: null,
-      nickname: `김치맨${messages.length + 1}호`,
-      title: nowModalTitle.current,
-    };
-
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-  }, [messages]);
+  //   setMessages((prevMessages) => [...prevMessages, newMessage]);
+  // }, [messages, modalTitle]);
 
   // 제출 버튼을 누르거나 페이지를 벗어나지 않는 한, 모달을 껐다 켜도 내용이 임시저장 돼있게 설정
-
-  const handleChangeModalText = useCallback(
-    (modalTitleText, modalDescriptionText) => {
-      setModalTitle(modalTitleText);
-      setModalDescription(modalDescriptionText);
-    },
-    []
-  );
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -266,7 +203,7 @@ function MyPage() {
             </Grid>
 
             <Grid container item xs={12}>
-              <MemoizedMessageBoard messages={messages} />
+              <MemoizedMessageBoard />
             </Grid>
           </div>
         </Grid>
@@ -277,13 +214,8 @@ function MyPage() {
       <MessageModal
         modalOpen={modalOpen}
         handleModalClose={handleModalClose}
-        modalTitle={modalTitle}
-        modalDescription={modalDescription}
-        setModalTitle={setModalTitle}
-        setModalDescription={setModalDescription}
         randomStickyNote={randomStickyNote}
-        onChangeModalText={handleChangeModalText}
-        onSubmitText={handleSubmitModalText}
+        // onSubmitText={handleSubmitModalText}
       />
     </div>
   );

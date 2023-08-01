@@ -5,15 +5,20 @@ import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
-function MessageBoard(props) {
+function MessageBoard() {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const messages = props.messages;
   const [carouselPages, setCarouselPages] = useState([]);
   const [carouselPageMessages, setCarouselPageMessages] = useState([]);
+
+  const messages = useSelector((state) => {
+    return state.messagesData.messages;
+  });
 
   const updateCarouselMessages = useCallback(() => {
     const messagesPerPage = isSmallScreen ? 4 : isLargeScreen ? 6 : 8;
