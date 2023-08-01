@@ -1,4 +1,4 @@
-package com.ssafy.partylog.util;
+package com.ssafy.partylog.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

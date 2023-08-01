@@ -1,4 +1,4 @@
-package com.ssafy.partylog.util;
+package com.ssafy.partylog.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.partylog.api.response.ErrorResponse;
@@ -34,7 +34,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
     private void setErrorResponse(HttpServletResponse response, ErrorCode errorCode){
         ObjectMapper objectMapper = new ObjectMapper();
-        response.setStatus(errorCode.getStatus());
+        response.setStatus(errorCode.getHttpStatus().value());
+        response.setCharacterEncoding("utf-8");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         ErrorResponse errorResponse = new ErrorResponse(errorCode.getCode(), errorCode.getMessage());
         try {

@@ -1,4 +1,4 @@
-package com.ssafy.partylog.util;
+package com.ssafy.partylog.jwt;
 
 import com.ssafy.partylog.api.service.UserService;
 import lombok.RequiredArgsConstructor;
