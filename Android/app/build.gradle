@@ -3,6 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     namespace 'com.ssafy.partylog'
     compileSdk 33
@@ -13,6 +17,10 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "NATIVE_APP_KEY", properties['kakao_native_key']
+
+        manifestPlaceholders = [NATIVE_APP_KEY: properties['kakao_native_key']]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
