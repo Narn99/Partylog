@@ -13,11 +13,11 @@ class GlobalApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        init()
         var key = Utility.getKeyHash(this)
         Log.d("key", key)
+        init()
     }
     fun init() {
-        KakaoSdk.init(this, appKey = "a" + "${BuildConfig.NATIVE_APP_KEY}")
+        KakaoSdk.init(this, appKey = BuildConfig.NATIVE_APP_KEY)
     }
 }
