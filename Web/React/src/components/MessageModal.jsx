@@ -4,6 +4,12 @@ import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
 import ModalText from "./ModalText";
 import { Button } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setModalData,
+  resetModalData,
+  addMessageData,
+} from "../actions/actions";
 
 const style = {
   position: "fixed",
@@ -21,22 +27,27 @@ const style = {
 };
 
 function MessageModal(props) {
-  const {
-    modalOpen,
-    handleModalClose,
-    modalTitle,
-    modalDescription,
-    setModalTitle,
-    setModalDescription,
-    onChangeModalText,
-    randomStickyNote,
-  } = props;
+  const { modalOpen, handleModalClose, randomStickyNote } = props;
+
+  const modalTitle = useSelector((state) => state.modalData.modalTitle);
+  const modalDescription = useSelector(
+    (state) => state.modalData.modalDescription
+  );
+  console.log(modalTitle);
+  console.log(modalDescription);
+
+  const dispatch = useDispatch();
+
+  const handleChangeModalText = (modalTitleText, modalDescriptionText) => {
+    dispatch(setModalData(modalTitleText, modalDescriptionText));
+  };
 
   // 제출 버튼 클릭 시, 내용 비우기 + 모달창 닫기
 
   const handleSubmitModalText = () => {
-    onChangeModalText("", "");
     handleModalClose();
+    dispatch(addMessageData(modalTitle, modalDescription));
+    dispatch(resetModalData());
   };
 
   return (
@@ -61,9 +72,7 @@ function MessageModal(props) {
         <ModalText
           modalTitle={modalTitle}
           modalDescription={modalDescription}
-          setModalTitle={setModalTitle}
-          setModalDescription={setModalDescription}
-          onChangeModalText={onChangeModalText}
+          onChangeModalText={handleChangeModalText}
         />
         <Grid item container justifyContent={"center"}>
           <Button
