@@ -73,4 +73,7 @@ dependencies {
 
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    //kotlinx.serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 }
