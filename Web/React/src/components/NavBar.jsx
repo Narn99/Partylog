@@ -14,18 +14,21 @@ function NavBar() {
 
   const logout = () => {
 
+    const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
+
     const accessToken = localStorage.getItem("access-token");
     
 
     // 카카오 로그아웃 요청
-    axios.post("https://kapi.kakao.com/v1/user/logout", {}, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`}
-    })
+    axios.post(`${SERVER_API_URL}/user/logout`, {}, {
+    headers: {
+      'Authorization': `${accessToken}`}
+  })
       .then(() => {
         // 로컬 토큰 제거
         localStorage.removeItem("access-token");
         localStorage.removeItem("refresh-token");
+        localStorage.removeItem("userInfo");
         // 성공적으로 로그아웃한 후 로그인 페이지로 이동
         navigate("/");
       })
