@@ -89,6 +89,57 @@ public class UserController {
         return new ResponseEntity<HashMap<String,Object>>(resultMap, HttpStatus.OK);
     }
 
+    @GetMapping("/mobile/login")
+    @Operation(summary = "로그인", description = "로그인을 진행합니다.")
+    @Parameter(name = "token", description = "카카오에서 발급해준 인증토큰")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
+            @ApiResponse(responseCode = "400", description = "Invalid"),
+    })
+    public ResponseEntity<HashMap<String,Object>> mobileLogin(@RequestParam("token") String accessToken, HttpServletResponse response) throws Exception {
+        HashMap<String,Object> resultMap = new HashMap<>();
+        log.info("카카오 인증 토큰: {}", accessToken);
+
+        String code = "";
+        String message = "";
+        UserResponse userInfo = null;
+        String refreshToken = null;
+
+        // 카카오 로그인 과정을 통해 생일을 제외한 유저정보  DB에 저장
+        UserEntity user = userService.searchKakaoUserInfo(accessToken);
+        log.info("사용자 정보: {}", user);
+
+        // 유저 정보 저장
+        userInfo = UserResponse.builder()
+                .userNo(user.getUserNo())
+                .userBirthday(user.getUserBirthday())
+                .userNickname(user.getUserNickname())
+                .userProfile(user.getUserProfile())
+                .build();
+
+        if(user.getUserBirthday() != null) {
+            // 토큰 생성
+            accessToken = userService.createToken(user.getUserNo(), "access-token");
+            refreshToken = userService.createToken(user.getUserNo(), "refresh-token");
+            userService.saveRefreshToken(user.getUserNo(), refreshToken);
+            log.info("엑세스 토큰: {}", accessToken);
+            code = "200";
+            message = "로그인 성공";
+        } else {
+            code = "201";
+            message = "생일 정보입력 요청";
+        }
+
+        // response 값 저장
+        resultMap.put("code", code);
+        resultMap.put("message", message);
+        resultMap.put("userInfo", userInfo);
+        response.setHeader("authorization", "Bearer " + accessToken);
+        response.setHeader("refresh-token", "Bearer " + refreshToken);
+
+        return new ResponseEntity<HashMap<String,Object>>(resultMap, HttpStatus.OK);
+    }
+
     @PostMapping("/join")
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
     @Parameter(name = "userInfo", description = "회원가입 시 받는 회원정보")
