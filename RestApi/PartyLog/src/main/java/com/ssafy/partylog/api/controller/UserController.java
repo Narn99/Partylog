@@ -2,7 +2,9 @@ package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.request.UserRequest;
+import com.ssafy.partylog.api.response.FollowResponse;
 import com.ssafy.partylog.api.response.UserResponse;
+import com.ssafy.partylog.api.response.UserSearchResponse;
 import com.ssafy.partylog.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 
 
 @Slf4j
@@ -164,5 +167,20 @@ public class UserController {
         resultMap.put("code", code);
         resultMap.put("message", message);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    //나를 팔로우 하는 사람 목록 가져오기
+    @GetMapping("/searchUser/{userNickname}/{limit}/{offset}")
+    @Operation(summary = "유저 검색", description = "닉네임으로 유저를 검색합니다.")
+    @Parameter(name = "userNickname", description = "검색 내용")
+    @Parameter(name = "limit", description = "한번에 가지고 올 사람 수")
+    @Parameter(name = "offset", description = "가지고 올 때 시작하는 순번 (0부터 시작, limit 크기만큼 커짐)")
+    public ResponseEntity<List<UserSearchResponse>> searchUser(@PathVariable String userNickname, @PathVariable int limit, @PathVariable int offset, Authentication authentication) throws Exception{
+        //토큰 받기
+        int myNo = Integer.parseInt(authentication.getName());
+
+        List<UserSearchResponse> list = userService.searchUser(userNickname, myNo, limit, offset);
+
+        return new ResponseEntity<List<UserSearchResponse>>(list, HttpStatus.OK);
     }
 }

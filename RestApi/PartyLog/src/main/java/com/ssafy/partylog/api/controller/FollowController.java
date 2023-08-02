@@ -35,7 +35,7 @@ public class FollowController {
         int followNo = Integer.parseInt(authentication.getName());
         // 메시지 저장
         String message = "팔로우 하셨습니다.";
-        resultMap.put("msg", message);
+        resultMap.put("message", message);
         // 팔로우 등록
         followService.addFollow(followNo, followeeNo);
 
@@ -51,7 +51,7 @@ public class FollowController {
         int followNo = Integer.parseInt(authentication.getName());
         // 메시지 저장
         String message = "팔로우 해제하셨습니다.";
-        resultMap.put("msg", message);
+        resultMap.put("message", message);
         
         //팔로우 해제
         followService.removeFollow(followNo, followeeNo);
@@ -63,7 +63,7 @@ public class FollowController {
     @GetMapping("/searchFollowerList/{limit}/{offset}")
     @Operation(summary = "팔로워리스트", description = "나를 팔로우한 사람 목록")
     @Parameter(name = "limit", description = "한번에 가지고 올 사람 수")
-    @Parameter(name = "offset", description = "가지고 오는 페이지")
+    @Parameter(name = "offset", description = "가지고 올 때 시작하는 순번 (0부터 시작, limit 크기만큼 커짐)")
     public ResponseEntity<List<FollowResponse>> searchFollowerList(@PathVariable int limit, @PathVariable int offset, Authentication authentication) throws Exception{
         //토큰 받기
         int followNo = Integer.parseInt(authentication.getName());
@@ -77,7 +77,7 @@ public class FollowController {
     @GetMapping("/searchFolloweeList/{limit}/{offset}")
     @Operation(summary = "팔로이리스트", description = "내가 팔로우한 사람 목록")
     @Parameter(name = "limit", description = "한번에 가지고 올 사람 수")
-    @Parameter(name = "offset", description = "가지고 오는 페이지")
+    @Parameter(name = "offset", description = "가지고 올 때 시작하는 순번 (0부터 시작, limit 크기만큼 커짐)")
     public ResponseEntity<List<FollowResponse>> searchFolloweeList(@PathVariable int limit, @PathVariable int offset, Authentication authentication) throws Exception{
         //토큰 받기
         int followNo = Integer.parseInt(authentication.getName());

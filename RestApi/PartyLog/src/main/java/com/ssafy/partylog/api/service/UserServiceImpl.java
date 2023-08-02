@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.repository.UserRepository;
 import com.ssafy.partylog.api.request.UserRequest;
+import com.ssafy.partylog.api.response.UserSearchResponse;
 import com.ssafy.partylog.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -209,5 +211,11 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<UserSearchResponse> searchUser(String userNickname, int userNo, int limit, int offset) {
+        List<UserSearchResponse> list = userRepository.findUser(userNickname, userNo, limit, offset);
+        return list;
     }
 }
