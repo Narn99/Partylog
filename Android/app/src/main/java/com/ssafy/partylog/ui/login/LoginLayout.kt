@@ -1,5 +1,6 @@
 package com.ssafy.partylog.ui.login
 
+import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -23,15 +25,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ssafy.partylog.R
+import com.ssafy.partylog.ui.login.stateholder.LoginFrameStateHolder
+import com.ssafy.partylog.ui.login.stateholder.LoginViewModel
 import com.ssafy.partylog.ui.theme.PartylogTheme
 import com.ssafy.partylog.ui.theme.loginTextColor
 import com.ssafy.partylog.ui.theme.maplestory
 
 @Composable
-fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory,
-          onKakaoSelected: () -> Unit = {}
+fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory
 ) {
-
+    val viewModel = LoginViewModel(LocalContext.current.applicationContext as Application)
         Image(painter = painterResource(id = R.drawable.bg_login_compose), contentDescription = "bg_login",
         modifier = modifier.fillMaxSize(), contentScale = ContentScale.Fit)
         Column() {
@@ -47,24 +50,25 @@ fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory,
                 .weight(1f)
                 .fillMaxWidth(), verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally) {
-                LoginFrame(modifier, onKakaoSelected)
+                LoginFrame(modifier, viewModel)
             }
 
         }
 
 }
 @Composable
-fun LoginFrame(modifier: Modifier,
-               onKakaoSelected: () -> Unit = {}) {
+fun LoginFrame(modifier: Modifier, viewModel: LoginViewModel) {
+    val stateHolder = LoginFrameStateHolder(viewModel)
     Image(imageVector = ImageVector.vectorResource(id = R.drawable.ic_login_kakaologin),
         contentDescription = "kakaoLogin",
         modifier = modifier
             .padding(bottom = 124.dp)
             .clickable {
-                onKakaoSelected()
+                stateHolder.onKakaoSelected()
             })
 
 }
+
 @Composable
 fun TitleFrame(modifier: Modifier = Modifier, font: FontFamily) {
     Image(painter = painterResource(id = R.drawable.ic_login_logo), contentDescription = "login",
