@@ -33,8 +33,6 @@ function MessageModal(props) {
   const modalDescription = useSelector(
     (state) => state.modalData.modalDescription
   );
-  console.log(modalTitle);
-  console.log(modalDescription);
 
   const dispatch = useDispatch();
 
@@ -45,10 +43,16 @@ function MessageModal(props) {
   // 제출 버튼 클릭 시, 내용 비우기 + 모달창 닫기
 
   const handleSubmitModalText = () => {
-    handleModalClose();
-    dispatch(addMessageData(modalTitle, modalDescription));
-    dispatch(resetModalData());
+    if (modalTitle.length === 0 || modalDescription.length === 0) {
+      alert("메시지를 작성해주세요!");
+    } else {
+      handleModalClose();
+      dispatch(addMessageData(modalTitle, modalDescription));
+      dispatch(resetModalData());
+    }
   };
+
+  // 내용 초기화 버튼 만들기?
 
   return (
     <Modal
@@ -58,17 +62,7 @@ function MessageModal(props) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        {modalOpen && (
-          <Grid container>
-            {randomStickyNote}
-            {/* <RandomStickyNote
-              Grid
-              item
-              xs={4}
-              // style={{ width: "100%", height: "100%" }}
-            ></RandomStickyNote> */}
-          </Grid>
-        )}
+        {modalOpen && <Grid container>{randomStickyNote}</Grid>}
         <ModalText
           modalTitle={modalTitle}
           modalDescription={modalDescription}

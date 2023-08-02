@@ -6,6 +6,7 @@ import BirthdayInput from "./pages/BirthdayInput";
 import UserPage from "./pages/UserPage";
 import ProfileSetting from "./pages/ProfileSetting";
 import MyFriend from "./pages/MyFriend";
+import NotFound404 from "./pages/NotFound404";
 import { FollowProvider } from "./context/FollowContext";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
@@ -23,6 +24,9 @@ function App() {
             {/* 추후 mypage는 유저 구분을 위해 '/mypage/:username'같은 식으로 바꿔야함. */}
             <Route path="/profile-setting" element={<ProfileSetting />} />
             <Route path="/myfriend" element={<MyFriend />} />
+
+            {/* 일단 이상한 페이지로 이동하면 404NotFound로 이동 */}
+            <Route path="/*" element={<NotFound404 />} />
           </Routes>
         </Router>
       </FollowProvider>

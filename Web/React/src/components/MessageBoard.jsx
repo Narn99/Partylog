@@ -6,11 +6,34 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useSelector } from "react-redux";
+import StickyNoteY from "../components/StickyNote/StickyNoteY";
+import StickyNoteG from "../components/StickyNote/StickyNoteG";
+import StickyNoteO from "../components/StickyNote/StickyNoteO";
+import StickyNotePink from "../components/StickyNote/StickyNotePink";
+import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
+import MessageDetail from "./MessageDetail";
 
-function MessageBoard() {
+// 메시지 상세 확인할 때, 랜덤 포스트잇 출력용
+
+const stickyNotes = [
+  StickyNoteY,
+  StickyNoteG,
+  StickyNoteO,
+  StickyNotePink,
+  StickyNotePurple,
+];
+
+const getRandomStickyNote = () => {
+  const randomIndex = Math.floor(Math.random() * stickyNotes.length);
+  return stickyNotes[randomIndex];
+};
+
+function MessageBoard(props) {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // 메시지보드 캐러셀
 
   const [carouselPages, setCarouselPages] = useState([]);
   const [carouselPageMessages, setCarouselPageMessages] = useState([]);
@@ -49,6 +72,22 @@ function MessageBoard() {
     slidesToScroll: 1,
   };
 
+  const [randomStickyNote, setRandomStickyNote] = useState(
+    getRandomStickyNote()
+  );
+
+  // 메시지 선택 시, 해당 모달 창이 열리며 해당 메시지 출력
+
+  const [selectedMessage, setSelectedMessage] = useState(null);
+
+  const [modalDetailOpen, setModalDetailOpen] = useState(false);
+  const handleModalDetailOpen = (message) => {
+    setSelectedMessage(message);
+    setModalDetailOpen(true);
+    setRandomStickyNote(getRandomStickyNote());
+  };
+  const handleModalDetailClose = () => setModalDetailOpen(false);
+
   return (
     <div
       style={{
@@ -74,40 +113,68 @@ function MessageBoard() {
         }}
       >
         <div style={{ width: "95%", height: "95%" }}>
-          <Slider {...settings}>
-            {carouselPages.map((pageIndex) => (
-              <div key={pageIndex} style={{ width: "100%", height: "100%" }}>
-                <Grid
-                  container
-                  justifyContent={"flex-start"}
-                  alignItems={"center"}
-                  spacing={1}
-                >
-                  {carouselPageMessages[pageIndex].map((user) => (
-                    <Grid
-                      item
-                      xs={6}
-                      sm={4}
-                      lg={3}
-                      key={`MessageOnBoard-${user.userNo}`}
-                      style={{
-                        position: "relative",
-                        width: "90%",
-                        height: "90%",
-                        objectFit: "fill",
-                        minHeight: "170px",
-                        marginTop: "30px",
-                      }}
-                    >
-                      <MessageOnBoard user={user} />
-                    </Grid>
-                  ))}
-                </Grid>
-              </div>
-            ))}
-          </Slider>
+          {messages.length === 0 ? (
+            // messages 배열이 비어있을 때, "아직 메시지가 없네요..." 문장 출력
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                fontSize: "40px",
+                fontFamily: "MaplestoryOTFBold",
+                color: "white",
+                textShadow: "2px 2px 10px grey",
+              }}
+            >
+              아직 메시지가 없네요...
+            </div>
+          ) : (
+            <Slider {...settings}>
+              {carouselPages.map((pageIndex) => (
+                <div key={pageIndex} style={{ width: "100%", height: "100%" }}>
+                  <Grid
+                    container
+                    justifyContent={"flex-start"}
+                    alignItems={"center"}
+                    spacing={1}
+                  >
+                    {carouselPageMessages[pageIndex].map((message) => (
+                      <Grid
+                        item
+                        xs={6}
+                        sm={4}
+                        lg={3}
+                        key={`MessageOnBoard-${message.userNo}`}
+                        style={{
+                          position: "relative",
+                          width: "90%",
+                          height: "90%",
+                          objectFit: "fill",
+                          minHeight: "170px",
+                          marginTop: "30px",
+                        }}
+                      >
+                        <MessageOnBoard
+                          message={message}
+                          onClick={() => handleModalDetailOpen(message)}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </div>
+              ))}
+            </Slider>
+          )}
         </div>
       </div>
+      <MessageDetail
+        modalDetailOpen={modalDetailOpen}
+        handleModalDetailClose={handleModalDetailClose}
+        randomStickyNote={randomStickyNote}
+        selectedMessage={selectedMessage}
+      />
     </div>
   );
 }
