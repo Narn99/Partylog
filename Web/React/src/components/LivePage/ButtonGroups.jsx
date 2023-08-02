@@ -5,6 +5,11 @@ import CelebrationRoundedIcon from "@mui/icons-material/CelebrationRounded";
 import EmojiEmotionsRoundedIcon from "@mui/icons-material/EmojiEmotionsRounded";
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import VideocamOffRoundedIcon from "@mui/icons-material/VideocamOffRounded";
+import MusicNoteRoundedIcon from "@mui/icons-material/MusicNoteRounded";
+import MusicOffRoundedIcon from "@mui/icons-material/MusicOffRounded";
+import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
+import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
+import CakeRoundedIcon from "@mui/icons-material/CakeRounded";
 
 function ButtonGroup() {
   return (
@@ -26,6 +31,12 @@ function ButtonGroup() {
       <EmojiEmotionsRoundedIcon sx={{ fontSize: 50 }} />
       <VideocamRoundedIcon sx={{ fontSize: 50 }} />
       <VideocamOffRoundedIcon sx={{ fontSize: 50 }} />
+      <MusicNoteRoundedIcon sx={{ fontSize: 50 }} />
+      <MusicOffRoundedIcon sx={{ fontSize: 50 }} />
+      <VolumeUpRoundedIcon sx={{ fontSize: 50 }} />
+      <VolumeOffRoundedIcon sx={{ fontSize: 50 }} />
+      <CakeRoundedIcon sx={{ fontSize: 50 }} />
+      <h1>👏</h1>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
+import ChatBox from "../components/LivePage/ChatBox";
 
 function LivePage() {
   useEffect(() => {
@@ -170,7 +171,7 @@ function LivePage() {
               <div
                 style={{
                   width: "95%",
-                  height: "80%",
+                  height: "75%",
                 }}
                 className="chat-display"
               >
@@ -185,14 +186,7 @@ function LivePage() {
                   height: "15%",
                 }}
               >
-                <div
-                  style={{
-                    width: "100%",
-                    height: "90%",
-                    border: "1px solid grey",
-                    borderRadius: "15px",
-                  }}
-                ></div>
+                <ChatBox />
               </div>
             </div>
           </div>
