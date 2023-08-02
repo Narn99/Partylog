@@ -2,11 +2,38 @@ import React from "react";
 import SearchFriend from "../components/SearchFriend";
 import molru from "../assets/molru.webp";
 import Grid from "@mui/material/Grid";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-// NavBar도 반응형으로 크기 줄이면 바뀌도록 해야합니다.
-// 여기서 is 크기 Screen들 선언해서 바뀌도록 설정하던가 혹은 props로 받아서 해야합니다.
+
 
 function NavBar() {
+
+  const navigate = useNavigate();
+
+
+  const logout = () => {
+
+    const accessToken = localStorage.getItem("access-token");
+    
+
+    // 카카오 로그아웃 요청
+    axios.post("https://kapi.kakao.com/v1/user/logout", {}, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`}
+    })
+      .then(() => {
+        // 로컬 토큰 제거
+        localStorage.removeItem("access-token");
+        localStorage.removeItem("refresh-token");
+        // 성공적으로 로그아웃한 후 로그인 페이지로 이동
+        navigate("/");
+      })
+      .catch(error => {
+        console.error("로그아웃 실패: ", error);
+      });
+  };
+
   return (
     <div
       className="nav-bar"
@@ -26,6 +53,7 @@ function NavBar() {
         </Grid>
         <Grid container item xs={2} justifyContent={"flex-end"}>
           <Grid container item xs={10} justifyContent={"flex-end"}>
+            
             <img
               src={molru}
               alt="settingimg"
@@ -35,7 +63,9 @@ function NavBar() {
                 maxWidth: "80px",
                 maxHeight: "80px",
               }}
+              onClick={logout}
             />
+         
           </Grid>
           <Grid item xs={2}></Grid>
         </Grid>
