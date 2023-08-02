@@ -2,7 +2,9 @@ package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.request.UserRequest;
+import com.ssafy.partylog.api.response.FollowResponse;
 import com.ssafy.partylog.api.response.UserResponse;
+import com.ssafy.partylog.api.response.UserSearchResponse;
 import com.ssafy.partylog.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 
 
 @Slf4j
@@ -55,6 +58,57 @@ public class UserController {
         // 카카오 로그인 과정을 통해 생일을 제외한 유저정보  DB에 저장
         UserEntity user = userService.searchKakaoAccessToken(authCode);
         log.info("사용자 정보: {}", user);
+        // 유저 정보 저장
+        userInfo = UserResponse.builder()
+                .userNo(user.getUserNo())
+                .userBirthday(user.getUserBirthday())
+                .userNickname(user.getUserNickname())
+                .userProfile(user.getUserProfile())
+                .build();
+
+        if(user.getUserBirthday() != null) {
+            // 토큰 생성
+            accessToken = userService.createToken(user.getUserNo(), "access-token");
+            refreshToken = userService.createToken(user.getUserNo(), "refresh-token");
+            userService.saveRefreshToken(user.getUserNo(), refreshToken);
+            log.info("엑세스 토큰: {}", accessToken);
+            code = "200";
+            message = "로그인 성공";
+        } else {
+            code = "201";
+            message = "생일 정보입력 요청";
+        }
+
+        // response 값 저장
+        resultMap.put("code", code);
+        resultMap.put("message", message);
+        resultMap.put("userInfo", userInfo);
+        response.setHeader("authorization", "Bearer " + accessToken);
+        response.setHeader("refresh-token", "Bearer " + refreshToken);
+
+        return new ResponseEntity<HashMap<String,Object>>(resultMap, HttpStatus.OK);
+    }
+
+    @GetMapping("/mobile/login")
+    @Operation(summary = "로그인", description = "로그인을 진행합니다.")
+    @Parameter(name = "token", description = "카카오에서 발급해준 인증토큰")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
+            @ApiResponse(responseCode = "400", description = "Invalid"),
+    })
+    public ResponseEntity<HashMap<String,Object>> mobileLogin(@RequestParam("token") String accessToken, HttpServletResponse response) throws Exception {
+        HashMap<String,Object> resultMap = new HashMap<>();
+        log.info("카카오 인증 토큰: {}", accessToken);
+
+        String code = "";
+        String message = "";
+        UserResponse userInfo = null;
+        String refreshToken = null;
+
+        // 카카오 로그인 과정을 통해 생일을 제외한 유저정보  DB에 저장
+        UserEntity user = userService.searchKakaoUserInfo(accessToken);
+        log.info("사용자 정보: {}", user);
+
         // 유저 정보 저장
         userInfo = UserResponse.builder()
                 .userNo(user.getUserNo())
@@ -183,5 +237,20 @@ public class UserController {
         resultMap.put("code", code);
         resultMap.put("message", message);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    //나를 팔로우 하는 사람 목록 가져오기
+    @GetMapping("/searchUser/{userNickname}/{limit}/{offset}")
+    @Operation(summary = "유저 검색", description = "닉네임으로 유저를 검색합니다.")
+    @Parameter(name = "userNickname", description = "검색 내용")
+    @Parameter(name = "limit", description = "한번에 가지고 올 사람 수")
+    @Parameter(name = "offset", description = "가지고 올 때 시작하는 순번 (0부터 시작, limit 크기만큼 커짐)")
+    public ResponseEntity<List<UserSearchResponse>> searchUser(@PathVariable String userNickname, @PathVariable int limit, @PathVariable int offset, Authentication authentication) throws Exception{
+        //토큰 받기
+        int myNo = Integer.parseInt(authentication.getName());
+
+        List<UserSearchResponse> list = userService.searchUser(userNickname, myNo, limit, offset);
+
+        return new ResponseEntity<List<UserSearchResponse>>(list, HttpStatus.OK);
     }
 }
