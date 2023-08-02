@@ -1,9 +1,7 @@
 import React, { memo } from "react";
 import Typography from "@mui/material/Typography";
 import { Grid, TextField, createTheme, useMediaQuery } from "@mui/material";
-// import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { styled } from "@mui/system";
-// import Button from "@mui/material/Button";
 
 const StyledTextarea = styled(TextField)(
   ({ theme }) => `
@@ -48,24 +46,24 @@ function ModalText(props) {
     ? "30px"
     : "40px";
 
-  const {
-    modalTitle,
-    modalDescription,
-    setModalTitle,
-    setModalDescription,
-    onChangeModalText,
-  } = props;
+  const { modalTitle, modalDescription, onChangeModalText } = props;
 
   const handleChangeTitle = (event) => {
     const { value } = event.target;
-    setModalTitle(value);
-    onChangeModalText(value, modalDescription);
+    if (value.length > 10) {
+      alert("제목은 10자까지 입력 가능합니다.");
+    }
+    const truncatedValue = value.slice(0, 10);
+    onChangeModalText(truncatedValue, modalDescription);
   };
 
   const handleChangeDescription = (event) => {
     const { value } = event.target;
-    setModalDescription(value);
-    onChangeModalText(modalTitle, value);
+    if (value.length > 200) {
+      alert("내용은 200자까지 입력 가능합니다.");
+    }
+    const truncatedValue = value.slice(0, 200);
+    onChangeModalText(modalTitle, truncatedValue);
   };
 
   return (
@@ -86,7 +84,7 @@ function ModalText(props) {
             id="modal-modal-title"
             aria-label="modal-modal-title"
             placeholder="제목을 입력해주세요."
-            maxLength={10}
+            // maxLength={10}
             value={modalTitle}
             onChange={handleChangeTitle}
           />
@@ -107,7 +105,7 @@ function ModalText(props) {
             maxRows={textMaxRow}
             placeholder="메시지를 입력해주세요."
             variant="standard"
-            maxLength={200}
+            // maxLength={200}
             value={modalDescription}
             onChange={handleChangeDescription}
           />

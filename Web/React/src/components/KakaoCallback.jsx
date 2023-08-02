@@ -18,20 +18,15 @@ const KakaoCallback = () => {
    axios
       .get(`${SERVER_API_URL}/user/login?code=${code}`)
       .then((res) => {
-        var userInfo = {
-          "userNo" : res.data.userNo,
-          "userNickname" : res.data.userNickname,
-          "userBirthday" : res.data.userBirthday,
-          "userProfile" : res.data.userProfile,
-        };
-        localStorage.setItem("accessToken", res.data.accessToken);
-        localStorage.setItem("refreshToken", res.data.refreshToken);
+        console.log(res);
+        var userInfo = res.data.userInfo;
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-        if(res.data.accessToken == null) {
+        if(res.data.code === "201") {
+          // 생일입력 페이지로 이동
           navigate("/birthdayinput")
         } else {
-          navigate("/mypage");
+          navigate(`/mypage/${userInfo.userNo}`);
         }
       })
       .catch((e) => {

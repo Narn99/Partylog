@@ -14,6 +14,4 @@ public class UserResponse {
     private Date userBirthday;
     private String userNickname;
     private String userProfile;
-    private String accessToken;
-    private String refreshToken;
 }
