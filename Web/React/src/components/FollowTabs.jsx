@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import List from '@mui/material/List';
@@ -6,15 +6,36 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Button from '@mui/material/Button';
 import FollowTabsStyles from "../css/FollowTabsStyles.css";
-import { useFollow } from '../context/FollowContext'
 import Box from '@mui/material/Box';
-
+import axios from 'axios';
 
 function FollowTabs() {
   const [tabValue, setTabValue] = useState(0);
-  
-  const { followings, setFollowings } = useFollow(); // 팔로잉 목록을 컨텍스트에서 가져옵니다.
+  const [followings, setFollowings] = useState([]);
   const followers = ['follower1', 'follower2', 'follower3'];
+
+  const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
+  const accessToken = localStorage.getItem("access-token");
+
+  // 팔로잉 목록을 불러오는 로직을 별도의 함수로 분리
+  const fetchFollowings = () => {
+    axios.get(`${SERVER_API_URL}/user/searchFolloweeList/10/0`, { 
+      headers: {
+        'Authorization': `${accessToken}`
+      }
+    })
+    .then(response => {
+      const followingsNicknames = response.data.map(following => following.user_nickname);
+      setFollowings(followingsNicknames);
+    })
+    .catch(error => {
+      console.error("팔로잉 목록을 가져오는 중 오류 발생:", error);
+    });
+  };
+
+  useEffect(() => {
+    fetchFollowings(); // 컴포넌트가 마운트될 때 팔로잉 목록을 불러옵니다.
+  }, ); 
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -23,6 +44,7 @@ function FollowTabs() {
   const handleFollow = (follower) => {
     if (!followings.includes(follower)) {
       setFollowings([...followings, follower]);
+      fetchFollowings(); // 팔로잉이 추가되면 목록을 다시 불러옵니다.
     }
   };
 
@@ -33,7 +55,7 @@ function FollowTabs() {
         <Tab label="팔로워" style={FollowTabsStyles.tab}/>
       </Tabs>
 
-      <Box style={{ maxHeight: '450px', overflow: 'auto' }}> {/* 스크롤이 가능한 부분을 Box로 감쌉니다. */}
+      <Box style={{ maxHeight: '450px', overflow: 'auto' }}>
       {tabValue === 0 && (
         followings.length > 0 ? (
           <List className='tabs'>
@@ -65,7 +87,6 @@ function FollowTabs() {
           <p>아직 팔로워가 없습니다.</p>
         )
       )}
- 
       </Box>
     </div>
   );
