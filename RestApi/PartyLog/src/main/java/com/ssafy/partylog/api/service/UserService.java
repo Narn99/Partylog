@@ -2,7 +2,7 @@ package com.ssafy.partylog.api.service;
 
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.request.UserRequest;
-import com.ssafy.partylog.api.response.UserSearchResponse;
+import com.ssafy.partylog.api.response.UserSearchResponseBody;
 
 import java.util.List;
 
@@ -24,5 +24,5 @@ public interface UserService {
 
     boolean logout(int userNo) throws Exception;
 
-    List<UserSearchResponse> searchUser(String userNickname, int userNo, int limit, int offset);
+    List<UserSearchResponseBody> searchUser(String userNickname, int userNo, int limit, int offset);
 }

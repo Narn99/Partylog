@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.repository.UserRepository;
 import com.ssafy.partylog.api.request.UserRequest;
-import com.ssafy.partylog.api.response.UserSearchResponse;
 //import com.ssafy.partylog.util.JwtUtil;
+import com.ssafy.partylog.api.response.UserSearchResponseBody;
 import com.ssafy.partylog.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -217,8 +217,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserSearchResponse> searchUser(String userNickname, int userNo, int limit, int offset) {
-        List<UserSearchResponse> list = userRepository.findUser(userNickname, userNo, limit, offset);
+    public List<UserSearchResponseBody> searchUser(String userNickname, int userNo, int limit, int offset) {
+        List<UserSearchResponseBody> list = userRepository.findUser(userNickname, userNo, limit, offset);
         return list;
     }
 }
