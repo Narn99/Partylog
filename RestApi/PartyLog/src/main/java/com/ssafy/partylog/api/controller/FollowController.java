@@ -1,6 +1,7 @@
 package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.response.FollowResponse;
+import com.ssafy.partylog.api.response.StateResponse;
 import com.ssafy.partylog.api.service.FollowService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,9 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
+
 import java.util.List;
 
 @RestController
@@ -29,34 +28,48 @@ public class FollowController {
     @PostMapping("/addFollow/{followeeNo}")
     @Operation(summary = "팔로우하기", description = "팔로우를 합니다.")
     @Parameter(name = "followeeNo", description = "내가 팔로우할 회원 번호")
-    public ResponseEntity<HashMap<String, Object>> addFollow(@PathVariable int followeeNo, Authentication authentication) throws Exception {
-        HashMap<String, Object> resultMap = new HashMap<>();
+    public ResponseEntity<StateResponse> addFollow(@PathVariable int followeeNo, Authentication authentication) throws Exception {
         // 토큰 받기
         int followNo = Integer.parseInt(authentication.getName());
-        // 메시지 저장
-        String message = "팔로우 하셨습니다.";
-        resultMap.put("message", message);
-        // 팔로우 등록
-        followService.addFollow(followNo, followeeNo);
 
-        return new ResponseEntity<HashMap<String, Object>>(resultMap, HttpStatus.OK);
+        // 메시지
+        String message = "";
+
+        // 팔로우 등록
+        int status = followService.addFollow(followNo, followeeNo);
+
+        if(status == 1){
+            message = "팔로우 성공";
+            StateResponse reply= new StateResponse("201", message);
+            return new ResponseEntity<StateResponse>(reply, HttpStatus.CREATED);
+        }else {
+            message = "팔로우 실패";
+            StateResponse reply = new StateResponse("400",message);
+            return new ResponseEntity<StateResponse>(reply, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/removeFollow/{followeeNo}")
     @Operation(summary = "팔로우 해제", description = "팔로우를 해제합니다.")
     @Parameter(name = "followeeNo", description = "내가 팔로우 해제할 회원 번호")
-    public ResponseEntity<HashMap<String, Object>> removeFollow(@PathVariable int followeeNo, Authentication authentication) throws Exception {
-        HashMap<String, Object> resultMap = new HashMap<>();
+    public ResponseEntity<StateResponse> removeFollow(@PathVariable int followeeNo, Authentication authentication) throws Exception {
         //토큰 받기
         int followNo = Integer.parseInt(authentication.getName());
         // 메시지 저장
-        String message = "팔로우 해제하셨습니다.";
-        resultMap.put("message", message);
+        String message = "";
         
         //팔로우 해제
-        followService.removeFollow(followNo, followeeNo);
+        int status = followService.removeFollow(followNo, followeeNo);
 
-        return new ResponseEntity<HashMap<String, Object>>(resultMap, HttpStatus.OK);
+        if(status == 1){
+            message = "팔로우 해제 성공";
+            StateResponse reply = new StateResponse("200", message);
+            return new ResponseEntity<StateResponse>(reply, HttpStatus.OK);
+        }else {
+            message = "팔로우 해제 실패";
+            StateResponse reply = new StateResponse("400",message);
+            return new ResponseEntity<StateResponse>(reply, HttpStatus.BAD_REQUEST);
+        }
     }
 
     //나를 팔로우 하는 사람 목록 가져오기

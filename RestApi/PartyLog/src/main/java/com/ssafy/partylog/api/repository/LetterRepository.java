@@ -11,7 +11,7 @@ import java.util.List;
 public interface LetterRepository extends JpaRepository<LetterEntity, Long> {
 
     @Query(value = "DELETE FROM letter WHERE letter_id = ?1", nativeQuery = true)
-    void deleteByLetterId(String letterId);
+    int deleteByLetterId(String letterId);
 
     @Query(value = "SELECT * FROM letter WHERE letter_writer = ?1 AND year(letter_reg_date) = ?2 ORDER BY letter_reg_date DESC LIMIT ?3 OFFSET ?4", nativeQuery = true)
     List<LetterResponse> getLettersByWriter(int userNo, int year, int offset, int limit);

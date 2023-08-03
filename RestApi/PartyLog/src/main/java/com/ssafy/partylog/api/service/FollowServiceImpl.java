@@ -16,18 +16,30 @@ public class FollowServiceImpl implements FollowService {
 
 
     @Override
-    public void addFollow(int followNo, int followeeNo) throws Exception {
+    public int addFollow(int followNo, int followeeNo) throws Exception {
         FollowEntity followEntity = new FollowEntity(followNo, followeeNo);
-        followRepository.save(followEntity);
+        FollowEntity check = followRepository.save(followEntity);
+
+        if(check == null) { // 저장된 값이 없다면
+            return 0; //0을 반환한다.
+        }else { // 저장된 값이 있다면
+            return 1; // 1을 반환한다.
+        }
     }
 
     @Transactional
     @Override
-    public void removeFollow(int followNo, int followeeNo) throws Exception {
+    public int removeFollow(int followNo, int followeeNo) throws Exception {
 
         FollowEntity followEntity = new FollowEntity(followNo, followeeNo);
 //        System.out.println(followRepository.deleteFollowByFollowerNoAndFolloweeNo(followerNo, followeeNo));
-        followRepository.deleteFollowByFollowerNoAndFolloweeNo(followNo, followeeNo);
+        List<FollowEntity> list = followRepository.deleteFollowByFollowerNoAndFolloweeNo(followNo, followeeNo);
+
+        if(list.size() == 0) { // 삭제된 값이 없다면
+            return 0; //0을 반환한다.
+        }else { // 삭제된 값이 있다면
+            return 1; // 1을 반환한다.
+        }
     }
 
     //나를 팔로우한 사람 목록 가져오기

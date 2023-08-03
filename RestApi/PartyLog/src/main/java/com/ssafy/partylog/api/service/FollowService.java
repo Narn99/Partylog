@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface FollowService {
 
-    void addFollow(int followNo, int followeeId) throws Exception;
+    int addFollow(int followNo, int followeeId) throws Exception;
 
-    void removeFollow(int followNo, int followeeId) throws Exception;
+    int removeFollow(int followNo, int followeeId) throws Exception;
 
     List<FollowResponse> searchFollowerList(int followNo, int limit, int offset) throws Exception;
 

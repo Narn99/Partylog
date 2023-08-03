@@ -11,7 +11,6 @@ import java.util.Date;
 @Builder
 public class UserResponse {
     private int userNo;
-    private Date userBirthday;
-    private String userNickname;
-    private String userProfile;
+    private String code;
+    private String message;
 }
