@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class commonResponse<T> {
+public class CommonResponse<T> {
 
 //    private static final String SUCCESS_STATUS = "200";
 //    private static final String FAIL_STATUS = "400";
@@ -20,16 +20,16 @@ public class commonResponse<T> {
     private String message;
     private T data;
 
-    public static <T> commonResponse<T> createResponse(String code, T data, String message) {
-        return new commonResponse<>(code, message, data);
+    public static <T> CommonResponse<T> createResponse(String code, T data, String message) {
+        return new CommonResponse<>(code, message, data);
     }
 
-    public static commonResponse<?> createResponseWithNoContent(String code, String message) {
-        return new commonResponse<>(code, message, null);
+    public static CommonResponse<?> createResponseWithNoContent(String code, String message) {
+        return new CommonResponse<>(code, message, null);
     }
 
     // Hibernate Validator에 의해 유효하지 않은 데이터로 인해 API 호출이 거부될때 반환
-//    public static commonResponse<?> createFail(BindingResult bindingResult) {
+//    public static CommonResponse<?> createFail(BindingResult bindingResult) {
 //        Map<String, String> errors = new HashMap<>();
 //
 //        List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -40,15 +40,15 @@ public class commonResponse<T> {
 //                errors.put( error.getObjectName(), error.getDefaultMessage());
 //            }
 //        }
-//        return new commonResponse<>(FAIL_STATUS, "유효하지 않은 데이터", errors);
+//        return new CommonResponse<>(FAIL_STATUS, "유효하지 않은 데이터", errors);
 //    }
 
     // 예외 발생으로 API 호출 실패시 반환
-//    public static commonResponse<?> createError(String message) {
-//        return new commonResponse<>(ERROR_STATUS, message, null);
+//    public static CommonResponse<?> createError(String message) {
+//        return new CommonResponse<>(ERROR_STATUS, message, null);
 //    }
 
-    private commonResponse(String status, String message, T data) {
+    private CommonResponse(String status, String message, T data) {
         this.status = status;
         this.message = message;
         this.data = data;

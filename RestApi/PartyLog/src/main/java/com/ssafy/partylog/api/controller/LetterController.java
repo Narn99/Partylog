@@ -3,7 +3,7 @@ package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.request.LetterRequest;
 import com.ssafy.partylog.api.response.LetterResponseBody;
-import com.ssafy.partylog.api.response.commonResponse;
+import com.ssafy.partylog.api.response.CommonResponse;
 import com.ssafy.partylog.api.service.LetterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,7 +30,7 @@ public class LetterController {
 
     @PostMapping("/send")
     @Operation(summary = "편지보내기", description = "다른 유저에게 편지 보내기")
-    public ResponseEntity<commonResponse> addLetter(@RequestBody LetterRequest letterRequest, Authentication authentication) {
+    public ResponseEntity<CommonResponse> addLetter(@RequestBody LetterRequest letterRequest, Authentication authentication) {
         //제목 10글자 이상 제한.
         int loginUserNo = Integer.parseInt(authentication.getName());
         
@@ -42,18 +42,18 @@ public class LetterController {
 
         if(status == 1){
             message = "편지 보내기 성공";
-            commonResponse reply = commonResponse.createResponseWithNoContent("201", message);
-            return new ResponseEntity<commonResponse>(reply, HttpStatus.CREATED);
+            CommonResponse reply = CommonResponse.createResponseWithNoContent("201", message);
+            return new ResponseEntity<CommonResponse>(reply, HttpStatus.CREATED);
         }else {
             message = "편지 보내기 실패";
-            commonResponse reply = commonResponse.createResponseWithNoContent("400",message);
-            return new ResponseEntity<commonResponse>(reply, HttpStatus.BAD_REQUEST);
+            CommonResponse reply = CommonResponse.createResponseWithNoContent("400",message);
+            return new ResponseEntity<CommonResponse>(reply, HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/delete/{letterId}")
     @Operation(summary = "편지삭제(보내기취소)", description = "편지 보내기 취소")
-    public ResponseEntity<commonResponse> deleteLetter(@PathVariable String letterId)  {
+    public ResponseEntity<CommonResponse> deleteLetter(@PathVariable String letterId)  {
         //메시지
         String message = "";
 
@@ -62,38 +62,38 @@ public class LetterController {
 
         if(status == 1){
             message = "편지 삭제 성공";
-            commonResponse reply = commonResponse.createResponseWithNoContent("200",message);
-            return new ResponseEntity<commonResponse>(reply, HttpStatus.OK);
+            CommonResponse reply = CommonResponse.createResponseWithNoContent("200",message);
+            return new ResponseEntity<CommonResponse>(reply, HttpStatus.OK);
         }else {
             message = "편지 삭제 실패";
-            commonResponse reply = commonResponse.createResponseWithNoContent("400",message);
-            return new ResponseEntity<commonResponse>(reply, HttpStatus.BAD_REQUEST);
+            CommonResponse reply = CommonResponse.createResponseWithNoContent("400",message);
+            return new ResponseEntity<CommonResponse>(reply, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/list/{type}/{year}/{offset}/{limit}")
     @Operation(summary = "편지리스트", description = "편지리스트 불러오기")
     @Parameter(name="type", description="allowed : writer / receiver")
-    public ResponseEntity<commonResponse<List<LetterResponseBody>>> searchLetterList(@PathVariable String type, @PathVariable int year, @PathVariable int offset, @PathVariable int limit, Authentication authentication)  {
+    public ResponseEntity<CommonResponse<List<LetterResponseBody>>> searchLetterList(@PathVariable String type, @PathVariable int year, @PathVariable int offset, @PathVariable int limit, Authentication authentication)  {
 
         int loginUserNo = Integer.parseInt(authentication.getName());
 
         List<LetterResponseBody> list = letterService.searchLetterList(type, year, offset, limit, loginUserNo);
 
-        commonResponse data = commonResponse.createResponse("200", list,"호출 성공");
+        CommonResponse data = CommonResponse.createResponse("200", list,"호출 성공");
 
-        return new ResponseEntity<commonResponse<List<LetterResponseBody>>>(data, HttpStatus.OK);
+        return new ResponseEntity<CommonResponse<List<LetterResponseBody>>>(data, HttpStatus.OK);
     }
 
     @GetMapping("/detail/{letterId}")
     @Operation(summary = "편지상세보기", description = "편지1개 상세보기")
-    public ResponseEntity<commonResponse<LetterResponseBody>> searchLetterById(@PathVariable String letterId)  {
+    public ResponseEntity<CommonResponse<LetterResponseBody>> searchLetterById(@PathVariable String letterId)  {
 
         LetterResponseBody letter = letterService.searchLetterById(letterId);
 
-        commonResponse data = commonResponse.createResponse("200", letter, "호출 성공");
+        CommonResponse data = CommonResponse.createResponse("200", letter, "호출 성공");
 
-        return new ResponseEntity<commonResponse<LetterResponseBody>>(data, HttpStatus.OK);
+        return new ResponseEntity<CommonResponse<LetterResponseBody>>(data, HttpStatus.OK);
     }
 
 
