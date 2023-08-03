@@ -1,4 +1,4 @@
-package com.ssafy.partylog.util.Network.Interceptor
+package com.ssafy.data.network.Interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response

@@ -1,4 +1,4 @@
-package com.ssafy.partylog.util.network
+package com.ssafy.data.network
 
 import com.ssafy.partylog.util.network.login.LoginService
 

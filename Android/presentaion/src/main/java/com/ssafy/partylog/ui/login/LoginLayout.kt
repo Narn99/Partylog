@@ -1,4 +1,4 @@
-package com.ssafy.presentation.login
+package com.ssafy.partylog.ui.login
 
 import android.app.Application
 import androidx.compose.foundation.Image
@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ssafy.partylog.R
-import com.ssafy.presentation.login.stateholder.LoginFrameStateHolder
-import com.ssafy.presentation.login.stateholder.LoginViewModel
+import com.ssafy.partylog.ui.login.stateholder.LoginFrameStateHolder
+import com.ssafy.partylog.ui.login.stateholder.LoginViewModel
 import com.ssafy.partylog.ui.theme.PartylogTheme
 import com.ssafy.partylog.ui.theme.loginTextColor
 import com.ssafy.partylog.ui.theme.maplestory

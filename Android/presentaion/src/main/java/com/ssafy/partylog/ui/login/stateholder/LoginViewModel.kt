@@ -1,11 +1,11 @@
-package com.ssafy.presentation.login.stateholder
+package com.ssafy.partylog.ui.login.stateholder
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.kakao.sdk.user.UserApiClient
-import com.ssafy.presentation.login.LoginState
-import com.ssafy.partylog.util.network.login.LoginServiceImpl
+import com.ssafy.partylog.ui.login.LoginState
+import com.ssafy.data.service.login.LoginServiceImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

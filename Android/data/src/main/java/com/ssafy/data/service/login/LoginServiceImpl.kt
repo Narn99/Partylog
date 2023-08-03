@@ -1,14 +1,11 @@
-package com.ssafy.partylog.util.network.login
+package com.ssafy.data.service.login
 
-import android.util.Log
 import com.ssafy.partylog.data.resp.KakaoLogin
 import com.ssafy.presentation.login.stateholder.LoginViewModel
-import com.ssafy.partylog.util.network.RetroServicePool
-import retrofit2.Call
-import retrofit2.Callback
+import com.ssafy.data.network.RetroServicePool
 import retrofit2.Response
 
 class LoginServiceImpl {
     suspend fun kakaoLogin(token: String, viewModel: com.ssafy.presentation.login.stateholder.LoginViewModel): Response<KakaoLogin> =
-        RetroServicePool.RetroLogin.KakaoLogin()
+        com.ssafy.data.network.RetroServicePool.RetroLogin.KakaoLogin()
 }

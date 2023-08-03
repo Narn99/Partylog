@@ -1,4 +1,4 @@
-package com.ssafy.partylog.util.Network
+package com.ssafy.data.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -25,7 +25,6 @@ object NetworkUtil {
         .client(client)
         .build()
 
-
-//    inline fun <reified T> create(): T = retrofit.create(T::class.java)
+    inline fun <reified T> create(): T = retrofit.create(T::class.java)
 }
 
