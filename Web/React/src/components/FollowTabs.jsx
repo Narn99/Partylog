@@ -12,7 +12,7 @@ import axios from 'axios';
 function FollowTabs() {
   const [tabValue, setTabValue] = useState(0);
   const [followings, setFollowings] = useState([]);
-  const followers = ['follower1', 'follower2', 'follower3'];
+  const [followers, setFollowers] = useState([]);
 
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
@@ -33,9 +33,25 @@ function FollowTabs() {
     });
   };
 
+  const fetchFollowers = () => { // 팔로워 목록을 불러오는 함수
+    axios.get(`${SERVER_API_URL}/user/searchFollowerList/10/0`, { 
+      headers: {
+        'Authorization': `${accessToken}`
+      }
+    })
+    .then(response => {
+      const followersNicknames = response.data.map(follower => follower.user_nickname);
+      setFollowers(followersNicknames);
+    })
+    .catch(error => {
+      console.error("팔로워 목록을 가져오는 중 오류 발생:", error);
+    });
+  };
+
   useEffect(() => {
     fetchFollowings(); // 컴포넌트가 마운트될 때 팔로잉 목록을 불러옵니다.
-  }, ); 
+    fetchFollowers(); // 팔로워 목록 불러오기
+  }, [] ); 
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
