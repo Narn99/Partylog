@@ -9,6 +9,7 @@ import {
   setModalData,
   resetModalData,
   addMessageData,
+  deleteMessageData,
 } from "../actions/actions";
 
 const style = {
@@ -54,6 +55,24 @@ function MessageModal(props) {
 
   // 내용 초기화 버튼 만들기?
 
+  const handleResetModalText = () => {
+    dispatch(resetModalData());
+  };
+
+  // 메시지 삭제용 버튼. 메시지 userNo가 본인거랑 같다면 보이고, 삭제도 가능하게 수정해야됨.
+  // 일단 임시로 마지막 메시지가 삭제되게 해둠.
+
+  const userNo = useSelector((state) => state.messagesData.messages).length;
+
+  const handleDeleteMessage = () => {
+    // if (modalUserNo === 1) {
+    dispatch(deleteMessageData(userNo));
+    handleModalClose();
+    // } else {
+    //   alert("메시지 작성자 본인이 아닙니다!");
+    // }
+  };
+
   return (
     <Modal
       open={modalOpen}
@@ -70,7 +89,7 @@ function MessageModal(props) {
         />
         <Grid item container justifyContent={"center"}>
           <Button
-            className="MyPage-message-button"
+            className="MyPage-message-submit-button"
             type="submit"
             onClick={handleSubmitModalText}
             style={{
@@ -86,6 +105,44 @@ function MessageModal(props) {
             }}
           >
             보내기
+          </Button>
+
+          {/* 일단 메시지 삭제랑 초기화용 버튼 */}
+          <Button
+            className="MyPage-message-delete-button"
+            type="submit"
+            onClick={handleDeleteMessage}
+            style={{
+              cursor: "pointer",
+              backgroundColor: "#fbb3c2",
+              color: "white",
+              fontFamily: "MaplestoryOTFBold",
+              width: "120px",
+              fontSize: "25px",
+              borderRadius: "50px",
+              marginTop: "20px",
+              padding: "10px",
+            }}
+          >
+            삭제
+          </Button>
+          <Button
+            className="MyPage-message-reset-button"
+            type="submit"
+            onClick={handleResetModalText}
+            style={{
+              cursor: "pointer",
+              backgroundColor: "#fbb3c2",
+              color: "white",
+              fontFamily: "MaplestoryOTFBold",
+              width: "120px",
+              fontSize: "25px",
+              borderRadius: "50px",
+              marginTop: "20px",
+              padding: "10px",
+            }}
+          >
+            초기화
           </Button>
         </Grid>
       </Box>

@@ -1,4 +1,9 @@
-import React from "react";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import React, {
+  // useCallback,
+  // useEffect,
+  useState,
+} from "react";
 import MicRoundedIcon from "@mui/icons-material/MicRounded";
 import MicOffRoundedIcon from "@mui/icons-material/MicOffRounded";
 import CelebrationRoundedIcon from "@mui/icons-material/CelebrationRounded";
@@ -11,7 +16,33 @@ import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
 import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import CakeRoundedIcon from "@mui/icons-material/CakeRounded";
 
-function ButtonGroup() {
+// 일단 쓸지도 모르는 아이콘들 모아온 것
+
+function ButtonGroups() {
+  const theme = useTheme();
+  // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const changeIconSize = isSmallScreen ? "40px" : "50px";
+
+  const [isMicOn, setIsMicOn] = useState(false);
+  const [isCamOn, setIsCamOn] = useState(false);
+  const [isMusicOn, setIsMusicOn] = useState(false);
+  const [isVolumeOn, setIsVolumeOn] = useState(false);
+
+  const handleMicToggle = () => {
+    setIsMicOn(!isMicOn);
+  };
+  const handleCamToggle = () => {
+    setIsCamOn(!isCamOn);
+  };
+  const handleMusicToggle = () => {
+    setIsMusicOn(!isMusicOn);
+  };
+  const handleVolumeToggle = () => {
+    setIsVolumeOn(!isVolumeOn);
+  };
+
   return (
     <div
       style={{
@@ -25,20 +56,89 @@ function ButtonGroup() {
         alignItems: "center",
       }}
     >
-      <MicRoundedIcon sx={{ fontSize: 50 }} />
-      <MicOffRoundedIcon sx={{ fontSize: 50 }} />
-      <CelebrationRoundedIcon sx={{ fontSize: 50 }} />
-      <EmojiEmotionsRoundedIcon sx={{ fontSize: 50 }} />
-      <VideocamRoundedIcon sx={{ fontSize: 50 }} />
-      <VideocamOffRoundedIcon sx={{ fontSize: 50 }} />
-      <MusicNoteRoundedIcon sx={{ fontSize: 50 }} />
-      <MusicOffRoundedIcon sx={{ fontSize: 50 }} />
-      <VolumeUpRoundedIcon sx={{ fontSize: 50 }} />
-      <VolumeOffRoundedIcon sx={{ fontSize: 50 }} />
-      <CakeRoundedIcon sx={{ fontSize: 50 }} />
-      <h1>👏</h1>
+      <Grid
+        container
+        justifyContent={"space-evenly"}
+        alignItems={"center"}
+        style={{
+          flexWrap: "nowrap",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+        }}
+      >
+        <Grid item>
+          {isMicOn ? (
+            <MicOffRoundedIcon
+              sx={{ fontSize: `${changeIconSize}` }}
+              onClick={handleMicToggle}
+              style={{ cursor: "pointer" }}
+            />
+          ) : (
+            <MicRoundedIcon
+              sx={{ fontSize: `${changeIconSize}` }}
+              onClick={handleMicToggle}
+              style={{ cursor: "pointer" }}
+            />
+          )}
+        </Grid>
+        {isCamOn ? (
+          <VideocamOffRoundedIcon
+            sx={{ fontSize: `${changeIconSize}` }}
+            onClick={handleCamToggle}
+            style={{ cursor: "pointer" }}
+          />
+        ) : (
+          <VideocamRoundedIcon
+            sx={{ fontSize: `${changeIconSize}` }}
+            onClick={handleCamToggle}
+            style={{ cursor: "pointer" }}
+          />
+        )}
+        <Grid item>
+          {isMusicOn ? (
+            <MusicOffRoundedIcon
+              sx={{ fontSize: `${changeIconSize}` }}
+              onClick={handleMusicToggle}
+              style={{ cursor: "pointer" }}
+            />
+          ) : (
+            <MusicNoteRoundedIcon
+              sx={{ fontSize: `${changeIconSize}` }}
+              onClick={handleMusicToggle}
+              style={{ cursor: "pointer" }}
+            />
+          )}
+        </Grid>
+        <Grid item>
+          {isVolumeOn ? (
+            <VolumeOffRoundedIcon
+              sx={{ fontSize: `${changeIconSize}` }}
+              onClick={handleVolumeToggle}
+              style={{ cursor: "pointer" }}
+            />
+          ) : (
+            <VolumeUpRoundedIcon
+              sx={{ fontSize: `${changeIconSize}` }}
+              onClick={handleVolumeToggle}
+              style={{ cursor: "pointer" }}
+            />
+          )}
+        </Grid>
+        <Grid item>
+          <CelebrationRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
+        </Grid>
+        <Grid item>
+          <EmojiEmotionsRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
+        </Grid>
+        <Grid item>
+          <CakeRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
+        </Grid>
+        <Grid item>
+          <h1>👏</h1>
+        </Grid>
+      </Grid>
     </div>
   );
 }
 
-export default ButtonGroup;
+export default ButtonGroups;

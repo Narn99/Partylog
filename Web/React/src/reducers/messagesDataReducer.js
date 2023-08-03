@@ -87,15 +87,24 @@ export const messagesDataReducer = (state = initialState, action) => {
         ...state,
         messages: newMessages,
       };
-    case actionTypes.GET_MESSAGE_LIST:
-      return {
-        ...state,
-        // messages: action.payload.messagesList,
-      };
     case actionTypes.GET_MESSAGE_DETAIL:
       return {
         ...state,
         // messageDetail = action.payload.messageDetail,
+      };
+    case actionTypes.DELETE_MESSAGE_DATA:
+      const { userNo } = action.payload;
+      const updatedMessages = state.messages.filter(
+        (message) => message.userNo !== userNo
+      );
+      return {
+        ...state,
+        messages: updatedMessages,
+      };
+    case actionTypes.GET_MESSAGE_LIST:
+      return {
+        ...state,
+        // messages: action.payload.messagesList,
       };
     default:
       return state;

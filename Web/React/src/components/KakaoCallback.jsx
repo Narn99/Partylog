@@ -23,7 +23,6 @@ const KakaoCallback = () => {
 
         if (res.data.code === "201") {
           // 생일입력 페이지로 이동
-<<<<<<< HEAD
           localStorage.setItem(
             "access-token",
             res.headers.get("authorization")
@@ -33,12 +32,15 @@ const KakaoCallback = () => {
             res.headers.get("refresh-token")
           );
           navigate("/birthdayinput");
-=======
-          navigate("/birthdayinput")
->>>>>>> 15b3dac60932d9c67118fc9aa3b19feffcd4906b
         } else {
-          localStorage.setItem("access-token", res.headers.get("authorization"));
-          localStorage.setItem("refresh-token", res.headers.get("refresh-token"));
+          localStorage.setItem(
+            "access-token",
+            res.headers.get("authorization")
+          );
+          localStorage.setItem(
+            "refresh-token",
+            res.headers.get("refresh-token")
+          );
           navigate(`/user/${userInfo.userNo}`);
         }
       })

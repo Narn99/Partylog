@@ -1,9 +1,19 @@
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect } from "react";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
 import ChatBox from "../components/LivePage/ChatBox";
+import ViewersCarousel from "../components/LivePage/ViewersCarousel";
 
 function LivePage() {
+  const theme = useTheme();
+  // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  // const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const changeHeightSize = isMediumScreen ? "" : "75vh";
+  const changeChatBoxSize = isMediumScreen ? "95%" : "90%";
+  const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
+
   useEffect(() => {
     document.body.classList.add("live-page");
 
@@ -12,7 +22,7 @@ function LivePage() {
     };
   }, []);
 
-  const tempUsers = [
+  const viewers = [
     "강아지",
     "레서판다",
     "닭",
@@ -23,7 +33,7 @@ function LivePage() {
     "고구마",
     "개미핥기",
     "호모에렉투스",
-    "초전도체",
+    "고대초전도체",
     "터미네이터",
     "구글",
     "구글",
@@ -31,6 +41,9 @@ function LivePage() {
     "구글",
     "구글",
     "구글",
+    "쿼카",
+    "연세우유생크림빵",
+    "국뽕치사량흡입",
   ];
 
   return (
@@ -40,14 +53,15 @@ function LivePage() {
         justifyContent={"space-evenly"}
         alignItems={"center"}
         // spacing={4}
-        style={{ height: "75vh" }}
+        style={{ height: `${changeHeightSize}` }}
       >
         <Grid
           item
           container
           justifyContent={"center"}
           alignItems={"center"}
-          xs={8}
+          xs={12}
+          md={8}
           style={{ height: "100%" }}
           className="broadcast-grid"
         >
@@ -68,20 +82,25 @@ function LivePage() {
               style={{
                 width: "95%",
                 height: "95%",
+                // flexDirection: "column",
               }}
             >
               <Grid
                 item
                 container
-                xs={12}
+                // xs={12}
                 justifyContent={"center"}
                 alignItems={"center"}
+                style={{ height: "65%" }}
               >
                 <Grid
                   item
-                  xs={8}
+                  xs={10}
                   style={{
-                    height: "300px",
+                    height: "100%",
+                    minHeight: "200px",
+                    minWidth: "300px",
+                    // height: "300px",
                     backgroundColor: "green",
                     color: "white",
                     display: "flex",
@@ -91,18 +110,20 @@ function LivePage() {
                   }}
                   className="live-display"
                 >
-                  <h3>방송자 화면</h3>
+                  <p>방송자 화면</p>
                 </Grid>
               </Grid>
               <Grid
                 container
                 item
-                xs={12}
+                // xs={12}
                 justifyContent={"space-evenly"}
                 alignItems={"center"}
+                style={{ height: "30%" }}
               >
+                <ViewersCarousel viewers={viewers} />
                 {/* 참가자 1명당 1칸 차지하게 하는 곳, 나중에 API에서 받는 데이터에 맞게 수정해야됨. */}
-                {tempUsers.map((username, index) => (
+                {/* {viewers.map((username, index) => (
                   <Grid
                     item
                     xs={2}
@@ -113,7 +134,7 @@ function LivePage() {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      marginTop: "10px",
+                      // marginTop: "10px",
                     }}
                   >
                     <div
@@ -124,23 +145,49 @@ function LivePage() {
                         justifyContent: "center",
                         alignItems: "center",
                         borderRadius: "15px",
+                        flexWrap: "nowrap",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
                       }}
                       className="viewer-display"
                     >
-                      <h3>{username}</h3>
+                      <p>{getLength(username, 4)}</p>
                     </div>
                   </Grid>
-                ))}
+                ))} */}
               </Grid>
             </Grid>
           </div>
         </Grid>
+        {isMediumScreen && (
+          <Grid
+            container
+            justifyContent={"center"}
+            alignItems={"center"}
+            style={{ marginTop: "10px", height: "" }}
+            className="button-grid"
+          >
+            <Grid
+              item
+              md={5}
+              xs={10}
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <ButtonGroups />
+            </Grid>
+          </Grid>
+        )}
         <Grid
           item
           container
           justifyContent={"center"}
           alignItems={"center"}
-          xs={3}
+          xs={12}
+          md={3}
           style={{ height: "100%" }}
           className="chat-grid"
         >
@@ -154,11 +201,12 @@ function LivePage() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              marginTop: `${changeChatBoxMarginTop}`,
             }}
           >
             <div
               style={{
-                width: "90%",
+                width: `${changeChatBoxSize}`,
                 height: "95%",
                 backgroundColor: "white",
                 borderRadius: "10px",
@@ -179,7 +227,15 @@ function LivePage() {
                 <p>강아지 : 야옹</p>
                 <p>구글 : 저도 아이폰 씁니다.</p>
               </div>
-              채팅 입력창
+              <div
+                style={{
+                  justifyContent: "start",
+                  alignItems: "center",
+                  display: "flex",
+                }}
+              >
+                채팅 입력창
+              </div>
               <div
                 style={{
                   width: "95%",
@@ -192,24 +248,28 @@ function LivePage() {
           </div>
         </Grid>
       </Grid>
-      <Grid
-        container
-        justifyContent={"center"}
-        alignItems={"center"}
-        style={{ marginTop: "60px", height: "10vh" }}
-        className="button-grid"
-      >
+
+      {!isMediumScreen && (
         <Grid
-          item
-          xs={5}
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
+          container
+          justifyContent={"center"}
+          alignItems={"center"}
+          style={{ marginTop: "60px", height: "10vh" }}
+          className="button-grid"
         >
-          <ButtonGroups />
+          <Grid
+            item
+            md={5}
+            xs={10}
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <ButtonGroups />
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </div>
   );
 }

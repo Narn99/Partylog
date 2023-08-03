@@ -48,6 +48,8 @@ export const setModalData = (modalTitle, modalDescription) => {
 export const addMessageData = (modalTitle, modalDescription) => {
   // 메시지를 보내는 기능. 추후 API 연결하면 그에 맞게 return쪽과 리듀서도 수정
   // 메시지 보드는 계속 보고 있는거니, POST 이후에 갱신된 메시지 리스트를 다시 GET할 수 있어야.
+  // 또 메시지는 1개만 남길 수 있게 해야하지 않을까?
+
   // const postMessage = axios
   //   .post(`${SERVER_API_URL}/letter/send`, {
   //     letterTitle: modalTitle,
@@ -62,6 +64,16 @@ export const addMessageData = (modalTitle, modalDescription) => {
     payload: {
       modalTitle,
       modalDescription,
+    },
+  };
+};
+
+// 남긴 메시지 삭제하는 기능.. 추후에 본인 userNo를 비교해서 해당하는거 삭제하도록
+export const deleteMessageData = (userNo) => {
+  return {
+    type: actionTypes.DELETE_MESSAGE_DATA,
+    payload: {
+      userNo,
     },
   };
 };

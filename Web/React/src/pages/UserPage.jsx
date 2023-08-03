@@ -1,12 +1,15 @@
 import React, { useState, memo } from "react";
-import { Link } from "react-router-dom";
+import {
+  Link,
+  // useNavigate,
+  useParams,
+} from "react-router-dom";
 import Button from "@mui/material/Button";
 import "../css/UserPage.css";
 import "../components/Timmer";
 import CountdownTimer from "../components/Timmer";
 import molru from "../assets/molru.webp";
 import YearChip from "../components/YearChip";
-// import MessageBoard from "../components/MessageBoard";
 import MessageModal from "../components/MessageModal";
 import Grid from "@mui/material/Grid";
 import NavBar from "../components/NavBar";
@@ -60,9 +63,14 @@ function UserPage() {
     setTargetDateTime(event.target.value);
   };
 
+  // const navigate = useNavigate();
+
+  const { userNo } = useParams();
+
   const handleLiveButtonClick = (event) => {
     // event.stopPropagation();
     // 이 버튼을 클릭했을 때 실행할 동작을 여기에 추가
+    window.open(`/live/${userNo}`, "_blank");
   };
 
   return (
@@ -95,7 +103,7 @@ function UserPage() {
               </Grid>
               <Grid item>
                 <Link to="/myfriend" className="myLink">
-                 <p className="UserPage-follow">팔로잉|팔로워</p>
+                  <p className="UserPage-follow">팔로잉|팔로워</p>
                 </Link>
               </Grid>
 
@@ -157,6 +165,23 @@ function UserPage() {
                   alignItems={"center"}
                 >
                   <div className="create-message-div">
+                    {/* 추후에 메시지 이미 작성한 본인은 메시지 작성 버튼 대신에 수정 버튼이 보이게 수정,
+                    수정을 누르면 본인이 작성했던 메시지 내용이 뜨게 하고,그 안에 메시지 삭제 버튼도 존재하게 */}
+                    <Button
+                      className="fix-message-button"
+                      onClick={handleModalOpen}
+                      variant="contained"
+                      style={{
+                        fontFamily: "MaplestoryOTFBold",
+                        fontSize: "20px",
+                        color: "white",
+                        borderRadius: "40px",
+                        texShadow: "0.1px 0.1px 4px #e892a4",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      메시지 수정
+                    </Button>
                     <Button
                       className="create-message-button"
                       onClick={handleModalOpen}
