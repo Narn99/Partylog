@@ -1,4 +1,4 @@
-package com.ssafy.partylog.ui.login
+package com.ssafy.presentation.login
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
