@@ -198,9 +198,9 @@ public class UserController {
         int userNo = Integer.parseInt(authentication.getName());
         UserEntity userInfo = userService.searchUserInfoByUserNo(userNo);
         System.out.println(userInfo);
-        List<LetterResponseBody> letterResponseBody = letterService.searchLetterList("receiver", 2023, 1,0, 4);
-        int followerSum = (int) followeService.getFollowerNumber(4);
-        int followeeSum = (int) followeService.getFolloweeNumber(4);
+        List<LetterResponseBody> letterResponseBody = letterService.searchLetterList("receiver", 0, 1,0, userNo);
+        int followerSum = (int) followeService.getFollowerNumber(userNo);
+        int followeeSum = (int) followeService.getFolloweeNumber(userNo);
 
         MyPageResponseBody myPageResponseBody = new MyPageResponseBody(
                 userNo,userInfo.getUserNickname(),userInfo.getUserBirthday(),userInfo.getUserProfile(),
