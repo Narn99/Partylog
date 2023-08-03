@@ -1,7 +1,8 @@
 package com.ssafy.data.network
 
-import com.ssafy.partylog.util.network.login.LoginService
+import com.ssafy.data.service.login.LoginService
 
-object RetroServicePool {
+
+object ServicePool {
     val RetroLogin = NetworkUtil.create<LoginService>()
 }
