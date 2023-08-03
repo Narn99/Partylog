@@ -2,10 +2,8 @@ package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.request.UserRequest;
-import com.ssafy.partylog.api.response.FollowResponse;
-import com.ssafy.partylog.api.response.StateResponse;
-import com.ssafy.partylog.api.response.UserResponse;
-import com.ssafy.partylog.api.response.UserSearchResponse;
+import com.ssafy.partylog.api.response.UserSearchResponseBody;
+import com.ssafy.partylog.api.response.commonResponse;
 import com.ssafy.partylog.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jdk.jshell.Snippet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -45,14 +43,14 @@ public class UserController {
     @Parameter(name = "code", description = "카카오에서 발급해준 인증코드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
+            @ApiResponse(responseCode = "201", description = "Need Birthday Info"),
             @ApiResponse(responseCode = "400", description = "Invalid"),
     })
-    public ResponseEntity<UserResponse> login(@RequestParam("code") String authCode, HttpServletResponse response) throws Exception {
+    public ResponseEntity<commonResponse<Integer>> login(@RequestParam("code") String authCode, HttpServletResponse response) throws Exception {
         log.info("카카오 인증 코드: {}", authCode);
         
         String code = "";
         String message = "";
-        UserResponse userInfo = null;
         String accessToken = null;
         String refreshToken = null;
 
@@ -73,18 +71,13 @@ public class UserController {
             message = "생일 정보입력 요청";
         }
 
-        // 유저 정보 저장
-        userInfo = UserResponse.builder()
-                .userNo(user.getUserNo())
-                .code(code)
-                .message(message)
-                .build();
+        commonResponse data = commonResponse.createResponse(code,user.getUserNo(),message);
 
         // response 값 저장
         response.setHeader("authorization", "Bearer " + accessToken);
         response.setHeader("refresh-token", "Bearer " + refreshToken);
 
-        return new ResponseEntity<UserResponse>(userInfo, HttpStatus.OK);
+        return new ResponseEntity<commonResponse<Integer>>(data, HttpStatus.OK);
     }
 
     @GetMapping("/mobile/login")
@@ -92,15 +85,15 @@ public class UserController {
     @Parameter(name = "token", description = "카카오에서 발급해준 인증토큰")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
+            @ApiResponse(responseCode = "201", description = "Need Birthday Info"),
             @ApiResponse(responseCode = "400", description = "Invalid"),
     })
-    public ResponseEntity<UserResponse> mobileLogin(@RequestParam("token") String accessToken, HttpServletResponse response) throws Exception {
+    public ResponseEntity<commonResponse<Integer>> mobileLogin(@RequestParam("token") String accessToken, HttpServletResponse response) throws Exception {
         HashMap<String,Object> resultMap = new HashMap<>();
         log.info("카카오 인증 토큰: {}", accessToken);
 
         String code = "";
         String message = "";
-        UserResponse userInfo = null;
         String refreshToken = null;
 
         // 카카오 로그인 과정을 통해 생일을 제외한 유저정보  DB에 저장
@@ -120,18 +113,13 @@ public class UserController {
             message = "생일 정보입력 요청";
         }
 
-        // 유저 정보 저장
-        userInfo = UserResponse.builder()
-                .userNo(user.getUserNo())
-                .code(code)
-                .message(message)
-                .build();
+        commonResponse data = commonResponse.createResponse(code,user.getUserNo(),message);
 
         // response 값 저장
         response.setHeader("authorization", "Bearer " + accessToken);
         response.setHeader("refresh-token", "Bearer " + refreshToken);
 
-        return new ResponseEntity<UserResponse>(userInfo, HttpStatus.OK);
+        return new ResponseEntity<commonResponse<Integer>>(data, HttpStatus.OK);
     }
 
     @PostMapping("/join")
@@ -141,11 +129,11 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
             @ApiResponse(responseCode = "400", description = "Invalid"),
     })
-    public ResponseEntity<UserResponse> join(@RequestBody UserRequest userRequest, HttpServletResponse response) throws Exception {
+    public ResponseEntity<commonResponse<Integer>> join(@RequestBody UserRequest userRequest, HttpServletResponse response) throws Exception {
         log.info("회원가입 요청값: {}", userRequest);
         String code = "";
         String message = "";
-        UserResponse userInfo = null;
+        commonResponse data;
         String accessToken = null;
         String refreshToken = null;
         if(userService.join(userRequest)) {
@@ -156,24 +144,18 @@ public class UserController {
             UserEntity user = userService.searchUserInfoByUserNo(userRequest.getUserNo());
             code = "200";
             message = "회원가입에 성공하였습니다.";
-            userInfo = UserResponse.builder()
-                    .userNo(user.getUserNo())
-                    .code(code)
-                    .message(message)
-                    .build();
+
+            data = commonResponse.createResponse(code,user.getUserNo(),message);
         } else {
             code = "400";
             message = "회원가입에 실패했습니다.";
-            userInfo = UserResponse.builder()
-                    .userNo(0)
-                    .code(code)
-                    .message(message)
-                    .build();
+
+            data = commonResponse.createResponse(code,0,message);
         }
 
         response.setHeader("authorization", "Bearer " + accessToken);
         response.setHeader("refresh-token", "Bearer " + refreshToken);
-        return new ResponseEntity<UserResponse>(userInfo, HttpStatus.OK);
+        return new ResponseEntity<commonResponse<Integer>>(data, HttpStatus.OK);
     }
 
     @GetMapping("/recreateAccessToken")
@@ -181,7 +163,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
             @ApiResponse(responseCode = "400", description = "Invalid"),
     })
-    public ResponseEntity<StateResponse> recreateAccessToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ResponseEntity<commonResponse> recreateAccessToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String message = "";
         String refreshToken = request.getHeader("Authorization").split(" ")[1];
         String accessToken = userService.searchRefreshToken(refreshToken);
@@ -191,12 +173,12 @@ public class UserController {
 
         if(accessToken == null) { // refreshToken이 DB 값과 다른 경우
             message = "유효하지 않은 refreshToken 입니다.";
-            StateResponse reply = new StateResponse("400", message);
-            return new ResponseEntity<StateResponse>(reply, HttpStatus.BAD_REQUEST);
+            commonResponse reply = commonResponse.createResponseWithNoContent("400",message);
+            return new ResponseEntity<commonResponse>(reply, HttpStatus.BAD_REQUEST);
         } else {
             message = "accessToken 재발급 완료";
-            StateResponse reply = new StateResponse("200", message);
-            return new ResponseEntity<StateResponse>(reply, HttpStatus.OK);
+            commonResponse reply = commonResponse.createResponseWithNoContent("200",message);
+            return new ResponseEntity<commonResponse>(reply, HttpStatus.OK);
         }
     }
 
@@ -211,19 +193,19 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = HashMap.class)))),
             @ApiResponse(responseCode = "400", description = "Invalid"),
     })
-    public ResponseEntity<StateResponse> logout(Authentication authentication) throws Exception {
+    public ResponseEntity<commonResponse> logout(Authentication authentication) throws Exception {
         // DB에 저장된 refreshToken 값 제거
 
         String message = "";
         log.info("사용자 번호: {}", authentication.getName());
         if(userService.logout(Integer.parseInt(authentication.getName()))) { // 로그아웃 성공
             message = "로그아웃 성공";
-            StateResponse reply = new StateResponse("200", message);
-            return new ResponseEntity<StateResponse>(reply, HttpStatus.OK);
+            commonResponse reply = commonResponse.createResponseWithNoContent("200",message);
+            return new ResponseEntity<commonResponse>(reply, HttpStatus.OK);
         } else { // 로그아웃 실패
             message = "로그아웃 실패";
-            StateResponse reply = new StateResponse("400", message);
-            return new ResponseEntity<StateResponse>(reply, HttpStatus.BAD_REQUEST);
+            commonResponse reply = commonResponse.createResponseWithNoContent("400",message);
+            return new ResponseEntity<commonResponse>(reply, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -233,12 +215,14 @@ public class UserController {
     @Parameter(name = "userNickname", description = "검색 내용")
     @Parameter(name = "limit", description = "한번에 가지고 올 사람 수")
     @Parameter(name = "offset", description = "가지고 올 때 시작하는 순번 (0부터 시작, limit 크기만큼 커짐)")
-    public ResponseEntity<List<UserSearchResponse>> searchUser(@PathVariable String userNickname, @PathVariable int limit, @PathVariable int offset, Authentication authentication) throws Exception{
+    public ResponseEntity<commonResponse<List<UserSearchResponseBody>>> searchUser(@PathVariable String userNickname, @PathVariable int limit, @PathVariable int offset, Authentication authentication) throws Exception{
         //토큰 받기
         int myNo = Integer.parseInt(authentication.getName());
 
-        List<UserSearchResponse> list = userService.searchUser(userNickname, myNo, limit, offset);
+        List<UserSearchResponseBody> list = userService.searchUser(userNickname, myNo, limit, offset);
 
-        return new ResponseEntity<List<UserSearchResponse>>(list, HttpStatus.OK);
+        commonResponse data = commonResponse.createResponse("200", list,"호출 성공");
+
+        return new ResponseEntity<commonResponse<List<UserSearchResponseBody>>>(data, HttpStatus.OK);
     }
 }

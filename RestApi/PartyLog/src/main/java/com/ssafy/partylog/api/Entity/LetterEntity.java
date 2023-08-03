@@ -1,6 +1,5 @@
 package com.ssafy.partylog.api.Entity;
 
-import com.ssafy.partylog.api.response.LetterResponse;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 

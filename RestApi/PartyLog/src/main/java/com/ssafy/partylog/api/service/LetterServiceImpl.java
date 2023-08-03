@@ -3,7 +3,7 @@ package com.ssafy.partylog.api.service;
 import com.ssafy.partylog.api.Entity.LetterEntity;
 import com.ssafy.partylog.api.repository.LetterRepository;
 import com.ssafy.partylog.api.request.LetterRequest;
-import com.ssafy.partylog.api.response.LetterResponse;
+import com.ssafy.partylog.api.response.LetterResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,8 +47,8 @@ public class LetterServiceImpl implements LetterService {
     }
 
     @Override
-    public List<LetterResponse> searchLetterList(String type, int year, int offset, int limit, int loginUserNo) {
-        List<LetterResponse> list;
+    public List<LetterResponseBody> searchLetterList(String type, int year, int offset, int limit, int loginUserNo) {
+        List<LetterResponseBody> list;
         if(type.equals("writer")) {
             list = letterRepository.getLettersByWriter(loginUserNo, year, offset, limit);
         } else {
@@ -58,8 +58,8 @@ public class LetterServiceImpl implements LetterService {
     }
 
     @Override
-    public LetterResponse searchLetterById(String letterId) {
-        LetterResponse letter = letterRepository.getLettersByLetterId(letterId);
+    public LetterResponseBody searchLetterById(String letterId) {
+        LetterResponseBody letter = letterRepository.getLettersByLetterId(letterId);
         return letter;
     }
 
