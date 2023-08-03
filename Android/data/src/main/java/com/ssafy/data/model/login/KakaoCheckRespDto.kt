@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class KakaoCheckRespDto(
-    val code: String,
+    val code: Int,
     val message: String,
     val userInfo: UserInfo
 )
