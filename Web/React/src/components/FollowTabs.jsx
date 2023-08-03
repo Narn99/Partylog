@@ -25,8 +25,9 @@ function FollowTabs() {
       }
     })
     .then(response => {
-      const followingsNicknames = response.data.map(following => following.user_nickname);
-      setFollowings(followingsNicknames);
+      // user_no와 user_nickname을 함께 저장합니다.
+    setFollowings(response.data.map(following => 
+      ({ userNo: following.user_no, nickname: following.user_nickname })));
     })
     .catch(error => {
       console.error("팔로잉 목록을 가져오는 중 오류 발생:", error);
@@ -40,8 +41,8 @@ function FollowTabs() {
       }
     })
     .then(response => {
-      const followersNicknames = response.data.map(follower => follower.user_nickname);
-      setFollowers(followersNicknames);
+      setFollowers(response.data.map(follower => 
+        ({ userNo: follower.user_no, nickname: follower.user_nickname })));
     })
     .catch(error => {
       console.error("팔로워 목록을 가져오는 중 오류 발생:", error);
@@ -76,8 +77,8 @@ function FollowTabs() {
         followings.length > 0 ? (
           <List className='tabs'>
             {followings.map((following) => (
-              <ListItem key={following}>
-                <ListItemText primary={following} />
+              <ListItem key={following.userNo}>
+                <ListItemText primary={`${following.nickname} (# ${following.userNo})`} />
               </ListItem>
             ))}
           </List>
@@ -90,13 +91,13 @@ function FollowTabs() {
         followers.length > 0 ? (
           <List className='tabs'>
             {followers.map((follower) => (
-              <ListItem key={follower}>
-                <ListItemText primary={follower} />
-                <Button onClick={() => handleFollow(follower)} 
-                 variant={followings.includes(follower) ? 'text' : 'outlined'}>
+              <ListItem key={follower.userNo}>
+                <ListItemText primary={`${follower.nickname} (# ${follower.userNo})`} />
+                <Button onClick={() => handleFollow(follower.userNo)} 
+                 variant={followings.some(following => following.userNo === follower.userNo) ? 'text' : 'outlined'}>
                   {followings.includes(follower) ? '팔로우됨' : '팔로우'}
                  </Button>
-              </ListItem>
+              </ListItem> 
             ))}
           </List>
         ) : (
