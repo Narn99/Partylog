@@ -2,8 +2,12 @@ package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.request.UserRequest;
+import com.ssafy.partylog.api.response.LetterResponseBody;
+import com.ssafy.partylog.api.response.MyPageResponseBody;
 import com.ssafy.partylog.api.response.UserSearchResponseBody;
 import com.ssafy.partylog.api.response.CommonResponse;
+import com.ssafy.partylog.api.service.FollowService;
+import com.ssafy.partylog.api.service.LetterService;
 import com.ssafy.partylog.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +39,14 @@ public class UserController {
 
     private UserService userService;
 
-    public UserController(UserService userService) {
+    private LetterService letterService;
+
+    private FollowService followeService;
+
+    public UserController(UserService userService, FollowService followService, LetterService letterService) {
         this.userService = userService;
+        this.followeService = followService;
+        this.letterService = letterService;
     }
 
     @GetMapping("/login")
@@ -182,11 +193,24 @@ public class UserController {
         }
     }
 
-//    @PostMapping("/mypage")
-//    public ResponseEntity<CommonResponse> searchUserInfo(Authentication authentication) throws Exception {
-//        System.out.println(authentication);
-//        return new ResponseEntity<CommonResponse>("사용자 번호: " + authentication.getName(), HttpStatus.OK);
-//    }
+    @PostMapping("/mypage")
+    public ResponseEntity<CommonResponse<MyPageResponseBody>> searchUserInfo(Authentication authentication) throws Exception {
+        int userNo = Integer.parseInt(authentication.getName());
+        UserEntity userInfo = userService.searchUserInfoByUserNo(userNo);
+        System.out.println(userInfo);
+        List<LetterResponseBody> letterResponseBody = letterService.searchLetterList("receiver", 2023, 1,0, 4);
+        int followerSum = (int) followeService.getFollowerNumber(4);
+        int followeeSum = (int) followeService.getFolloweeNumber(4);
+
+        MyPageResponseBody myPageResponseBody = new MyPageResponseBody(
+                userNo,userInfo.getUserNickname(),userInfo.getUserBirthday(),userInfo.getUserProfile(),
+                letterResponseBody, followerSum, followeeSum
+        );
+
+        CommonResponse data = CommonResponse.createResponse("200", myPageResponseBody, "호출 성공");
+
+        return new ResponseEntity<CommonResponse<MyPageResponseBody>>(data, HttpStatus.OK);
+    }
 
     @PostMapping("/logout")
     @ApiResponses(value = {

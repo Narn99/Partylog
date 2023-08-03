@@ -12,11 +12,12 @@ public interface LetterRepository extends JpaRepository<LetterEntity, Long> {
     @Query(value = "DELETE FROM letter WHERE letter_id = ?1", nativeQuery = true)
     int deleteByLetterId(String letterId);
 
-    @Query(value = "SELECT * FROM letter WHERE letter_writer = ?1 AND year(letter_reg_date) = ?2 ORDER BY letter_reg_date DESC LIMIT ?3 OFFSET ?4", nativeQuery = true)
-    List<LetterResponseBody> getLettersByWriter(int userNo, int year, int offset, int limit);
+    @Query(value = "SELECT * FROM letter WHERE letter_writer = ?1 AND IF(?2 = 0, TRUE, year(letter_reg_date) = ?2) ORDER BY letter_reg_date DESC LIMIT ?3 OFFSET ?4", nativeQuery = true)
+    List<LetterResponseBody> getLettersByWriter(int userNo, int year, int limit, int offset);
 
-    @Query(value = "SELECT * FROM letter WHERE letter_receiver = ?1 AND year(letter_reg_date) = ?2 ORDER BY letter_reg_date DESC LIMIT ?3 OFFSET ?4", nativeQuery = true)
-    List<LetterResponseBody> getLettersByReceiver(int userNo, int year, int offset, int limit);
+    @Query(value = "SELECT * FROM letter WHERE letter_receiver = ?1 AND IF(?2 = 0, TRUE, year(letter_reg_date) = ?2) ORDER BY letter_reg_date DESC LIMIT ?3 OFFSET ?4", nativeQuery = true)
+    List<LetterResponseBody> getLettersByReceiver(int userNo, int year, int limit, int offset);
+
     @Query(value = "SELECT * FROM letter WHERE letter_id = ?1", nativeQuery = true)
     LetterResponseBody getLettersByLetterId(String letterId);
 }

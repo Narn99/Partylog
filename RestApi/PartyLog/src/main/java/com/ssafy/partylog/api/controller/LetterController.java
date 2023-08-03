@@ -71,14 +71,14 @@ public class LetterController {
         }
     }
 
-    @GetMapping("/list/{type}/{year}/{offset}/{limit}")
+    @GetMapping("/list/{type}/{year}/{limit}/{offset}")
     @Operation(summary = "편지리스트", description = "편지리스트 불러오기")
     @Parameter(name="type", description="allowed : writer / receiver")
-    public ResponseEntity<CommonResponse<List<LetterResponseBody>>> searchLetterList(@PathVariable String type, @PathVariable int year, @PathVariable int offset, @PathVariable int limit, Authentication authentication)  {
+    public ResponseEntity<CommonResponse<List<LetterResponseBody>>> searchLetterList(@PathVariable String type, @PathVariable int year, @PathVariable int limit, @PathVariable int offset, Authentication authentication)  {
 
         int loginUserNo = Integer.parseInt(authentication.getName());
 
-        List<LetterResponseBody> list = letterService.searchLetterList(type, year, offset, limit, loginUserNo);
+        List<LetterResponseBody> list = letterService.searchLetterList(type, year, limit, offset, loginUserNo);
 
         CommonResponse data = CommonResponse.createResponse("200", list,"호출 성공");
 

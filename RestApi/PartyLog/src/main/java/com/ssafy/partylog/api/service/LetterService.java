@@ -9,7 +9,7 @@ public interface LetterService {
     //작성, 삭제, 전체 불러오기(아이디별), 상세보기
     int addLetter(LetterRequest letter, int loginUserNo);
     int deleteLetter(String letterNo);
-    List<LetterResponseBody> searchLetterList(String type, int year, int offset, int limit, int loginUserNo);
+    List<LetterResponseBody> searchLetterList(String type, int year, int limit, int offset, int loginUserNo);
     LetterResponseBody searchLetterById(String letterId);
 
 }

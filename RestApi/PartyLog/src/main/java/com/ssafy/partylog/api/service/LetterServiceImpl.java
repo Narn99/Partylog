@@ -7,6 +7,7 @@ import com.ssafy.partylog.api.response.LetterResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,12 +48,12 @@ public class LetterServiceImpl implements LetterService {
     }
 
     @Override
-    public List<LetterResponseBody> searchLetterList(String type, int year, int offset, int limit, int loginUserNo) {
+    public List<LetterResponseBody> searchLetterList(String type, int year, int limit, int offset, int loginUserNo) {
         List<LetterResponseBody> list;
         if(type.equals("writer")) {
-            list = letterRepository.getLettersByWriter(loginUserNo, year, offset, limit);
+            list = letterRepository.getLettersByWriter(loginUserNo, year, limit, offset);
         } else {
-            list = letterRepository.getLettersByReceiver(loginUserNo, year, offset, limit);
+            list = letterRepository.getLettersByReceiver(loginUserNo, year, limit, offset);
         }
         return list;
     }
