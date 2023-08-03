@@ -99,7 +99,7 @@ function UserPage() {
                 </Grid>
               </Grid>
               <Grid item>
-                <p className="UserPage-nickname">몰?루</p>
+                <p className="UserPage-nickname">몰?루 #{userNo}</p>
               </Grid>
               <Grid item>
                 <Link to="/myfriend" className="myLink">

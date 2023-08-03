@@ -4,6 +4,7 @@ import molru from "../assets/molru.webp";
 import logo from "../assets/LOGO3.png";
 // import icon5 from "../assets/icon5.png";
 import icon6 from "../assets/icon6.png";
+// import bg from "../image/TempBg.png";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -53,14 +54,22 @@ function NavBar() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const changeLogoSize = isMediumScreen ? "200px" : "300px";
+  const changeNavbarPosition = isMediumScreen ? "static" : "sticky";
+  // const changeNavbarBg = isMediumScreen ? "none" : `url(${bg})`;
+  const changeNavbarBgColor = isMediumScreen ? "" : "white";
 
   return (
     <div
       className="nav-bar"
       style={{
+        position: changeNavbarPosition,
+        // backgroundImage: changeNavbarBg,
+        backgroundColor: changeNavbarBgColor,
+        top: 0,
+        zIndex: 999,
         paddingBottom: "10px",
         marginBottom: "25px",
-        borderBottom: "1px solid lightgrey",
+        // borderBottom: "1px solid lightgrey",
       }}
     >
       <Grid container justifyContent={"space-between"} alignItems={"center"}>
@@ -106,7 +115,7 @@ function NavBar() {
           justifyContent={"flex-end"}
           className="search-friend-bar"
         >
-          <Grid item xs={12} sm={8} md={7}>
+          <Grid item xs={12} sm={10} md={7}>
             <SearchFriend />
           </Grid>
         </Grid>
@@ -114,14 +123,15 @@ function NavBar() {
           container
           item
           xs={3}
-          lg={2}
+          sm={2}
+          lg={1}
           justifyContent={"flex-end"}
           className="nav-bar-profile"
         >
           <Grid
             container
             item
-            xs={10}
+            xs={8}
             justifyContent={"flex-end"}
             alignItems={"center"}
           >
@@ -154,7 +164,7 @@ function NavBar() {
               />
             </Grid>
           </Grid>
-          <Grid item xs={2}></Grid>
+          <Grid item xs={4}></Grid>
         </Grid>
       </Grid>
     </div>
