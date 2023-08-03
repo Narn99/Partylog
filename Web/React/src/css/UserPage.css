@@ -17,10 +17,6 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
 /* 반응형 구성하려면 이미지 크기 조절해야됨 */
 .UserPage-profileimg {
   object-fit: fill;
-  width: 100%;
-  max-width: 320px;
-  height: 100%;
-  max-height: 320px;
   border-radius: 50%;
   border: 0.1px solid rgb(230, 230, 230);
   /* box-shadow: 0.1px 0.1px 50px #fbb3c2; */
@@ -93,7 +89,8 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
   border-radius: 30px;
 }
 
-.myLink, .myLink:visited {
+.myLink,
+.myLink:visited {
   color: inherit;
   text-decoration: none;
 }

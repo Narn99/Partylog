@@ -57,6 +57,7 @@ function NavBar() {
   const changeNavbarPosition = isMediumScreen ? "static" : "sticky";
   // const changeNavbarBg = isMediumScreen ? "none" : `url(${bg})`;
   const changeNavbarBgColor = isMediumScreen ? "" : "white";
+  const changeIconSize = isSmallScreen ? "60px" : "90px";
 
   return (
     <div
@@ -87,7 +88,8 @@ function NavBar() {
                 src={icon6}
                 alt=""
                 style={{
-                  maxWidth: "90px",
+                  maxWidth: changeIconSize,
+                  maxHeight: changeIconSize,
                   objectFit: "contain",
                   cursor: "pointer",
                 }}
@@ -157,8 +159,8 @@ function NavBar() {
                 className="nav-bar-settingimg"
                 style={{
                   borderRadius: "30%",
-                  maxWidth: "80px",
-                  maxHeight: "80px",
+                  maxWidth: changeIconSize,
+                  maxHeight: changeIconSize,
                 }}
                 onClick={logout}
               />

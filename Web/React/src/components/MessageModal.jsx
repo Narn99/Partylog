@@ -14,7 +14,7 @@ import {
 
 const style = {
   position: "fixed",
-  top: "30%",
+  // top: "30%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "35%",
@@ -28,7 +28,8 @@ const style = {
 };
 
 function MessageModal(props) {
-  const { modalOpen, handleModalClose, randomStickyNote } = props;
+  const { modalOpen, handleModalClose, randomStickyNote, isMediumScreen } =
+    props;
 
   const modalTitle = useSelector((state) => state.modalData.modalTitle);
   const modalDescription = useSelector(
@@ -73,6 +74,10 @@ function MessageModal(props) {
     // }
   };
 
+  const changeModalVerticalPosition = isMediumScreen ? "50%" : "30%";
+  const changeButtonFontSize = isMediumScreen ? "15px" : "25px";
+  const changeButtonSize = isMediumScreen ? "80px" : "120px";
+
   return (
     <Modal
       open={modalOpen}
@@ -80,7 +85,8 @@ function MessageModal(props) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      {/* <Box sx={style}> */}
+      <Box sx={{ ...style, top: changeModalVerticalPosition }}>
         {modalOpen && <Grid container>{randomStickyNote}</Grid>}
         <ModalText
           modalTitle={modalTitle}
@@ -97,8 +103,8 @@ function MessageModal(props) {
               backgroundColor: "#fbb3c2",
               color: "white",
               fontFamily: "MaplestoryOTFBold",
-              width: "120px",
-              fontSize: "25px",
+              width: changeButtonSize,
+              fontSize: changeButtonFontSize,
               borderRadius: "50px",
               marginTop: "20px",
               padding: "10px",
@@ -117,8 +123,8 @@ function MessageModal(props) {
               backgroundColor: "#fbb3c2",
               color: "white",
               fontFamily: "MaplestoryOTFBold",
-              width: "120px",
-              fontSize: "25px",
+              width: changeButtonSize,
+              fontSize: changeButtonFontSize,
               borderRadius: "50px",
               marginTop: "20px",
               padding: "10px",
@@ -135,8 +141,8 @@ function MessageModal(props) {
               backgroundColor: "#fbb3c2",
               color: "white",
               fontFamily: "MaplestoryOTFBold",
-              width: "120px",
-              fontSize: "25px",
+              width: changeButtonSize,
+              fontSize: changeButtonFontSize,
               borderRadius: "50px",
               marginTop: "20px",
               padding: "10px",

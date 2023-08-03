@@ -1,9 +1,11 @@
 import React, { useState, memo } from "react";
 import {
   Link,
+  useNavigate,
   // useNavigate,
   useParams,
 } from "react-router-dom";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
 import "../css/UserPage.css";
 import "../components/Timmer";
@@ -11,7 +13,6 @@ import CountdownTimer from "../components/Timmer";
 import molru from "../assets/molru.webp";
 import YearChip from "../components/YearChip";
 import MessageModal from "../components/MessageModal";
-import Grid from "@mui/material/Grid";
 import NavBar from "../components/NavBar";
 import StickyNoteY from "../components/StickyNote/StickyNoteY";
 import StickyNoteG from "../components/StickyNote/StickyNoteG";
@@ -36,10 +37,11 @@ const getRandomStickyNote = () => {
 };
 
 function UserPage() {
-  // const theme = useTheme();
+  const navigate = useNavigate();
+  const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
-  // const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-  // const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   //
   // props로 위의 화면 크기에 대한 값을 하위 컴포넌트에 전달해서 크기 바뀌게 하기 가능
   // 해당 크기를 경곗값으로 하여 삼항연산으로 작성하면 breaking point 기준으로 바뀌게 할 수 있음
@@ -68,10 +70,17 @@ function UserPage() {
   const { userNo } = useParams();
 
   const handleLiveButtonClick = (event) => {
-    // event.stopPropagation();
-    // 이 버튼을 클릭했을 때 실행할 동작을 여기에 추가
     window.open(`/live/${userNo}`, "_blank");
   };
+
+  const handleToProfileSetting = (event) => {
+    navigate("/profile-setting");
+  };
+
+  const changeProfileImgSize = isSmallScreen ? "200px" : "100%";
+  const changeLiveButtonFontSize = isSmallScreen ? "18px" : "25px";
+  const changeMessageButtonFontSize = isSmallScreen ? "15px" : "20px";
+  const addMarginAboveBoard = isMediumScreen ? "20px" : "";
 
   return (
     <div className="UserPageBody">
@@ -87,15 +96,25 @@ function UserPage() {
               justifyContent={"space-evenly"}
             >
               <Grid item container justifyContent={"center"}>
-                <Grid container item justifyContent={"center"} sm={11}>
-                  <Link to="/profile-setting">
-                    {" "}
-                    <img
-                      src={molru}
-                      alt="profileimg"
-                      className="UserPage-profileimg"
-                    />
-                  </Link>
+                <Grid
+                  container
+                  item
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  sm={11}
+                >
+                  <img
+                    src={molru}
+                    alt="profileimg"
+                    className="UserPage-profileimg"
+                    style={{
+                      width: changeProfileImgSize,
+                      maxWidth: "320px",
+                      height: changeProfileImgSize,
+                      maxHeight: "320px",
+                    }}
+                    onClick={handleToProfileSetting}
+                  />
                 </Grid>
               </Grid>
               <Grid item>
@@ -124,7 +143,7 @@ function UserPage() {
                   variant="contained"
                   style={{
                     fontFamily: "MaplestoryOTFBold",
-                    fontSize: "25px",
+                    fontSize: changeLiveButtonFontSize,
                     color: "white",
                     width: "180px",
                     height: "75px",
@@ -143,7 +162,7 @@ function UserPage() {
           </div>
         </Grid>
 
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={7} style={{ marginTop: addMarginAboveBoard }}>
           <div>
             <Grid container item xs={12}>
               <div
@@ -173,7 +192,7 @@ function UserPage() {
                       variant="contained"
                       style={{
                         fontFamily: "MaplestoryOTFBold",
-                        fontSize: "20px",
+                        fontSize: changeMessageButtonFontSize,
                         color: "white",
                         borderRadius: "40px",
                         texShadow: "0.1px 0.1px 4px #e892a4",
@@ -188,7 +207,7 @@ function UserPage() {
                       variant="contained"
                       style={{
                         fontFamily: "MaplestoryOTFBold",
-                        fontSize: "20px",
+                        fontSize: changeMessageButtonFontSize,
                         color: "white",
                         borderRadius: "40px",
                         texShadow: "0.1px 0.1px 4px #e892a4",
@@ -215,6 +234,7 @@ function UserPage() {
         modalOpen={modalOpen}
         handleModalClose={handleModalClose}
         randomStickyNote={randomStickyNote}
+        isMediumScreen={isMediumScreen}
         // onSubmitText={handleSubmitModalText}
       />
     </div>
