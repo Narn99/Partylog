@@ -76,7 +76,7 @@ function UserPage() {
   return (
     <div className="UserPageBody">
       <NavBar />
-      <Grid container spacing={1} className="UserPage" marginTop={"15px"}>
+      <Grid container spacing={1} className="UserPage">
         <Grid container item xs={12} md={4} justifyContent={"center"}>
           <div>
             <Grid

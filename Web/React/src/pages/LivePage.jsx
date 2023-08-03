@@ -91,7 +91,7 @@ function LivePage() {
                 // xs={12}
                 justifyContent={"center"}
                 alignItems={"center"}
-                style={{ height: "65%" }}
+                style={{ height: "70%" }}
               >
                 <Grid
                   item
@@ -119,43 +119,9 @@ function LivePage() {
                 // xs={12}
                 justifyContent={"space-evenly"}
                 alignItems={"center"}
-                style={{ height: "30%" }}
+                // style={{ height: "30%" }}
               >
                 <ViewersCarousel viewers={viewers} />
-                {/* 참가자 1명당 1칸 차지하게 하는 곳, 나중에 API에서 받는 데이터에 맞게 수정해야됨. */}
-                {/* {viewers.map((username, index) => (
-                  <Grid
-                    item
-                    xs={2}
-                    key={`userNo-${index}`}
-                    style={{
-                      backgroundColor: "blue",
-                      color: "white",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      // marginTop: "10px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "90%",
-                        backgroundColor: "black",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: "15px",
-                        flexWrap: "nowrap",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                        overflow: "hidden",
-                      }}
-                      className="viewer-display"
-                    >
-                      <p>{getLength(username, 4)}</p>
-                    </div>
-                  </Grid>
-                ))} */}
               </Grid>
             </Grid>
           </div>

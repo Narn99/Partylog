@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@mui/material";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { useNavigate } from "react-router-dom";
+import { Grid } from "@mui/material";
 import NavBar from "../components/NavBar";
 
 function ProfileSetting() {
@@ -31,69 +32,72 @@ function ProfileSetting() {
   return (
     <div>
       <NavBar />
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
+      <Grid container justifyContent={"center"}>
         <div
           style={{
-            position: "relative",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: "column",
           }}
         >
-          {uploadedImage ? (
-            <img
-              src={uploadedImage}
-              alt="profile-upload"
-              style={{
-                width: "300px",
-                height: "300px",
-                borderRadius: "50%",
-                margin: "20px",
-              }}
-            />
-          ) : (
-            <div
-              style={{
-                width: "300px",
-                height: "300px",
-                borderRadius: "50%",
-                background: "#f0f0f0",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ color: "#888" }}>프로필 사진을 업로드하세요</span>
-            </div>
-          )}
-
-          <Button
-            variant="contained"
-            component="label"
-            style={{ position: "absolute", bottom: "20px", right: "20px" }}
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <PhotoCameraIcon />
-            <input
-              type="file"
-              hidden
-              accept="image/*"
-              onChange={handleImageUpload}
-            />
-          </Button>
-        </div>
+            {uploadedImage ? (
+              <img
+                src={uploadedImage}
+                alt="profile-upload"
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  borderRadius: "50%",
+                  margin: "20px",
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  borderRadius: "50%",
+                  background: "#f0f0f0",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <span style={{ color: "#888" }}>
+                  프로필 사진을 업로드하세요
+                </span>
+              </div>
+            )}
 
-        <button className="ProfileSetting-button" onClick={handleProfileSave}>
-          프로필 저장
-        </button>
-      </div>
+            <Button
+              variant="contained"
+              component="label"
+              style={{ position: "absolute", bottom: "20px", right: "20px" }}
+            >
+              <PhotoCameraIcon />
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </Button>
+          </div>
+
+          <button className="ProfileSetting-button" onClick={handleProfileSave}>
+            프로필 저장
+          </button>
+        </div>
+      </Grid>
     </div>
   );
 }

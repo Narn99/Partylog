@@ -2,7 +2,9 @@ import React from "react";
 import SearchFriend from "../components/SearchFriend";
 import molru from "../assets/molru.webp";
 import logo from "../assets/LOGO3.png";
-import Grid from "@mui/material/Grid";
+// import icon5 from "../assets/icon5.png";
+import icon6 from "../assets/icon6.png";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -38,42 +40,119 @@ function NavBar() {
       });
   };
 
+  const tempUserNo = 777;
+  // const tempUserName = "코?로나";
+
+  const handleClickLogo = () => {
+    navigate(`/user/${tempUserNo}`);
+  };
+
+  const theme = useTheme();
+  // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const changeLogoSize = isMediumScreen ? "200px" : "300px";
+
   return (
     <div
       className="nav-bar"
-      style={{ paddingBottom: "10px", borderBottom: "1px solid lightgrey" }}
+      style={{
+        paddingBottom: "10px",
+        marginBottom: "25px",
+        borderBottom: "1px solid lightgrey",
+      }}
     >
       <Grid container justifyContent={"space-between"} alignItems={"center"}>
-        <Grid item container xs={3} justifyContent={"center"}>
-          <Grid
-            item
-            container
-            xs={10}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
+        <Grid
+          item
+          container
+          xs={3}
+          justifyContent={"end"}
+          className="logo-and-icon"
+        >
+          <Grid item container justifyContent={"center"} alignItems={"center"}>
             {/* <h1 className="nav-bar-logo">Partylog</h1> */}
-            <img src={logo} alt="" style={{ width: "300px" }} />
+            {isSmallScreen && (
+              <img
+                src={icon6}
+                alt=""
+                style={{
+                  maxWidth: "90px",
+                  objectFit: "contain",
+                  cursor: "pointer",
+                }}
+                onClick={handleClickLogo}
+              />
+            )}
+            {!isSmallScreen && (
+              <img
+                src={logo}
+                alt=""
+                style={{
+                  width: `${changeLogoSize}`,
+                  objectFit: "contain",
+                  cursor: "pointer",
+                }}
+                onClick={handleClickLogo}
+              />
+            )}
           </Grid>
         </Grid>
-        <Grid container item xs={7} justifyContent={"flex-end"}>
-          <Grid item xs={4}>
+        <Grid
+          container
+          item
+          xs={6}
+          justifyContent={"flex-end"}
+          className="search-friend-bar"
+        >
+          <Grid item xs={12} sm={8} md={7}>
             <SearchFriend />
           </Grid>
         </Grid>
-        <Grid container item xs={2} justifyContent={"flex-end"}>
-          <Grid container item xs={10} justifyContent={"flex-end"}>
-            <img
-              src={molru}
-              alt="settingimg"
-              className="nav-bar-settingimg"
-              style={{
-                borderRadius: "30%",
-                maxWidth: "80px",
-                maxHeight: "80px",
-              }}
-              onClick={logout}
-            />
+        <Grid
+          container
+          item
+          xs={3}
+          lg={2}
+          justifyContent={"flex-end"}
+          className="nav-bar-profile"
+        >
+          <Grid
+            container
+            item
+            xs={10}
+            justifyContent={"flex-end"}
+            alignItems={"center"}
+          >
+            {/* <Grid
+              item
+              container
+              xs={7}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <h3>{tempUserName} 님</h3>
+            </Grid> */}
+            <Grid
+              item
+              container
+              xs={5}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <img
+                src={molru}
+                alt="settingimg"
+                className="nav-bar-settingimg"
+                style={{
+                  borderRadius: "30%",
+                  maxWidth: "80px",
+                  maxHeight: "80px",
+                }}
+                onClick={logout}
+              />
+            </Grid>
           </Grid>
           <Grid item xs={2}></Grid>
         </Grid>

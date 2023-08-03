@@ -55,7 +55,12 @@ function ViewersCarousel(props) {
   };
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+      }}
+    >
       <Slider {...settings}>
         {carouselPages.map((pageIndex) => (
           <div
