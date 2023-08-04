@@ -19,16 +19,17 @@ const KakaoCallback = () => {
       .get(`${SERVER_API_URL}/user/login?code=${code}`)
       .then((res) => {
         console.log(res);
-        var userInfo = res.data.userInfo;
-        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        var userNo = res.data.data;
 
-        if(res.data.code === "201") {
+        if(res.data.status === "201") {
           // 생일입력 페이지로 이동
           navigate("/birthdayinput")
-        } else {
+        } else if(res.data.status === "200"){
           localStorage.setItem("access-token", res.headers.get("authorization"));
           localStorage.setItem("refresh-token", res.headers.get("refresh-token"));
-          navigate(`/user/${userInfo.userNo}`);
+          navigate(`/user/${userNo}`);
+        } else {
+          console.log(res.data.message);
         }
       })
       .catch((e) => {
