@@ -1,6 +1,5 @@
 package com.ssafy.partylog.ui.login
 
-import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -30,11 +28,13 @@ import com.ssafy.partylog.ui.login.stateholder.LoginViewModel
 import com.ssafy.partylog.ui.theme.PartylogTheme
 import com.ssafy.partylog.ui.theme.loginTextColor
 import com.ssafy.partylog.ui.theme.maplestory
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun Login(modifier: Modifier = Modifier, font: FontFamily = maplestory
 ) {
-    val viewModel = LoginViewModel(LocalContext.current.applicationContext as Application)
+    val viewModel = koinViewModel<LoginViewModel>()
+
         Image(painter = painterResource(id = R.drawable.bg_login_compose), contentDescription = "bg_login",
         modifier = modifier.fillMaxSize(), contentScale = ContentScale.Fit)
         Column() {
