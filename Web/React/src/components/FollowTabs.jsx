@@ -59,11 +59,12 @@ function FollowTabs() {
   };
 
   const handleFollow = (follower) => {
-    if (!followings.includes(follower)) {
-      setFollowings([...followings, follower]);
-      fetchFollowings(); // 팔로잉이 추가되면 목록을 다시 불러옵니다.
+    // userNo가 이미 팔로잉 목록에 있는지 확인
+    if (!followings.some(following => following.userNo === follower.userNo)) {
+      setFollowings([...followings, { userNo: follower.userNo, nickname: follower.nickname }]);
     }
   };
+  
 
   return (
     <div className='tab'>
@@ -93,10 +94,10 @@ function FollowTabs() {
             {followers.map((follower) => (
               <ListItem key={follower.userNo}>
                 <ListItemText primary={`${follower.nickname} (# ${follower.userNo})`} />
-                <Button onClick={() => handleFollow(follower.userNo)} 
-                 variant={followings.some(following => following.userNo === follower.userNo) ? 'text' : 'outlined'}>
-                  {followings.includes(follower) ? '팔로우됨' : '팔로우'}
-                 </Button>
+                <Button onClick={() => handleFollow(follower)}
+                  variant={followings.some(following => following.userNo === follower.userNo) ? 'text' : 'outlined'}>
+                  {followings.some(following => following.userNo === follower.userNo) ? '팔로우됨' : '팔로우'}
+                </Button>
               </ListItem> 
             ))}
           </List>
