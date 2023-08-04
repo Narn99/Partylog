@@ -3,14 +3,17 @@ package com.ssafy.partylog.ui.login.stateholder
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.user.UserApiClient
+import com.ssafy.domain.usecase.login.CheckKakaoTokenUsecase
 import com.ssafy.partylog.ui.login.LoginState
-import com.ssafy.data.service.login.LoginServiceImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class LoginViewModel(private val application: Application): AndroidViewModel(
+class LoginViewModel(private val application: Application,
+    private val checkKakaoTokenUsecase: CheckKakaoTokenUsecase): AndroidViewModel(
     application
 ) {
     private val _uiState = MutableStateFlow(LoginState())
@@ -42,6 +45,8 @@ class LoginViewModel(private val application: Application): AndroidViewModel(
     }
 
     fun afterKakaoLogin(token: String) {
-        LoginServiceImpl().kakaoLogin(token, this)
+        viewModelScope.launch {
+            checkKakaoTokenUsecase.invoke(token)
+        }
     }
 }
