@@ -66,10 +66,10 @@ const LogInPage = () => {
     : "0";
 
   const titleFontSize = isSmallScreen
-    ? 'bold 11vw/1.9 "Signika", sans-serif'
+    ? 'bold 11vw/1.9 "Nikumaru", sans-serif'
     : isMediumScreen
-    ? 'bold 9vw/1.7 "Signika", sans-serif'
-    : 'bold 7vw/1.5 "Signika", sans-serif';
+    ? 'bold 9vw/1.7 "Nikumaru", sans-serif'
+    : 'bold 7vw/1.5 "Nikumaru", sans-serif';
 
   const word1 = "PartyLog".split("").map((char, index) => (
     <span key={index} style={styles[index % 4]}>

@@ -1,10 +1,5 @@
-import React, { useState, memo } from "react";
-import {
-  Link,
-  useNavigate,
-  // useNavigate,
-  useParams,
-} from "react-router-dom";
+import React, { useState, memo, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
 import "../css/UserPage.css";
@@ -20,6 +15,7 @@ import StickyNoteO from "../components/StickyNote/StickyNoteO";
 import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
 import MessageBoard from "../components/MessageBoard";
+import axios from "axios";
 
 // 모달창을 열 때마다 StickyNote가 바뀌게 설정
 
@@ -37,6 +33,37 @@ const getRandomStickyNote = () => {
 };
 
 function UserPage() {
+  const { userNo } = useParams();
+
+  const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
+
+  const [userInfo, setUserInfo] = useState({});
+  const [recievedMessages, setRecivedMessages] = useState([]);
+  const [followerCount, setFollowerCount] = useState("");
+  const [followeeCount, setFolloweeCount] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`${SERVER_API_URL}/user/${userNo}/`)
+      .then((res) => {
+        console.log(res.status);
+        console.log(res.message);
+        const data = res.data;
+        setUserInfo({
+          userNo: data.userNo,
+          userNickname: data.userNickname,
+          userBirthday: data.userBirthday,
+          useProfile: data.userProfile,
+        });
+        setRecivedMessages(data.letterResponseBody);
+        setFolloweeCount(data.followeeSum);
+        setFollowerCount(data.followerSum);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
   const navigate = useNavigate();
   const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -66,8 +93,6 @@ function UserPage() {
   };
 
   // const navigate = useNavigate();
-
-  const { userNo } = useParams();
 
   const handleLiveButtonClick = (event) => {
     window.open(`/live/${userNo}`, "_blank");
@@ -119,10 +144,15 @@ function UserPage() {
               </Grid>
               <Grid item>
                 <p className="UserPage-nickname">몰?루 #{userNo}</p>
+                {/* <p className="UserPage-nickname">
+                  {userInfo.userNickname} #{userInfo.userNo}
+                </p> */}
               </Grid>
               <Grid item>
                 <Link to="/myfriend" className="myLink">
-                  <p className="UserPage-follow">팔로잉|팔로워</p>
+                  <p className="UserPage-follow">
+                    팔로잉 {followeeCount} &nbsp;|&nbsp; 팔로워 {followerCount}
+                  </p>
                 </Link>
               </Grid>
 
