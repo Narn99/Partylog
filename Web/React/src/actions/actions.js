@@ -14,24 +14,24 @@ export const logout = () => ({
   type: actionTypes.LOGOUT,
 });
 
-export const loadUser = (user) => ({
-  type: actionTypes.LOAD_USER,
-  payload: user,
+export const saveUserData = (userData) => ({
+  type: actionTypes.SAVE_USERDATA,
+  payload: userData,
 });
 
-export const login = (code) => async (dispatch) => {
-  const res = await axios.get(
-    `http://localhost:8080/user/kakao/callback?code=${code}`
-  );
-  dispatch(loginSuccess(res.headers.authorization));
-};
+// export const login = (code) => async (dispatch) => {
+//   const res = await axios.get(
+//     `http://localhost:8080/user/kakao/callback?code=${code}`
+//   );
+//   dispatch(loginSuccess(res.headers.authorization));
+// };
 
-export const getUserInfo = (token) => async (dispatch) => {
-  const res = await axios.get("http://localhost:8080/user", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  dispatch(loadUser(res.data));
-};
+// export const getUserInfo = (token) => async (dispatch) => {
+//   const res = await axios.get("http://localhost:8080/user", {
+//     headers: { Authorization: `Bearer ${token}` },
+//   });
+//   dispatch(loadUser(res.data));
+// };
 
 // 메시지 작성 관련 액션
 

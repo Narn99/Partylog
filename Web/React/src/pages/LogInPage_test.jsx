@@ -3,6 +3,7 @@ import kakaoButton from "../assets/kakao_login.svg";
 import googleplay from "../assets/googleplay.png";
 import "../css/LogInPage.css";
 import { Grid, Container, useMediaQuery, useTheme } from "@mui/material";
+import Loading from "../components/Loading";
 
 const LogInPage = () => {
   const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
@@ -84,6 +85,7 @@ const LogInPage = () => {
   return (
     <Container maxWidth={false}>
       <div className="loginpage-container">
+        {/* <Loading/> */}
         <div className="loginpage-content" id="content">
           <div
             className="loginpage-title"

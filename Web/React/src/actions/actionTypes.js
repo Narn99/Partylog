@@ -2,7 +2,7 @@
 
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGOUT = "LOGOUT";
-export const LOAD_USER = "LOAD_USER";
+export const SAVE_USERDATA = "SAVE_USERDATA";
 
 // 메시지 작성 관련 액션타입
 
