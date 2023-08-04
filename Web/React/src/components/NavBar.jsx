@@ -41,11 +41,13 @@ function NavBar() {
       });
   };
 
-  const tempUserNo = 777;
-  // const tempUserName = "코?로나";
+
 
   const handleClickLogo = () => {
-    navigate(`/user/${tempUserNo}`);
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo && userInfo.userNo) {
+      navigate(`/user/${userInfo.userNo}`);
+    }
   };
 
   const theme = useTheme();
