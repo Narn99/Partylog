@@ -65,6 +65,20 @@ function FollowTabs() {
     }
   };
   
+  const handleUnfollow = (followeeNo) => {
+    axios.delete(`${SERVER_API_URL}/user/removeFollow/${followeeNo}`, {
+      headers: {
+        'Authorization': `${accessToken}`
+      }
+    })
+    .then(() => {
+      // 팔로우가 성공적으로 해제되었다면 팔로잉 목록에서 제거
+      setFollowings(followings.filter(following => following.userNo !== followeeNo));
+    })
+    .catch(error => {
+      console.error("팔로우 해제 중 오류 발생:", error);
+    });
+  };
 
   return (
     <div className='tab'>
@@ -80,6 +94,9 @@ function FollowTabs() {
             {followings.map((following) => (
               <ListItem key={following.userNo}>
                 <ListItemText primary={`${following.nickname} (# ${following.userNo})`} />
+                  <Button onClick={() => handleUnfollow(following.userNo)}>
+                    팔로우 해제
+                  </Button>
               </ListItem>
             ))}
           </List>
