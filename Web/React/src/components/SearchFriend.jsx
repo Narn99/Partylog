@@ -23,7 +23,7 @@ export default function SearchFriend() {
         }
       });
       // console.log(response.data);
-      setSearchResults(response.data); // 응답 형식이 맞는지 확인하고 필요하면 수정
+      setSearchResults(response.data.dara); // 응답 형식이 맞는지 확인하고 필요하면 수정
     } catch (error) {
       console.error("An error occurred while fetching the data", error);
     }
@@ -43,8 +43,8 @@ export default function SearchFriend() {
 
       try {
         await axios.post(`${SERVER_API_URL}/user/addFollow/${user_no}`, 
-  { followeeNo: userNo }, // Data
-  { // Headers
+  { followeeNo: userNo }, 
+  { 
     headers: {
       'Authorization': `${accessToken}`,
     }

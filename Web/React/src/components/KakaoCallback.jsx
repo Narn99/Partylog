@@ -24,6 +24,8 @@ const KakaoCallback = () => {
           // 생일입력 페이지로 이동
           navigate(`/birthdayinput/${userNo}`);
         } else if(res.data.code === "200") {
+          localStorage.setItem("access-token", res.headers.get("authorization"));
+          localStorage.setItem("refresh-token", res.headers.get("refresh-token"));
           navigate(`/user/${userNo}`);
         } else {
           alert(res.data.message);

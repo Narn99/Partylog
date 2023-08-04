@@ -25,10 +25,11 @@ function FollowTabs() {
       }
     })
     .then(response => {
-      // user_no와 user_nickname을 함께 저장합니다.
-    setFollowings(response.data.map(following => 
+
+    setFollowings(response.data.data.map(following => 
       ({ userNo: following.user_no, nickname: following.user_nickname })));
     })
+    
     .catch(error => {
       console.error("팔로잉 목록을 가져오는 중 오류 발생:", error);
     });
@@ -41,7 +42,7 @@ function FollowTabs() {
       }
     })
     .then(response => {
-      setFollowers(response.data.map(follower => 
+      setFollowers(response.data.data.map(follower => 
         ({ userNo: follower.user_no, nickname: follower.user_nickname })));
     })
     .catch(error => {
