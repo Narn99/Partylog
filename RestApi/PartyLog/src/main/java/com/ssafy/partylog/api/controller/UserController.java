@@ -60,7 +60,7 @@ public class UserController {
     })
     public ResponseEntity<CommonResponse<Integer>> login(@RequestParam("code") String authCode, HttpServletResponse response) throws Exception {
         log.info("카카오 인증 코드: {}", authCode);
-        
+
         String code = "";
         String message = "";
         String accessToken = null;
@@ -70,7 +70,7 @@ public class UserController {
         UserEntity user = userService.searchKakaoAccessToken(authCode);
         log.info("사용자 정보: {}", user);
 
-        if(user.getUserBirthday() != null) {
+        if (user.getUserBirthday() != null) {
             // 토큰 생성
             accessToken = userService.createToken(user.getUserNo(), "access-token");
             refreshToken = userService.createToken(user.getUserNo(), "refresh-token");
@@ -83,7 +83,7 @@ public class UserController {
             message = "생일 정보입력 요청";
         }
 
-        CommonResponse data = CommonResponse.createResponse(code,user.getUserNo(),message);
+        CommonResponse data = CommonResponse.createResponse(code, user.getUserNo(), message);
 
         // response 값 저장
         response.setHeader("authorization", "Bearer " + accessToken);
@@ -101,7 +101,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Invalid"),
     })
     public ResponseEntity<CommonResponse<Integer>> mobileLogin(@RequestParam("token") String accessToken, HttpServletResponse response) throws Exception {
-        HashMap<String,Object> resultMap = new HashMap<>();
+        HashMap<String, Object> resultMap = new HashMap<>();
         log.info("카카오 인증 토큰: {}", accessToken);
 
         String code = "";
@@ -112,7 +112,7 @@ public class UserController {
         UserEntity user = userService.searchKakaoUserInfo(accessToken);
         log.info("사용자 정보: {}", user);
 
-        if(user.getUserBirthday() != null) {
+        if (user.getUserBirthday() != null) {
             // 토큰 생성
             accessToken = userService.createToken(user.getUserNo(), "access-token");
             refreshToken = userService.createToken(user.getUserNo(), "refresh-token");
@@ -125,7 +125,7 @@ public class UserController {
             message = "생일 정보입력 요청";
         }
 
-        CommonResponse data = CommonResponse.createResponse(code,user.getUserNo(),message);
+        CommonResponse data = CommonResponse.createResponse(code, user.getUserNo(), message);
 
         // response 값 저장
         response.setHeader("authorization", "Bearer " + accessToken);
@@ -148,7 +148,7 @@ public class UserController {
         CommonResponse data;
         String accessToken = null;
         String refreshToken = null;
-        if(userService.join(userRequest)) {
+        if (userService.join(userRequest)) {
             // 회원가입 성공 시 토큰 발행
             accessToken = userService.createToken(userRequest.getUserNo(), "access-token");
             refreshToken = userService.createToken(userRequest.getUserNo(), "refresh-token");
@@ -157,12 +157,12 @@ public class UserController {
             code = "200";
             message = "회원가입에 성공하였습니다.";
 
-            data = CommonResponse.createResponse(code,user.getUserNo(),message);
+            data = CommonResponse.createResponse(code, user.getUserNo(), message);
         } else {
             code = "400";
             message = "회원가입에 실패했습니다.";
 
-            data = CommonResponse.createResponse(code,0,message);
+            data = CommonResponse.createResponse(code, 0, message);
         }
 
         response.setHeader("authorization", "Bearer " + accessToken);
@@ -183,13 +183,13 @@ public class UserController {
         response.setHeader("authorization", "Bearer " + accessToken);
         response.setHeader("refresh-token", "Bearer " + refreshToken);
 
-        if(accessToken == null) { // refreshToken이 DB 값과 다른 경우
+        if (accessToken == null) { // refreshToken이 DB 값과 다른 경우
             message = "유효하지 않은 refreshToken 입니다.";
-            CommonResponse reply = CommonResponse.createResponseWithNoContent("400",message);
+            CommonResponse reply = CommonResponse.createResponseWithNoContent("400", message);
             return new ResponseEntity<CommonResponse>(reply, HttpStatus.BAD_REQUEST);
         } else {
             message = "accessToken 재발급 완료";
-            CommonResponse reply = CommonResponse.createResponseWithNoContent("200",message);
+            CommonResponse reply = CommonResponse.createResponseWithNoContent("200", message);
             return new ResponseEntity<CommonResponse>(reply, HttpStatus.OK);
         }
     }
@@ -199,12 +199,12 @@ public class UserController {
         int userNo = Integer.parseInt(authentication.getName());
         UserEntity userInfo = userService.searchUserInfoByUserNo(userNo);
         System.out.println(userInfo);
-        List<LetterResponseBody> letterResponseBody = letterService.searchLetterList("receiver", 2023, 1,0, 4);
+        List<LetterResponseBody> letterResponseBody = letterService.searchLetterList("receiver", 2023, 1, 0, 4);
         int followerSum = (int) followeService.getFollowerNumber(4);
         int followeeSum = (int) followeService.getFolloweeNumber(4);
 
         MyPageResponseBody myPageResponseBody = new MyPageResponseBody(
-                userNo,userInfo.getUserNickname(),userInfo.getUserBirthday(),userInfo.getUserProfile(),
+                userNo, userInfo.getUserNickname(), userInfo.getUserBirthday(), userInfo.getUserProfile(),
                 letterResponseBody, followerSum, followeeSum
         );
 
@@ -223,13 +223,13 @@ public class UserController {
 
         String message = "";
         log.info("사용자 번호: {}", authentication.getName());
-        if(userService.logout(Integer.parseInt(authentication.getName()))) { // 로그아웃 성공
+        if (userService.logout(Integer.parseInt(authentication.getName()))) { // 로그아웃 성공
             message = "로그아웃 성공";
-            CommonResponse reply = CommonResponse.createResponseWithNoContent("200",message);
+            CommonResponse reply = CommonResponse.createResponseWithNoContent("200", message);
             return new ResponseEntity<CommonResponse>(reply, HttpStatus.OK);
         } else { // 로그아웃 실패
             message = "로그아웃 실패";
-            CommonResponse reply = CommonResponse.createResponseWithNoContent("400",message);
+            CommonResponse reply = CommonResponse.createResponseWithNoContent("400", message);
             return new ResponseEntity<CommonResponse>(reply, HttpStatus.BAD_REQUEST);
         }
     }
@@ -240,18 +240,19 @@ public class UserController {
     @Parameter(name = "userNickname", description = "검색 내용")
     @Parameter(name = "limit", description = "한번에 가지고 올 사람 수")
     @Parameter(name = "offset", description = "가지고 올 때 시작하는 순번 (0부터 시작, limit 크기만큼 커짐)")
-    public ResponseEntity<CommonResponse<List<UserSearchResponseBody>>> searchUser(@PathVariable String userNickname, @PathVariable int limit, @PathVariable int offset, Authentication authentication) throws Exception{
+    public ResponseEntity<CommonResponse<List<UserSearchResponseBody>>> searchUser(@PathVariable String userNickname, @PathVariable int limit, @PathVariable int offset, Authentication authentication) throws Exception {
         //토큰 받기
         int myNo = Integer.parseInt(authentication.getName());
 
         List<UserSearchResponseBody> list = userService.searchUser(userNickname, myNo, limit, offset);
 
-        CommonResponse data = CommonResponse.createResponse("200", list,"호출 성공");
+        CommonResponse data = CommonResponse.createResponse("200", list, "호출 성공");
 
         return new ResponseEntity<CommonResponse<List<UserSearchResponseBody>>>(data, HttpStatus.OK);
     }
 
     //프로필 사진 업로드
+    @PostMapping("/upload/profile")
     @Operation(summary = "프로필사진 수정", description = "프로필 사진 수정")
     @Parameter(name = "profileFile", description = "multipart/form-data로 보내야 함, 200MB이내")
     public ResponseEntity<String> uploadUserProfile(@RequestParam MultipartFile profileFile, Authentication authentication) throws Exception {
@@ -259,4 +260,4 @@ public class UserController {
         String url = userService.profileUpload(userNo, profileFile);
         return new ResponseEntity<String>(url, HttpStatus.OK);
     }
-
+}
