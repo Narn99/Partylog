@@ -23,7 +23,7 @@ function App() {
             <Route path="/birthdayinput" element={<BirthdayInput />} />
             <Route path="/user/:userNo" element={<UserPage />} />
             <Route path="/profile-setting" element={<ProfileSetting />} />
-            <Route path="/myfriend" element={<MyFriend />} />
+            <Route path="/myfriend/:userNo" element={<MyFriend />} />
             <Route path="/live/:userNo" element={<LivePage />} />
 
             {/* 일단 이상한 페이지로 이동하면 404NotFound로 이동 */}
