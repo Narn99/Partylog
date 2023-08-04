@@ -1,37 +1,39 @@
 package com.ssafy.partylog.api.service;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.repository.UserRepository;
 import com.ssafy.partylog.api.request.UserRequest;
-import com.ssafy.partylog.api.response.UserSearchResponse;
 //import com.ssafy.partylog.util.JwtUtil;
+import com.ssafy.partylog.api.response.UserSearchResponseBody;
 import com.ssafy.partylog.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
+    private AmazonS3Client amazonS3Client;
+    public UserServiceImpl(UserRepository userRepository, AmazonS3Client amazonS3Client) {
         this.userRepository = userRepository;
+        this.amazonS3Client = amazonS3Client;
     }
 
     @Value("${KAKAO_CLIENT_ID}")
@@ -42,6 +44,11 @@ public class UserServiceImpl implements UserService {
     private String CLIENT_SECRET;
     @Value("${JWT_SECRETKEY}")
     private String JWT_SECRET_KEY;
+    // S3 버킷 관련
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+    @Value("${cloud.aws.s3.bucket.url}")
+    private String defaultUrl;
 
     @Override
     @Transactional
@@ -217,8 +224,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserSearchResponse> searchUser(String userNickname, int userNo, int limit, int offset) {
-        List<UserSearchResponse> list = userRepository.findUser(userNickname, userNo, limit, offset);
+    public List<UserSearchResponseBody> searchUser(String userNickname, int userNo, int limit, int offset) {
+        List<UserSearchResponseBody> list = userRepository.findUser(userNickname, userNo, limit, offset);
         return list;
     }
+
+
+    //S3 파일업로드
+    @Override
+    public String profileUpload(int userNo, MultipartFile uploadFile) throws Exception {
+            // 확장자
+            String ext = uploadFile.getOriginalFilename().substring(uploadFile.getOriginalFilename().lastIndexOf('.'));
+            String newName = UUID.randomUUID().toString().replaceAll("-", "") + ext;
+            // 파일 객체 생성 user.dir = 현재 작업 디렉토리
+            File newFile = new File(System.getProperty("user.dir") + newName);
+            uploadFile.transferTo(newFile);
+            // S3 파일 업로드
+            uploadOnS3(newName, newFile);
+            String url = defaultUrl + newName;
+            newFile.delete();
+
+            userRepository.setUploadProfile(userNo, url);
+
+        return url;
+    }
+
+    @Override
+    public void uploadOnS3(String name, File file) {
+        // AWS S3 전송 객체 생성 -> 요청 객체 생성 -> 업로드
+        TransferManager transferManager = new TransferManager(this.amazonS3Client);
+        PutObjectRequest request = new PutObjectRequest(bucket, name, file);
+        Upload upload =  transferManager.upload(request);
+
+        try {
+            upload.waitForCompletion();
+        } catch (AmazonClientException amazonClientException) {
+            log.error(amazonClientException.getMessage());
+        } catch (InterruptedException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public String getUserProfile(int userNo) {
+        return userRepository.findByUserNo(userNo).get().getUserProfile();
+    }
+
+
 }

@@ -3,7 +3,7 @@ package com.ssafy.partylog.api.response;
 import lombok.*;
 
 
-public interface LetterResponse {
+public interface LetterResponseBody {
 
     String getLetter_id();
     String getLetter_title();

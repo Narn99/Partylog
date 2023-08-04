@@ -3,10 +3,11 @@ package com.ssafy.partylog.api.service;
 import com.ssafy.partylog.api.Entity.LetterEntity;
 import com.ssafy.partylog.api.repository.LetterRepository;
 import com.ssafy.partylog.api.request.LetterRequest;
-import com.ssafy.partylog.api.response.LetterResponse;
+import com.ssafy.partylog.api.response.LetterResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class LetterServiceImpl implements LetterService {
     }
 
     @Override
-    public void addLetter(LetterRequest letterRequest, int loginUserNo) {
+    public int addLetter(LetterRequest letterRequest, int loginUserNo) {
         LetterEntity letter = new LetterEntity();
 
         String uuid = UUID.randomUUID().toString();
@@ -32,29 +33,34 @@ public class LetterServiceImpl implements LetterService {
         letter.setLetterWriter(loginUserNo);
         letter.setLetterReceiver(letterRequest.getLetterReceiver());
 
-        letterRepository.save(letter);
+        LetterEntity check = letterRepository.save(letter);
+
+        if(check == null) { // 저장된 값이 없다면
+            return 0; //0을 반환한다.
+        }else { // 저장된 값이 있다면
+            return 1; // 1을 반환한다.
+        }
     }
 
     @Override
-    public void deleteLetter(String letterId) {
-            letterRepository.deleteByLetterId(letterId);
-            letterRepository.deleteByLetterId(letterId);
+    public int deleteLetter(String letterId) {
+          return  letterRepository.deleteByLetterId(letterId);
     }
 
     @Override
-    public List<LetterResponse> searchLetterList(String type, int year, int offset, int limit, int loginUserNo) {
-        List<LetterResponse> list;
+    public List<LetterResponseBody> searchLetterList(String type, int year, int limit, int offset, int loginUserNo) {
+        List<LetterResponseBody> list;
         if(type.equals("writer")) {
-            list = letterRepository.getLettersByWriter(loginUserNo, year, offset, limit);
+            list = letterRepository.getLettersByWriter(loginUserNo, year, limit, offset);
         } else {
-            list = letterRepository.getLettersByReceiver(loginUserNo, year, offset, limit);
+            list = letterRepository.getLettersByReceiver(loginUserNo, year, limit, offset);
         }
         return list;
     }
 
     @Override
-    public LetterResponse searchLetterById(String letterId) {
-        LetterResponse letter = letterRepository.getLettersByLetterId(letterId);
+    public LetterResponseBody searchLetterById(String letterId) {
+        LetterResponseBody letter = letterRepository.getLettersByLetterId(letterId);
         return letter;
     }
 

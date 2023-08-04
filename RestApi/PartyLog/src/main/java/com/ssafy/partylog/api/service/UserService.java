@@ -2,8 +2,10 @@ package com.ssafy.partylog.api.service;
 
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.request.UserRequest;
-import com.ssafy.partylog.api.response.UserSearchResponse;
+import com.ssafy.partylog.api.response.UserSearchResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 public interface UserService {
@@ -24,5 +26,11 @@ public interface UserService {
 
     boolean logout(int userNo) throws Exception;
 
-    List<UserSearchResponse> searchUser(String userNickname, int userNo, int limit, int offset);
+    List<UserSearchResponseBody> searchUser(String userNickname, int userNo, int limit, int offset);
+
+    //파일 업로드
+    String profileUpload(int userNo, MultipartFile uploadFile) throws Exception;
+    void uploadOnS3(String name, File file);
+
+    String getUserProfile(int userNo);
 }
