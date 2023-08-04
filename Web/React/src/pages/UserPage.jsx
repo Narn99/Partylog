@@ -53,7 +53,8 @@ function UserPage() {
   // useEffect(() => {
   const { userNo } = useParams();
   //   axios
-  //     .get(`${SERVER_API_URL}/user/${userNo}/`)
+  //     .post(`${SERVER_API_URL}/user/${userNo}/`)
+  //      // post하면서 headers 추가해야됨
   //     .then((res) => {
   //       console.log(res.status);
   //       console.log(res.message);
