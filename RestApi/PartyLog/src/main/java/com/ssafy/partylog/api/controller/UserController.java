@@ -213,6 +213,7 @@ public class UserController {
         CommonResponse data;
 
         int userNo = Integer.parseInt(authentication.getName());
+
         try {
             UserEntity userInfo = userService.searchUserInfoByUserNo(userNo);
             log.info("사용자 정보: {}", userInfo);
