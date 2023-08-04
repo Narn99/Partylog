@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import List from '@mui/material/List';
@@ -6,25 +6,65 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Button from '@mui/material/Button';
 import FollowTabsStyles from "../css/FollowTabsStyles.css";
-import { useFollow } from '../context/FollowContext'
 import Box from '@mui/material/Box';
-
+import axios from 'axios';
 
 function FollowTabs() {
   const [tabValue, setTabValue] = useState(0);
-  
-  const { followings, setFollowings } = useFollow(); // 팔로잉 목록을 컨텍스트에서 가져옵니다.
-  const followers = ['follower1', 'follower2', 'follower3'];
+  const [followings, setFollowings] = useState([]);
+  const [followers, setFollowers] = useState([]);
+
+  const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
+  const accessToken = localStorage.getItem("access-token");
+
+  // 팔로잉 목록을 불러오는 로직을 별도의 함수로 분리
+  const fetchFollowings = () => {
+    axios.get(`${SERVER_API_URL}/user/searchFolloweeList/10/0`, { 
+      headers: {
+        'Authorization': `${accessToken}`
+      }
+    })
+    .then(response => {
+      // user_no와 user_nickname을 함께 저장합니다.
+    setFollowings(response.data.map(following => 
+      ({ userNo: following.user_no, nickname: following.user_nickname })));
+    })
+    .catch(error => {
+      console.error("팔로잉 목록을 가져오는 중 오류 발생:", error);
+    });
+  };
+
+  const fetchFollowers = () => { // 팔로워 목록을 불러오는 함수
+    axios.get(`${SERVER_API_URL}/user/searchFollowerList/10/0`, { 
+      headers: {
+        'Authorization': `${accessToken}`
+      }
+    })
+    .then(response => {
+      setFollowers(response.data.map(follower => 
+        ({ userNo: follower.user_no, nickname: follower.user_nickname })));
+    })
+    .catch(error => {
+      console.error("팔로워 목록을 가져오는 중 오류 발생:", error);
+    });
+  };
+
+  useEffect(() => {
+    fetchFollowings(); // 컴포넌트가 마운트될 때 팔로잉 목록을 불러옵니다.
+    fetchFollowers(); // 팔로워 목록 불러오기
+  }, [] ); 
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
   const handleFollow = (follower) => {
-    if (!followings.includes(follower)) {
-      setFollowings([...followings, follower]);
+    // userNo가 이미 팔로잉 목록에 있는지 확인
+    if (!followings.some(following => following.userNo === follower.userNo)) {
+      setFollowings([...followings, { userNo: follower.userNo, nickname: follower.nickname }]);
     }
   };
+  
 
   return (
     <div className='tab'>
@@ -33,13 +73,13 @@ function FollowTabs() {
         <Tab label="팔로워" style={FollowTabsStyles.tab}/>
       </Tabs>
 
-      <Box style={{ maxHeight: '450px', overflow: 'auto' }}> {/* 스크롤이 가능한 부분을 Box로 감쌉니다. */}
+      <Box style={{ maxHeight: '450px', overflow: 'auto' }}>
       {tabValue === 0 && (
         followings.length > 0 ? (
           <List className='tabs'>
             {followings.map((following) => (
-              <ListItem key={following}>
-                <ListItemText primary={following} />
+              <ListItem key={following.userNo}>
+                <ListItemText primary={`${following.nickname} (# ${following.userNo})`} />
               </ListItem>
             ))}
           </List>
@@ -52,20 +92,19 @@ function FollowTabs() {
         followers.length > 0 ? (
           <List className='tabs'>
             {followers.map((follower) => (
-              <ListItem key={follower}>
-                <ListItemText primary={follower} />
-                <Button onClick={() => handleFollow(follower)} 
-                 variant={followings.includes(follower) ? 'text' : 'outlined'}>
-                  {followings.includes(follower) ? '팔로우됨' : '팔로우'}
-                 </Button>
-              </ListItem>
+              <ListItem key={follower.userNo}>
+                <ListItemText primary={`${follower.nickname} (# ${follower.userNo})`} />
+                <Button onClick={() => handleFollow(follower)}
+                  variant={followings.some(following => following.userNo === follower.userNo) ? 'text' : 'outlined'}>
+                  {followings.some(following => following.userNo === follower.userNo) ? '팔로우됨' : '팔로우'}
+                </Button>
+              </ListItem> 
             ))}
           </List>
         ) : (
           <p>아직 팔로워가 없습니다.</p>
         )
       )}
- 
       </Box>
     </div>
   );

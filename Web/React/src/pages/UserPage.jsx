@@ -149,7 +149,7 @@ function UserPage() {
                 </p> */}
               </Grid>
               <Grid item>
-                <Link to="/myfriend" className="myLink">
+                <Link to={`/myfriend/${userNo}`} className="myLink">
                   <p className="UserPage-follow">
                     팔로잉 {followeeCount} &nbsp;|&nbsp; 팔로워 {followerCount}
                   </p>

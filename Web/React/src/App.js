@@ -25,7 +25,7 @@ function App() {
             <Route path="/birthdayinput" element={<BirthdayInput />} />
             <Route path="/user/:userNo" element={<UserPage />} />
             <Route path="/profile-setting" element={<ProfileSetting />} />
-            <Route path="/myfriend" element={<MyFriend />} />
+            <Route path="/myfriend/:userNo" element={<MyFriend />} />
             <Route path="/live/:userNo" element={<LivePage />} />
 
             <Route path="/test" element={<LogInPageTest />} />
