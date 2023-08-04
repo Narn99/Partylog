@@ -252,17 +252,11 @@ public class UserController {
     }
 
     //프로필 사진 업로드
-    @PostMapping("/upload/profile")
+    @Operation(summary = "프로필사진 수정", description = "프로필 사진 수정")
+    @Parameter(name = "profileFile", description = "multipart/form-data로 보내야 함, 200MB이내")
     public ResponseEntity<String> uploadUserProfile(@RequestParam MultipartFile profileFile, Authentication authentication) throws Exception {
         int userNo = Integer.parseInt(authentication.getName());
         String url = userService.profileUpload(userNo, profileFile);
         return new ResponseEntity<String>(url, HttpStatus.OK);
     }
 
-    @GetMapping("/get/profile")
-    public ResponseEntity<String> getUserProfile(Authentication authentication)  {
-        int userNo = Integer.parseInt(authentication.getName());
-        String url = userService.getUserProfile(userNo);
-        return new ResponseEntity<String>(url, HttpStatus.OK);
-    }
-}

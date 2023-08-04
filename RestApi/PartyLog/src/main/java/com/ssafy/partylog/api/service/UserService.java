@@ -32,5 +32,4 @@ public interface UserService {
     String profileUpload(int userNo, MultipartFile uploadFile) throws Exception;
     void uploadOnS3(String name, File file);
 
-    String getUserProfile(int userNo);
 }

@@ -265,10 +265,5 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public String getUserProfile(int userNo) {
-        return userRepository.findByUserNo(userNo).get().getUserProfile();
-    }
-
 
 }
