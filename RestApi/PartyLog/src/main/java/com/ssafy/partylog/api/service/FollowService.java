@@ -11,9 +11,9 @@ public interface FollowService {
 
     int removeFollow(int userNo, int followeeId) throws Exception;
 
-    long getFolloweeNumber(int userNo);
+    long getFolloweeNumber(int userNo) throws Exception;
 
-    long getFollowerNumber(int userNo);
+    long getFollowerNumber(int userNo) throws Exception;
 
     List<FollowResponseBody> searchFollowerList(int userNo, int limit, int offset) throws Exception;
 

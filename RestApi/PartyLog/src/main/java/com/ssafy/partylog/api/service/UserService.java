@@ -1,7 +1,7 @@
 package com.ssafy.partylog.api.service;
 
 import com.ssafy.partylog.api.Entity.UserEntity;
-import com.ssafy.partylog.api.request.UserRequest;
+import com.ssafy.partylog.api.request.UserJoinRequest;
 import com.ssafy.partylog.api.response.UserSearchResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +16,7 @@ public interface UserService {
 
     String createToken(int userNo, String type) throws Exception;
 
-    boolean join(UserRequest userInfo) throws Exception;
+    boolean join(UserJoinRequest userInfo) throws Exception;
 
     void saveRefreshToken(int userNo, String refreshToken) throws Exception;
 
@@ -26,10 +26,9 @@ public interface UserService {
 
     boolean logout(int userNo) throws Exception;
 
-    List<UserSearchResponseBody> searchUser(String userNickname, int userNo, int limit, int offset);
+    List<UserSearchResponseBody> searchUser(String userNickname, int userNo, int limit, int offset) throws Exception;
 
     //파일 업로드
     String profileUpload(int userNo, MultipartFile uploadFile) throws Exception;
     void uploadOnS3(String name, File file);
-
 }

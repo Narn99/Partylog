@@ -19,5 +19,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(value = "UPDATE user SET user_profile = ?2 WHERE user_no = ?1 ;", nativeQuery = true)
     void setUploadProfile(int userNo, String url);
-
 }

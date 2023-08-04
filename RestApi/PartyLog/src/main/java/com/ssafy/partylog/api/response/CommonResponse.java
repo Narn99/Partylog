@@ -16,7 +16,7 @@ public class CommonResponse<T> {
 //    private static final String FAIL_STATUS = "400";
 //    private static final String ERROR_STATUS = "500";
 
-    private String status;
+    private String code;
     private String message;
     private T data;
 
@@ -48,8 +48,8 @@ public class CommonResponse<T> {
 //        return new CommonResponse<>(ERROR_STATUS, message, null);
 //    }
 
-    private CommonResponse(String status, String message, T data) {
-        this.status = status;
+    private CommonResponse(String code, String message, T data) {
+        this.code = code;
         this.message = message;
         this.data = data;
     }

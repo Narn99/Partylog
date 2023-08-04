@@ -9,12 +9,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.partylog.api.Entity.UserEntity;
 import com.ssafy.partylog.api.repository.UserRepository;
-import com.ssafy.partylog.api.request.UserRequest;
+import com.ssafy.partylog.api.request.UserJoinRequest;
 //import com.ssafy.partylog.util.JwtUtil;
 import com.ssafy.partylog.api.response.UserSearchResponseBody;
 import com.ssafy.partylog.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private AmazonS3Client amazonS3Client;
+
     public UserServiceImpl(UserRepository userRepository, AmazonS3Client amazonS3Client) {
         this.userRepository = userRepository;
         this.amazonS3Client = amazonS3Client;
@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean join(UserRequest userRequest) throws Exception {
+    public boolean join(UserJoinRequest userRequest) throws Exception {
         try {
             userRepository.findByUserNo(userRequest.getUserNo()).ifPresent(item -> {
                 item.setUserBirthday(userRequest.getUserBirthday());
@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean logout(int userNo) throws Exception {
+    public boolean logout(int userNo) {
         try {
             userRepository.findByUserNo(userNo).ifPresent(item -> {
                 item.setWrefreshtoken(null);
@@ -229,22 +229,21 @@ public class UserServiceImpl implements UserService {
         return list;
     }
 
-
     //S3 파일업로드
     @Override
     public String profileUpload(int userNo, MultipartFile uploadFile) throws Exception {
-            // 확장자
-            String ext = uploadFile.getOriginalFilename().substring(uploadFile.getOriginalFilename().lastIndexOf('.'));
-            String newName = UUID.randomUUID().toString().replaceAll("-", "") + ext;
-            // 파일 객체 생성 user.dir = 현재 작업 디렉토리
-            File newFile = new File(System.getProperty("user.dir") + newName);
-            uploadFile.transferTo(newFile);
-            // S3 파일 업로드
-            uploadOnS3(newName, newFile);
-            String url = defaultUrl + newName;
-            newFile.delete();
+        // 확장자
+        String ext = uploadFile.getOriginalFilename().substring(uploadFile.getOriginalFilename().lastIndexOf('.'));
+        String newName = UUID.randomUUID().toString().replaceAll("-", "") + ext;
+        // 파일 객체 생성 user.dir = 현재 작업 디렉토리
+        File newFile = new File(System.getProperty("user.dir") + newName);
+        uploadFile.transferTo(newFile);
+        // S3 파일 업로드
+        uploadOnS3(newName, newFile);
+        String url = defaultUrl + newName;
+        newFile.delete();
 
-            userRepository.setUploadProfile(userNo, url);
+        userRepository.setUploadProfile(userNo, url);
 
         return url;
     }
@@ -264,6 +263,4 @@ public class UserServiceImpl implements UserService {
             log.error(e.getMessage());
         }
     }
-
-
 }
