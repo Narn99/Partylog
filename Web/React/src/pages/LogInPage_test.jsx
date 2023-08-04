@@ -3,6 +3,7 @@ import kakaoButton from "../assets/kakao_login.svg";
 import googleplay from "../assets/googleplay.png";
 import "../css/LogInPage.css";
 import { Grid, Container, useMediaQuery, useTheme } from "@mui/material";
+import Loading from "../components/Loading";
 
 const LogInPage = () => {
   const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
@@ -66,10 +67,10 @@ const LogInPage = () => {
     : "0";
 
   const titleFontSize = isSmallScreen
-    ? 'bold 11vw/1.9 "Signika", sans-serif'
+    ? 'bold 11vw/1.9 "Nikumaru", sans-serif'
     : isMediumScreen
-    ? 'bold 9vw/1.7 "Signika", sans-serif'
-    : 'bold 7vw/1.5 "Signika", sans-serif';
+    ? 'bold 9vw/1.7 "Nikumaru", sans-serif'
+    : 'bold 7vw/1.5 "Nikumaru", sans-serif';
 
   const word1 = "PartyLog".split("").map((char, index) => (
     <span key={index} style={styles[index % 4]}>
@@ -84,6 +85,7 @@ const LogInPage = () => {
   return (
     <Container maxWidth={false}>
       <div className="loginpage-container">
+        {/* <Loading/> */}
         <div className="loginpage-content" id="content">
           <div
             className="loginpage-title"

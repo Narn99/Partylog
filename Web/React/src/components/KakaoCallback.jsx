@@ -20,12 +20,11 @@ const KakaoCallback = () => {
       .then((res) => {
         console.log(res);
         var userNo = res.data.data;
-
-        if(res.data.code === "201") {
+        if(res.data.status === "201") {
           // 생일입력 페이지로 이동
           navigate(`/birthdayinput/${userNo}`);
         } else if(res.data.code === "200") {
-          navigate(`/mypage/${userNo}`);
+          navigate(`/user/${userNo}`);
         } else {
           alert(res.data.message);
         }

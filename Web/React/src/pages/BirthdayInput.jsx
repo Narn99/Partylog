@@ -48,7 +48,7 @@ function BirthdayInput(props) {
         // 토큰 저장
         localStorage.setItem("access-token", res.headers.get("authorization"));
         localStorage.setItem("refresh-token", res.headers.get("refresh-token"));
-        navigate(`/mypage/${userNo}`);
+        navigate(`/user/${userNo}`);
       } else {
         console.log("회원가입에 실패했습니다.");
       }

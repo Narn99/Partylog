@@ -9,11 +9,12 @@ import {
   setModalData,
   resetModalData,
   addMessageData,
+  deleteMessageData,
 } from "../actions/actions";
 
 const style = {
   position: "fixed",
-  top: "30%",
+  // top: "30%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "35%",
@@ -27,14 +28,13 @@ const style = {
 };
 
 function MessageModal(props) {
-  const { modalOpen, handleModalClose, randomStickyNote } = props;
+  const { modalOpen, handleModalClose, randomStickyNote, isMediumScreen } =
+    props;
 
   const modalTitle = useSelector((state) => state.modalData.modalTitle);
   const modalDescription = useSelector(
     (state) => state.modalData.modalDescription
   );
-  console.log(modalTitle);
-  console.log(modalDescription);
 
   const dispatch = useDispatch();
 
@@ -45,10 +45,38 @@ function MessageModal(props) {
   // 제출 버튼 클릭 시, 내용 비우기 + 모달창 닫기
 
   const handleSubmitModalText = () => {
-    handleModalClose();
-    dispatch(addMessageData(modalTitle, modalDescription));
+    if (modalTitle.length === 0 || modalDescription.length === 0) {
+      alert("메시지를 작성해주세요!");
+    } else {
+      handleModalClose();
+      dispatch(addMessageData(modalTitle, modalDescription));
+      dispatch(resetModalData());
+    }
+  };
+
+  // 내용 초기화 버튼 만들기?
+
+  const handleResetModalText = () => {
     dispatch(resetModalData());
   };
+
+  // 메시지 삭제용 버튼. 메시지 userNo가 본인거랑 같다면 보이고, 삭제도 가능하게 수정해야됨.
+  // 일단 임시로 마지막 메시지가 삭제되게 해둠.
+
+  const userNo = useSelector((state) => state.messagesData.messages).length;
+
+  const handleDeleteMessage = () => {
+    // if (modalUserNo === 1) {
+    dispatch(deleteMessageData(userNo));
+    handleModalClose();
+    // } else {
+    //   alert("메시지 작성자 본인이 아닙니다!");
+    // }
+  };
+
+  const changeModalVerticalPosition = isMediumScreen ? "50%" : "30%";
+  const changeButtonFontSize = isMediumScreen ? "15px" : "25px";
+  const changeButtonSize = isMediumScreen ? "80px" : "120px";
 
   return (
     <Modal
@@ -57,18 +85,9 @@ function MessageModal(props) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
-        {modalOpen && (
-          <Grid container>
-            {randomStickyNote}
-            {/* <RandomStickyNote
-              Grid
-              item
-              xs={4}
-              // style={{ width: "100%", height: "100%" }}
-            ></RandomStickyNote> */}
-          </Grid>
-        )}
+      {/* <Box sx={style}> */}
+      <Box sx={{ ...style, top: changeModalVerticalPosition }}>
+        {modalOpen && <Grid container>{randomStickyNote}</Grid>}
         <ModalText
           modalTitle={modalTitle}
           modalDescription={modalDescription}
@@ -76,7 +95,7 @@ function MessageModal(props) {
         />
         <Grid item container justifyContent={"center"}>
           <Button
-            className="MyPage-message-button"
+            className="MyPage-message-submit-button"
             type="submit"
             onClick={handleSubmitModalText}
             style={{
@@ -84,14 +103,52 @@ function MessageModal(props) {
               backgroundColor: "#fbb3c2",
               color: "white",
               fontFamily: "MaplestoryOTFBold",
-              width: "120px",
-              fontSize: "25px",
+              width: changeButtonSize,
+              fontSize: changeButtonFontSize,
               borderRadius: "50px",
               marginTop: "20px",
               padding: "10px",
             }}
           >
             보내기
+          </Button>
+
+          {/* 일단 메시지 삭제랑 초기화용 버튼 */}
+          <Button
+            className="MyPage-message-delete-button"
+            type="submit"
+            onClick={handleDeleteMessage}
+            style={{
+              cursor: "pointer",
+              backgroundColor: "#fbb3c2",
+              color: "white",
+              fontFamily: "MaplestoryOTFBold",
+              width: changeButtonSize,
+              fontSize: changeButtonFontSize,
+              borderRadius: "50px",
+              marginTop: "20px",
+              padding: "10px",
+            }}
+          >
+            삭제
+          </Button>
+          <Button
+            className="MyPage-message-reset-button"
+            type="submit"
+            onClick={handleResetModalText}
+            style={{
+              cursor: "pointer",
+              backgroundColor: "#fbb3c2",
+              color: "white",
+              fontFamily: "MaplestoryOTFBold",
+              width: changeButtonSize,
+              fontSize: changeButtonFontSize,
+              borderRadius: "50px",
+              marginTop: "20px",
+              padding: "10px",
+            }}
+          >
+            초기화
           </Button>
         </Grid>
       </Box>

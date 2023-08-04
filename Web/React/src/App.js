@@ -1,14 +1,18 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { FollowProvider } from "./context/FollowContext";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 import LogInPage from "./pages/LogInPage";
 import KakaoRedirectHandler from "./components/KakaoCallback";
 import BirthdayInput from "./pages/BirthdayInput";
 import UserPage from "./pages/UserPage";
 import ProfileSetting from "./pages/ProfileSetting";
 import MyFriend from "./pages/MyFriend";
-import { FollowProvider } from "./context/FollowContext";
-import { Provider } from "react-redux";
-import { store } from "./store/store";
+import NotFound404 from "./pages/NotFound404";
+import LivePage from "./pages/LivePage";
+
+import LogInPageTest from "./pages/LogInPage_test";
 
 function App() {
   return (
@@ -20,9 +24,14 @@ function App() {
             <Route path="/auth" element={<KakaoRedirectHandler />} />
             <Route path="/birthdayinput/:userNo" element={<BirthdayInput />} />
             <Route path="/user/:userNo" element={<UserPage />} />
-            {/* 추후 mypage는 유저 구분을 위해 '/mypage/:username'같은 식으로 바꿔야함. */}
             <Route path="/profile-setting" element={<ProfileSetting />} />
-            <Route path="/myfriend" element={<MyFriend />} />
+            <Route path="/myfriend/:userNo" element={<MyFriend />} />
+            <Route path="/live/:userNo" element={<LivePage />} />
+
+            <Route path="/test" element={<LogInPageTest />} />
+
+            {/* 일단 이상한 페이지로 이동하면 404NotFound로 이동 */}
+            <Route path="/*" element={<NotFound404 />} />
           </Routes>
         </Router>
       </FollowProvider>
