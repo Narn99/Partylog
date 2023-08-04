@@ -5,8 +5,12 @@ body {
   height: 100%;
 } */
 
-body {
+body:not(.live-page) {
   background-image: url(../image/TempBg.png);
+}
+
+body.live-page {
+  background-image: none;
 }
 
 .loginpage-container {

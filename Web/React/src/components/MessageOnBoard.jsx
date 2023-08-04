@@ -25,7 +25,7 @@ import { Grid } from "@mui/material";
 function MessageOnBoard(props) {
   // const RandomStickyNote = getRandomStickyNote();
 
-  const user = props.user;
+  const { message, onClick } = props;
 
   const getLength = (messageText, maxLength) => {
     if (messageText.length > maxLength) {
@@ -42,7 +42,9 @@ function MessageOnBoard(props) {
         left: "5%",
         width: "100%",
         height: "100%",
+        cursor: "pointer",
       }}
+      onClick={onClick}
     >
       <img
         src={StickyNote1}
@@ -79,7 +81,7 @@ function MessageOnBoard(props) {
             alignItems={"center"}
           >
             <img
-              src={user.profile}
+              src={message.profile}
               alt=""
               style={{
                 width: "30px",
@@ -100,7 +102,7 @@ function MessageOnBoard(props) {
             }}
           >
             &nbsp;&nbsp;&nbsp;
-            {getLength(user.nickname, 10)}
+            {getLength(message.nickname, 10)}
           </Grid>
         </Grid>
       </div>
@@ -122,7 +124,7 @@ function MessageOnBoard(props) {
           marginTop: "15px",
         }}
       >
-        {getLength(user.title, 15)}
+        {getLength(message.letterTitle, 15)}
       </div>
     </div>
   );

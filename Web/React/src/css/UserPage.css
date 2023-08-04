@@ -93,7 +93,8 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
   border-radius: 30px;
 }
 
-.myLink, .myLink:visited {
+.myLink,
+.myLink:visited {
   color: inherit;
   text-decoration: none;
 }
