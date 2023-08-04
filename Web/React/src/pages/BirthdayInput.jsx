@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 // import { createTheme } from "@mui/material";
 // import { ThemeProvider } from "@emotion/react";
 import { Grid } from "@mui/material";
+import {useParams} from "react-router-dom";
 
 // const theme = createTheme({
 //   palette: {
@@ -25,6 +26,7 @@ function BirthdayInput(props) {
 
   const navigate = useNavigate();
 
+  const {userNo} = useParams();
   var [birthday, setbirthday] = useState("");
 
   const changeBirthday = (date) => {
@@ -32,7 +34,6 @@ function BirthdayInput(props) {
   }
 
   const join = () => {
-    const {userNo} = JSON.parse(localStorage.getItem("userInfo"));
     axios.post(
       `${SERVER_API_URL}/user/join`,
       {
@@ -43,11 +44,11 @@ function BirthdayInput(props) {
     .then((res) => {
       console.log(res)
       if(res.data.code === "200") {
-        var userInfo = res.data.userInfo;
+        var userNo = res.data.data;
         // 토큰 저장
         localStorage.setItem("access-token", res.headers.get("authorization"));
         localStorage.setItem("refresh-token", res.headers.get("refresh-token"));
-        navigate(`/mypage/${userInfo.userNo}`);
+        navigate(`/mypage/${userNo}`);
       } else {
         console.log("회원가입에 실패했습니다.");
       }
