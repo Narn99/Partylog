@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -248,5 +249,20 @@ public class UserController {
         CommonResponse data = CommonResponse.createResponse("200", list,"호출 성공");
 
         return new ResponseEntity<CommonResponse<List<UserSearchResponseBody>>>(data, HttpStatus.OK);
+    }
+
+    //프로필 사진 업로드
+    @PostMapping("/upload/profile")
+    public ResponseEntity<String> uploadUserProfile(@RequestParam MultipartFile profileFile, Authentication authentication) throws Exception {
+        int userNo = Integer.parseInt(authentication.getName());
+        String url = userService.profileUpload(userNo, profileFile);
+        return new ResponseEntity<String>(url, HttpStatus.OK);
+    }
+
+    @GetMapping("/get/profile")
+    public ResponseEntity<String> getUserProfile(Authentication authentication)  {
+        int userNo = Integer.parseInt(authentication.getName());
+        String url = userService.getUserProfile(userNo);
+        return new ResponseEntity<String>(url, HttpStatus.OK);
     }
 }
