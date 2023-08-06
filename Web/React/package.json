@@ -26,10 +26,11 @@
     "save": "^2.9.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.11",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "openvidu-browser": "2.28.0"
   },
   "scripts": {
-    "start": "env-cmd -f .env react-scripts start",
+    "start": "env-cmd -f .env.local react-scripts start",
     "build": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

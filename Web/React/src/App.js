@@ -6,6 +6,7 @@ import BirthdayInput from "./pages/BirthdayInput";
 import UserPage from "./pages/UserPage";
 import ProfileSetting from "./pages/ProfileSetting";
 import MyFriend from "./pages/MyFriend";
+import Openvidu from "./pages/Openvidu";
 import { FollowProvider } from "./context/FollowContext";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
@@ -23,6 +24,7 @@ function App() {
             {/* 추후 mypage는 유저 구분을 위해 '/mypage/:username'같은 식으로 바꿔야함. */}
             <Route path="/profile-setting" element={<ProfileSetting />} />
             <Route path="/myfriend" element={<MyFriend />} />
+            <Route path="/room" element={<Openvidu />} />
           </Routes>
         </Router>
       </FollowProvider>
