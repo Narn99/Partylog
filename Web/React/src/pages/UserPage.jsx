@@ -137,6 +137,7 @@ function UserPage() {
   const handleModalClose = () => setModalOpen(false);
 
   const handleLiveButtonClick = (event) => {
+    // window.open(`/live/${userNo}`, "_blank");
     window.open(`/live/${userNo}`, "_blank");
   };
 
