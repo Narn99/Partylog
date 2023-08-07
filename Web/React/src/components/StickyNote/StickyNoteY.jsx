@@ -16,7 +16,6 @@ const StickyNoteY = () => (
         gradientTransform="matrix(2.4168 -.02795 .02795 2.4168 1144.6 -593.08)"
         x2="299.57"
         x1="331.34"
-        inkscapeCollect="always"
       >
         <stop id="stop3257-4" style={{ stopColor: "#000000" }} offset="0" />
         <stop
@@ -33,7 +32,6 @@ const StickyNoteY = () => (
         gradientTransform="matrix(2.4168 -.02795 .02795 2.4168 1144.6 -593.08)"
         x2="318.23"
         x1="335.63"
-        inkscapeCollect="always"
       >
         <stop id="stop3249-8" style={{ stopColor: "#ffff91" }} offset="0" />
         <stop
@@ -43,23 +41,15 @@ const StickyNoteY = () => (
         />
       </linearGradient>
     </defs>
-    <g
-      id="layer1"
-      inkscapeLabel="Calque 1"
-      inkscapeGroupmode="layer"
-      transform="translate(-207.97 -357.12)"
-    >
+    <g id="layer1" transform="translate(-207.97 -357.12)">
       <g transform="matrix(.72855 -.00047476 .00047446 .72817 -916.65 217.99)">
         <path
           id="path2742"
           style={{ fillRule: "evenodd", fill: "#ffff90" }}
-          inkscapeConnectorCurvature="0"
           d="m1991 523.8v-331.44h-447.49v449.08h331.44l116.04-117.63z"
         />
         <path
           id="path2744"
-          inkscapeConnectorCurvature="0"
-          sodipodiNodetypes="czzczzzczzzc"
           style={{
             fillRule: "evenodd",
             strokeWidth: 0,
@@ -69,21 +59,17 @@ const StickyNoteY = () => (
         />
         <path
           id="path2746"
-          inkscapeConnectorCurvature="0"
-          sodipodiNodetypes="czzczzzczzzc"
           style={{ fillRule: "evenodd", strokeWidth: 0, fill: "#ffff90" }}
           d="m1872.6 641.97s2.3887 2.9132 20.975-11.072 79.253-75.995 91.092-94.629c11.839-18.633 5.6602-14.782 5.6602-14.782s-8.5172 11.31-13.156 14.869c-4.639 3.5584-9.9844 6.4567-17.117 8.5281s-20.853 2.6289-30.23 3.1263c-9.3768 0.49743-32.209 0.0948-32.209 0.0948s2.8746 42.428 1.4494 53.296-2.334 13.472-5.6119 18.946c-3.2779 5.4743-13.15 12.69-16.197 16.015-3.0476 3.3243-4.6555 5.6072-4.6555 5.6072z"
         />
         <path
           id="path2748"
-          inkscapeConnectorCurvature="0"
-          sodipodiNodetypes="czzczzzczzzc"
           style={{
             fillRule: "evenodd",
             strokeWidth: 0,
             fill: "url(#linearGradient3068)",
           }}
-          d="m1872.5 641.81s2.3888 2.9132 20.975-11.072 79.253-75.995 91.092-94.629c11.839-18.633 5.6601-14.782 5.6601-14.782s-8.5172 11.31-13.156 14.869c-4.6391 3.5584-9.9845 6.4567-17.117 8.5281-7.1326 2.0714-20.853 2.6289-30.23 3.1263-9.3769 0.49743-32.209 0.0948-32.209 0.0948s2.8745 42.428 1.4493 53.296-2.334 13.472-5.6119 18.946c-3.2779 5.4743-13.15 12.69-16.197 16.015-3.0476 3.3243-4.6555 5.6072-4.6555 5.6072z"
+          d="m1872.5 641.81s2.3888 2.9132 20.975-11.072 79.253-75.995 91.092-94.629c11.839-18.633 5.6601-14.782 5.6601-14.782s-8.5172 11.31-13.156 14.869c-4.6391 3.5584-9.9845 6.4567-17.117 8.5281-7.1326 2.0714-20.853 2.6289-30.23 3.1263c-9.3769 0.49743-32.209 0.0948-32.209 0.0948s2.8745 42.428 1.4493 53.296-2.334 13.472-5.6119 18.946c-3.2779 5.4743-13.15 12.69-16.197 16.015-3.0476 3.3243-4.6555 5.6072-4.6555 5.6072z"
         />
       </g>
     </g>

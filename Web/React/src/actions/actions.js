@@ -1,22 +1,32 @@
 import * as actionTypes from "./actionTypes";
-import axios from "axios";
+// import axios from "axios";
 
 // const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
 
 // 로그인 관련 액션
 
-export const loginSuccess = (token) => ({
-  type: actionTypes.LOGIN_SUCCESS,
-  payload: token,
+export const loginSaveUserNo = (userNo) => ({
+  type: actionTypes.LOGIN_SAVE_USERNO,
+  payload: userNo,
 });
 
 export const logout = () => ({
   type: actionTypes.LOGOUT,
 });
 
-export const saveUserData = (userData) => ({
+export const saveUserData = (
+  userNo,
+  userNickname,
+  userBirthday,
+  userProfile
+) => ({
   type: actionTypes.SAVE_USERDATA,
-  payload: userData,
+  payload: {
+    userNo: userNo,
+    userNickname: userNickname,
+    userBirthday: userBirthday,
+    userProfile: userProfile,
+  },
 });
 
 // export const login = (code) => async (dispatch) => {
@@ -87,7 +97,14 @@ export const resetModalData = () => {
 
 // 메시지 목록 읽어오는 액션
 
-export const getMessageList = () => {
+export const getInitailMessagesList = (messagesList) => {
+  return {
+    type: actionTypes.GET_INITIAL_MESSAGES_LIST,
+    payload: messagesList,
+  };
+};
+
+export const getAdditionalMessagesList = () => {
   // 추후에 메시지 리스트 받아오는 것
   // const messagesList = axios
   //   .get(`${SERVER_API_URL}/letter/list/${type}/${year}/${offset}/${limit}`)
@@ -95,7 +112,7 @@ export const getMessageList = () => {
   //   .catch((error) => console.log(error));
 
   return {
-    type: actionTypes.GET_MESSAGE_LIST,
+    type: actionTypes.GET_ADDITIONAL_MESSAGES_LIST,
     // payload: messagesList
   };
 };

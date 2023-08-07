@@ -2,6 +2,7 @@ package com.ssafy.partylog.api.service;
 
 import com.ssafy.partylog.api.Entity.LetterEntity;
 import com.ssafy.partylog.api.repository.LetterRepository;
+import com.ssafy.partylog.api.repository.UserRepository;
 import com.ssafy.partylog.api.request.LetterRequest;
 import com.ssafy.partylog.api.response.LetterResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class LetterServiceImpl implements LetterService {
 
     private LetterRepository letterRepository;
+    private UserRepository userRepository;
 
     @Autowired
     public LetterServiceImpl(LetterRepository letterRepository) {
@@ -48,13 +50,9 @@ public class LetterServiceImpl implements LetterService {
     }
 
     @Override
-    public List<LetterResponseBody> searchLetterList(String type, int year, int limit, int offset, int loginUserNo) {
+    public List<LetterResponseBody> searchLetterList(int receiverNo, int writerNo, int year, int limit, int offset) {
         List<LetterResponseBody> list;
-        if(type.equals("writer")) {
-            list = letterRepository.getLettersByWriter(loginUserNo, year, limit, offset);
-        } else {
-            list = letterRepository.getLettersByReceiver(loginUserNo, year, limit, offset);
-        }
+        list = letterRepository.getLettersByReceiver(receiverNo, year, writerNo, limit, offset);
         return list;
     }
 

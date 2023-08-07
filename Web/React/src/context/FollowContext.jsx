@@ -5,7 +5,7 @@ const FollowContext = createContext();
 
 
 export const FollowProvider = ({ children }) => {
-  const [followings, setFollowings] = useState(['following1', 'following2', 'following3']);
+  const [followings, setFollowings] = useState([]);
 
   return (
     <FollowContext.Provider value={{ followings, setFollowings }}>

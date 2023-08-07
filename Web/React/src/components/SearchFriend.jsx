@@ -8,14 +8,20 @@ import axios from "axios";
 export default function SearchFriend() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-
+  
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
 
   // 검색어가 변경될 때마다 결과 업데이트
   const handleSearch = async (e) => {
     setSearchTerm(e.target.value);
+  // 서버에서 유저넘버랑 닉네임을 함께 넘겨줘서 사용가능
 
+   // 문자열이 비었을 때 서버 요청을 건너뛰기
+   if (e.target.value.length === 0) {
+    setSearchResults([]);
+    return;
+  }
     try {
       const response = await axios.get(`${SERVER_API_URL}/user/searchUser/${e.target.value}/10/0`, { 
         headers: {
@@ -23,7 +29,7 @@ export default function SearchFriend() {
         }
       });
       // console.log(response.data);
-      setSearchResults(response.data.dara); // 응답 형식이 맞는지 확인하고 필요하면 수정
+      setSearchResults(response.data.data); // 응답 형식이 맞는지 확인하고 필요하면 수정
     } catch (error) {
       console.error("An error occurred while fetching the data", error);
     }
@@ -37,7 +43,7 @@ export default function SearchFriend() {
     if (!followings.includes(nickname)) {
       setFollowings(prevFollowing => [...prevFollowing, nickname]);
   
-      // userNo를 로컬 스토리지에서 가져옵니다.
+      // userNo 같이 보내줘야 작동함
       const userNo = localStorage.getItem("userNo");
       const accessToken = localStorage.getItem("access-token");
 

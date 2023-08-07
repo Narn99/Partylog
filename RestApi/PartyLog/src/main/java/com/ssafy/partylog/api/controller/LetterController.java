@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -71,18 +72,15 @@ public class LetterController {
         return new ResponseEntity<CommonResponse>(data, status);
     }
 
-    @GetMapping("/list/{type}/{year}/{limit}/{offset}")
+    @PostMapping("/get/letters")
     @Operation(summary = "편지리스트", description = "편지리스트 불러오기")
-    @Parameter(name="type", description="allowed : writer / receiver")
-    public ResponseEntity<CommonResponse<List<LetterResponseBody>>> searchLetterList(@PathVariable String type, @PathVariable int year, @PathVariable int limit, @PathVariable int offset, Authentication authentication)  {
+    public ResponseEntity<CommonResponse<List<LetterResponseBody>>> searchLetterList(@RequestBody HashMap<String,Integer> request)  {
 
         CommonResponse data;
         HttpStatus status;
 
-        int loginUserNo = Integer.parseInt(authentication.getName());
-
         try {
-            List<LetterResponseBody> list = letterService.searchLetterList(type, year, limit, offset, loginUserNo);
+            List<LetterResponseBody> list = letterService.searchLetterList(request.get("receiverNo"), request.get("writerNo"), request.get("year"), request.get("limit"), request.get("offset"));
             data = CommonResponse.createResponse("200", list,"편지목록을 불러오는데 성공했습니다.");
             status = HttpStatus.OK;
         } catch(Exception e) {

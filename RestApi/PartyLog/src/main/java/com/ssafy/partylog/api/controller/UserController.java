@@ -201,24 +201,22 @@ public class UserController {
         return new ResponseEntity<CommonResponse>(data, status);
     }
 
-    @PostMapping("/mypage")
-    @Operation(summary = "마이페이지", description = "현재 사용자의 개인정보, 편지목록, 친구목록을 가져옵니다.")
+    @PostMapping("/board/{userNo}")
+    @Operation(summary = "", description = "현재 사용자의 개인정보, 편지목록, 친구목록을 가져옵니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "400", description = "Invalid"),
     })
-    public ResponseEntity<CommonResponse<MyPageResponseBody>> searchUserInfo(Authentication authentication) {
+    public ResponseEntity<CommonResponse<MyPageResponseBody>> searchUserInfo(@PathVariable int userNo) {
 
         HttpStatus status;
         CommonResponse data;
-
-        int userNo = Integer.parseInt(authentication.getName());
 
         try {
             UserEntity userInfo = userService.searchUserInfoByUserNo(userNo);
             log.info("사용자 정보: {}", userInfo);
 
-            List<LetterResponseBody> letterResponseBody = letterService.searchLetterList("receiver", 0, 1,0, userNo);
+            List<LetterResponseBody> letterResponseBody = letterService.searchLetterList(userNo, userNo, 0, 1,0);
             int followerSum = (int) followeService.getFollowerNumber(userNo);
             int followeeSum = (int) followeService.getFolloweeNumber(userNo);
 
