@@ -33,6 +33,14 @@ function MyFriend(props) {
     return state.auth.userData.userProfile;
   });
 
+  const userNickname = useSelector((state) => {
+    return state.auth.userData.userNickname;
+  });
+
+  const userNo = useSelector((state) => {
+    return state.auth.userData.userNo;
+  });
+
   return (
     <div>
       <NavBar />
@@ -49,7 +57,11 @@ function MyFriend(props) {
                   maxHeight: "280px",
                     }}
                     />
-            <p className="UserPage-nickname">몰?루</p>
+           
+            <p className="UserPage-nickname">
+                <span>{userNickname}</span>{" "}
+                <span style={{ fontSize: "20px" }}>#{userNo}</span>
+            </p>
           </Grid>
         </Grid>
    
