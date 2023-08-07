@@ -226,30 +226,30 @@ function UserPage() {
                   />
                 </Grid>
                 {/* 해당 유저 생일일 때만 버튼 보이기 */}
-                {userData.userBirthday === todayFormatted && (
-                  <Grid item>
-                    <Button
-                      className="live-button"
-                      onClick={handleLiveButtonClick}
-                      variant="contained"
-                      style={{
-                        fontFamily: "MaplestoryOTFBold",
-                        fontSize: changeLiveButtonFontSize,
-                        color: "white",
-                        width: changeLiveButtonWidth,
-                        height: changeLiveButtonHeight,
-                        lineHeight: "30px",
-                        borderRadius: "40px",
-                        texShadow: "0.1px 0.1px 4px #e892a4",
-                        marginTop: "20px",
-                      }}
-                    >
-                      라이브로
-                      <br />
-                      이동
-                    </Button>
-                  </Grid>
-                )}
+                {/* {userData.userBirthday === todayFormatted && ( */}
+                <Grid item>
+                  <Button
+                    className="live-button"
+                    onClick={handleLiveButtonClick}
+                    variant="contained"
+                    style={{
+                      fontFamily: "MaplestoryOTFBold",
+                      fontSize: changeLiveButtonFontSize,
+                      color: "white",
+                      width: changeLiveButtonWidth,
+                      height: changeLiveButtonHeight,
+                      lineHeight: "30px",
+                      borderRadius: "40px",
+                      texShadow: "0.1px 0.1px 4px #e892a4",
+                      marginTop: "20px",
+                    }}
+                  >
+                    라이브로
+                    <br />
+                    이동
+                  </Button>
+                </Grid>
+                {/* )} */}
               </Grid>
             </div>
           </Grid>

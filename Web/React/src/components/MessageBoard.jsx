@@ -42,7 +42,7 @@ function MessageBoard() {
     return state.messagesData.messages;
   });
 
-  // console.log(messages);
+  console.log(messages);
 
   const updateCarouselMessages = useCallback(() => {
     const messagesPerPage = isSmallScreen ? 4 : isLargeScreen ? 6 : 8;
