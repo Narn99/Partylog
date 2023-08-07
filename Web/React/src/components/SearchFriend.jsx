@@ -16,6 +16,12 @@ export default function SearchFriend() {
   const handleSearch = async (e) => {
     setSearchTerm(e.target.value);
   // 서버에서 유저넘버랑 닉네임을 함께 넘겨줘서 사용가능
+
+   // 문자열이 비었을 때 서버 요청을 건너뛰기
+   if (e.target.value.length === 0) {
+    setSearchResults([]);
+    return;
+  }
     try {
       const response = await axios.get(`${SERVER_API_URL}/user/searchUser/${e.target.value}/10/0`, { 
         headers: {
@@ -37,7 +43,7 @@ export default function SearchFriend() {
     if (!followings.includes(nickname)) {
       setFollowings(prevFollowing => [...prevFollowing, nickname]);
   
-      // userNo를 로컬 스토리지에서 가져옵니다.
+      // userNo 같이 보내줘야 작동함
       const userNo = localStorage.getItem("userNo");
       const accessToken = localStorage.getItem("access-token");
 
