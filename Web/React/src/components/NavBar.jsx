@@ -1,6 +1,6 @@
 import React from "react";
 import SearchFriend from "../components/SearchFriend";
-import molru from "../assets/molru.webp";
+// import molru from "../assets/molru.webp";
 import logo from "../assets/LOGO3.png";
 // import icon5 from "../assets/icon5.png";
 import icon6 from "../assets/icon6.png";
@@ -8,9 +8,14 @@ import icon6 from "../assets/icon6.png";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function NavBar() {
   const navigate = useNavigate();
+
+  const profileImg = useSelector((state) => {
+    return state.auth.userData.userProfile;
+  });
 
   const logout = () => {
     const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
@@ -41,8 +46,6 @@ function NavBar() {
       });
   };
 
-
-
   const handleClickLogo = () => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if (userInfo && userInfo.userNo) {
@@ -59,7 +62,7 @@ function NavBar() {
   const changeNavbarPosition = isMediumScreen ? "static" : "sticky";
   // const changeNavbarBg = isMediumScreen ? "none" : `url(${bg})`;
   const changeNavbarBgColor = isMediumScreen ? "" : "white";
-  const changeIconSize = isSmallScreen ? "60px" : "90px";
+  const changeIconSize = isSmallScreen ? "60px" : "80px";
 
   return (
     <div
@@ -156,11 +159,11 @@ function NavBar() {
               alignItems={"center"}
             >
               <img
-                src={molru}
+                src={profileImg}
                 alt="settingimg"
                 className="nav-bar-settingimg"
                 style={{
-                  borderRadius: "30%",
+                  borderRadius: "35%",
                   maxWidth: changeIconSize,
                   maxHeight: changeIconSize,
                 }}

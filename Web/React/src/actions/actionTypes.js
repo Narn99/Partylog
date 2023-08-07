@@ -1,6 +1,6 @@
 // 로그인 관련 액션타입
 
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_SAVE_USERNO = "LOGIN_SAVE_USERNO";
 export const LOGOUT = "LOGOUT";
 export const SAVE_USERDATA = "SAVE_USERDATA";
 

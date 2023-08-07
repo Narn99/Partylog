@@ -26,7 +26,7 @@ const CountdownTimer = (props) => {
     setTargetTime(formattedTime);
   };
 
-  const userBirthday = "2024-01-01T00:00";
+  const userBirthday = "2023-08-07T00:00";
 
   useEffect(() => {
     if (targetTime) {
@@ -39,10 +39,23 @@ const CountdownTimer = (props) => {
   }, [targetTime]);
 
   const calculateTimeLeft = (targetDate) => {
-    let diff = +targetDate - +new Date();
+    const currentDate = new Date();
+    let diff = +targetDate - +currentDate;
     let timeLeft = {};
 
     if (diff > 0) {
+      timeLeft = {
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / 1000 / 60) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+      };
+    } else {
+      // 오늘이 지난 경우
+      const nextYearBirthday = new Date(targetDate);
+      nextYearBirthday.setFullYear(currentDate.getFullYear() + 1);
+      diff = +nextYearBirthday - +currentDate;
+
       timeLeft = {
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
         hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
@@ -92,8 +105,17 @@ const CountdownTimer = (props) => {
         <div style={{ textAlign: "center" }}>
           생일파티까지
           <br />
-          {timeLeft.days}일 {timeLeft.hours}시간 {timeLeft.minutes}분{" "}
-          {timeLeft.seconds}초<br />
+          {timeLeft.days !== 0 && `${timeLeft.days}일`}
+          {timeLeft.days < 1 && (
+            <span>
+              {timeLeft.hours !== 0 && `${timeLeft.hours}시간`}{" "}
+              {timeLeft.minutes !== 0 && `${timeLeft.minutes}분`}{" "}
+              {timeLeft.seconds !== 0 &&
+                `${timeLeft.seconds}
+          초`}
+            </span>
+          )}
+          <br />
         </div>
       </Grid>
     </Grid>
