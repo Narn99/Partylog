@@ -50,13 +50,9 @@ public class LetterServiceImpl implements LetterService {
     }
 
     @Override
-    public List<LetterResponseBody> searchLetterList(String type, int year, int limit, int offset, int loginUserNo) {
+    public List<LetterResponseBody> searchLetterList(int receiverNo, int writerNo, int year, int limit, int offset) {
         List<LetterResponseBody> list;
-        if(type.equals("writer")) {
-            list = letterRepository.getLettersByWriter(loginUserNo, year, limit, offset);
-        } else {
-            list = letterRepository.getLettersByReceiver(loginUserNo, year, limit, offset);
-        }
+        list = letterRepository.getLettersByReceiver(receiverNo, writerNo, year, limit, offset);
         return list;
     }
 
