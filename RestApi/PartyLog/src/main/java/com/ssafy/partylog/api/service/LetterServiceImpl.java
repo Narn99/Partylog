@@ -52,7 +52,7 @@ public class LetterServiceImpl implements LetterService {
     @Override
     public List<LetterResponseBody> searchLetterList(int receiverNo, int writerNo, int year, int limit, int offset) {
         List<LetterResponseBody> list;
-        list = letterRepository.getLettersByReceiver(receiverNo, writerNo, year, limit, offset);
+        list = letterRepository.getLettersByReceiver(receiverNo, year, writerNo, limit, offset);
         return list;
     }
 

@@ -12,6 +12,6 @@ public interface LetterResponseBody {
     int getLetter_receiver();
     String getLetter_reg_date();
     String getUser_profile();
-    int getUser_no();
+    String getUser_nickname();
 
 }

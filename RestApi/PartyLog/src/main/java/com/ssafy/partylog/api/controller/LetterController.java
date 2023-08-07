@@ -74,7 +74,6 @@ public class LetterController {
 
     @PostMapping("/get/letters")
     @Operation(summary = "편지리스트", description = "편지리스트 불러오기")
-    @Parameter(name="type", description="allowed : writer / receiver")
     public ResponseEntity<CommonResponse<List<LetterResponseBody>>> searchLetterList(@RequestBody HashMap<String,Integer> request)  {
 
         CommonResponse data;
