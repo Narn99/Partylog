@@ -1,22 +1,32 @@
 import * as actionTypes from "./actionTypes";
-import axios from "axios";
+// import axios from "axios";
 
 // const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
 
 // 로그인 관련 액션
 
-export const loginSuccess = (token) => ({
-  type: actionTypes.LOGIN_SUCCESS,
-  payload: token,
+export const loginSaveUserNo = (userNo) => ({
+  type: actionTypes.LOGIN_SAVE_USERNO,
+  payload: userNo,
 });
 
 export const logout = () => ({
   type: actionTypes.LOGOUT,
 });
 
-export const saveUserData = (userData) => ({
+export const saveUserData = (
+  userNo,
+  userNickname,
+  userBirthday,
+  userProfile
+) => ({
   type: actionTypes.SAVE_USERDATA,
-  payload: userData,
+  payload: {
+    userNo: userNo,
+    userNickname: userNickname,
+    userBirthday: userBirthday,
+    userProfile: userProfile,
+  },
 });
 
 // export const login = (code) => async (dispatch) => {
