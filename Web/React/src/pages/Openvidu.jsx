@@ -6,7 +6,7 @@ import '../css/Openvidu.css';
 import UserVideoComponent from '../components/openvidu/UserVideoComponent';
 
 // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'https://demos.openvidu.io/';
-const APPLICATION_SERVER_URL = 'https://i9a501.p.ssafy.io//partylog/';
+const APPLICATION_SERVER_URL = 'https://i9a501.p.ssafy.io/partylog/';
 
 class Openvidu extends Component {
     constructor(props) {
