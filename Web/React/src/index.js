@@ -6,6 +6,7 @@ import "./css/GlobalFont.css";
 // import store from './store'
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import registerServiceWorker from './registerServiceWorker';
 
 const theme = createTheme({
   palette: {
@@ -25,3 +26,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </ThemeProvider>
   // </React.StrictMode>
 );
+registerServiceWorker();
