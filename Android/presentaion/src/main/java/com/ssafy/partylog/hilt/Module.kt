@@ -1,4 +1,4 @@
-package com.ssafy.partylog.koin
+package com.ssafy.partylog.hilt
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
