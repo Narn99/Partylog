@@ -23,20 +23,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.partylog.R
 import com.ssafy.partylog.ui.login.stateholder.LoginFrameStateHolder
 import com.ssafy.partylog.ui.login.stateholder.LoginViewModel
 import com.ssafy.partylog.ui.theme.PartylogTheme
 import com.ssafy.partylog.ui.theme.loginTextColor
 import com.ssafy.partylog.ui.theme.maplestory
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun Login(
     modifier: Modifier = Modifier, font: FontFamily = maplestory
 ) {
 
-    val viewModel = koinViewModel<LoginViewModel>()
+    val viewModel = hiltViewModel<LoginViewModel>()
 
     Image(
         painter = painterResource(id = R.drawable.bg_login_compose),
