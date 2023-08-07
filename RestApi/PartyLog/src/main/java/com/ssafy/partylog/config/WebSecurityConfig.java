@@ -30,7 +30,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/user/login**", "/user/join", "/test/**").permitAll()
+                .antMatchers("/user/login**", "/user/join", "/test/**", "/api/**").permitAll()
                 .antMatchers("/api-docs/**", "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
 //                .antMatchers(HttpMethod.POST, "/**").authenticated()

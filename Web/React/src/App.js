@@ -9,10 +9,9 @@ import BirthdayInput from "./pages/BirthdayInput";
 import UserPage from "./pages/UserPage";
 import ProfileSetting from "./pages/ProfileSetting";
 import MyFriend from "./pages/MyFriend";
+import Openvidu from "./pages/Openvidu";
 import NotFound404 from "./pages/NotFound404";
 import LivePage from "./pages/LivePage";
-
-import LogInPageTest from "./pages/LogInPage_test";
 
 function App() {
   return (
@@ -25,11 +24,10 @@ function App() {
             <Route path="/birthdayinput/:userNo" element={<BirthdayInput />} />
             <Route path="/user/:userNo" element={<UserPage />} />
             <Route path="/profile-setting" element={<ProfileSetting />} />
+            <Route path="/myfriend" element={<MyFriend />} />
+            <Route path="/room" element={<Openvidu />} />
             <Route path="/myfriend/:userNo" element={<MyFriend />} />
             <Route path="/live/:userNo" element={<LivePage />} />
-
-            <Route path="/test" element={<LogInPageTest />} />
-
             {/* 일단 이상한 페이지로 이동하면 404NotFound로 이동 */}
             <Route path="/*" element={<NotFound404 />} />
           </Routes>

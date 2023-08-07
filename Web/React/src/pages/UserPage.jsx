@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from "react";
+import React, { useState, memo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -14,9 +14,9 @@ import StickyNoteO from "../components/StickyNote/StickyNoteO";
 import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
 import MessageBoard from "../components/MessageBoard";
-import axios from "axios";
-import Loading from "../components/Loading";
-import { useDispatch } from "react-redux";
+// import axios from "axios";
+// import Loading from "../components/Loading";
+// import { useDispatch } from "react-redux";
 
 // 모달창을 열 때마다 StickyNote가 바뀌게 설정
 
