@@ -3,16 +3,15 @@ import { OpenVidu } from 'openvidu-browser';
 import axios from 'axios';
 import '../css/Openvidu.css';
 import UserVideoComponent from '../components/openvidu/UserVideoComponent';
-import {useParams} from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const APPLICATION_SERVER_URL = `${process.env.REACT_APP_API_SERVER_URL}/`;
 
 const Openvidu = () => {
-    const {userNo} = useParams();
+    var userInfo = useSelector(state => state.auth.userData);
     var OV = new OpenVidu();;
-    var [mySessionId, setMysessionId] = useState(`Session${userNo}`);
-    var [myUserName, setMyUserName] = useState('Participant' + Math.floor(Math.random() * 100));
+    var [mySessionId, setMysessionId] = useState(`Session${userInfo.userNo}`);
+    var [myUserName, setMyUserName] = useState(userInfo.userNickname);
     var [session, setSession] = useState(OV.initSession());
     var [mainStreamManager, setMainStreamManager] = useState(undefined);
     var [publisher, setPublisher] = useState(undefined);

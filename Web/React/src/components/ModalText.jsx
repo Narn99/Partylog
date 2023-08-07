@@ -76,8 +76,6 @@ function ModalText(props) {
         </Grid>
         <Grid container item xs={12} marginBottom={titleMargin}>
           <StyledTextarea
-            Grid
-            item
             maxRows={1}
             multiline
             variant="standard"
@@ -96,8 +94,6 @@ function ModalText(props) {
         </Grid>
         <Grid container item xs={12}>
           <StyledTextarea
-            Grid
-            item
             multiline
             id="modal-modal-description"
             aria-label="modal-modal-description"
