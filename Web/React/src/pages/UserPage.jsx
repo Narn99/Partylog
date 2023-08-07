@@ -18,7 +18,11 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
-import { saveUserData } from "../actions/actions";
+import { getInitailMessagesList, saveUserData } from "../actions/actions";
+
+// serializableStateInvariantMiddleware.ts:234 A non-serializable value was detected in an action, in the path: `register`.
+// 브라우저에서 오류 발생하는데, 리덕스로 dispatch하는 데이터가 직렬화 안 되는 데이터를 보냈다고 그러는 듯 함?
+// 일단 현재는 굴러가니까 추후 찾아보고 수정할 것 (GPT가 하라는대로 고치니까 터짐)
 
 // 모달창을 열 때마다 StickyNote가 바뀌게 설정
 
@@ -41,16 +45,18 @@ function UserPage() {
   const [loading, setloading] = useState(true);
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const [userData, setUserData] = useState({});
-  const [recievedMessages, setRecivedMessages] = useState([]);
+  // const [recievedMessages, setRecivedMessages] = useState([]);
   const [followerCount, setFollowerCount] = useState("");
   const [followeeCount, setFolloweeCount] = useState("");
   const todayFormatted = format(new Date(), "MM-dd");
   const dispatch = useDispatch();
   const { userNo } = useParams();
-  const accessToken = localStorage.getItem("access-token");
   const myUserNo = useSelector((state) => {
     return state.auth.userNo;
   });
+
+  //  추후 로컬스토리지에서 쿠키로 변경
+  const accessToken = localStorage.getItem("access-token");
 
   // 액세스 토큰 넣어서 인증받는 식으로 수정할 것.
   // 메시지 데이터는 일단 24개 받아와서 캐러셀에서 표시하게 할 것.
@@ -69,7 +75,7 @@ function UserPage() {
       },
     })
       .then((res) => {
-        console.log(res.status);
+        // console.log(res.status);
         const data = res.data.data;
         setUserData({
           userNo: data.userNo,
@@ -77,9 +83,12 @@ function UserPage() {
           userBirthday: data.userBirthday,
           userProfile: data.userProfile,
         });
-        setRecivedMessages(data.letterResponseBody);
+        // setRecivedMessages(data.letterResponseBody);
         setFolloweeCount(data.followeeSum);
         setFollowerCount(data.followerSum);
+
+        const letterData = data.letterResponseBody;
+        dispatch(getInitailMessagesList(letterData));
 
         // console.log(userData);
 
@@ -103,7 +112,7 @@ function UserPage() {
       });
   }, []);
 
-  console.log(userData);
+  // console.log(userData);
 
   const navigate = useNavigate();
   const theme = useTheme();
@@ -245,75 +254,83 @@ function UserPage() {
             </div>
           </Grid>
 
-          <Grid item xs={12} md={7} style={{ marginTop: addMarginAboveBoard }}>
-            <div>
-              <Grid container item xs={12}>
-                <div
-                  className="UserPage-side"
-                  style={{ paddingTop: "10px", paddingBottom: "10px" }}
+          <Grid
+            container
+            item
+            xs={12}
+            md={7}
+            style={{ marginTop: addMarginAboveBoard }}
+          >
+            <Grid container item xs={12}>
+              <div
+                className="UserPage-side"
+                style={{ paddingTop: "10px", paddingBottom: "10px" }}
+              >
+                <Grid
+                  container
+                  justifyContent={"flex-start"}
+                  alignItems={"center"}
                 >
-                  <Grid
-                    container
-                    justifyContent={"flex-start"}
-                    alignItems={"center"}
-                  >
-                    <div className="yearchips-div">
-                      <YearChip />
-                    </div>
-                  </Grid>
-                  <Grid
-                    container
-                    justifyContent={"flex-end"}
-                    alignItems={"center"}
-                  >
-                    <div className="create-message-div">
-                      {/* 추후에 메시지 이미 작성한 본인은 메시지 작성 버튼 대신에 수정 버튼이 보이게 수정,
+                  <div className="yearchips-div">
+                    <YearChip />
+                  </div>
+                </Grid>
+                <Grid
+                  container
+                  justifyContent={"flex-end"}
+                  alignItems={"center"}
+                >
+                  <div className="create-message-div">
+                    {/* 추후에 메시지 이미 작성한 본인은 메시지 작성 버튼 대신에 수정 버튼이 보이게 수정,
                     수정을 누르면 본인이 작성했던 메시지 내용이 뜨게 하고,그 안에 메시지 삭제 버튼도 존재하게 */}
-                      <Button
-                        className="fix-message-button"
-                        onClick={handleModalOpen}
-                        variant="contained"
-                        style={{
-                          fontFamily: "MaplestoryOTFBold",
-                          fontSize: changeMessageButtonFontSize,
-                          color: "white",
-                          borderRadius: "40px",
-                          texShadow: "0.1px 0.1px 4px #e892a4",
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        메시지 수정
-                      </Button>
-                      <Button
-                        className="create-message-button"
-                        onClick={handleModalOpen}
-                        variant="contained"
-                        style={{
-                          fontFamily: "MaplestoryOTFBold",
-                          fontSize: changeMessageButtonFontSize,
-                          color: "white",
-                          borderRadius: "40px",
-                          texShadow: "0.1px 0.1px 4px #e892a4",
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        메시지 작성
-                      </Button>
-                    </div>
-                  </Grid>
-                </div>
-              </Grid>
-
-              <Grid container item xs={12}>
-                <MemoizedMessageBoard messages={recievedMessages} />
-              </Grid>
-            </div>
+                    <Button
+                      className="fix-message-button"
+                      onClick={handleModalOpen}
+                      variant="contained"
+                      style={{
+                        fontFamily: "MaplestoryOTFBold",
+                        fontSize: changeMessageButtonFontSize,
+                        color: "white",
+                        borderRadius: "40px",
+                        texShadow: "0.1px 0.1px 4px #e892a4",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      메시지 수정
+                    </Button>
+                    <Button
+                      className="create-message-button"
+                      onClick={handleModalOpen}
+                      variant="contained"
+                      style={{
+                        fontFamily: "MaplestoryOTFBold",
+                        fontSize: changeMessageButtonFontSize,
+                        color: "white",
+                        borderRadius: "40px",
+                        texShadow: "0.1px 0.1px 4px #e892a4",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      메시지 작성
+                    </Button>
+                  </div>
+                </Grid>
+              </div>
+            </Grid>
+            <Grid container item xs={12}>
+              <MemoizedMessageBoard
+                userNo={userNo}
+                // 리덕스로 옮겨보려고 주석처리
+                // messages={recievedMessages}
+              />
+            </Grid>
           </Grid>
           <Grid item lg={1}>
             <div></div>
           </Grid>
         </Grid>
         <MessageModal
+          userNo={userNo}
           modalOpen={modalOpen}
           handleModalClose={handleModalClose}
           randomStickyNote={randomStickyNote}

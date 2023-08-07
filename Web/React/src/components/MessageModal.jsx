@@ -8,9 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalData,
   resetModalData,
-  addMessageData,
+  // addMessageData,
   deleteMessageData,
 } from "../actions/actions";
+import axios from "axios";
 
 const style = {
   position: "fixed",
@@ -28,8 +29,13 @@ const style = {
 };
 
 function MessageModal(props) {
-  const { modalOpen, handleModalClose, randomStickyNote, isMediumScreen } =
-    props;
+  const {
+    userNo,
+    modalOpen,
+    handleModalClose,
+    randomStickyNote,
+    isMediumScreen,
+  } = props;
 
   const modalTitle = useSelector((state) => state.modalData.modalTitle);
   const modalDescription = useSelector(
@@ -43,13 +49,31 @@ function MessageModal(props) {
   };
 
   // 제출 버튼 클릭 시, 내용 비우기 + 모달창 닫기
+  const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
+
+  //  추후 로컬스토리지에서 쿠키로 변경
+  const accessToken = localStorage.getItem("access-token");
 
   const handleSubmitModalText = () => {
     if (modalTitle.length === 0 || modalDescription.length === 0) {
       alert("메시지를 작성해주세요!");
     } else {
+      axios({
+        method: "post",
+        url: `${SERVER_API_URL}/letter/send/`,
+        headers: {
+          Authorization: `${accessToken}`,
+        },
+        data: {
+          letterTitle: modalTitle,
+          letterContent: modalDescription,
+          letterReceiver: userNo,
+        },
+      }).then((res) => {
+        console.log(res.data);
+      });
       handleModalClose();
-      dispatch(addMessageData(modalTitle, modalDescription));
+      // dispatch(addMessageData(modalTitle, modalDescription));
       dispatch(resetModalData());
     }
   };
@@ -60,14 +84,16 @@ function MessageModal(props) {
     dispatch(resetModalData());
   };
 
-  // 메시지 삭제용 버튼. 메시지 userNo가 본인거랑 같다면 보이고, 삭제도 가능하게 수정해야됨.
+  // 메시지 삭제용 버튼. 메시지 messageUserNo가 본인거랑 같다면 보이고, 삭제도 가능하게 수정해야됨.
   // 일단 임시로 마지막 메시지가 삭제되게 해둠.
 
-  const userNo = useSelector((state) => state.messagesData.messages).length;
+  const messageUserNo = useSelector(
+    (state) => state.messagesData.messages
+  ).length;
 
   const handleDeleteMessage = () => {
     // if (modalUserNo === 1) {
-    dispatch(deleteMessageData(userNo));
+    dispatch(deleteMessageData(messageUserNo));
     handleModalClose();
     // } else {
     //   alert("메시지 작성자 본인이 아닙니다!");
@@ -93,7 +119,7 @@ function MessageModal(props) {
           modalDescription={modalDescription}
           onChangeModalText={handleChangeModalText}
         />
-        <Grid item container justifyContent={"center"}>
+        <Grid container justifyContent={"center"}>
           <Button
             className="MyPage-message-submit-button"
             type="submit"

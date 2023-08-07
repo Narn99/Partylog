@@ -97,7 +97,14 @@ export const resetModalData = () => {
 
 // 메시지 목록 읽어오는 액션
 
-export const getMessageList = () => {
+export const getInitailMessagesList = (messagesList) => {
+  return {
+    type: actionTypes.GET_INITIAL_MESSAGES_LIST,
+    payload: messagesList,
+  };
+};
+
+export const getAdditionalMessagesList = () => {
   // 추후에 메시지 리스트 받아오는 것
   // const messagesList = axios
   //   .get(`${SERVER_API_URL}/letter/list/${type}/${year}/${offset}/${limit}`)
@@ -105,7 +112,7 @@ export const getMessageList = () => {
   //   .catch((error) => console.log(error));
 
   return {
-    type: actionTypes.GET_MESSAGE_LIST,
+    type: actionTypes.GET_ADDITIONAL_MESSAGES_LIST,
     // payload: messagesList
   };
 };

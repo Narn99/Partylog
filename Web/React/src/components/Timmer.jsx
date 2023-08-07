@@ -7,10 +7,10 @@ import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import { Grid } from "@mui/material";
 
 const CountdownTimer = (props) => {
-  // const {
-  //   userBirthday
-  //   // 추후 생일데이터 받아서 하는거
-  // } = props;
+  const {
+    userBirthday,
+    // 추후 생일데이터 받아서 하는거
+  } = props;
 
   const [targetTime, setTargetTime] = useState("00:00");
 
@@ -26,7 +26,7 @@ const CountdownTimer = (props) => {
     setTargetTime(formattedTime);
   };
 
-  const userBirthday = "2023-08-07T00:00";
+  // const userBirthday = "2023-08-07T00:00";
 
   useEffect(() => {
     if (targetTime) {
@@ -36,7 +36,7 @@ const CountdownTimer = (props) => {
       newDate.setMinutes(parseInt(minutes, 10));
       setTimeLeft(calculateTimeLeft(newDate));
     }
-  }, [targetTime]);
+  }, [targetTime, userBirthday]);
 
   const calculateTimeLeft = (targetDate) => {
     const currentDate = new Date();
@@ -76,7 +76,7 @@ const CountdownTimer = (props) => {
       );
     }, 1000);
     return () => clearTimeout(timer);
-  }, [timeLeft, targetTime]);
+  }, [timeLeft, targetTime, userBirthday]);
 
   return (
     <Grid

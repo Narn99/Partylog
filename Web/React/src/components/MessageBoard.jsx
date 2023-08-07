@@ -28,7 +28,7 @@ const getRandomStickyNote = () => {
   return stickyNotes[randomIndex];
 };
 
-function MessageBoard(props) {
+function MessageBoard() {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -41,6 +41,8 @@ function MessageBoard(props) {
   const messages = useSelector((state) => {
     return state.messagesData.messages;
   });
+
+  // console.log(messages);
 
   const updateCarouselMessages = useCallback(() => {
     const messagesPerPage = isSmallScreen ? 4 : isLargeScreen ? 6 : 8;
@@ -146,7 +148,7 @@ function MessageBoard(props) {
                         xs={6}
                         sm={4}
                         lg={3}
-                        key={`MessageOnBoard-${message.userNo}`}
+                        key={`MessageOnBoard-${message.letter_id}`}
                         style={{
                           position: "relative",
                           width: "90%",

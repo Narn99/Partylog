@@ -102,7 +102,7 @@ function MessageOnBoard(props) {
             }}
           >
             &nbsp;&nbsp;&nbsp;
-            {getLength(message.nickname, 10)}
+            {/* {getLength(message.nickname, 10)} */}
           </Grid>
         </Grid>
       </div>
@@ -124,7 +124,7 @@ function MessageOnBoard(props) {
           marginTop: "15px",
         }}
       >
-        {getLength(message.letterTitle, 15)}
+        {/* {getLength(message.letterTitle, 15)} */}
       </div>
     </div>
   );
