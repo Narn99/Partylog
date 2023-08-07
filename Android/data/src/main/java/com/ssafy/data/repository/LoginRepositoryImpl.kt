@@ -6,8 +6,9 @@ import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
 import com.ssafy.data.datasource.remote.LoginDatasource
 import com.ssafy.domain.repository.LoginRepository
+import javax.inject.Inject
 
-class LoginRepositoryImpl(private val loginDatasource: LoginDatasource): LoginRepository {
+class LoginRepositoryImpl @Inject constructor(private val loginDatasource: LoginDatasource): LoginRepository {
     override suspend fun checkKakaoToken(token: String): Boolean {
 
         Logger.d("datasource 실행$token")

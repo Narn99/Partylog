@@ -6,12 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
 import com.ssafy.domain.usecase.login.CheckKakaoTokenUsecase
 import com.ssafy.partylog.ui.login.LoginState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(private val application: Application,
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val application: Application,
     private val checkKakaoTokenUsecase: CheckKakaoTokenUsecase): AndroidViewModel(
         application
 ) {
