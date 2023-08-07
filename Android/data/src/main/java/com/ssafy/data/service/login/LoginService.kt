@@ -4,10 +4,11 @@ import com.skydoves.sandwich.ApiResponse
 import com.ssafy.data.model.login.KakaoCheckRespDto
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface LoginService {
-    @GET("user/mobile/login/{token}")
+    @GET("user/mobile/login")
     suspend fun kakaoLogin(
-        @Path("token") token: String
+        @Query("token") token: String
     ): ApiResponse<KakaoCheckRespDto>
 }
