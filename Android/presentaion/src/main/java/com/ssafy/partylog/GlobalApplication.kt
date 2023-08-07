@@ -4,10 +4,9 @@ import android.app.Application
 import com.kakao.sdk.common.KakaoSdk
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
-import com.ssafy.partylog.koin.module
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class GlobalApplication: Application() {
     override fun onCreate() {
         super.onCreate()
@@ -21,10 +20,6 @@ class GlobalApplication: Application() {
                 return BuildConfig.DEBUG
             }
         })
-        startKoin {
-            androidContext(this@GlobalApplication)
-            modules(module)
-        }
 
     }
 }
