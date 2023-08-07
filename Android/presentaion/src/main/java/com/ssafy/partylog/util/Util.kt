@@ -7,7 +7,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.orhanobut.logger.Logger
 import com.ssafy.partylog.ui.login.stateholder.LoginViewModel
 
-class Util(var viewModel: ViewModel) {
+class Util(private var viewModel: ViewModel) {
     fun kakaoLogin(context: Context) {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context = context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
