@@ -1,6 +1,5 @@
 import React from "react";
 import SearchFriend from "../components/SearchFriend";
-// import molru from "../assets/molru.webp";
 import logo from "../assets/LOGO3.png";
 // import icon5 from "../assets/icon5.png";
 import icon6 from "../assets/icon6.png";
@@ -15,6 +14,10 @@ function NavBar() {
 
   const profileImg = useSelector((state) => {
     return state.auth.userData.userProfile;
+  });
+
+  const userNo = useSelector((state) => {
+    return state.auth.userData.userNo;
   });
 
   const logout = () => {
@@ -37,7 +40,7 @@ function NavBar() {
         // 로컬 토큰 제거
         localStorage.removeItem("access-token");
         localStorage.removeItem("refresh-token");
-        localStorage.removeItem("userInfo");
+       
         // 성공적으로 로그아웃한 후 로그인 페이지로 이동
         navigate("/");
       })
@@ -47,9 +50,9 @@ function NavBar() {
   };
 
   const handleClickLogo = () => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (userInfo && userInfo.userNo) {
-      navigate(`/user/${userInfo.userNo}`);
+    
+    if (userNo) {
+      navigate(`/user/${userNo}`);
     }
   };
 
