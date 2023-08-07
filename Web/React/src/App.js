@@ -7,6 +7,7 @@ import BirthdayInput from "./pages/BirthdayInput";
 import UserPage from "./pages/UserPage";
 import ProfileSetting from "./pages/ProfileSetting";
 import MyFriend from "./pages/MyFriend";
+import Openvidu from "./pages/Openvidu";
 import NotFound404 from "./pages/NotFound404";
 import LivePage from "./pages/LivePage";
 
@@ -20,6 +21,8 @@ function App() {
           <Route path="/birthdayinput/:userNo" element={<BirthdayInput />} />
           <Route path="/user/:userNo" element={<UserPage />} />
           <Route path="/profile-setting" element={<ProfileSetting />} />
+          <Route path="/myfriend" element={<MyFriend />} />
+          <Route path="/room" element={<Openvidu />} />
           <Route path="/myfriend/:userNo" element={<MyFriend />} />
           <Route path="/live/:userNo" element={<LivePage />} />
 
