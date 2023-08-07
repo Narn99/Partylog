@@ -1,18 +1,15 @@
 package com.ssafy.data.model.login
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
 @Serializable
 data class KakaoCheckRespDto(
-    val code: Int,
+    @SerialName("data")
+    val data: Int,
+    @SerialName("message")
     val message: String,
-    val userInfo: UserInfo
-)
-
-data class UserInfo(
-    val userBirthday: String,
-    val userNickname: String,
-    val userNo: Int,
-    val userProfile: String
+    @SerialName("status")
+    val status: String
 )
