@@ -5,9 +5,7 @@ import React, { Component } from 'react';
 import '../css/Openvidu.css';
 import UserVideoComponent from '../components/openvidu/UserVideoComponent';
 
-// const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'https://demos.openvidu.io/';
-// const APPLICATION_SERVER_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
-const APPLICATION_SERVER_URL = 'http://localhost:8080/partylog/';
+const APPLICATION_SERVER_URL = `${process.env.REACT_APP_API_SERVER_URL}/`;
 
 class Openvidu extends Component {
     constructor(props) {
@@ -330,6 +328,7 @@ class Openvidu extends Component {
      * more about the integration of OpenVidu in your application server.
      */
     async getToken() {
+        console.log("경로: " + APPLICATION_SERVER_URL);
         const sessionId = await this.createSession(this.state.mySessionId);
         return await this.createToken(sessionId);
     }
