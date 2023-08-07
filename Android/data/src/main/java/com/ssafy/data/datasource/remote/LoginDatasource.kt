@@ -1,11 +1,10 @@
 package com.ssafy.data.datasource.remote
 
+import com.skydoves.sandwich.ApiResponse
 import com.ssafy.data.model.login.KakaoCheckRespDto
 import com.ssafy.data.network.ServicePool
-import com.ssafy.domain.model.login.CheckKakaoToken
 
 class LoginDatasource {
-    suspend fun checkKakaoToken(token: String): KakaoCheckRespDto{
-        return ServicePool.RetroLogin.kakaoLogin(token)
-    }
+    private val service = ServicePool.loginService
+    suspend fun checkKakaoToken(token: String): ApiResponse<KakaoCheckRespDto> = service.kakaoLogin(token)
 }
