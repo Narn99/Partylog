@@ -4,5 +4,5 @@ import com.ssafy.data.service.login.LoginService
 
 
 object ServicePool {
-    val RetroLogin = NetworkUtil.create<LoginService>()
+    val loginService = NetworkUtil.create<LoginService>()
 }
