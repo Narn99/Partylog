@@ -103,16 +103,17 @@ function UserPage() {
             )
           );
         }
-
+        console.log(6);
         setloading(false);
       })
       .catch((err) => {
         console.log(err);
         setloading(false);
       });
-  }, []);
+  }, [userNo, myUserNo, dispatch, accessToken, SERVER_API_URL]);
 
   // console.log(userData);
+  // console.log(userData.userBirthday);
 
   const navigate = useNavigate();
   const theme = useTheme();
@@ -145,7 +146,9 @@ function UserPage() {
     navigate("/profile-setting");
   };
 
-  const changeProfileImgSize = isSmallScreen ? "200px" : "100%";
+  console.log(3);
+
+  const changeProfileImgSize = isSmallScreen ? "200px" : "250px";
   const changeLiveButtonFontSize = isSmallScreen ? "18px" : "25px";
   const changeLiveButtonHeight = isSmallScreen ? "50px" : "70px";
   const changeLiveButtonWidth = isSmallScreen ? "150px" : "180px";
@@ -192,9 +195,10 @@ function UserPage() {
                       className="UserPage-profileimg"
                       style={{
                         width: changeProfileImgSize,
-                        maxWidth: "280px",
+                        maxWidth: "250px",
                         height: changeProfileImgSize,
-                        maxHeight: "280px",
+                        maxHeight: "250px",
+                        objectFit: "fill",
                       }}
                       onClick={handleToProfileSetting}
                     />
@@ -224,6 +228,8 @@ function UserPage() {
                   <CountdownTimer
                     // API 연동 시 아래 주석 해제
                     userBirthday={userData.userBirthday}
+                    myUserNo={myUserNo}
+                    userNo={userNo}
                   />
                 </Grid>
                 {/* 해당 유저 생일일 때만 버튼 보이기 */}

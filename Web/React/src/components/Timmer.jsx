@@ -7,10 +7,7 @@ import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import { Grid } from "@mui/material";
 
 const CountdownTimer = (props) => {
-  const {
-    userBirthday,
-    // 추후 생일데이터 받아서 하는거
-  } = props;
+  const { userBirthday, myUserNo, userNo } = props;
 
   const [targetTime, setTargetTime] = useState("00:00");
 
@@ -26,7 +23,8 @@ const CountdownTimer = (props) => {
     setTargetTime(formattedTime);
   };
 
-  // const userBirthday = "2023-08-07T00:00";
+  const countDownFontSize =
+    parseInt(myUserNo) === parseInt(userNo) ? "18px" : "36px";
 
   useEffect(() => {
     if (targetTime) {
@@ -85,37 +83,41 @@ const CountdownTimer = (props) => {
       alignItems={"center"}
       flexDirection={"column"}
     >
-      <Grid item style={{ marginBottom: "10px" }}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={["TimePicker"]}>
-            <TimePicker
-              label="파티 시간을 골라주세요!"
-              viewRenderers={{
-                hours: renderTimeViewClock,
-                minutes: renderTimeViewClock,
-                seconds: renderTimeViewClock,
-              }}
-              format="A hh:mm"
-              onChange={handleTimeChange}
-            />
-          </DemoContainer>
-        </LocalizationProvider>
-      </Grid>
+      {parseInt(myUserNo) === parseInt(userNo) && (
+        <Grid item style={{ marginBottom: "10px" }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={["TimePicker"]}>
+              <TimePicker
+                label="파티 시간을 골라주세요!"
+                viewRenderers={{
+                  hours: renderTimeViewClock,
+                  minutes: renderTimeViewClock,
+                  seconds: renderTimeViewClock,
+                }}
+                format="A hh:mm"
+                onChange={handleTimeChange}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+        </Grid>
+      )}
       <Grid item>
         <div style={{ textAlign: "center" }}>
-          생일파티까지
-          <br />
-          {timeLeft.days !== 0 && `${timeLeft.days}일`}
-          {timeLeft.days < 1 && (
-            <span>
-              {timeLeft.hours !== 0 && `${timeLeft.hours}시간`}{" "}
-              {timeLeft.minutes !== 0 && `${timeLeft.minutes}분`}{" "}
-              {timeLeft.seconds !== 0 &&
-                `${timeLeft.seconds}
+          <p style={{ fontSize: countDownFontSize }}>
+            생일파티까지
+            <br />
+            {timeLeft.days !== 0 && `${timeLeft.days}일`}
+            {timeLeft.days < 1 && (
+              <span>
+                {timeLeft.hours !== 0 && `${timeLeft.hours}시간`}{" "}
+                {timeLeft.minutes !== 0 && `${timeLeft.minutes}분`}{" "}
+                {timeLeft.seconds !== 0 &&
+                  `${timeLeft.seconds}
           초`}
-            </span>
-          )}
-          <br />
+              </span>
+            )}
+            <br />
+          </p>
         </div>
       </Grid>
     </Grid>
