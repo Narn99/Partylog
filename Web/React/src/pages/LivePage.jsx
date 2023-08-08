@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
 import ChatBox from "../components/LivePage/ChatBox";
 import ViewersCarousel from "../components/LivePage/ViewersCarousel";
+import Openvidu from "./Openvidu";
+
 
 function LivePage() {
   const theme = useTheme();
@@ -110,7 +112,7 @@ function LivePage() {
                   }}
                   className="live-display"
                 >
-                  <p>방송자 화면</p>
+                  <Openvidu/>
                 </Grid>
               </Grid>
               <Grid

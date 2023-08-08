@@ -220,7 +220,7 @@ const Openvidu = () => {
     }
 
     return (
-        <div className="container">
+        <div className="container" style={{height:"100%"}}>
             {session === undefined ? (
                 // <div id="join">
                 //     <div id="img-div">
@@ -261,8 +261,8 @@ const Openvidu = () => {
             ) : null}
 
             {session !== undefined ? (
-                <div id="session">
-                    <div id="session-header">
+                <div id="session" style={{height:"100%"}}>
+                    {/* <div id="session-header">
                         <h1 id="session-title">{mySessionId}</h1>
                         <input
                             className="btn btn-large btn-danger"
@@ -271,34 +271,34 @@ const Openvidu = () => {
                             onClick={leaveSession}
                             value="나가기"
                         />
-                        {/* <input
+                        <input
                             className="btn btn-large btn-success"
                             type="button"
                             id="buttonSwitchCamera"
                             onClick={switchCamera}
                             value="Switch Camera"
-                        /> */}
-                    </div>
+                        />
+                    </div> */}
 
-                    {mainStreamManager !== undefined ? (
+                    {/* {mainStreamManager !== undefined ? (
                         <div id="main-video" className="col-md-6">
                             <UserVideoComponent streamManager={mainStreamManager} />
 
                         </div>
-                    ) : null}
-                    <div id="video-container" className="col-md-6">
+                    ) : null} */}
+                    <div id="video-container" className="col-md-6" style={{height:"100%"}}>
                         {publisher !== undefined ? (
-                            <div className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(publisher)}>
+                            <div className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(publisher)} style={{height:"100%"}}>
                                 <UserVideoComponent
-                                    streamManager={publisher} />
+                                    streamManager={publisher} style={{height:"100%"}}/>
                             </div>
                         ) : null}
-                        {subscribers.map((sub, i) => (
+                        {/* {subscribers.map((sub, i) => (
                             <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
                                 <span>{sub.id}</span>
                                 <UserVideoComponent streamManager={sub} />
                             </div>
-                        ))}
+                        ))} */}
                     </div>
                 </div>
             ) : null}
