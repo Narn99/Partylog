@@ -10,6 +10,6 @@ data class KakaoCheckRespDto(
     val data: Int,
     @SerialName("message")
     val message: String,
-    @SerialName("status")
-    val status: String
+    @SerialName("code")
+    val code: String
 )
