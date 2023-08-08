@@ -216,7 +216,7 @@ public class UserController {
             UserEntity userInfo = userService.searchUserInfoByUserNo(userNo);
             log.info("사용자 정보: {}", userInfo);
 
-            List<LetterResponseBody> letterResponseBody = letterService.searchLetterList(userNo, userNo, 0, 1,0);
+            List<LetterResponseBody> letterResponseBody = letterService.searchLetterList(userNo, userNo, 0, 24,0);
             int followerSum = (int) followeService.getFollowerNumber(userNo);
             int followeeSum = (int) followeService.getFolloweeNumber(userNo);
 
