@@ -27,18 +27,19 @@ public class LiveEntity {
     private Date liveEndTime;
     @Column(name="live_desc")
     private String liveDesc;
-    @Column(name="live_isActive")
-    private boolean liveIsActive;
+    @Column(name="live_active")
+    private boolean liveActive;
     @Column(name="live_host")
     private int liveHost;
 
     @Builder
-    public LiveEntity(String liveId, String liveTitle, Date liveStartTime, String liveDesc, boolean liveIsActive, int liveHost) {
+    public LiveEntity(String liveId, String liveTitle, Date liveStartTime, Date liveEndTime, String liveDesc, boolean liveActive, int liveHost) {
         this.liveId = liveId;
         this.liveTitle = liveTitle;
         this.liveStartTime = liveStartTime;
+        this.liveEndTime = liveEndTime;
         this.liveDesc = liveDesc;
-        this.liveIsActive = liveIsActive;
+        this.liveActive = liveActive;
         this.liveHost = liveHost;
     }
 }

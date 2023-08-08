@@ -2,11 +2,11 @@ package com.ssafy.partylog.api.service;
 
 import com.ssafy.partylog.api.Entity.LiveEntity;
 import com.ssafy.partylog.api.repository.LiveRepository;
-import com.ssafy.partylog.api.request.LiveRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class LiveServiceImpl implements LiveService{
@@ -25,13 +25,22 @@ public class LiveServiceImpl implements LiveService{
                 .liveStartTime(new Date())
                 .liveDesc((String) params.get("live_desc"))
                 .liveHost((int) params.get("live_host"))
-                .liveIsActive(true)
+                .liveActive(true)
                 .build();
         liveRepository.save(live);
     }
 
     @Override
-    public void endLive(LiveRequest request) throws Exception {
+    public void endLiveSession(String liveId) throws Exception {
+        liveRepository.findByLiveId(liveId).ifPresent(item -> {
+            item.setLiveEndTime(new Date());
+            item.setLiveActive(false);
+            liveRepository.save(item);
+        });
+    }
 
+    @Override
+    public LiveEntity checkLiveActive(String liveId) throws Exception {
+        return liveRepository.findByLiveId(liveId).get();
     }
 }

@@ -34,7 +34,7 @@ function NavBar() {
         // 로컬 토큰 제거
         localStorage.removeItem("access-token");
         localStorage.removeItem("refresh-token");
-       
+
         // 성공적으로 로그아웃한 후 로그인 페이지로 이동
         navigate("/");
       })
@@ -44,9 +44,9 @@ function NavBar() {
   };
 
   const handleClickLogo = () => {
-    
     if (userNo) {
       navigate(`/user/${userNo}`);
+      window.location.reload();
     }
   };
 

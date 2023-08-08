@@ -1,21 +1,19 @@
 package com.ssafy.partylog.api.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
+import com.ssafy.partylog.api.Entity.LiveEntity;
+import com.ssafy.partylog.api.response.CommonResponse;
 import com.ssafy.partylog.api.service.LiveService;
-import com.ssafy.partylog.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.parameters.P;
+import org.springframework.web.bind.annotation.*;
 
 import io.openvidu.java.client.Connection;
 import io.openvidu.java.client.ConnectionProperties;
@@ -26,7 +24,7 @@ import io.openvidu.java.client.Session;
 import io.openvidu.java.client.SessionProperties;
 
 @Slf4j
-@RestController
+@RestController()
 public class LiveController {
     
     LiveService liveService;
@@ -86,5 +84,45 @@ public class LiveController {
         ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
         Connection connection = session.createConnection(properties);
         return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
+    }
+
+    @PutMapping("/api/end/{liveId}")
+    public ResponseEntity<CommonResponse> endLiveSession(@PathVariable("liveId") String liveId) {
+        log.info("라이브 세션 종료: {}", liveId);
+        CommonResponse data;
+        HttpStatus status;
+
+        try {
+            liveService.endLiveSession(liveId);
+            data = CommonResponse.createResponseWithNoContent("200", "라이브 세션 종료했습니다.");
+            status = HttpStatus.OK;
+        } catch(Exception e) {
+            e.printStackTrace();
+            data = CommonResponse.createResponseWithNoContent("400", "라이브 세션 종료 중 문제가 발생했습니다.");
+            status = HttpStatus.OK;
+        }
+        return new ResponseEntity<CommonResponse>(data, status);
+    }
+
+    @PostMapping("/api/active/{liveId}")
+    public ResponseEntity<CommonResponse> checkLiveActive(@PathVariable("liveId") String liveId) {
+        log.info("라이브 방송 여부 체크: {}", liveId);
+        CommonResponse data;
+        HttpStatus status;
+
+        try {
+            LiveEntity live = liveService.checkLiveActive(liveId);
+            if(live.isLiveActive()) {
+                data = CommonResponse.createResponseWithNoContent("200", "현재 진행중인 방송입니다.");
+            } else {
+                data = CommonResponse.createResponseWithNoContent("404", "현재 방송이 종료되었습니다.");
+            }
+            status = HttpStatus.OK;
+        } catch(Exception e) {
+            e.printStackTrace();
+            data = CommonResponse.createResponseWithNoContent("400", "방송 활성화 여부 확인 중 문제가 발생했습니다.");
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return new ResponseEntity<CommonResponse>(data, status);
     }
 }

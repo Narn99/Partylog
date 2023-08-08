@@ -118,41 +118,25 @@ const Openvidu = () => {
        
     }
 
-    const leaveSession = () => {
-        console.log("작동");
-        // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+    // const leaveSession = () => {
+    //     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
-        const mySession = session;
+    //     const mySession = session;
 
-        if (mySession) {
-            mySession.disconnect();
-        }
+    //     if (mySession) {
+    //         mySession.disconnect();
+    //     }
 
-        // Empty all properties...
-        OV = null;
-        setSession(undefined);
-        setSubscribers([]);
-        setMysessionId('');
-        setMyUserName('');
-        setMainStreamManager(undefined);
-        setPublisher(undefined);
-
-        
-        // 종료 API 호출
-        axios.put(APPLICATION_SERVER_URL + 'api/sessions/' + mySessionId, {},
-        {
-            headers: { 
-                'Authorization': localStorage.getItem("access-token"),
-                'Content-Type': 'application/json', 
-            },
-        }
-        ).then(res => {
-            console.log(res);
-        })
-
-
-        window.close();
-    }
+    //     // Empty all properties...
+    //     OV = null;
+    //     setSession(undefined);
+    //     setSubscribers([]);
+    //     setMysessionId('');
+    //     setMyUserName('');
+    //     setMainStreamManager(undefined);
+    //     setPublisher(undefined);
+    //     window.close();
+    // }
 
     // const switchCamera = async () => {
     //     try {
@@ -239,7 +223,7 @@ const Openvidu = () => {
                 <p>종료된 라이브 입니다.</p>
             ) : (
                 <div id="session" style={{height:"100%"}}>
-                    <div id="session-header">
+                    {/* <div id="session-header">
                         <h1 id="session-title">{mySessionId}</h1>
                         <input
                             className="btn btn-large btn-danger"
@@ -248,14 +232,14 @@ const Openvidu = () => {
                             onClick={leaveSession}
                             value="나가기"
                         />
-                        {/* <input
+                        <input
                             className="btn btn-large btn-success"
                             type="button"
                             id="buttonSwitchCamera"
                             onClick={switchCamera}
                             value="Switch Camera"
-                        /> */}
-                    </div>
+                        />
+                    </div> */}
 
                     {/* {mainStreamManager !== undefined ? (
                         <div id="main-video" className="col-md-6">

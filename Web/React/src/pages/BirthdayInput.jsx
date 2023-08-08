@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cake from "../image/Cake.png";
@@ -10,7 +10,7 @@ import { Button } from "@mui/material";
 // import { createTheme } from "@mui/material";
 // import { ThemeProvider } from "@emotion/react";
 import { Grid } from "@mui/material";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 // const theme = createTheme({
 //   palette: {
@@ -21,42 +21,45 @@ import {useParams} from "react-router-dom";
 // });
 
 function BirthdayInput(props) {
-
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
 
   const navigate = useNavigate();
 
-  const {userNo} = useParams();
+  const { userNo } = useParams();
   var [birthday, setbirthday] = useState("");
 
   const changeBirthday = (date) => {
     setbirthday(date);
-  }
-
+  };
+  console.log(birthday);
   const join = () => {
-    axios.post(
-      `${SERVER_API_URL}/user/join`,
-      {
-        "userNo" : userNo,
-        "userBirthday" : birthday
-      }
-    )
-    .then((res) => {
-      console.log(res)
-      if(res.data.code === "200") {
-        var userNo = res.data.data;
-        // 토큰 저장
-        localStorage.setItem("access-token", res.headers.get("authorization"));
-        localStorage.setItem("refresh-token", res.headers.get("refresh-token"));
-        navigate(`/user/${userNo}`);
-      } else {
-        console.log("회원가입에 실패했습니다.");
-      }
-    })
-    .catch((e) => {
-      console.log(e);
-    })
-  }
+    axios
+      .post(`${SERVER_API_URL}/user/join`, {
+        userNo: userNo,
+        userBirthday: birthday,
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.data.code === "200") {
+          var userNo = res.data.data;
+          // 토큰 저장
+          localStorage.setItem(
+            "access-token",
+            res.headers.get("authorization")
+          );
+          localStorage.setItem(
+            "refresh-token",
+            res.headers.get("refresh-token")
+          );
+          navigate(`/user/${userNo}`);
+        } else {
+          console.log("회원가입에 실패했습니다.");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <div className="center">
@@ -78,10 +81,10 @@ function BirthdayInput(props) {
         {/* <ThemeProvider theme={theme}> */}
         <Grid item xs={12} margin={"10px"}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker 
-            format="YYYY / MM / DD" 
-            value={birthday}
-            onChange={(date) => changeBirthday(date)}
+            <DatePicker
+              format="YYYY / MM / DD"
+              value={birthday}
+              onChange={(date) => changeBirthday(date)}
             />
           </LocalizationProvider>
         </Grid>
