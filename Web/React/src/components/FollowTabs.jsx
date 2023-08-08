@@ -9,23 +9,36 @@ import FollowTabsStyles from "../css/FollowTabsStyles.css";
 import Box from '@mui/material/Box';
 import axios from 'axios';
 
-function FollowTabs() {
+
+
+function FollowTabs(props) {
   const [tabValue, setTabValue] = useState(0);
   const [followings, setFollowings] = useState([]);
   const [followers, setFollowers] = useState([]);
+  const { userNum } = props;
 
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
 
-  // 팔로잉 목록을 불러오는 로직을 별도의 함수로 분리
+  // 팔로잉 목록을 불러오는 함수. 내가 팔로워
   const fetchFollowings = () => {
-    axios.get(`${SERVER_API_URL}/user/searchFolloweeList/10/0`, { 
+    
+    const followingsRequestBody = {
+      // followerNo: 1004,
+      followerNo: userNum,
+      limit: 10,
+      offset: 0
+    };
+    axios.post(`${SERVER_API_URL}/user/searchFolloweeList`, 
+    followingsRequestBody,
+    { 
       headers: {
         'Authorization': `${accessToken}`
       }
     })
     .then(response => {
-
+      console.log(userNum);
+    console.log(response.data.data);
     setFollowings(response.data.data.map(following => 
       ({ userNo: following.user_no, nickname: following.user_nickname, profile: following.user_profile })));
     })
@@ -35,8 +48,16 @@ function FollowTabs() {
     });
   };
 
-  const fetchFollowers = () => { // 팔로워 목록을 불러오는 함수
-    axios.get(`${SERVER_API_URL}/user/searchFollowerList/10/0`, { 
+   // 팔로워 목록을 불러오는 함수. 내가 팔로이
+  const fetchFollowers = () => {
+    const followersRequestBody = {
+      followeeNo: userNum,
+      limit: 10,
+      offset: 0
+    };
+    axios.post(`${SERVER_API_URL}/user/searchFollowerList`, 
+    followersRequestBody,
+    { 
       headers: {
         'Authorization': `${accessToken}`
       }
@@ -51,8 +72,10 @@ function FollowTabs() {
   };
 
   useEffect(() => {
+    
     fetchFollowings(); // 컴포넌트가 마운트될 때 팔로잉 목록을 불러옵니다.
     fetchFollowers(); // 팔로워 목록 불러오기
+    
   }, [] ); //팔로잉 팔로워 목록 바뀌면 
 
   const handleChange = (event, newValue) => {
@@ -81,7 +104,8 @@ function FollowTabs() {
   };
   
   const handleUnfollow = (followeeNo) => {
-    axios.delete(`${SERVER_API_URL}/user/removeFollow/${followeeNo}`, {
+    axios.delete(`${SERVER_API_URL}/user/removeFollow/${followeeNo}`, 
+    {
       headers: {
         'Authorization': `${accessToken}`
       }

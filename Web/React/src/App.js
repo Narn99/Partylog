@@ -21,7 +21,7 @@ function App() {
           <Route path="/birthdayinput/:userNo" element={<BirthdayInput />} />
           <Route path="/user/:userNo" element={<UserPage />} />
           <Route path="/profile-setting" element={<ProfileSetting />} />
-          <Route path="/myfriend" element={<MyFriend />} />
+          <Route path="/myfriend/:userNum" element={<MyFriend />} />
           <Route path="/room" element={<Openvidu />} />
           <Route path="/myfriend/:userNo" element={<MyFriend />} />
           <Route path="/live/:userNo" element={<Openvidu />} />

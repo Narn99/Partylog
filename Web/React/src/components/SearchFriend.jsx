@@ -4,6 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { useFollow } from "../context/FollowContext";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 export default function SearchFriend() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -81,8 +82,10 @@ export default function SearchFriend() {
           />
         )}
        renderOption={(props, option) => (
-  <li {...props}>
+  <li {...props} >
+    <Link to={`/myfriend/${option.user_no}`} className="myLink">
     {option.user_nickname}
+    </Link>
     <Button variant={followings.includes(option.user_nickname) ? 'text' : 'outlined'}
      onClick={() => handleFollow(option.user_nickname, option.user_no)}>
     {followings.includes(option.user_nickname) ? '팔로우됨' : '팔로우'}
