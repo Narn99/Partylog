@@ -51,7 +51,9 @@ const CountdownTimer = (props) => {
     } else {
       // 오늘이 지난 경우
       const nextYearBirthday = new Date(targetDate);
-      nextYearBirthday.setFullYear(currentDate.getFullYear() + 1);
+      if (nextYearBirthday < currentDate) {
+        nextYearBirthday.setFullYear(currentDate.getFullYear() + 1);
+      }
       diff = +nextYearBirthday - +currentDate;
 
       timeLeft = {

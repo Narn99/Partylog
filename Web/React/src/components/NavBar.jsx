@@ -52,6 +52,7 @@ function NavBar() {
   const handleClickLogo = () => {
     if (userNo) {
       navigate(`/user/${userNo}`);
+      window.location.reload();
     }
   };
 

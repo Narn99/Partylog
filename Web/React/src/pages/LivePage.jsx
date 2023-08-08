@@ -1,8 +1,11 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect } from "react";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
+import Button from "@mui/material/Button";
 import ChatBox from "../components/LivePage/ChatBox";
 import ViewersCarousel from "../components/LivePage/ViewersCarousel";
+
+// 나중에 CSS로 화면 + 버튼그룹 / 채팅창 + 나가기 버튼으로 세로열 맞추기
 
 function LivePage() {
   const theme = useTheme();
@@ -21,6 +24,11 @@ function LivePage() {
       document.body.classList.remove("live-page");
     };
   }, []);
+
+  const handleExitLive = () => {
+    window.close();
+    // 나가기 누르면 그냥 윈도우 꺼지게만 해둠. 여기 고치면 됨.
+  };
 
   const viewers = [
     "강아지",
@@ -218,7 +226,7 @@ function LivePage() {
       {!isMediumScreen && (
         <Grid
           container
-          justifyContent={"center"}
+          justifyContent={"space-evenly"}
           alignItems={"center"}
           style={{ marginTop: "60px", height: "10vh" }}
           className="button-grid"
@@ -233,6 +241,32 @@ function LivePage() {
             }}
           >
             <ButtonGroups />
+          </Grid>
+
+          <Grid
+            container
+            item
+            xs={2}
+            justifyContent={"flex-end"}
+            alignItems={"center"}
+          >
+            <Button
+              className="exit-live-button"
+              variant="contained"
+              style={{
+                fontFamily: "MaplestoryOTFBold",
+                width: "100%",
+                height: "100%",
+                fontSize: "25px",
+                color: "white",
+                borderRadius: "20px",
+                texShadow: "0.1px 0.1px 4px #e892a4",
+                boxSizing: "border-box",
+              }}
+              onClick={handleExitLive}
+            >
+              나가기
+            </Button>
           </Grid>
         </Grid>
       )}
