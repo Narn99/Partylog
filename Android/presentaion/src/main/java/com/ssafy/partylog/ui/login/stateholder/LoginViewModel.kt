@@ -1,6 +1,9 @@
 package com.ssafy.partylog.ui.login.stateholder
 
 import android.app.Application
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
@@ -22,16 +25,14 @@ class LoginViewModel @Inject constructor(private val application: Application,
     val uiState: StateFlow<LoginState>
         get() = _uiState.asStateFlow()
 
+    var loginCode by mutableStateOf(0)
+
 
     fun afterKakaoLogin(token: String) {
         Logger.d("토큰가지고 서버 호출")
+
         viewModelScope.launch {
-            if (checkKakaoTokenUsecase(token)) {
-
-            }
-            else {
-
-            }
+            loginCode = checkKakaoTokenUsecase(token)
         }
     }
 }

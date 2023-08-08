@@ -9,21 +9,20 @@ import com.ssafy.domain.repository.LoginRepository
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(private val loginDatasource: LoginDatasource): LoginRepository {
-    override suspend fun checkKakaoToken(token: String): Boolean {
+    override suspend fun checkKakaoToken(token: String): Int {
 
         Logger.d("datasource 실행$token")
         val data = loginDatasource.checkKakaoToken(token)
+        var result = -1
         data.onSuccess {
-            true
-//            LoginMapper.checkKakaoRespToResult(this.data)
             Logger.d("카카오토큰 체크 성공")
+            result = Integer.parseInt(this.data.code)
+//            LoginMapper.checkKakaoRespToResult(this.data)
         }.onError {
-            false
             Logger.d("카카오토큰 체크 실패 err\n$this")
         }.onException {
-            false
             Logger.d("카카오토큰 체크 실패 exception\n$this")
         }
-        return false
+        return result
     }
 }
