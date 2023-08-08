@@ -39,12 +39,8 @@ function LivePage() {
   const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
 
   useEffect(() => {
-    joinSession();
-    document.body.classList.add("live-page");
-
-    return () => {
-      document.body.classList.remove("live-page");
-    };
+    joinSession(); 
+    // eslint-disable-next-line
   }, []);
 
   const viewers = [
@@ -309,35 +305,11 @@ const createToken = async (sessionId) => {
                   }}
                   className="live-display"
                 >
-                    <div className="container" style={{height:"100%"}}>
+        <div className="container" style={{height:"100%"}}>
             {session === undefined ? (
                 <p>종료된 라이브 입니다.</p>
             ) : (
                 <div id="session" style={{height:"100%"}}>
-                    {/* <div id="session-header">
-                        <h1 id="session-title">{mySessionId}</h1>
-                        <input
-                            className="btn btn-large btn-danger"
-                            type="button"
-                            id="buttonLeaveSession"
-                            onClick={leaveSession}
-                            value="나가기"
-                        />
-                        <input
-                            className="btn btn-large btn-success"
-                            type="button"
-                            id="buttonSwitchCamera"
-                            onClick={switchCamera}
-                            value="Switch Camera"
-                        />
-                    </div> */}
-
-                    {/* {mainStreamManager !== undefined ? (
-                        <div id="main-video" className="col-md-6">
-                            <UserVideoComponent streamManager={mainStreamManager} />
-
-                        </div>
-                    ) : null} */}
                     <div id="video-container" className="col-md-6" style={{height:"100%"}}>
                         {publisher !== undefined ? (
                             <div className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(publisher)} style={{height:"100%"}}>

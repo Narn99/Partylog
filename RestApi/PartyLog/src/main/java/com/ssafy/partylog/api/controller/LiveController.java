@@ -66,7 +66,7 @@ public class LiveController {
     @PostMapping("/api/sessions/{sessionId}/connections")
     public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
-        log.info("세션아이디: {}", sessionId);
+        log.info("라이브 세션 실행: {}", sessionId);
         log.info("요청값: {}", params);
 
         Session session = openvidu.getActiveSession(sessionId);
