@@ -6,7 +6,7 @@ import com.ssafy.domain.model.login.CheckKakaoToken
 object LoginMapper {
     fun checkKakaoRespToResult(dto: KakaoCheckRespDto): CheckKakaoToken {
         return CheckKakaoToken(
-            dto.status == "200" || dto.status == "201"
+            dto.code == "200" || dto.code == "201"
         )
 
     }
