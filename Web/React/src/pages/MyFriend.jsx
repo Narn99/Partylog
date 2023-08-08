@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
 import FollowTabs from '../components/FollowTabs';
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 import axios from "axios";
 
@@ -31,15 +31,24 @@ const Box1 = styled(Box)(({ theme }) => ({
 function MyFriend(props) {
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
+  const  MyuserNum  = useSelector((state) => {
+    return state.auth.userData.userNo;
+  });
+  
+  // const myUserNo = useSelector((state) => {
+  //   return state.auth.userNo;
+  // });
  // useSelector를 사용하여 리듀서에서 정보 받아오는 곳
   // const profileImg = useSelector((state) => {
   //   return state.auth.userData.userProfile;
   // });
   const { userNum } = useParams(); // 접속한 사람의 번호, 위에 뜨는 번호
-  // const userNickname = useSelector((state) => {
+  // const username = useSelector((state) => {
   //   return state.auth.userData.userNickname;
   // });
-  // console.log(userNum);
+  // console.log(username);
+  
+  
   const [userNickname, setUserNickname] = useState("");
   const [profileImg, setProfileImg] = useState("");
 
@@ -96,7 +105,7 @@ function MyFriend(props) {
         <Grid item sm={12} md={8}>
           <Box1>
             <div className="follow-tabs-background">
-            <FollowTabs userNum={userNum} />
+            <FollowTabs userNum={userNum} MyuserNum={MyuserNum} />
             </div>
           </Box1>
         </Grid>
