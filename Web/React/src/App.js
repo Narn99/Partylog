@@ -24,8 +24,8 @@ function App() {
           <Route path="/myfriend" element={<MyFriend />} />
           <Route path="/room" element={<Openvidu />} />
           <Route path="/myfriend/:userNo" element={<MyFriend />} />
-          <Route path="/live/:userNo" element={<LivePage />} />
-
+          <Route path="/live/:userNo" element={<Openvidu />} />
+          <Route path="/party" element={<LivePage />} />
           {/* 일단 이상한 페이지로 이동하면 404NotFound로 이동 */}
           <Route path="/*" element={<NotFound404 />} />
         </Routes>

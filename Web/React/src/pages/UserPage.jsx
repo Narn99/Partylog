@@ -69,7 +69,7 @@ function UserPage() {
   useEffect(() => {
     axios({
       method: "post",
-      url: `${SERVER_API_URL}/user/mypage/`,
+      url: `${SERVER_API_URL}/user/board/${userNo}`,
       headers: {
         Authorization: `${accessToken}`,
       },
@@ -137,6 +137,7 @@ function UserPage() {
   const handleModalClose = () => setModalOpen(false);
 
   const handleLiveButtonClick = (event) => {
+    // window.open(`/live/${userNo}`, "_blank");
     window.open(`/live/${userNo}`, "_blank");
   };
 
