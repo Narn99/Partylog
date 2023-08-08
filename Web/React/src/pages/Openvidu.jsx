@@ -119,7 +119,7 @@ const Openvidu = () => {
     }
 
     const leaveSession = () => {
-
+        console.log("작동");
         // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
         const mySession = session;
@@ -136,6 +136,20 @@ const Openvidu = () => {
         setMyUserName('');
         setMainStreamManager(undefined);
         setPublisher(undefined);
+
+        
+        // 종료 API 호출
+        axios.put(APPLICATION_SERVER_URL + 'api/sessions/' + mySessionId, {},
+        {
+            headers: { 
+                'Authorization': localStorage.getItem("access-token"),
+                'Content-Type': 'application/json', 
+            },
+        }
+        ).then(res => {
+            console.log(res);
+        })
+
 
         window.close();
     }
@@ -222,47 +236,10 @@ const Openvidu = () => {
     return (
         <div className="container" style={{height:"100%"}}>
             {session === undefined ? (
-                // <div id="join">
-                //     <div id="img-div">
-                //         <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="OpenVidu logo" />
-                //     </div>
-                //     <div id="join-dialog" className="jumbotron vertical-center">
-                //         <h1> Join a video session </h1>
-                //         <form className="form-group" onSubmit={this.joinSession}>
-                //             <p>
-                //                 <label>Participant: </label>
-                //                 <input
-                //                     className="form-control"
-                //                     type="text"
-                //                     id="userName"
-                //                     value={myUserName}
-                //                     onChange={this.handleChangeUserName}
-                //                     required
-                //                 />
-                //             </p>
-                //             <p>
-                //                 <label> Session: </label>
-                //                 <input
-                //                     className="form-control"
-                //                     type="text"
-                //                     id="sessionId"
-                //                     value={mySessionId}
-                //                     onChange={this.handleChangeSessionId}
-                //                     required
-                //                 />
-                //             </p>
-                //             <p className="text-center">
-                //                 <input className="btn btn-lg btn-success" name="commit" type="submit" value="JOIN" />
-                //             </p>
-                //         </form>
-                //     </div>
-                // </div>
-                <p>미팅룸 생성 중 입니다.</p>
-            ) : null}
-
-            {session !== undefined ? (
+                <p>종료된 라이브 입니다.</p>
+            ) : (
                 <div id="session" style={{height:"100%"}}>
-                    {/* <div id="session-header">
+                    <div id="session-header">
                         <h1 id="session-title">{mySessionId}</h1>
                         <input
                             className="btn btn-large btn-danger"
@@ -271,14 +248,14 @@ const Openvidu = () => {
                             onClick={leaveSession}
                             value="나가기"
                         />
-                        <input
+                        {/* <input
                             className="btn btn-large btn-success"
                             type="button"
                             id="buttonSwitchCamera"
                             onClick={switchCamera}
                             value="Switch Camera"
-                        />
-                    </div> */}
+                        /> */}
+                    </div>
 
                     {/* {mainStreamManager !== undefined ? (
                         <div id="main-video" className="col-md-6">
@@ -301,7 +278,7 @@ const Openvidu = () => {
                         ))} */}
                     </div>
                 </div>
-            ) : null}
+            )}
         </div>
     );
 }
