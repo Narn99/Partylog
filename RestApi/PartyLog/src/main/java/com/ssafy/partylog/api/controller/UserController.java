@@ -236,19 +236,19 @@ public class UserController {
         return new ResponseEntity<CommonResponse<MyPageResponseBody>>(data, status);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/logout/{userNo}")
     @Operation(summary = "로그아웃", description = "리프레시 토큰을 만료시킵니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "400", description = "Invalid"),
     })
-    public ResponseEntity<CommonResponse> logout(Authentication authentication) throws Exception {
+    public ResponseEntity<CommonResponse> logout(@PathVariable("userNo") int userNo) throws Exception {
         // DB에 저장된 refreshToken 값 제거
         HttpStatus status;
         CommonResponse data;
 
-        log.info("로그아웃 사용자 번호: {}", authentication.getName());
-        if(userService.logout(Integer.parseInt(authentication.getName()))) { // 로그아웃 성공
+        log.info("로그아웃 사용자 번호: {}", userNo);
+        if(userService.logout(userNo)) { // 로그아웃 성공
             data = CommonResponse.createResponseWithNoContent("200", "로그아웃 되었습니다.");
             status = HttpStatus.OK;
         } else { // 로그아웃 실패

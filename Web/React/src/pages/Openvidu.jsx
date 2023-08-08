@@ -195,14 +195,26 @@ const Openvidu = () => {
 
     const createSession = async (sessionId) => {
         const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions', { customSessionId: sessionId }, {
-            headers: { 'Content-Type': 'application/json', },
+            headers: { 
+                'Authorization': localStorage.getItem("access-token"),
+                'Content-Type': 'application/json', 
+            },
         });
         return response.data; // The sessionId
     }
 
     const createToken = async (sessionId) => {
-        const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', {}, {
-            headers: { 'Content-Type': 'application/json', },
+        var liveInfo = {
+            "live_id" : sessionId,
+            "live_title" : null,
+            "live_desc" : userInfo.userNickname + " 님의 생일 축하방입니다.",
+            "live_host" : userInfo.userNo,
+        };
+        const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', liveInfo, {
+            headers: { 
+                'Authorization': localStorage.getItem("access-token"),
+                'Content-Type': 'application/json', 
+            },
         });
         return response.data; // The token
     }

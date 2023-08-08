@@ -28,13 +28,7 @@ function NavBar() {
     // 카카오 로그아웃 요청
     axios
       .post(
-        `${SERVER_API_URL}/user/logout`,
-        {},
-        {
-          headers: {
-            Authorization: `${accessToken}`,
-          },
-        }
+        `${SERVER_API_URL}/user/logout/${userNo}`
       )
       .then(() => {
         // 로컬 토큰 제거
