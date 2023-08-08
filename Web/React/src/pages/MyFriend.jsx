@@ -28,7 +28,6 @@ const Box1 = styled(Box)(({ theme }) => ({
 }));
 
 
-
 function MyFriend(props) {
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
@@ -40,7 +39,7 @@ function MyFriend(props) {
   // const userNickname = useSelector((state) => {
   //   return state.auth.userData.userNickname;
   // });
-  console.log(userNum);
+  // console.log(userNum);
   const [userNickname, setUserNickname] = useState("");
   const [profileImg, setProfileImg] = useState("");
 
@@ -68,8 +67,6 @@ function MyFriend(props) {
 
     fetchUserData(); // 함수를 호출하여 데이터를 불러옵니다.
   }, [userNum]);
-
-
 
   return (
     <div>

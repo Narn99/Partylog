@@ -30,7 +30,7 @@ export default function SearchFriend() {
         }
       });
       // console.log(response.data);
-      setSearchResults(response.data.data); // 응답 형식이 맞는지 확인하고 필요하면 수정
+      setSearchResults(response.data.data); 
     } catch (error) {
       console.error("An error occurred while fetching the data", error);
     }
@@ -69,7 +69,7 @@ export default function SearchFriend() {
       <Autocomplete
         options={searchResults}
         getOptionLabel={(option) => option.user_nickname}
-        fullWidth // 전체 너비 차지
+        fullWidth 
         renderInput={(params) => (
           <TextField
             {...params}
@@ -77,7 +77,7 @@ export default function SearchFriend() {
             value={searchTerm}
             onChange={handleSearch}
             variant="outlined"
-            fullWidth // 전체 너비 차지
+            fullWidth 
             style={{ fontFamily: "MaplestoryOTFLight" }}
           />
         )}

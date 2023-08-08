@@ -37,8 +37,8 @@ function FollowTabs(props) {
       }
     })
     .then(response => {
-      console.log(userNum);
-    console.log(response.data.data);
+    // console.log(userNum);
+    // console.log(response.data.data);
     setFollowings(response.data.data.map(following => 
       ({ userNo: following.user_no, nickname: following.user_nickname, profile: following.user_profile })));
     })
@@ -76,7 +76,7 @@ function FollowTabs(props) {
     fetchFollowings(); // 컴포넌트가 마운트될 때 팔로잉 목록을 불러옵니다.
     fetchFollowers(); // 팔로워 목록 불러오기
     
-  }, [] ); //팔로잉 팔로워 목록 바뀌면 
+  }, [userNum] ); //팔로잉 팔로워 목록 바뀌면 
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
