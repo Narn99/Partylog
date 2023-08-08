@@ -108,9 +108,8 @@ function UserPage() {
         // console.log(userData);
 
         // 본인 페이지면 받아온 데이터 저장
-        if (pageOwner) {
+        if (parseInt(myUserNo) === parseInt(userNo)) {
           setPageOwner(true);
-
           dispatch(
             saveUserData(
               data.userNo,
@@ -120,7 +119,6 @@ function UserPage() {
             )
           );
         }
-        // console.log(6);
         setloading(false);
       })
       .catch((err) => {
@@ -170,8 +168,13 @@ function UserPage() {
   };
   const handleModalClose = () => setModalOpen(false);
 
-  const handleLiveButtonClick = (event) => {
-    // window.open(`/live/${userNo}`, "_blank");
+  // 생일자 라이브 스타트
+  const handleLiveStartButton = (event) => {
+    window.open(`/live/${userNo}`, "_blank");
+  };
+
+  // 참가자 라이브 참가
+  const handleLiveAttendButton = (event) => {
     window.open(`/live/${userNo}`, "_blank");
   };
 
@@ -269,26 +272,71 @@ function UserPage() {
                 {/* 해당 유저 생일일 때만 버튼 보이기 */}
                 {/* {userData.userBirthday === todayFormatted && ( */}
                 <Grid item>
-                  <Button
-                    className="live-button"
-                    onClick={handleLiveButtonClick}
-                    variant="contained"
-                    style={{
-                      fontFamily: "MaplestoryOTFBold",
-                      fontSize: changeLiveButtonFontSize,
-                      color: "white",
-                      width: changeLiveButtonWidth,
-                      height: changeLiveButtonHeight,
-                      lineHeight: "30px",
-                      borderRadius: "40px",
-                      texShadow: "0.1px 0.1px 4px #e892a4",
-                      marginTop: "20px",
-                    }}
-                  >
-                    라이브로
-                    <br />
-                    이동
-                  </Button>
+                  {pageOwner ? (
+                    <Button
+                      className="live-button"
+                      onClick={handleLiveStartButton}
+                      variant="contained"
+                      style={{
+                        fontFamily: "MaplestoryOTFBold",
+                        fontSize: changeLiveButtonFontSize,
+                        color: "white",
+                        width: changeLiveButtonWidth,
+                        height: changeLiveButtonHeight,
+                        lineHeight: "30px",
+                        borderRadius: "40px",
+                        texShadow: "0.1px 0.1px 4px #e892a4",
+                        marginTop: "20px",
+                      }}
+                      disabled={userData.userBirthday !== todayFormatted}
+                    >
+                      {userData.userBirthday !== todayFormatted ? (
+                        <>
+                          아직 생일이
+                          <br />
+                          아니예요!
+                        </>
+                      ) : (
+                        <>
+                          라이브
+                          <br />
+                          시작
+                        </>
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      className="live-button"
+                      onClick={handleLiveAttendButton}
+                      variant="contained"
+                      style={{
+                        fontFamily: "MaplestoryOTFBold",
+                        fontSize: changeLiveButtonFontSize,
+                        color: "white",
+                        width: changeLiveButtonWidth,
+                        height: changeLiveButtonHeight,
+                        lineHeight: "30px",
+                        borderRadius: "40px",
+                        texShadow: "0.1px 0.1px 4px #e892a4",
+                        marginTop: "20px",
+                      }}
+                      disabled={userData.userBirthday !== todayFormatted}
+                    >
+                      {userData.userBirthday !== todayFormatted ? (
+                        <>
+                          아직 생일이
+                          <br />
+                          아니예요!
+                        </>
+                      ) : (
+                        <>
+                          라이브
+                          <br />
+                          참가
+                        </>
+                      )}
+                    </Button>
+                  )}
                 </Grid>
                 {/* )} */}
               </Grid>
@@ -354,11 +402,7 @@ function UserPage() {
               </div>
             </Grid>
             <Grid container item xs={12}>
-              <MemoizedMessageBoard
-                userNo={userNo}
-                // 리덕스로 옮겨보려고 주석처리
-                // messages={recievedMessages}
-              />
+              <MemoizedMessageBoard userNo={userNo} myUserNo={myUserNo} />
             </Grid>
           </Grid>
           <Grid item lg={1}>
