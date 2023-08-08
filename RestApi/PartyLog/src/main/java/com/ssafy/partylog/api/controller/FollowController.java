@@ -1,5 +1,6 @@
 package com.ssafy.partylog.api.controller;
 
+import com.ssafy.partylog.api.request.FollowRequest;
 import com.ssafy.partylog.api.response.FollowResponseBody;
 import com.ssafy.partylog.api.response.CommonResponse;
 import com.ssafy.partylog.api.service.FollowService;
@@ -77,20 +78,18 @@ public class FollowController {
     }
 
     //나를 팔로우 하는 사람 목록 가져오기
-    @GetMapping("/searchFollowerList/{limit}/{offset}")
-    @Operation(summary = "팔로워리스트", description = "나를 팔로우한 사람 목록")
-    @Parameter(name = "limit", description = "한번에 가지고 올 사람 수")
-    @Parameter(name = "offset", description = "가지고 올 때 시작하는 순번 (0부터 시작, limit 크기만큼 커짐)")
-    public ResponseEntity<CommonResponse<List<FollowResponseBody>>> searchFollowerList(@PathVariable int limit, @PathVariable int offset, Authentication authentication) {
+    @PostMapping("/searchFollowerList")
+    @Operation(summary = "팔로워리스트", description = "나를 팔로우한 사람 목록(내가 팔로이)")
+    public ResponseEntity<CommonResponse<List<FollowResponseBody>>> searchFollowerList(@RequestBody FollowRequest followrequest) {
 
         CommonResponse data;
         HttpStatus status;
 
         //토큰 받기
-        int followNo = Integer.parseInt(authentication.getName());
+        int followNo = followrequest.getFolloweeNo();
 
         try {
-            List<FollowResponseBody> list = followService.searchFollowerList(followNo, limit, offset);
+            List<FollowResponseBody> list = followService.searchFollowerList(followNo, followrequest.getLimit(), followrequest.getOffset());
             data = CommonResponse.createResponse("200", list, "팔로우 목록 호출에 성공했습니다.");
             status = HttpStatus.OK;
         } catch(Exception e) {
@@ -103,20 +102,18 @@ public class FollowController {
     }
 
     //내가 팔로우 하는 사람 목록 가져오기
-    @GetMapping("/searchFolloweeList/{limit}/{offset}")
-    @Operation(summary = "팔로이리스트", description = "내가 팔로우한 사람 목록")
-    @Parameter(name = "limit", description = "한번에 가지고 올 사람 수")
-    @Parameter(name = "offset", description = "가지고 올 때 시작하는 순번 (0부터 시작, limit 크기만큼 커짐)")
-    public ResponseEntity<CommonResponse<List<FollowResponseBody>>> searchFolloweeList(@PathVariable int limit, @PathVariable int offset, Authentication authentication) {
+    @PostMapping("/searchFolloweeList")
+    @Operation(summary = "팔로이리스트", description = "내가 팔로우한 사람 목록(내가 팔로워)")
+    public ResponseEntity<CommonResponse<List<FollowResponseBody>>> searchFolloweeList(@RequestBody FollowRequest followrequest) {
 
         CommonResponse data;
         HttpStatus status;
 
         //토큰 받기
-        int followNo = Integer.parseInt(authentication.getName());
+        int followNo = followrequest.getFollowerNo();
 
         try {
-            List<FollowResponseBody> list = followService.searchFolloweeList(followNo, limit, offset);
+            List<FollowResponseBody> list = followService.searchFolloweeList(followNo, followrequest.getLimit(), followrequest.getOffset());
             data = CommonResponse.createResponse("200", list,"팔로이 목록 호출에 성공했습니다.");
             status = HttpStatus.OK;
         } catch(Exception e) {
@@ -129,15 +126,13 @@ public class FollowController {
     }
 
     //나를 팔로우하는 사람 수
-    @GetMapping("/getFollowerNumber")
+    @GetMapping("/getFollowerNumber/{userNo}")
     @Operation(summary = "팔로워들", description = "나를 팔로우하는 사람 수")
-    public ResponseEntity<CommonResponse<Long>> getFollowerNumber(Authentication authentication) {
+    public ResponseEntity<CommonResponse<Long>> getFollowerNumber(@PathVariable int userNo) {
 
         CommonResponse data;
         HttpStatus status;
 
-        //토큰 받기
-        int userNo = Integer.parseInt(authentication.getName());
 
         try {
             long counted = followService.getFollowerNumber(userNo);
@@ -153,15 +148,12 @@ public class FollowController {
     }
 
     //내가 팔로우하는 사람 수
-    @GetMapping("/getFolloweeNumber")
+    @GetMapping("/getFolloweeNumber/{userNo}")
     @Operation(summary = "스타들", description = "내가 팔로우하는 사람 수")
-    public ResponseEntity<CommonResponse<Long>> getFolloweeNumber(Authentication authentication) {
+    public ResponseEntity<CommonResponse<Long>> getFolloweeNumber(@PathVariable int userNo) {
 
         CommonResponse data;
         HttpStatus status;
-
-        //토큰 받기
-        int userNo = Integer.parseInt(authentication.getName());
 
         try {
             long counted = followService.getFolloweeNumber(userNo);
