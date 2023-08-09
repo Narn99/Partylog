@@ -1,11 +1,14 @@
-import React, { useState, memo, useEffect } from "react";
+import React, {
+  useState,
+  // memo,
+  useEffect,
+} from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
 import "../css/UserPage.css";
 import CountdownTimer from "../components/Timmer";
 // import molru from "../assets/molru.webp";
-import YearChip from "../components/YearChip";
 import MessageModal from "../components/MessageModal";
 import NavBar from "../components/NavBar";
 import StickyNoteY from "../components/StickyNote/StickyNoteY";
@@ -85,7 +88,7 @@ function UserPage() {
       .then((res) => {
         // console.log(res.status);
         const data = res.data.data;
-        console.log(data);
+        // console.log(data);
         setUserData({
           userNo: data.userNo,
           userNickname: data.userNickname,
@@ -137,10 +140,12 @@ function UserPage() {
   ]);
 
   useEffect(() => {
-    if (myMessages.length >= 1) {
+    if (myMessages && myMessages.length >= 1) {
       dispatch(
         setModalData(myMessages[0].letter_title, myMessages[0].letter_content)
       );
+    } else {
+      dispatch(setModalData("", ""));
     }
   }, [myMessages, dispatch]);
 
@@ -159,7 +164,7 @@ function UserPage() {
     getRandomStickyNote()
   );
 
-  const MemoizedMessageBoard = memo(MessageBoard);
+  // const MemoizedMessageBoard = memo(MessageBoard);
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -190,6 +195,9 @@ function UserPage() {
   const changeLiveButtonWidth = isSmallScreen ? "150px" : "180px";
   const changeMessageButtonFontSize = isSmallScreen ? "15px" : "20px";
   const addMarginAboveBoard = isMediumScreen ? "20px" : "";
+
+  console.log("유저페이지의 마이메시지");
+  console.log(myMessages);
 
   // 로딩 중일 시 띄우는 컴포넌트
   if (loading) {
@@ -350,59 +358,14 @@ function UserPage() {
             md={7}
             style={{ marginTop: addMarginAboveBoard }}
           >
-            <Grid container item xs={12}>
-              <div
-                className="UserPage-side"
-                style={{
-                  paddingTop: "10px",
-                  paddingBottom: "10px",
-                  height: "47px",
-                }}
-              >
-                <Grid
-                  container
-                  justifyContent={"flex-start"}
-                  alignItems={"center"}
-                >
-                  <div className="yearchips-div">
-                    <YearChip />
-                  </div>
-                </Grid>
-                <Grid
-                  container
-                  justifyContent={"flex-end"}
-                  alignItems={"center"}
-                >
-                  <div className="create-message-div">
-                    {/* 추후에 메시지 이미 작성한 본인은 메시지 작성 버튼 대신에 수정 버튼이 보이게 수정,
-                    수정을 누르면 본인이 작성했던 메시지 내용이 뜨게 하고,그 안에 메시지 삭제 버튼도 존재하게 */}
-                    {parseInt(myUserNo) !== parseInt(userNo) && (
-                      <Button
-                        className={
-                          myMessages.length >= 1
-                            ? "fix-message-button"
-                            : "create-message-button"
-                        }
-                        onClick={handleModalOpen}
-                        variant="contained"
-                        style={{
-                          fontFamily: "MaplestoryOTFBold",
-                          fontSize: changeMessageButtonFontSize,
-                          color: "white",
-                          borderRadius: "40px",
-                          texShadow: "0.1px 0.1px 4px #e892a4",
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        {myMessages.length >= 1 ? "메시지 수정" : "메시지 작성"}
-                      </Button>
-                    )}
-                  </div>
-                </Grid>
-              </div>
-            </Grid>
-            <Grid container item xs={12}>
-              <MemoizedMessageBoard userNo={userNo} myUserNo={myUserNo} />
+            <Grid item xs={12}>
+              <MessageBoard
+                userNo={userNo}
+                myUserNo={myUserNo}
+                myMessages={myMessages}
+                handleModalOpen={handleModalOpen}
+                changeMessageButtonFontSize={changeMessageButtonFontSize}
+              />
             </Grid>
           </Grid>
           <Grid item lg={1}>
@@ -411,6 +374,7 @@ function UserPage() {
         </Grid>
         <MessageModal
           myMessages={myMessages ? myMessages : null}
+          setMyMessages={setMyMessages}
           userNo={userNo}
           pageOwner={pageOwner}
           myUserNo={myUserNo}

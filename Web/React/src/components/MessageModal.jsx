@@ -10,7 +10,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { setModalData, resetModalData } from "../actions/actions";
+import {
+  setModalData,
+  resetModalData,
+  getAdditionalMessagesList,
+  deleteMessageData,
+} from "../actions/actions";
 import axios from "axios";
 
 const style = {
@@ -32,13 +37,14 @@ function MessageModal(props) {
   const {
     userNo,
     myUserNo,
-    pageOwner,
+    // pageOwner,
     modalOpen,
     handleModalClose,
     randomStickyNote,
     isMediumScreen,
     isLargeScreen,
     myMessages,
+    setMyMessages,
   } = props;
 
   const modalTitle = useSelector((state) => state.modalData.modalTitle);
@@ -76,6 +82,28 @@ function MessageModal(props) {
       })
         .then((res) => {
           console.log(res.data);
+          axios({
+            method: "post",
+            url: `${SERVER_API_URL}/letter/get/letters`,
+            headers: {
+              Authorization: `${accessToken}`,
+            },
+            data: {
+              receiverNo: userNo,
+              writerNo: myUserNo,
+              year: 0,
+              limit: 24,
+              offset: nowMessages.length - 1,
+            },
+          })
+            .then((res) => {
+              console.log(res.data.data);
+              const additionalMessagesData = res.data.data;
+              dispatch(getAdditionalMessagesList(additionalMessagesData));
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           console.log(err);
@@ -119,11 +147,15 @@ function MessageModal(props) {
   const [messageId, setMessageId] = useState(null);
 
   useEffect(() => {
-    if (myMessages.length >= 1) {
+    if (myMessages && myMessages.length >= 1) {
       setMessageWriterId(myMessages[0].letter_writer);
       setMessageId(myMessages[0].letter_id);
     }
   }, [myMessages]);
+
+  const nowMessages = useSelector((state) => {
+    return state.messagesData.messages;
+  });
 
   const handleDeleteMessage = () => {
     if (parseInt(myUserNo) === parseInt(messageWriterId)) {
@@ -138,6 +170,9 @@ function MessageModal(props) {
         .then((res) => {
           console.log(res);
           setIsConfirmDelete(false);
+          dispatch(deleteMessageData(myUserNo));
+          dispatch(resetModalData());
+          setMyMessages(null);
           handleModalClose();
         })
         .catch((err) => {
@@ -147,6 +182,11 @@ function MessageModal(props) {
       alert("메시지 작성자 본인이 아닙니다!");
     }
   };
+
+  console.log("메시지모달의 마이메시지");
+  console.log(myMessages);
+
+  // myMessages가 갱신이 안 돼서 메시지 작성 버튼이 안 바뀜
 
   const changeModalVerticalPosition = isMediumScreen ? "50%" : "30%";
   const changeButtonFontSize = isMediumScreen ? "15px" : "25px";
@@ -172,7 +212,7 @@ function MessageModal(props) {
           onChangeModalText={handleChangeModalText}
         />
         <Grid container justifyContent={"space-evenly"}>
-          {myMessages.length < 1 ? (
+          {myMessages && myMessages.length < 1 ? (
             <Button
               className="MyPage-message-submit-button"
               type="submit"
