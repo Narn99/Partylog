@@ -117,9 +117,10 @@ function MyFriend(props) {
             </p>
 
             { 
-              !isFollowing ? 
+              parseInt(userNum) !== MyuserNum && (!isFollowing ? 
                 <button onClick={handleFollow} className="ProfileSetting-button">팔로우</button> : 
-                <button disabled className="ProfileSetting-button">팔로우됨</button> 
+                <button disabled className="ProfileSetting-button">팔로우됨</button>
+              )
             }
 
           </Grid>
