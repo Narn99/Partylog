@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
@@ -55,11 +55,11 @@ export default function SearchFriend() {
             <Link to={`/user/${option.user_no}`} className="myLink">
               {option.user_nickname}
             </Link>
-            <Link to={`/user/${option.user_no}`} className="myLink">
+            {/* <Link to={`/user/${option.user_no}`} className="myLink">
               <Button variant="outlined" style={{marginLeft: "10px"}}>
                 친구의 페이지로 이동
               </Button>
-            </Link>
+            </Link> */}
           </li>
         )}
       />
