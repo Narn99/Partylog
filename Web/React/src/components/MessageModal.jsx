@@ -95,7 +95,7 @@ function MessageModal(props) {
               writerNo: myUserNo,
               year: 0,
               limit: 24,
-              offset: nowMessages.length - 1,
+              offset: 0,
             },
           })
             .then((res) => {
@@ -157,9 +157,9 @@ function MessageModal(props) {
 
   useEffect(() => {}, [myMessage]);
 
-  const nowMessages = useSelector((state) => {
-    return state.messagesData.messages;
-  });
+  // const nowMessages = useSelector((state) => {
+  //   return state.messagesData.messages;
+  // });
 
   const handleDeleteMessage = () => {
     // console.log(myUserNo);
