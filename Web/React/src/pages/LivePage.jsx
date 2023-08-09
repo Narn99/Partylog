@@ -68,6 +68,7 @@ function LivePage() {
   // ];
 
   const handleMainVideoStream = (stream) => {
+    console.log(stream);
     if (mainStreamManager !== stream) {
         setMainStreamManager(stream);
     }
@@ -313,18 +314,23 @@ const createToken = async (sessionId) => {
             ) : (
                 <div id="session" style={{height:"100%"}}>
                     <div id="video-container" className="col-md-6" style={{height:"100%"}}>
-                        {publisher !== undefined ? (
+                       {mainStreamManager !== undefined ? (
+                            <div id="main-video" className="col-md-6" style={{height:"100%"}}>
+                            <UserVideoComponent streamManager={mainStreamManager} style={{height:"100%"}}/>
+                          </div>
+                        ) : null}
+                        {/* {publisher !== undefined ? (
                             <div className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(publisher)} style={{height:"100%"}}>
                                 <UserVideoComponent
                                     streamManager={publisher} style={{height:"100%"}}/>
                             </div>
-                        ) : null}
-                        {/* {subscribers.map((sub, i) => (
+                        ) : null} */}
+                        {subscribers.map((sub, i) => (
                             <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
                                 <span>{sub.id}</span>
-                                <UserVideoComponent streamManager={sub} />
+                                {/* <UserVideoComponent streamManager={sub}/> */}
                             </div>
-                        ))} */}
+                        ))}
                     </div>
                 </div>
             )}
@@ -341,9 +347,9 @@ const createToken = async (sessionId) => {
               >
                 {/* <ViewersCarousel viewers={viewers} /> */}
                  {subscribers.map((sub, i) => (
-                            <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
+                            <div key={sub.id} className="stream-container col-md-6 col-xs-6">
                                 <span>{sub.id}</span>
-                                <UserVideoComponent streamManager={sub} />
+                                {/* <UserVideoComponent streamManager={sub} /> */}
                             </div>
                         ))}
               </Grid>
