@@ -51,17 +51,13 @@ export default function SearchFriend() {
           />
         )}
         renderOption={(props, option) => (
-          <li {...props}>
-            <Link to={`/user/${option.user_no}`} className="myLink">
+          <Link to={`/user/${option.user_no}`} className="myLink">
+            <li {...props}>
               {option.user_nickname}
-            </Link>
-            {/* <Link to={`/user/${option.user_no}`} className="myLink">
-              <Button variant="outlined" style={{marginLeft: "10px"}}>
-                친구의 페이지로 이동
-              </Button>
-            </Link> */}
-          </li>
+            </li>
+          </Link>
         )}
+        
       />
     </div>
   );
