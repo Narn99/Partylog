@@ -3,7 +3,6 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from "react-redux";
 
 const PrivateRoute = () => {
-    console.log("private route 작동")
     const isAuthenticated = useSelector((state) => {
         return state.auth.isAuthenticated;
     });
