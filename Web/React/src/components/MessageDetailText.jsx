@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import Typography from "@mui/material/Typography";
-import { Grid, createTheme, useMediaQuery } from "@mui/material";
+import { Grid } from "@mui/material";
 
 // 화면 작아지면 폰트 및 이미지 크기 조절되도록 isScreen들 써서 바꿔야함.
 // 모달창이 급격히 작아지기 때문에..
@@ -16,27 +16,64 @@ const style = {
 };
 
 function ModalText(props) {
-  const theme = createTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const { isLargeScreen, isMediumScreen, isSmallScreen, detailMessage } = props;
 
-  const titleMargin = isSmallScreen
+  const bigFontMargin = isSmallScreen
     ? "10px"
     : isMediumScreen
-    ? "20px"
+    ? "12px"
     : isLargeScreen
-    ? "30px"
-    : "40px";
+    ? "16px"
+    : "20px";
 
-  const detailMessage = props.detailMessage;
+  const smallFontMargin = isSmallScreen
+    ? "14px"
+    : isMediumScreen
+    ? "17px"
+    : isLargeScreen
+    ? "20px"
+    : "24px";
+
+  const bigFontSize =
+    detailMessage.letter_content.length > 100
+      ? isSmallScreen
+        ? "15px"
+        : isMediumScreen
+        ? "18px"
+        : isLargeScreen
+        ? "21px"
+        : "25px"
+      : isSmallScreen
+      ? "18px"
+      : isMediumScreen
+      ? "22px"
+      : isLargeScreen
+      ? "25px"
+      : "30px";
+
+  const smallFontSize =
+    detailMessage.letter_content.length > 100
+      ? isSmallScreen
+        ? "12px"
+        : isMediumScreen
+        ? "14px"
+        : isLargeScreen
+        ? "17px"
+        : "19px"
+      : isSmallScreen
+      ? "16px"
+      : isMediumScreen
+      ? "19px"
+      : isLargeScreen
+      ? "22px"
+      : "25px";
 
   // 일단 CSS 신경 안 쓰고 모달에 띄우는 것만 구현해둔 것이니 나중에 CSS 수정할 것.
 
   return (
     <div style={style}>
       <Grid container>
-        <Grid item xs={12} style={{ marginBottom: "20px" }}>
+        <Grid item xs={12} style={{ marginBottom: `${bigFontMargin}` }}>
           {" "}
           <Grid
             container
@@ -79,21 +116,34 @@ function ModalText(props) {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} style={{ marginBottom: "20px" }}>
-          <Typography id="modal-modal-title" variant="h5">
+        <Grid item xs={12} style={{ marginBottom: `${bigFontMargin}` }}>
+          <Typography
+            id="modal-modal-title"
+            variant="h5"
+            fontSize={bigFontSize}
+          >
             제목
           </Typography>
         </Grid>
-        <Grid container item xs={12} marginBottom={titleMargin}>
-          <p>{detailMessage.letter_title}</p>
+        <Grid container item xs={12} marginBottom={smallFontMargin}>
+          <p style={{ fontSize: `${smallFontSize}` }}>
+            {detailMessage.letter_title}
+          </p>
         </Grid>
-        <Grid item xs={12} style={{ marginBottom: "20px" }}>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }} variant="h5">
+        <Grid item xs={12} style={{ marginBottom: `${bigFontMargin}` }}>
+          <Typography
+            id="modal-modal-description"
+            // sx={{ mt: 2 }}
+            variant="h5"
+            fontSize={bigFontSize}
+          >
             내용
           </Typography>
         </Grid>
         <Grid container item xs={12}>
-          <p>{detailMessage.letter_content}</p>
+          <p style={{ fontSize: `${smallFontSize}` }}>
+            {detailMessage.letter_content}
+          </p>
         </Grid>
       </Grid>
     </div>

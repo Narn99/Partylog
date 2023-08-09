@@ -13,10 +13,13 @@ const CountdownTimer = (props) => {
 
   const handleTimeChange = (event) => {
     const selectedTime = event.$d;
+    console.log(selectedTime);
     const hours = selectedTime.getHours();
     const minutes = selectedTime.getMinutes();
 
-    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}`;
     setTargetTime(formattedTime);
   };
 
@@ -45,7 +48,9 @@ const CountdownTimer = (props) => {
     return timeLeft;
   };
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(new Date(userBirthday)));
+  const [timeLeft, setTimeLeft] = useState(
+    calculateTimeLeft(new Date(userBirthday))
+  );
 
   useEffect(() => {
     const [hours, minutes] = targetTime.split(":");
@@ -63,7 +68,12 @@ const CountdownTimer = (props) => {
   }, [timeLeft, targetTime, userBirthday]);
 
   return (
-    <Grid container justifyContent={"center"} alignItems={"center"} flexDirection={"column"}>
+    <Grid
+      container
+      justifyContent={"center"}
+      alignItems={"center"}
+      flexDirection={"column"}
+    >
       <Grid item style={{ marginBottom: "10px" }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["TimePicker"]}>

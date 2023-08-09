@@ -387,6 +387,7 @@ function UserPage() {
           modalOpen={modalOpen}
           handleModalClose={handleModalClose}
           randomStickyNote={randomStickyNote}
+          // isSmallScreen={isSmallScreen}
           isMediumScreen={isMediumScreen}
           isLargeScreen={isLargeScreen}
           // onSubmitText={handleSubmitModalText}
