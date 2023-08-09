@@ -35,20 +35,9 @@ function MyFriend(props) {
     return state.auth.userData.userNo;
   });
   
-  // const myUserNo = useSelector((state) => {
-  //   return state.auth.userNo;
-  // });
- // useSelector를 사용하여 리듀서에서 정보 받아오는 곳
-  // const profileImg = useSelector((state) => {
-  //   return state.auth.userData.userProfile;
-  // });
   const { userNum } = useParams(); // 접속한 사람의 번호, 위에 뜨는 번호
-  // const username = useSelector((state) => {
-  //   return state.auth.userData.userNickname;
-  // });
-  // console.log(username);
-  
-  
+  const [isFollowing, setIsFollowing] = useState(false); // 팔로우 상태를 나타내는 state
+ 
   const [userNickname, setUserNickname] = useState("");
   const [profileImg, setProfileImg] = useState("");
 
@@ -75,7 +64,35 @@ function MyFriend(props) {
     };
 
     fetchUserData(); // 함수를 호출하여 데이터를 불러옵니다.
-  }, [userNum]); // 유저페이지로 이동하게 될 경우 그곳에도 바로 갱신되도록 이러한 부분 필요
+    
+    const checkFollowingStatus = async () => {
+      try {
+        // 팔로우 상태 확인 API (이 API 경로는 실제 서버 API에 따라 변경해야 합니다.)
+        const response = await axios.get(
+          `${SERVER_API_URL}/user/isFollowing/${userNum}`, 
+          { headers: { 'Authorization': `${accessToken}` } }
+        );
+        setIsFollowing(response.data.isFollowing);  // 팔로우 상태 설정
+      } catch (error) {
+        console.error("Error checking following status:", error);
+      }
+    };
+
+    checkFollowingStatus();
+  }, [userNum]);
+
+  const handleFollow = async () => {
+    try {
+      await axios.post(
+        `${SERVER_API_URL}/user/addFollow/${userNum}`, 
+        { followeeNo: userNum }, 
+        { headers: { 'Authorization': `${accessToken}` } }
+      );
+      setIsFollowing(true);  // 팔로우 상태 갱신
+    } catch (error) {
+      console.error("Error following user:", error);
+    }
+  };
 
   return (
     <div>
@@ -98,6 +115,13 @@ function MyFriend(props) {
                 <span>{userNickname}</span>{" "}
                 <span style={{ fontSize: "20px" }}>#{userNum}</span>
             </p>
+
+            { 
+              !isFollowing ? 
+                <button onClick={handleFollow} className="ProfileSetting-button">팔로우</button> : 
+                <button disabled className="ProfileSetting-button">팔로우됨</button> 
+            }
+
           </Grid>
         </Grid>
    
