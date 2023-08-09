@@ -51,7 +51,7 @@ export default function SearchFriend() {
           />
         )}
         renderOption={(props, option) => (
-          <Link to={`/user/${option.user_no}`} className="myLink">
+          <Link key={option.user_no} to={`/user/${option.user_no}`} className="myLink">
             <li {...props}>
               {option.user_nickname}
             </li>
