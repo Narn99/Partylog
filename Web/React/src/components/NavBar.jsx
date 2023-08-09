@@ -7,9 +7,11 @@ import icon6 from "../assets/icon6.png";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../actions/actions";
 
 function NavBar() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const profileImg = useSelector((state) => {
@@ -23,7 +25,7 @@ function NavBar() {
   const logout = () => {
     const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
 
-    const accessToken = localStorage.getItem("access-token");
+    // const accessToken = localStorage.getItem("access-token");
 
     // 카카오 로그아웃 요청
     axios
@@ -34,6 +36,8 @@ function NavBar() {
         // 로컬 토큰 제거
         localStorage.removeItem("access-token");
         localStorage.removeItem("refresh-token");
+        // authReducer를 통한 유저정보 삭제
+        dispatch(logoutUser());
 
         // 성공적으로 로그아웃한 후 로그인 페이지로 이동
         navigate("/");
