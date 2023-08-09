@@ -20,7 +20,7 @@ const APPLICATION_SERVER_URL = `${process.env.REACT_APP_API_SERVER_URL}/`;
 function LivePage() {
 
   var userInfo = useSelector(state => state.auth.userData);
-  var OV = new OpenVidu();;
+  var OV = new OpenVidu();
   var [mySessionId, setMysessionId] = useState(`Session${userInfo.userNo}`);
   var [myUserName, setMyUserName] = useState(userInfo.userNickname);
   var [session, setSession] = useState(OV.initSession());
@@ -139,7 +139,7 @@ const joinSession = () => {
                     insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
                     mirror: false, // Whether to mirror your local video or not
                 });
-
+                
                 // --- 6) Publish your stream ---
 
                 mySession.publish(publisher);
@@ -158,6 +158,7 @@ const joinSession = () => {
             .catch((error) => {
                 console.log('There was an error connecting to the session:', error.code, error.message);
             });
+          
     });
    
 }
@@ -240,6 +241,7 @@ const createToken = async (sessionId) => {
    });
    return response.data; // The token
 }
+
 
   return (
     <div>
@@ -359,7 +361,7 @@ const createToken = async (sessionId) => {
                 height: "100%",
               }}
             >
-              <ButtonGroups />
+              <ButtonGroups mainStreamManager={mainStreamManager}  />
             </Grid>
           </Grid>
         )}
@@ -398,34 +400,9 @@ const createToken = async (sessionId) => {
                 flexDirection: "column",
               }}
             >
-              <div
-                style={{
-                  width: "95%",
-                  height: "75%",
-                }}
-                className="chat-display"
-              >
-                <p>닭 : 꼬</p>
-                <p>강아지 : 야옹</p>
-                <p>구글 : 저도 아이폰 씁니다.</p>
-              </div>
-              <div
-                style={{
-                  justifyContent: "start",
-                  alignItems: "center",
-                  display: "flex",
-                }}
-              >
-                채팅 입력창
-              </div>
-              <div
-                style={{
-                  width: "95%",
-                  height: "15%",
-                }}
-              >
-                <ChatBox />
-              </div>
+              
+                <ChatBox session={session} />
+              
             </div>
           </div>
         </Grid>
@@ -448,7 +425,7 @@ const createToken = async (sessionId) => {
               height: "100%",
             }}
           >
-            <ButtonGroups />
+            <ButtonGroups mainStreamManager={mainStreamManager} />
           </Grid>
 
           <Grid
