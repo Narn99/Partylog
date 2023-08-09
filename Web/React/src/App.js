@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { FollowProvider } from "./context/FollowContext";
 import LogInPage from "./pages/LogInPage";
 import KakaoRedirectHandler from "./components/KakaoCallback";
 import BirthdayInput from "./pages/BirthdayInput";
@@ -13,7 +12,6 @@ import PrivateRoute from "./components/Route/PrivateRoute";
 
 function App() {
   return (
-    <FollowProvider>
       <Router>
         <Routes>
           <Route path="/" element={<LogInPage />} />
@@ -23,14 +21,13 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/user/:userNo" element={<UserPage />} />
             <Route path="/profile-setting" element={<ProfileSetting />} />
-            <Route path="/myfriend/:userNo" element={<MyFriend />} />
+            <Route path="/myfriend/:userNum" element={<MyFriend />} />
             <Route path="/live/:userNo" element={<LivePage />} />
           </Route>
           {/* 일단 이상한 페이지로 이동하면 404NotFound로 이동 */}
           <Route path="/*" element={<NotFound404 />} />      
         </Routes>
       </Router>
-    </FollowProvider>
   );
 }
 export default App;

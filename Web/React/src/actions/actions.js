@@ -104,3 +104,10 @@ export const getMessageDetail = () => {
     // payload: messageDetail,
   };
 };
+
+export const addMyMessageData = (myMessage) => {
+  return {
+    type: actionTypes.ADD_MY_MESSAGE_DATA,
+    payload: myMessage,
+  };
+};

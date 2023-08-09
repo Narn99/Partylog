@@ -29,8 +29,10 @@ function BirthdayInput(props) {
   var [birthday, setbirthday] = useState("");
 
   const changeBirthday = (date) => {
-    setbirthday(date);
-  };
+    const koreanDate = new Date(date.setHours(date.getHours() + 9));  // 한국은 UTC보다 9시간 앞서 있음
+    setbirthday(koreanDate.toISOString().split('T')[0]);  // YYYY-MM-DD 형태의 문자열로 저장
+};
+
   console.log(birthday);
   const join = () => {
     axios
