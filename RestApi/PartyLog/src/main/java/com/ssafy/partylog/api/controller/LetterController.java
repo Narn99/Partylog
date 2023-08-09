@@ -42,7 +42,7 @@ public class LetterController {
         // 편지 저장
         try {
             letterService.addLetter(letterRequest, loginUserNo);
-            data = CommonResponse.createResponseWithNoContent("200", "편지 보내기 성공");
+            data = CommonResponse.createResponse("200",letterRequest, "편지 보내기 성공");
             status = HttpStatus.OK;
         } catch(Exception e) {
             e.printStackTrace();
