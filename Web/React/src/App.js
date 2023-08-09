@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { FollowProvider } from "./context/FollowContext";
 import LogInPage from "./pages/LogInPage";
 import KakaoRedirectHandler from "./components/KakaoCallback";
 import BirthdayInput from "./pages/BirthdayInput";
@@ -13,7 +12,6 @@ import LivePage from "./pages/LivePage";
 
 function App() {
   return (
-    <FollowProvider>
       <Router>
         <Routes>
           <Route path="/" element={<LogInPage />} />
@@ -21,7 +19,7 @@ function App() {
           <Route path="/birthdayinput/:userNo" element={<BirthdayInput />} />
           <Route path="/user/:userNo" element={<UserPage />} />
           <Route path="/profile-setting" element={<ProfileSetting />} />
-          <Route path="/myfriend" element={<MyFriend />} />
+          <Route path="/myfriend/:userNum" element={<MyFriend />} />
           <Route path="/room" element={<Openvidu />} />
           <Route path="/myfriend/:userNo" element={<MyFriend />} />
           <Route path="/live/:userNo" element={<LivePage />} />
@@ -30,7 +28,6 @@ function App() {
           <Route path="/*" element={<NotFound404 />} />
         </Routes>
       </Router>
-    </FollowProvider>
   );
 }
 export default App;
