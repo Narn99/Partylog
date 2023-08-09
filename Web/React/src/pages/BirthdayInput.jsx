@@ -29,11 +29,13 @@ function BirthdayInput(props) {
   var [birthday, setbirthday] = useState("");
 
   const changeBirthday = (date) => {
-    const koreanDate = new Date(date.setHours(date.getHours() + 9)); // 한국은 UTC보다 9시간 앞서 있음
-    setbirthday(koreanDate.toISOString().split("T")[0]); // YYYY-MM-DD 형태의 문자열로 저장
+    const selectedDate = date.$d; // 선택한 날짜 객체 가져오기
+    const nextDate = new Date(selectedDate); // 선택한 날짜를 기반으로 새로운 날짜 객체 생성
+    nextDate.setDate(selectedDate.getDate() + 1); // 선택한 날짜에 1일 추가
+    setbirthday(nextDate.toISOString().split("T")[0]);
   };
 
-  console.log(birthday);
+  // console.log(birthday);
   const join = () => {
     axios
       .post(`${SERVER_API_URL}/user/join`, {
