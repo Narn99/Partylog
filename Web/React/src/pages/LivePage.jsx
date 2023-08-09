@@ -5,8 +5,8 @@ import ButtonGroups from "../components/LivePage/ButtonGroups";
 import Button from "@mui/material/Button";
 import ChatBox from "../components/LivePage/ChatBox";
 import ViewersCarousel from "../components/LivePage/ViewersCarousel";
-// import Openvidu from "./Openvidu";
 
+/* Openvidu 관련 컴포넌트 */
 import '../css/Openvidu.css';
 import UserVideoComponent from '../components/openvidu/UserVideoComponent';
 import { useSelector } from "react-redux";
@@ -196,21 +196,21 @@ const leaveSession = () => {
     window.close();
 }
 
-       /**
-     * --------------------------------------------
-     * GETTING A TOKEN FROM YOUR APPLICATION SERVER
-     * --------------------------------------------
-     * The methods below request the creation of a Session and a Token to
-     * your application server. This keeps your OpenVidu deployment secure.
-     *
-     * In this sample code, there is no user control at all. Anybody could
-     * access your application server endpoints! In a real production
-     * environment, your application server must identify the user to allow
-     * access to the endpoints.
-     *
-     * Visit https://docs.openvidu.io/en/stable/application-server to learn
-     * more about the integration of OpenVidu in your application server.
-     */
+    /**
+ * --------------------------------------------
+ * GETTING A TOKEN FROM YOUR APPLICATION SERVER
+ * --------------------------------------------
+ * The methods below request the creation of a Session and a Token to
+ * your application server. This keeps your OpenVidu deployment secure.
+ *
+ * In this sample code, there is no user control at all. Anybody could
+ * access your application server endpoints! In a real production
+ * environment, your application server must identify the user to allow
+ * access to the endpoints.
+ *
+ * Visit https://docs.openvidu.io/en/stable/application-server to learn
+ * more about the integration of OpenVidu in your application server.
+ */
 const getToken = async () => {
    const sessionId = await createSession(mySessionId);
    return await createToken(sessionId);

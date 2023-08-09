@@ -12,6 +12,7 @@ import StickyNoteO from "../components/StickyNote/StickyNoteO";
 import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
 import MessageDetail from "./MessageDetail";
+import axios from "axios";
 
 // 메시지 상세 확인할 때, 랜덤 포스트잇 출력용
 
@@ -28,7 +29,11 @@ const getRandomStickyNote = () => {
   return stickyNotes[randomIndex];
 };
 
-function MessageBoard() {
+function MessageBoard(props) {
+  const { userNo, myUserNo } = props;
+  const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
+  const accessToken = localStorage.getItem("access-token");
+
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -37,6 +42,9 @@ function MessageBoard() {
 
   const [carouselPages, setCarouselPages] = useState([]);
   const [carouselPageMessages, setCarouselPageMessages] = useState([]);
+  const [messagesOffset, setMessagesOffset] = useState(0);
+  const [messageIsAll, setMessageIsAll] = useState(false);
+  const [carouselClick, setCarouselClick] = useState(0);
 
   const messages = useSelector((state) => {
     return state.messagesData.messages;
@@ -65,6 +73,39 @@ function MessageBoard() {
   useEffect(() => {
     updateCarouselMessages();
   }, [updateCarouselMessages]);
+
+  // 버튼을 누르면 다음 메시지 목록 불러오기 로직
+  // 아마 버튼 누를 때마다 새 메시지 데이터 가져오게 하면, 계속 새로 렌더링되지 않을까?
+
+  const handleClickPageButton = () => {
+    setCarouselClick(carouselClick + 1);
+
+    if (carouselClick >= 1) {
+      if (!messageIsAll) {
+        setMessagesOffset(messagesOffset + 24);
+
+        axios({
+          method: "post",
+          url: `${SERVER_API_URL}/letter/get/letters`,
+          headers: {
+            Authorization: `${accessToken}`,
+          },
+          data: {
+            receiverNo: userNo,
+            writerNo: myUserNo,
+            year: 0,
+            limit: 24,
+            offset: messagesOffset,
+          },
+        })
+          .then((res) => {
+            console.log(res.data.data);
+          })
+          .catch((err) => console.log(err));
+      }
+      setCarouselClick(0);
+    }
+  };
 
   const settings = {
     dots: true,
@@ -133,7 +174,7 @@ function MessageBoard() {
               아직 메시지가 없네요...
             </div>
           ) : (
-            <Slider {...settings}>
+            <Slider {...settings} beforeChange={handleClickPageButton}>
               {carouselPages.map((pageIndex) => (
                 <div key={pageIndex} style={{ width: "100%", height: "100%" }}>
                   <Grid

@@ -45,7 +45,7 @@ export const messagesDataReducer = (state = initialState, action) => {
     case actionTypes.GET_ADDITIONAL_MESSAGES_LIST:
       return {
         ...state,
-        // messages: action.payload.messagesList,
+        messages: [...state.messages, ...action.payload],
       };
     default:
       return state;
