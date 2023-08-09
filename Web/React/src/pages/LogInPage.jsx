@@ -1,10 +1,28 @@
-import React from "react";
+import React, {useEffect} from "react";
 import kakaoButton from "../assets/kakao_login.svg";
 import googleplay from "../assets/googleplay.png";
 import "../css/LogInPage.css";
 import { Grid, Container, useMediaQuery, useTheme } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const LogInPage = () => {
+
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => {
+    return state.auth.isAuthenticated;
+  });
+  const userNo = useSelector((state) => {
+    return state.auth.userNo;
+  })
+
+  useEffect(() => {
+    console.log("로그인페이지 현재 로그인 상태: " + isAuthenticated)
+    if(isAuthenticated) {
+      navigate(`/user/${userNo}`);
+    }
+  })
+
   const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
   const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;

@@ -15,19 +15,19 @@ function App() {
   return (
     <FollowProvider>
       <Router>
-      <Routes>
+        <Routes>
           <Route path="/" element={<LogInPage />} />
           <Route path="/auth" element={<KakaoRedirectHandler />} />
           <Route path="/birthdayinput/:userNo" element={<BirthdayInput />} />
-          {/* 일단 이상한 페이지로 이동하면 404NotFound로 이동 */}
-          <Route path="/*" element={<NotFound404 />} />
-          {/* 로그인이 필요한 페이지 */}
+          {/* 인증을 반드시 해야지만 접속 가능한 페이지 정의 */}
           <Route element={<PrivateRoute />}>
             <Route path="/user/:userNo" element={<UserPage />} />
             <Route path="/profile-setting" element={<ProfileSetting />} />
             <Route path="/myfriend/:userNo" element={<MyFriend />} />
             <Route path="/live/:userNo" element={<LivePage />} />
-          </Route>      
+          </Route>
+          {/* 일단 이상한 페이지로 이동하면 404NotFound로 이동 */}
+          <Route path="/*" element={<NotFound404 />} />      
         </Routes>
       </Router>
     </FollowProvider>

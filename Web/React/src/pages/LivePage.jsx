@@ -4,7 +4,7 @@ import axios from 'axios';
 import ButtonGroups from "../components/LivePage/ButtonGroups";
 import Button from "@mui/material/Button";
 import ChatBox from "../components/LivePage/ChatBox";
-import ViewersCarousel from "../components/LivePage/ViewersCarousel";
+// import ViewersCarousel from "../components/LivePage/ViewersCarousel";
 
 /* Openvidu 관련 컴포넌트 */
 import '../css/Openvidu.css';
@@ -43,29 +43,29 @@ function LivePage() {
     // eslint-disable-next-line
   }, []);
 
-  const viewers = [
-    "강아지",
-    "레서판다",
-    "닭",
-    "펭귄",
-    "익룡",
-    "호모사피엔스",
-    "감자",
-    "고구마",
-    "개미핥기",
-    "호모에렉투스",
-    "고대초전도체",
-    "터미네이터",
-    "구글",
-    "구글",
-    "구글",
-    "구글",
-    "구글",
-    "구글",
-    "쿼카",
-    "연세우유생크림빵",
-    "국뽕치사량흡입",
-  ];
+  // const viewers = [
+  //   "강아지",
+  //   "레서판다",
+  //   "닭",
+  //   "펭귄",
+  //   "익룡",
+  //   "호모사피엔스",
+  //   "감자",
+  //   "고구마",
+  //   "개미핥기",
+  //   "호모에렉투스",
+  //   "고대초전도체",
+  //   "터미네이터",
+  //   "구글",
+  //   "구글",
+  //   "구글",
+  //   "구글",
+  //   "구글",
+  //   "구글",
+  //   "쿼카",
+  //   "연세우유생크림빵",
+  //   "국뽕치사량흡입",
+  // ];
 
   const handleMainVideoStream = (stream) => {
     if (mainStreamManager !== stream) {
@@ -337,7 +337,13 @@ const createToken = async (sessionId) => {
                 alignItems={"center"}
                 // style={{ height: "30%" }}
               >
-                <ViewersCarousel viewers={viewers} />
+                {/* <ViewersCarousel viewers={viewers} /> */}
+                 {subscribers.map((sub, i) => (
+                            <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
+                                <span>{sub.id}</span>
+                                <UserVideoComponent streamManager={sub} />
+                            </div>
+                        ))}
               </Grid>
             </Grid>
           </div>
