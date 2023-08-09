@@ -27,7 +27,6 @@ function ChatBox(props) {
   const [chatMessages, setChatMessages] = useState([]);
   
   const handleInputChat = (event) => {
-    // Sender of the message (after 'session.connect')
     const { value } = event.target;
     const truncatedValue = value.slice(0, 50);
     setChatContent(truncatedValue);
