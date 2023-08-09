@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
 import {
   setModalData,
+  addMyMessageData,
   getInitailMessagesList,
   saveUserData,
 } from "../actions/actions";
@@ -56,7 +57,9 @@ function UserPage() {
   const [loading, setloading] = useState(true);
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const [userData, setUserData] = useState({});
-  const [myMessages, setMyMessages] = useState([]);
+  const myMessage = useSelector((state) => {
+    return state.messagesData.myMessage;
+  });
   const [followerCount, setFollowerCount] = useState("");
   const [followeeCount, setFolloweeCount] = useState("");
   const todayFormatted = format(new Date(), "MM-dd");
@@ -102,11 +105,12 @@ function UserPage() {
         const lettersData = data.letterResponseBody;
         dispatch(getInitailMessagesList(lettersData));
 
-        setMyMessages(
-          lettersData.filter((message) => {
-            return parseInt(message.letter_writer) === parseInt(myUserNo);
-          })
+        const helloMyMessage = lettersData.filter(
+          (message) => parseInt(message.letter_writer) === parseInt(myUserNo)
         );
+        if (helloMyMessage) {
+          dispatch(addMyMessageData(helloMyMessage[0]));
+        }
 
         // console.log(userData);
 
@@ -140,14 +144,14 @@ function UserPage() {
   ]);
 
   useEffect(() => {
-    if (myMessages && myMessages.length >= 1) {
+    if (myMessage && myMessage.length >= 1) {
       dispatch(
-        setModalData(myMessages[0].letter_title, myMessages[0].letter_content)
+        setModalData(myMessage[0].letter_title, myMessage[0].letter_content)
       );
     } else {
       dispatch(setModalData("", ""));
     }
-  }, [myMessages, dispatch]);
+  }, [myMessage, dispatch]);
 
   // console.log(userData);
   // console.log(userData.userBirthday);
@@ -168,6 +172,9 @@ function UserPage() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
+    if (myMessage) {
+      dispatch(setModalData(myMessage.letter_title, myMessage.letter_content));
+    }
     setModalOpen(true);
     setRandomStickyNote(getRandomStickyNote());
   };
@@ -196,8 +203,8 @@ function UserPage() {
   const changeMessageButtonFontSize = isSmallScreen ? "15px" : "20px";
   const addMarginAboveBoard = isMediumScreen ? "20px" : "";
 
-  console.log("유저페이지의 마이메시지");
-  console.log(myMessages);
+  // console.log("유저페이지의 마이메시지");
+  // console.log(myMessage);
 
   // 로딩 중일 시 띄우는 컴포넌트
   if (loading) {
@@ -362,7 +369,7 @@ function UserPage() {
               <MessageBoard
                 userNo={userNo}
                 myUserNo={myUserNo}
-                myMessages={myMessages}
+                myMessage={myMessage}
                 handleModalOpen={handleModalOpen}
                 changeMessageButtonFontSize={changeMessageButtonFontSize}
               />
@@ -373,8 +380,7 @@ function UserPage() {
           </Grid>
         </Grid>
         <MessageModal
-          myMessages={myMessages ? myMessages : null}
-          setMyMessages={setMyMessages}
+          myMessage={myMessage ? myMessage : null}
           userNo={userNo}
           pageOwner={pageOwner}
           myUserNo={myUserNo}

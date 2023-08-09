@@ -36,7 +36,7 @@ function MessageBoard(props) {
   const {
     userNo,
     myUserNo,
-    myMessages,
+    myMessage,
     handleModalOpen,
     changeMessageButtonFontSize,
   } = props;
@@ -61,8 +61,8 @@ function MessageBoard(props) {
     return state.messagesData.messages;
   });
 
-  console.log("메시지보드의 마이메시지");
-  console.log(myMessages);
+  // console.log("메시지보드의 마이메시지");
+  // console.log(myMessage);
 
   const updateCarouselMessages = useCallback(() => {
     const messagesPerPage = isSmallScreen ? 4 : isLargeScreen ? 6 : 8;
@@ -84,7 +84,9 @@ function MessageBoard(props) {
 
   useEffect(() => {
     updateCarouselMessages();
-  }, [updateCarouselMessages]);
+  }, [updateCarouselMessages, myMessage]);
+
+  useEffect(() => {}, [myMessage]);
 
   // 버튼을 누르면 다음 메시지 목록 불러오기 로직
   // 아마 버튼 누를 때마다 새 메시지 데이터 가져오게 하면, 계속 새로 렌더링되지 않을까?
@@ -167,29 +169,40 @@ function MessageBoard(props) {
             <div className="create-message-div">
               {/* 추후에 메시지 이미 작성한 본인은 메시지 작성 버튼 대신에 수정 버튼이 보이게 수정,
                     수정을 누르면 본인이 작성했던 메시지 내용이 뜨게 하고,그 안에 메시지 삭제 버튼도 존재하게 */}
-              {parseInt(myUserNo) !== parseInt(userNo) && (
-                <Button
-                  className={
-                    myMessages && myMessages.length >= 1
-                      ? "fix-message-button"
-                      : "create-message-button"
-                  }
-                  onClick={handleModalOpen}
-                  variant="contained"
-                  style={{
-                    fontFamily: "MaplestoryOTFBold",
-                    fontSize: changeMessageButtonFontSize,
-                    color: "white",
-                    borderRadius: "40px",
-                    texShadow: "0.1px 0.1px 4px #e892a4",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  {myMessages && myMessages.length >= 1
-                    ? "메시지 수정"
-                    : "메시지 작성"}
-                </Button>
-              )}
+              {parseInt(myUserNo) !== parseInt(userNo) &&
+                (myMessage ? (
+                  <Button
+                    className={"fix-message-button"}
+                    onClick={handleModalOpen}
+                    variant="contained"
+                    style={{
+                      fontFamily: "MaplestoryOTFBold",
+                      fontSize: changeMessageButtonFontSize,
+                      color: "white",
+                      borderRadius: "40px",
+                      textShadow: "0.1px 0.1px 4px #e892a4",
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    메시지 수정
+                  </Button>
+                ) : (
+                  <Button
+                    className={"create-message-button"}
+                    onClick={handleModalOpen}
+                    variant="contained"
+                    style={{
+                      fontFamily: "MaplestoryOTFBold",
+                      fontSize: changeMessageButtonFontSize,
+                      color: "white",
+                      borderRadius: "40px",
+                      textShadow: "0.1px 0.1px 4px #e892a4",
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    메시지 작성
+                  </Button>
+                ))}
             </div>
           </Grid>
         </div>
