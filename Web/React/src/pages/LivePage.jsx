@@ -39,9 +39,11 @@ function LivePage() {
   const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
 
   useEffect(() => {
+    console.log("구독자")
+    console.log(subscribers)
     joinSession(); 
     // eslint-disable-next-line
-  }, []);
+  }, [subscribers]);
 
   // const viewers = [
   //   "강아지",
@@ -307,28 +309,19 @@ const createToken = async (sessionId) => {
                   }}
                   className="live-display"
                 >
-        <div className="container" style={{height:"100%"}}>
-            {session === undefined ? (
-                <p>종료된 라이브 입니다.</p>
-            ) : (
-                <div id="session" style={{height:"100%"}}>
-                    <div id="video-container" className="col-md-6" style={{height:"100%"}}>
-                        {publisher !== undefined ? (
-                            <div className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(publisher)} style={{height:"100%"}}>
-                                <UserVideoComponent
-                                    streamManager={publisher} style={{height:"100%"}}/>
-                            </div>
-                        ) : null}
-                        {/* {subscribers.map((sub, i) => (
-                            <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
-                                <span>{sub.id}</span>
-                                <UserVideoComponent streamManager={sub} />
-                            </div>
-                        ))} */}
-                    </div>
+                <div className="container" style={{height:"100%"}}>
+                    {session === undefined ? (
+                        <p>종료된 라이브 입니다.</p>
+                    ) : (
+                      <div className="container">
+                        <div id="session">
+                          <div id="main-video" className="col-md-6">
+                            <UserVideoComponent streamManager={mainStreamManager} />
+                          </div>
+                        </div>
+                      </div>
+                    )}
                 </div>
-            )}
-        </div>
                 </Grid>
               </Grid>
               <Grid
@@ -340,12 +333,15 @@ const createToken = async (sessionId) => {
                 // style={{ height: "30%" }}
               >
                 {/* <ViewersCarousel viewers={viewers} /> */}
-                 {subscribers.map((sub, i) => (
+                <div id="video-container" className="col-md-6">
+                {subscribers.map((sub, i) => (
                             <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
                                 <span>{sub.id}</span>
                                 <UserVideoComponent streamManager={sub} />
                             </div>
                         ))}
+                </div>
+                 
               </Grid>
             </Grid>
           </div>
