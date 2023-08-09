@@ -27,7 +27,7 @@ function FollowTabs(props) {
     
     const followingsRequestBody = {
       followerNo: userNum,
-      limit: 10,
+      limit: 30,
       offset: 0
     };
     axios.post(`${SERVER_API_URL}/user/searchFolloweeList`, 
@@ -53,7 +53,7 @@ function FollowTabs(props) {
   const fetchFollowers = () => {
     const followersRequestBody = {
       followeeNo: userNum,
-      limit: 10,
+      limit: 30,
       offset: 0
     };
     axios.post(`${SERVER_API_URL}/user/searchFollowerList`, 

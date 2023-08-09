@@ -27,16 +27,15 @@ const Box1 = styled(Box)(({ theme }) => ({
   },
 }));
 
-
 function MyFriend(props) {
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
-  const  MyuserNum  = useSelector((state) => {
+  const MyuserNum = useSelector((state) => {
     return state.auth.userData.userNo;
   });
   
-  const { userNum } = useParams(); // 접속한 사람의 번호, 위에 뜨는 번호
-  const [isFollowing, setIsFollowing] = useState(false); // 팔로우 상태를 나타내는 state
+  const { userNum } = useParams();
+  const [isFollowing, setIsFollowing] = useState(false);
  
   const [userNickname, setUserNickname] = useState("");
   const [profileImg, setProfileImg] = useState("");
@@ -54,7 +53,6 @@ function MyFriend(props) {
           }
         );
         if (response.data && response.data.data) {
-          // 응답에서 userNickname과 userProfile을 로컬 상태에 설정
           setUserNickname(response.data.data.userNickname);
           setProfileImg(response.data.data.userProfile);
         }
@@ -63,23 +61,31 @@ function MyFriend(props) {
       }
     };
 
-    fetchUserData(); // 함수를 호출하여 데이터를 불러옵니다.
-    
-    const checkFollowingStatus = async () => {
-      try {
-        // 팔로우 상태 확인 API (이 API 경로는 실제 서버 API에 따라 변경해야 합니다.)
-        const response = await axios.get(
-          `${SERVER_API_URL}/user/isFollowing/${userNum}`, 
-          { headers: { 'Authorization': `${accessToken}` } }
-        );
-        setIsFollowing(response.data.isFollowing);  // 팔로우 상태 설정
-      } catch (error) {
-        console.error("Error checking following status:", error);
-      }
-    };
-
-    checkFollowingStatus();
+    fetchUserData();
+    fetchFollowers();
   }, [userNum]);
+
+  const fetchFollowers = () => {
+    const followersRequestBody = {
+      followerNo: MyuserNum,
+      limit: 30,
+      offset: 0
+    };
+    axios.post(`${SERVER_API_URL}/user/searchFolloweeList`, 
+    followersRequestBody,
+    { 
+      headers: {
+        'Authorization': `${accessToken}`
+      }
+    })
+    .then(response => {
+      const isUserFollowed = response.data.data.some(follower => follower.user_no === userNum);
+      setIsFollowing(isUserFollowed);
+    })
+    .catch(error => {
+      console.error("팔로워 목록을 가져오는 중 오류 발생:", error);
+    });
+  };
 
   const handleFollow = async () => {
     try {
@@ -88,7 +94,7 @@ function MyFriend(props) {
         { followeeNo: userNum }, 
         { headers: { 'Authorization': `${accessToken}` } }
       );
-      setIsFollowing(true);  // 팔로우 상태 갱신
+      setIsFollowing(true);
     } catch (error) {
       console.error("Error following user:", error);
     }
@@ -98,44 +104,43 @@ function MyFriend(props) {
     <div>
       <NavBar />
       <div>
-      <Grid container spacing={2}>
-        <Grid item sm={12} md={3}>
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <img
-              src={profileImg}
-              alt="profileimg"
-              className="UserPage-profileimg"
-              style={{
+        <Grid container spacing={2}>
+          <Grid item sm={12} md={3}>
+            <Grid container direction="column" justifyContent="center" alignItems="center">
+              <img
+                src={profileImg}
+                alt="profileimg"
+                className="UserPage-profileimg"
+                style={{
                   Width: "260px",
                   Height: "260px",
-                    }}
-                    />
-           
-            <p className="UserPage-nickname">
-                <span>{userNickname}</span>{" "}
-                <span style={{ fontSize: "20px" }}>#{userNum}</span>
-            </p>
+                }}
+              />
+             
+              <p className="UserPage-nickname">
+                  <span>{userNickname}</span>{" "}
+                  <span style={{ fontSize: "20px" }}>#{userNum}</span>
+              </p>
 
-            { 
-              parseInt(userNum) !== MyuserNum && (!isFollowing ? 
-                <button onClick={handleFollow} className="ProfileSetting-button">팔로우</button> : 
-                <button disabled className="ProfileSetting-button">팔로우됨</button>
-              )
-            }
+              { 
+                parseInt(userNum) !== MyuserNum && (!isFollowing ? 
+                  <button onClick={handleFollow} className="ProfileSetting-button">팔로우</button> : 
+                  <button disabled className="ProfileSetting-button">팔로우됨</button>
+                )
+              }
 
+            </Grid>
           </Grid>
+      
+          <Grid item sm={12} md={8}>
+            <Box1>
+              <div className="follow-tabs-background">
+                <FollowTabs userNum={userNum} MyuserNum={MyuserNum} />
+              </div>
+            </Box1>
+          </Grid>
+          
         </Grid>
-   
-    
-        <Grid item sm={12} md={8}>
-          <Box1>
-            <div className="follow-tabs-background">
-            <FollowTabs userNum={userNum} MyuserNum={MyuserNum} />
-            </div>
-          </Box1>
-        </Grid>
-        
-      </Grid>
       </div>
     </div>
   );

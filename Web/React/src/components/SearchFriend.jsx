@@ -55,7 +55,7 @@ export default function SearchFriend() {
             <Link to={`/user/${option.user_no}`} className="myLink">
               {option.user_nickname}
             </Link>
-            <Link to={`/myfriend/${option.user_no}`} className="myLink">
+            <Link to={`/user/${option.user_no}`} className="myLink">
               <Button variant="outlined" style={{marginLeft: "10px"}}>
                 친구의 페이지로 이동
               </Button>
