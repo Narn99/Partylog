@@ -24,7 +24,7 @@ public class LetterServiceImpl implements LetterService {
     }
 
     @Override
-    public String addLetter(LetterRequest letterRequest, int loginUserNo) {
+    public int addLetter(LetterRequest letterRequest, int loginUserNo) {
         LetterEntity letter = new LetterEntity();
 
         String uuid = UUID.randomUUID().toString();
@@ -38,9 +38,9 @@ public class LetterServiceImpl implements LetterService {
         LetterEntity check = letterRepository.save(letter);
 
         if(check == null) { // 저장된 값이 없다면
-            return null; //0을 반환한다.
+            return 0; //0을 반환한다.
         }else { // 저장된 값이 있다면
-            return uuid; // 1을 반환한다.
+            return 1; // 1을 반환한다.
         }
     }
 
