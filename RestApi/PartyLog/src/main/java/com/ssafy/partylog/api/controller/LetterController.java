@@ -41,8 +41,9 @@ public class LetterController {
 
         // 편지 저장
         try {
-            letterService.addLetter(letterRequest, loginUserNo);
-            data = CommonResponse.createResponseWithNoContent("200", "편지 보내기 성공");
+            String id = letterService.addLetter(letterRequest, loginUserNo);
+            LetterResponseBody letterResponseBody = letterService.searchLetterById(id);
+            data = CommonResponse.createResponse("200",letterResponseBody, "편지 보내기 성공");
             status = HttpStatus.OK;
         } catch(Exception e) {
             e.printStackTrace();
