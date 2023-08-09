@@ -8,7 +8,7 @@ import ProfileSetting from "./pages/ProfileSetting";
 import MyFriend from "./pages/MyFriend";
 import Openvidu from "./pages/Openvidu";
 import NotFound404 from "./pages/NotFound404";
-// import LivePage from "./pages/LivePage";
+import LivePage from "./pages/LivePage";
 
 function App() {
   return (
@@ -22,7 +22,8 @@ function App() {
           <Route path="/myfriend/:userNum" element={<MyFriend />} />
           <Route path="/room" element={<Openvidu />} />
           <Route path="/myfriend/:userNo" element={<MyFriend />} />
-          <Route path="/live/:userNo" element={<Openvidu />} />
+          <Route path="/live/:userNo" element={<LivePage />} />
+
           {/* 일단 이상한 페이지로 이동하면 404NotFound로 이동 */}
           <Route path="/*" element={<NotFound404 />} />
         </Routes>

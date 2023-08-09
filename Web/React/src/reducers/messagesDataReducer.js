@@ -31,7 +31,7 @@ export const messagesDataReducer = (state = initialState, action) => {
     case actionTypes.DELETE_MESSAGE_DATA:
       const { userNo } = action.payload;
       const updatedMessages = state.messages.filter(
-        (message) => message.userNo !== userNo
+        (message) => message.letter_writer !== userNo
       );
       return {
         ...state,
@@ -43,9 +43,20 @@ export const messagesDataReducer = (state = initialState, action) => {
         messages: action.payload,
       };
     case actionTypes.GET_ADDITIONAL_MESSAGES_LIST:
+      const additionalMessages = action.payload;
+      const alreadyMessages = state.messages;
+
+      const alreadyMessagesId = alreadyMessages.map(
+        (message) => message.letter_id
+      );
+
+      const filterdAdditionalMessages = additionalMessages.filter(
+        (message) => !alreadyMessagesId.includes(message.letter_id)
+      );
+
       return {
         ...state,
-        // messages: action.payload.messagesList,
+        messages: [...alreadyMessages, ...filterdAdditionalMessages],
       };
     default:
       return state;
