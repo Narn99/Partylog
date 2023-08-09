@@ -14,6 +14,7 @@ const CountdownTimer = (props) => {
   const handleTimeChange = (event) => {
     const selectedTime = event.$d;
     console.log(selectedTime);
+    console.log(event);
     const hours = selectedTime.getHours();
     const minutes = selectedTime.getMinutes();
 
