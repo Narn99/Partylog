@@ -7,7 +7,7 @@ import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import { Grid } from "@mui/material";
 
 const CountdownTimer = (props) => {
-  const { userBirthday, myUserNo, userNo } = props;
+  const { userBirthday } = props;
 
   const [targetTime, setTargetTime] = useState("00:00");
 
@@ -16,110 +16,83 @@ const CountdownTimer = (props) => {
     const hours = selectedTime.getHours();
     const minutes = selectedTime.getMinutes();
 
-    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}`;
-
+    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
     setTargetTime(formattedTime);
   };
 
-  const countDownFontSize =
-    parseInt(myUserNo) === parseInt(userNo) ? "18px" : "36px";
-
-  useEffect(() => {
-    if (targetTime) {
-      const [hours, minutes] = targetTime.split(":");
-      const newDate = new Date(userBirthday);
-      newDate.setHours(parseInt(hours, 10));
-      newDate.setMinutes(parseInt(minutes, 10));
-      setTimeLeft(calculateTimeLeft(newDate));
-    }
-  }, [targetTime, userBirthday]);
-
   const calculateTimeLeft = (targetDate) => {
     const currentDate = new Date();
+
+    // 현재 연도로 사용자의 생일 설정
+    targetDate.setFullYear(currentDate.getFullYear());
+
     let diff = +targetDate - +currentDate;
     let timeLeft = {};
 
-    if (diff > 0) {
-      timeLeft = {
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / 1000 / 60) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      };
-    } else {
-      // 오늘이 지난 경우
-      const nextYearBirthday = new Date(targetDate);
-      if (nextYearBirthday < currentDate) {
-        nextYearBirthday.setFullYear(currentDate.getFullYear() + 1);
-      }
-      diff = +nextYearBirthday - +currentDate;
-
-      timeLeft = {
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / 1000 / 60) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      };
+    if (diff <= 0) {
+      // 이미 올해의 생일이 지났다면, 다음 해의 생일로 설정
+      targetDate.setFullYear(currentDate.getFullYear() + 1);
+      diff = +targetDate - +currentDate;
     }
+
+    timeLeft = {
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((diff / 1000 / 60) % 60),
+      seconds: Math.floor((diff / 1000) % 60),
+    };
 
     return timeLeft;
   };
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(new Date()));
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(new Date(userBirthday)));
+
+  useEffect(() => {
+    const [hours, minutes] = targetTime.split(":");
+    const newDate = new Date(userBirthday);
+    newDate.setHours(parseInt(hours, 10));
+    newDate.setMinutes(parseInt(minutes, 10));
+    setTimeLeft(calculateTimeLeft(newDate));
+  }, [targetTime, userBirthday]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setTimeLeft(
-        calculateTimeLeft(targetTime ? new Date(userBirthday) : new Date())
-      );
+      setTimeLeft(calculateTimeLeft(new Date(userBirthday)));
     }, 1000);
     return () => clearTimeout(timer);
   }, [timeLeft, targetTime, userBirthday]);
 
   return (
-    <Grid
-      container
-      justifyContent={"center"}
-      alignItems={"center"}
-      flexDirection={"column"}
-    >
-      {parseInt(myUserNo) === parseInt(userNo) && (
-        <Grid item style={{ marginBottom: "10px" }}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["TimePicker"]}>
-              <TimePicker
-                label="파티 시간을 골라주세요!"
-                viewRenderers={{
-                  hours: renderTimeViewClock,
-                  minutes: renderTimeViewClock,
-                  seconds: renderTimeViewClock,
-                }}
-                format="A hh:mm"
-                onChange={handleTimeChange}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-        </Grid>
-      )}
+    <Grid container justifyContent={"center"} alignItems={"center"} flexDirection={"column"}>
+      <Grid item style={{ marginBottom: "10px" }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer components={["TimePicker"]}>
+            <TimePicker
+              label="파티 시간을 골라주세요!"
+              viewRenderers={{
+                hours: renderTimeViewClock,
+                minutes: renderTimeViewClock,
+                seconds: renderTimeViewClock,
+              }}
+              format="A hh:mm"
+              onChange={handleTimeChange}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
+      </Grid>
       <Grid item>
         <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: countDownFontSize }}>
-            생일파티까지
-            <br />
-            {timeLeft.days !== 0 && `${timeLeft.days}일`}
-            {timeLeft.days < 1 && (
-              <span>
-                {timeLeft.hours !== 0 && `${timeLeft.hours}시간`}{" "}
-                {timeLeft.minutes !== 0 && `${timeLeft.minutes}분`}{" "}
-                {timeLeft.seconds !== 0 &&
-                  `${timeLeft.seconds}
-          초`}
-              </span>
-            )}
-            <br />
-          </p>
+          생일파티까지
+          <br />
+          {timeLeft.days !== 0 && `${timeLeft.days}일`}
+          {timeLeft.days < 1 && (
+            <span>
+              {timeLeft.hours !== 0 && `${timeLeft.hours}시간`}{" "}
+              {timeLeft.minutes !== 0 && `${timeLeft.minutes}분`}{" "}
+              {timeLeft.seconds !== 0 && `${timeLeft.seconds}초`}
+            </span>
+          )}
+          <br />
         </div>
       </Grid>
     </Grid>
