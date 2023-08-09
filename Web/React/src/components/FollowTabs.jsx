@@ -9,23 +9,37 @@ import FollowTabsStyles from "../css/FollowTabsStyles.css";
 import Box from '@mui/material/Box';
 import axios from 'axios';
 
-function FollowTabs() {
+
+
+function FollowTabs(props) {
   const [tabValue, setTabValue] = useState(0);
   const [followings, setFollowings] = useState([]);
   const [followers, setFollowers] = useState([]);
+  const { userNum, MyuserNum } = props;
 
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
-
-  // 팔로잉 목록을 불러오는 로직을 별도의 함수로 분리
+  // console.log(userNum);
+  // console.log(MyuserNum );
+  
+  // 팔로잉 목록을 불러오는 함수. 내가 팔로워
   const fetchFollowings = () => {
-    axios.get(`${SERVER_API_URL}/user/searchFolloweeList/10/0`, { 
+    
+    const followingsRequestBody = {
+      followerNo: userNum,
+      limit: 30,
+      offset: 0
+    };
+    axios.post(`${SERVER_API_URL}/user/searchFolloweeList`, 
+    followingsRequestBody,
+    { 
       headers: {
         'Authorization': `${accessToken}`
       }
     })
     .then(response => {
-
+   
+    // console.log(response.data.data);
     setFollowings(response.data.data.map(following => 
       ({ userNo: following.user_no, nickname: following.user_nickname, profile: following.user_profile })));
     })
@@ -35,8 +49,16 @@ function FollowTabs() {
     });
   };
 
-  const fetchFollowers = () => { // 팔로워 목록을 불러오는 함수
-    axios.get(`${SERVER_API_URL}/user/searchFollowerList/10/0`, { 
+   // 팔로워 목록을 불러오는 함수. 내가 팔로이
+  const fetchFollowers = () => {
+    const followersRequestBody = {
+      followeeNo: userNum,
+      limit: 30,
+      offset: 0
+    };
+    axios.post(`${SERVER_API_URL}/user/searchFollowerList`, 
+    followersRequestBody,
+    { 
       headers: {
         'Authorization': `${accessToken}`
       }
@@ -51,9 +73,11 @@ function FollowTabs() {
   };
 
   useEffect(() => {
+    
     fetchFollowings(); // 컴포넌트가 마운트될 때 팔로잉 목록을 불러옵니다.
     fetchFollowers(); // 팔로워 목록 불러오기
-  }, [] ); //팔로잉 팔로워 목록 바뀌면 
+    
+  }, [userNum] ); //팔로잉 팔로워 목록 바뀌면 
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -81,7 +105,8 @@ function FollowTabs() {
   };
   
   const handleUnfollow = (followeeNo) => {
-    axios.delete(`${SERVER_API_URL}/user/removeFollow/${followeeNo}`, {
+    axios.delete(`${SERVER_API_URL}/user/removeFollow/${followeeNo}`, 
+    {
       headers: {
         'Authorization': `${accessToken}`
       }
@@ -120,11 +145,13 @@ function FollowTabs() {
                           }} 
                   />
                 <ListItemText primary={`${following.nickname} (# ${following.userNo})`} />
-                  <Button onClick={() => handleUnfollow(following.userNo)}>
-                    팔로우 해제
-                  </Button>
-              </ListItem>
-            ))}
+                  {parseInt(userNum) === parseInt(MyuserNum) && (
+                    <Button onClick={() => handleUnfollow(following.userNo)}>
+                      팔로우 해제
+                    </Button>
+                  )}
+                </ListItem>
+                ))}
           </List>
         ) : (
           <p>아직 팔로잉이 없습니다.</p>
@@ -136,13 +163,23 @@ function FollowTabs() {
           <List className='tabs'>
             {followers.map((follower) => (
               <ListItem key={follower.userNo}>
-                <img src={follower.profile} alt={`${follower.nickname}'s profile`} width="50"
-                 style={{ borderRadius: '50%', border: '1px solid #e0e0e0' }} /> 
+                <img src={follower.profile} alt={`${follower.nickname}'s profile`}
+                 width="51.6" 
+                  height="51.6"
+                  style={{
+                    borderRadius: '50%', 
+                    border: '1px solid #e0e0e0',
+                    objectFit: 'cover'
+                          }} 
+                           /> 
                  <ListItemText primary={`${follower.nickname} (# ${follower.userNo})`} />
-                  <Button onClick={() => handleFollow(follower)}
-                   variant={followings.some(following => following.userNo === follower.userNo) ? 'text' : 'outlined'}>
+                   {parseInt(userNum) === parseInt(MyuserNum) && (
+                <Button onClick={() => handleFollow(follower)}
+                  variant={followings.some(following => following.userNo === follower.userNo) ? 'text' : 'outlined'}>
                   {followings.some(following => following.userNo === follower.userNo) ? '팔로우됨' : '팔로우'}
-                  </Button>
+                </Button>
+                     )}
+
               </ListItem> 
              ))}
           </List>

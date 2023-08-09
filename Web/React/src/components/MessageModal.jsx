@@ -10,7 +10,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { setModalData, resetModalData } from "../actions/actions";
+import {
+  setModalData,
+  resetModalData,
+  addMyMessageData,
+  getAdditionalMessagesList,
+  deleteMessageData,
+} from "../actions/actions";
 import axios from "axios";
 
 const style = {
@@ -32,13 +38,13 @@ function MessageModal(props) {
   const {
     userNo,
     myUserNo,
-    pageOwner,
+    // pageOwner,
     modalOpen,
     handleModalClose,
     randomStickyNote,
     isMediumScreen,
     isLargeScreen,
-    myMessages,
+    myMessage,
   } = props;
 
   const modalTitle = useSelector((state) => state.modalData.modalTitle);
@@ -76,11 +82,35 @@ function MessageModal(props) {
       })
         .then((res) => {
           console.log(res.data);
+          dispatch(addMyMessageData(res.data.data));
+
+          axios({
+            method: "post",
+            url: `${SERVER_API_URL}/letter/get/letters`,
+            headers: {
+              Authorization: `${accessToken}`,
+            },
+            data: {
+              receiverNo: userNo,
+              writerNo: myUserNo,
+              year: 0,
+              limit: 24,
+              offset: 0,
+            },
+          })
+            .then((res) => {
+              console.log(res.data.data);
+              const additionalMessagesData = res.data.data;
+              dispatch(getAdditionalMessagesList(additionalMessagesData));
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           console.log(err);
         });
-      // dispatch(addMessageData(modalTitle, modalDescription));
+
       handleModalClose();
       dispatch(resetModalData());
     }
@@ -119,13 +149,21 @@ function MessageModal(props) {
   const [messageId, setMessageId] = useState(null);
 
   useEffect(() => {
-    if (myMessages.length >= 1) {
-      setMessageWriterId(myMessages[0].letter_writer);
-      setMessageId(myMessages[0].letter_id);
+    if (myMessage) {
+      setMessageWriterId(myMessage.letter_writer);
+      setMessageId(myMessage.letter_id);
     }
-  }, [myMessages]);
+  }, [myMessage]);
+
+  useEffect(() => {}, [myMessage]);
+
+  // const nowMessages = useSelector((state) => {
+  //   return state.messagesData.messages;
+  // });
 
   const handleDeleteMessage = () => {
+    // console.log(myUserNo);
+    // console.log(messageWriterId);
     if (parseInt(myUserNo) === parseInt(messageWriterId)) {
       console.log("goDelete");
       axios({
@@ -138,6 +176,8 @@ function MessageModal(props) {
         .then((res) => {
           console.log(res);
           setIsConfirmDelete(false);
+          dispatch(deleteMessageData(myUserNo));
+          dispatch(resetModalData());
           handleModalClose();
         })
         .catch((err) => {
@@ -147,6 +187,11 @@ function MessageModal(props) {
       alert("메시지 작성자 본인이 아닙니다!");
     }
   };
+
+  // console.log("메시지모달의 마이메시지");
+  // console.log(myMessage);
+
+  // myMessage가 갱신이 안 돼서 메시지 작성 버튼이 안 바뀜
 
   const changeModalVerticalPosition = isMediumScreen ? "50%" : "30%";
   const changeButtonFontSize = isMediumScreen ? "15px" : "25px";
@@ -172,26 +217,7 @@ function MessageModal(props) {
           onChangeModalText={handleChangeModalText}
         />
         <Grid container justifyContent={"space-evenly"}>
-          {myMessages.length < 1 ? (
-            <Button
-              className="MyPage-message-submit-button"
-              type="submit"
-              onClick={handleSubmitModalText}
-              style={{
-                cursor: "pointer",
-                backgroundColor: "#fbb3c2",
-                color: "white",
-                fontFamily: "MaplestoryOTFBold",
-                width: changeButtonSize,
-                fontSize: changeButtonFontSize,
-                borderRadius: "50px",
-                marginTop: "20px",
-                padding: "10px",
-              }}
-            >
-              보내기
-            </Button>
-          ) : (
+          {myMessage ? (
             <Button
               className="MyPage-message-delete-button"
               type="submit"
@@ -209,6 +235,25 @@ function MessageModal(props) {
               }}
             >
               삭제
+            </Button>
+          ) : (
+            <Button
+              className="MyPage-message-submit-button"
+              type="submit"
+              onClick={handleSubmitModalText}
+              style={{
+                cursor: "pointer",
+                backgroundColor: "#fbb3c2",
+                color: "white",
+                fontFamily: "MaplestoryOTFBold",
+                width: changeButtonSize,
+                fontSize: changeButtonFontSize,
+                borderRadius: "50px",
+                marginTop: "20px",
+                padding: "10px",
+              }}
+            >
+              보내기
             </Button>
           )}
           <Button

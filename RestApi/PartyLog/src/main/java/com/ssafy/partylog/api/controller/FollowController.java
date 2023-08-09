@@ -108,10 +108,8 @@ public class FollowController {
 
         CommonResponse data;
         HttpStatus status;
-
         //토큰 받기
         int followNo = followrequest.getFollowerNo();
-
         try {
             List<FollowResponseBody> list = followService.searchFolloweeList(followNo, followrequest.getLimit(), followrequest.getOffset());
             data = CommonResponse.createResponse("200", list,"팔로이 목록 호출에 성공했습니다.");
