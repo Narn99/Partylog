@@ -41,9 +41,10 @@ public class LetterController {
 
         // 편지 저장
         try {
-            String id = letterService.addLetter(letterRequest, loginUserNo);
-            LetterResponseBody letterResponseBody = letterService.searchLetterById(id);
-            data = CommonResponse.createResponse("200",letterResponseBody, "편지 보내기 성공");
+            int addResult = letterService.addLetter(letterRequest, loginUserNo);
+            if(addResult == 0) throw new Exception("메시지 추가 실패");
+            List<LetterResponseBody> list = letterService.searchLetterList(letterRequest.getLetterReceiver(), loginUserNo, 0, 24, 0);
+            data = CommonResponse.createResponse("200",list, "편지 보내기 성공");
             status = HttpStatus.OK;
         } catch(Exception e) {
             e.printStackTrace();
