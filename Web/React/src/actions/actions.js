@@ -10,7 +10,7 @@ export const loginSaveUserNo = (userNo) => ({
   payload: userNo,
 });
 
-export const logout = () => ({
+export const logoutUser = () => ({
   type: actionTypes.LOGOUT,
 });
 

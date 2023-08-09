@@ -112,7 +112,7 @@ public class FollowController {
         int followNo = followrequest.getFollowerNo();
         try {
             List<FollowResponseBody> list = followService.searchFolloweeList(followNo, followrequest.getLimit(), followrequest.getOffset());
-            data = CommonResponse.createResponse("200", list, "팔로이 목록 호출에 성공했습니다.");
+            data = CommonResponse.createResponse("200", list,"팔로이 목록 호출에 성공했습니다.");
             status = HttpStatus.OK;
         } catch (Exception e) {
             e.printStackTrace();
