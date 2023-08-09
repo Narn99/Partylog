@@ -1,9 +1,9 @@
 import {
-  TextField,
+  TextField
   //  styled
 } from "@mui/material";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import Send from "@mui/icons-material/Send";
 // const StyledTextarea = styled(TextField)(
 //   ({ theme }) => `
 //     width: 320px;
@@ -21,15 +21,88 @@ import React, { useState } from "react";
 //   `
 // );
 
-function ChatBox() {
+function ChatBox(props) {
+  const {session} = props;
   const [chatContent, setChatContent] = useState("");
+  const [chatMessages, setChatMessages] = useState([]);
+  
   const handleInputChat = (event) => {
+    // Sender of the message (after 'session.connect')
     const { value } = event.target;
     const truncatedValue = value.slice(0, 50);
     setChatContent(truncatedValue);
   };
+  const handleSendMessages = () => {
+    // Sender of the message (after 'session.connect')
+    session.signal({
+     data: chatContent,  // Any string (optional)
+     to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+     type: 'my-chat'             // The type of message (optional)
+    })
+    .then(() => {
+        setChatContent("");
+        console.log('Message successfully sent');
+    })
+    .catch(error => {
+        console.error(error);
+    }); 
+  }
 
-  return (
+  // 새 메시지가 도착할 때마다 채팅 메시지 목록을 업데이트
+  useEffect(() => {
+    const handleReceivedMessage = (event) => {
+      let writerName = ""; // 기본값 설정
+
+      try {
+       const eventData = JSON.parse(event.from.data); // JSON 문자열을 객체로 변환
+       if (eventData.clientData) {
+       writerName = eventData.clientData; // "이름"을 추출
+       }
+     } catch (error) {
+        console.error("Error parsing event data:", error);
+      }
+      const chatMsg = {
+        writer: writerName,
+        content: event.data,
+      };
+      setChatMessages((prevMessages) => [...prevMessages, chatMsg]); // 새 메시지를 배열에 추가
+    };
+
+    session.on("signal", handleReceivedMessage);
+
+    return () => {
+      session.off("signal", handleReceivedMessage); // 컴포넌트 언마운트 시 정리
+    };
+  }, [session]);
+
+
+  return (<div style={{height:"100%", width:"100%"}}><div
+    style={{
+      width: "95%",
+      height: "75%",
+    }}
+    className="chat-display"
+  >
+    {/* 채팅 메시지 렌더링 */}
+    {chatMessages.map((message, index) => (
+          <p key={index}>{`${message.writer}: ${message.content}`}</p>
+        ))}
+  </div>
+  {/* <div
+    style={{
+      justifyContent: "start",
+      alignItems: "center",
+      display: "flex",
+    }}
+  >
+    채팅 입력창
+  </div> */}
+  <div
+    style={{
+      width: "95%",
+      height: "15%",
+    }}
+  >
     <div
       style={{
         width: "100%",
@@ -38,6 +111,7 @@ function ChatBox() {
         // borderRadius: "15px",
       }}
     >
+      <div>
       <TextField
         id="outlined-multiline-static"
         label="채팅 입력"
@@ -66,7 +140,12 @@ function ChatBox() {
         value={chatContent}
         onChange={setChatContent}
       /> */}
+      </div>
+      <Send onClick={handleSendMessages}/>
     </div>
+    </div>
+    </div>
+
   );
 }
 

@@ -108,8 +108,17 @@ function FollowTabs() {
           <List className='tabs'>
             {followings.map((following) => (
               <ListItem key={following.userNo}>
-                <img src={following.profile} alt={`${following.nickname}'s profile`} width="50"
-                 style={{ borderRadius: '50%', border: '1px solid #e0e0e0' }} /> 
+                <img 
+                  src={following.profile} 
+                  alt={`${following.nickname}'s profile`} 
+                  width="51.6" 
+                  height="51.6"
+                  style={{
+                    borderRadius: '50%', 
+                    border: '1px solid #e0e0e0',
+                    objectFit: 'cover'
+                          }} 
+                  />
                 <ListItemText primary={`${following.nickname} (# ${following.userNo})`} />
                   <Button onClick={() => handleUnfollow(following.userNo)}>
                     팔로우 해제

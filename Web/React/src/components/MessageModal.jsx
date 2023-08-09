@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
 import ModalText from "./ModalText";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setModalData,
-  resetModalData,
-  // addMessageData,
-  deleteMessageData,
-} from "../actions/actions";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { setModalData, resetModalData } from "../actions/actions";
 import axios from "axios";
 
 const style = {
@@ -31,10 +31,14 @@ const style = {
 function MessageModal(props) {
   const {
     userNo,
+    myUserNo,
+    pageOwner,
     modalOpen,
     handleModalClose,
     randomStickyNote,
     isMediumScreen,
+    isLargeScreen,
+    myMessages,
   } = props;
 
   const modalTitle = useSelector((state) => state.modalData.modalTitle);
@@ -69,40 +73,88 @@ function MessageModal(props) {
           letterContent: modalDescription,
           letterReceiver: userNo,
         },
-      }).then((res) => {
-        console.log(res.data);
-      });
-      handleModalClose();
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       // dispatch(addMessageData(modalTitle, modalDescription));
+      handleModalClose();
       dispatch(resetModalData());
     }
   };
 
-  // 내용 초기화 버튼 만들기?
+  // 내용 초기화 버튼
+
+  const [isConfirmReset, setIsConfirmReset] = useState(false);
+
+  const handleRequestReset = () => {
+    setIsConfirmReset(true);
+  };
 
   const handleResetModalText = () => {
     dispatch(resetModalData());
+    setIsConfirmReset(false);
+  };
+
+  const handleCancelReset = () => {
+    setIsConfirmReset(false);
   };
 
   // 메시지 삭제용 버튼. 메시지 messageUserNo가 본인거랑 같다면 보이고, 삭제도 가능하게 수정해야됨.
   // 일단 임시로 마지막 메시지가 삭제되게 해둠.
 
-  const messageUserNo = useSelector(
-    (state) => state.messagesData.messages
-  ).length;
+  const [isConfirmDelete, setIsConfirmDelete] = useState(false);
+
+  const handleRequestDelete = () => {
+    setIsConfirmDelete(true);
+  };
+  const handleCancelDelete = () => {
+    setIsConfirmDelete(false);
+  };
+
+  const [messageWriterId, setMessageWriterId] = useState(null);
+  const [messageId, setMessageId] = useState(null);
+
+  useEffect(() => {
+    if (myMessages.length >= 1) {
+      setMessageWriterId(myMessages[0].letter_writer);
+      setMessageId(myMessages[0].letter_id);
+    }
+  }, [myMessages]);
 
   const handleDeleteMessage = () => {
-    // if (modalUserNo === 1) {
-    dispatch(deleteMessageData(messageUserNo));
-    handleModalClose();
-    // } else {
-    //   alert("메시지 작성자 본인이 아닙니다!");
-    // }
+    if (parseInt(myUserNo) === parseInt(messageWriterId)) {
+      console.log("goDelete");
+      axios({
+        method: "delete",
+        url: `${SERVER_API_URL}/letter/delete/${messageId}`,
+        headers: {
+          Authorization: `${accessToken}`,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          setIsConfirmDelete(false);
+          handleModalClose();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      alert("메시지 작성자 본인이 아닙니다!");
+    }
   };
 
   const changeModalVerticalPosition = isMediumScreen ? "50%" : "30%";
   const changeButtonFontSize = isMediumScreen ? "15px" : "25px";
-  const changeButtonSize = isMediumScreen ? "80px" : "120px";
+  const changeButtonSize = isMediumScreen
+    ? "80px"
+    : isLargeScreen
+    ? "120px"
+    : "180px";
 
   return (
     <Modal
@@ -119,49 +171,50 @@ function MessageModal(props) {
           modalDescription={modalDescription}
           onChangeModalText={handleChangeModalText}
         />
-        <Grid container justifyContent={"center"}>
-          <Button
-            className="MyPage-message-submit-button"
-            type="submit"
-            onClick={handleSubmitModalText}
-            style={{
-              cursor: "pointer",
-              backgroundColor: "#fbb3c2",
-              color: "white",
-              fontFamily: "MaplestoryOTFBold",
-              width: changeButtonSize,
-              fontSize: changeButtonFontSize,
-              borderRadius: "50px",
-              marginTop: "20px",
-              padding: "10px",
-            }}
-          >
-            보내기
-          </Button>
-
-          {/* 일단 메시지 삭제랑 초기화용 버튼 */}
-          <Button
-            className="MyPage-message-delete-button"
-            type="submit"
-            onClick={handleDeleteMessage}
-            style={{
-              cursor: "pointer",
-              backgroundColor: "#fbb3c2",
-              color: "white",
-              fontFamily: "MaplestoryOTFBold",
-              width: changeButtonSize,
-              fontSize: changeButtonFontSize,
-              borderRadius: "50px",
-              marginTop: "20px",
-              padding: "10px",
-            }}
-          >
-            삭제
-          </Button>
+        <Grid container justifyContent={"space-evenly"}>
+          {myMessages.length < 1 ? (
+            <Button
+              className="MyPage-message-submit-button"
+              type="submit"
+              onClick={handleSubmitModalText}
+              style={{
+                cursor: "pointer",
+                backgroundColor: "#fbb3c2",
+                color: "white",
+                fontFamily: "MaplestoryOTFBold",
+                width: changeButtonSize,
+                fontSize: changeButtonFontSize,
+                borderRadius: "50px",
+                marginTop: "20px",
+                padding: "10px",
+              }}
+            >
+              보내기
+            </Button>
+          ) : (
+            <Button
+              className="MyPage-message-delete-button"
+              type="submit"
+              onClick={handleRequestDelete}
+              style={{
+                cursor: "pointer",
+                backgroundColor: "#fbb3c2",
+                color: "white",
+                fontFamily: "MaplestoryOTFBold",
+                width: changeButtonSize,
+                fontSize: changeButtonFontSize,
+                borderRadius: "50px",
+                marginTop: "20px",
+                padding: "10px",
+              }}
+            >
+              삭제
+            </Button>
+          )}
           <Button
             className="MyPage-message-reset-button"
             type="submit"
-            onClick={handleResetModalText}
+            onClick={handleRequestReset}
             style={{
               cursor: "pointer",
               backgroundColor: "#fbb3c2",
@@ -174,9 +227,45 @@ function MessageModal(props) {
               padding: "10px",
             }}
           >
-            초기화
+            비우기
           </Button>
         </Grid>
+        {isConfirmReset && (
+          <Dialog open={true} onClose={handleCancelReset}>
+            <DialogTitle>메시지 비우기</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                정말로 메시지를 비우시겠습니까?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleResetModalText} color="primary">
+                네
+              </Button>
+              <Button onClick={handleCancelReset} color="primary">
+                아니오
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+        {isConfirmDelete && (
+          <Dialog open={true} onClose={handleCancelDelete}>
+            <DialogTitle>메시지 삭제</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                정말로 메시지를 삭제하시겠습니까?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDeleteMessage} color="primary">
+                네
+              </Button>
+              <Button onClick={handleCancelDelete} color="primary">
+                아니오
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
       </Box>
     </Modal>
   );

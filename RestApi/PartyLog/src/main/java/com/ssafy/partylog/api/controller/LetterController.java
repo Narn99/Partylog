@@ -1,6 +1,7 @@
 package com.ssafy.partylog.api.controller;
 
 
+import com.ssafy.partylog.api.request.LetterGetRequest;
 import com.ssafy.partylog.api.request.LetterRequest;
 import com.ssafy.partylog.api.response.LetterResponseBody;
 import com.ssafy.partylog.api.response.CommonResponse;
@@ -40,8 +41,9 @@ public class LetterController {
 
         // 편지 저장
         try {
-            letterService.addLetter(letterRequest, loginUserNo);
-            data = CommonResponse.createResponseWithNoContent("200", "편지 보내기 성공");
+            String id = letterService.addLetter(letterRequest, loginUserNo);
+            LetterResponseBody letterResponseBody = letterService.searchLetterById(id);
+            data = CommonResponse.createResponse("200",letterResponseBody, "편지 보내기 성공");
             status = HttpStatus.OK;
         } catch(Exception e) {
             e.printStackTrace();
@@ -74,13 +76,13 @@ public class LetterController {
 
     @PostMapping("/get/letters")
     @Operation(summary = "편지리스트", description = "편지리스트 불러오기")
-    public ResponseEntity<CommonResponse<List<LetterResponseBody>>> searchLetterList(@RequestBody HashMap<String,Integer> request)  {
+    public ResponseEntity<CommonResponse<List<LetterResponseBody>>> searchLetterList(@RequestBody LetterGetRequest letterGetRequest)  {
 
         CommonResponse data;
         HttpStatus status;
 
         try {
-            List<LetterResponseBody> list = letterService.searchLetterList(request.get("receiverNo"), request.get("writerNo"), request.get("year"), request.get("limit"), request.get("offset"));
+            List<LetterResponseBody> list = letterService.searchLetterList(letterGetRequest.getReceiverNo(), letterGetRequest.getWriterNo(), letterGetRequest.getYear(), letterGetRequest.getLimit(), letterGetRequest.getOffset());
             data = CommonResponse.createResponse("200", list,"편지목록을 불러오는데 성공했습니다.");
             status = HttpStatus.OK;
         } catch(Exception e) {

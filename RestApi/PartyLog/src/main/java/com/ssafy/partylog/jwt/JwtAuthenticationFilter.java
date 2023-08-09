@@ -50,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // UserNo Token에서 꺼내기
         String userNo = JwtUtil.getUserNo(token, secretkey);
-        log.info("userNo: {}", userNo);
+        log.info("JwtAuthenticationFilter userNo: {}", userNo);
 
         // 권한 부여
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userNo, null, List.of(new SimpleGrantedAuthority("USER")));

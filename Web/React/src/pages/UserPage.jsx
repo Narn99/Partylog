@@ -18,7 +18,11 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
-import { getInitailMessagesList, saveUserData } from "../actions/actions";
+import {
+  setModalData,
+  getInitailMessagesList,
+  saveUserData,
+} from "../actions/actions";
 
 // serializableStateInvariantMiddleware.ts:234 A non-serializable value was detected in an action, in the path: `register`.
 // 브라우저에서 오류 발생하는데, 리덕스로 dispatch하는 데이터가 직렬화 안 되는 데이터를 보냈다고 그러는 듯 함?
@@ -40,12 +44,16 @@ const getRandomStickyNote = () => {
 };
 
 function UserPage() {
+  const navigate = useNavigate();
+
   // API 연동하면 아래 주석 해제하고 수정해서 사용할 것
+
+  const [pageOwner, setPageOwner] = useState(false);
 
   const [loading, setloading] = useState(true);
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const [userData, setUserData] = useState({});
-  // const [recievedMessages, setRecivedMessages] = useState([]);
+  const [myMessages, setMyMessages] = useState([]);
   const [followerCount, setFollowerCount] = useState("");
   const [followeeCount, setFolloweeCount] = useState("");
   const todayFormatted = format(new Date(), "MM-dd");
@@ -77,6 +85,7 @@ function UserPage() {
       .then((res) => {
         // console.log(res.status);
         const data = res.data.data;
+        console.log(data);
         setUserData({
           userNo: data.userNo,
           userNickname: data.userNickname,
@@ -87,13 +96,20 @@ function UserPage() {
         setFolloweeCount(data.followeeSum);
         setFollowerCount(data.followerSum);
 
-        const letterData = data.letterResponseBody;
-        dispatch(getInitailMessagesList(letterData));
+        const lettersData = data.letterResponseBody;
+        dispatch(getInitailMessagesList(lettersData));
+
+        setMyMessages(
+          lettersData.filter((message) => {
+            return parseInt(message.letter_writer) === parseInt(myUserNo);
+          })
+        );
 
         // console.log(userData);
 
         // 본인 페이지면 받아온 데이터 저장
         if (parseInt(myUserNo) === parseInt(userNo)) {
+          setPageOwner(true);
           dispatch(
             saveUserData(
               data.userNo,
@@ -103,20 +119,36 @@ function UserPage() {
             )
           );
         }
-
         setloading(false);
       })
       .catch((err) => {
         console.log(err);
         setloading(false);
+        navigate("/404");
       });
-  }, []);
+  }, [
+    userNo,
+    myUserNo,
+    dispatch,
+    accessToken,
+    SERVER_API_URL,
+    pageOwner,
+    navigate,
+  ]);
+
+  useEffect(() => {
+    if (myMessages.length >= 1) {
+      dispatch(
+        setModalData(myMessages[0].letter_title, myMessages[0].letter_content)
+      );
+    }
+  }, [myMessages, dispatch]);
 
   // console.log(userData);
+  // console.log(userData.userBirthday);
 
-  const navigate = useNavigate();
   const theme = useTheme();
-  // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   //
@@ -136,16 +168,23 @@ function UserPage() {
   };
   const handleModalClose = () => setModalOpen(false);
 
-  const handleLiveButtonClick = (event) => {
-    // window.open(`/live/${userNo}`, "_blank");
+  // 생일자 라이브 스타트
+  const handleLiveStartButton = (event) => {
+    window.open(`/live/${userNo}`, "_blank");
+  };
+
+  // 참가자 라이브 참가
+  const handleLiveAttendButton = (event) => {
     window.open(`/live/${userNo}`, "_blank");
   };
 
   const handleToProfileSetting = (event) => {
-    navigate("/profile-setting");
+    if (pageOwner) {
+      navigate("/profile-setting");
+    }
   };
 
-  const changeProfileImgSize = isSmallScreen ? "200px" : "100%";
+  const changeProfileImgSize = isSmallScreen ? "200px" : "250px";
   const changeLiveButtonFontSize = isSmallScreen ? "18px" : "25px";
   const changeLiveButtonHeight = isSmallScreen ? "50px" : "70px";
   const changeLiveButtonWidth = isSmallScreen ? "150px" : "180px";
@@ -192,9 +231,11 @@ function UserPage() {
                       className="UserPage-profileimg"
                       style={{
                         width: changeProfileImgSize,
-                        maxWidth: "280px",
+                        maxWidth: "250px",
                         height: changeProfileImgSize,
-                        maxHeight: "280px",
+                        maxHeight: "250px",
+                        objectFit: "fill",
+                        cursor: pageOwner ? "pointer" : "default",
                       }}
                       onClick={handleToProfileSetting}
                     />
@@ -224,31 +265,78 @@ function UserPage() {
                   <CountdownTimer
                     // API 연동 시 아래 주석 해제
                     userBirthday={userData.userBirthday}
+                    myUserNo={myUserNo}
+                    userNo={userNo}
                   />
                 </Grid>
                 {/* 해당 유저 생일일 때만 버튼 보이기 */}
                 {/* {userData.userBirthday === todayFormatted && ( */}
                 <Grid item>
-                  <Button
-                    className="live-button"
-                    onClick={handleLiveButtonClick}
-                    variant="contained"
-                    style={{
-                      fontFamily: "MaplestoryOTFBold",
-                      fontSize: changeLiveButtonFontSize,
-                      color: "white",
-                      width: changeLiveButtonWidth,
-                      height: changeLiveButtonHeight,
-                      lineHeight: "30px",
-                      borderRadius: "40px",
-                      texShadow: "0.1px 0.1px 4px #e892a4",
-                      marginTop: "20px",
-                    }}
-                  >
-                    라이브로
-                    <br />
-                    이동
-                  </Button>
+                  {pageOwner ? (
+                    <Button
+                      className="live-button"
+                      onClick={handleLiveStartButton}
+                      variant="contained"
+                      style={{
+                        fontFamily: "MaplestoryOTFBold",
+                        fontSize: changeLiveButtonFontSize,
+                        color: "white",
+                        width: changeLiveButtonWidth,
+                        height: changeLiveButtonHeight,
+                        lineHeight: "30px",
+                        borderRadius: "40px",
+                        texShadow: "0.1px 0.1px 4px #e892a4",
+                        marginTop: "20px",
+                      }}
+                      // disabled={userData.userBirthday !== todayFormatted}
+                    >
+                      {userData.userBirthday !== todayFormatted ? (
+                        <>
+                          아직 생일이
+                          <br />
+                          아니예요!
+                        </>
+                      ) : (
+                        <>
+                          라이브
+                          <br />
+                          시작
+                        </>
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      className="live-button"
+                      onClick={handleLiveAttendButton}
+                      variant="contained"
+                      style={{
+                        fontFamily: "MaplestoryOTFBold",
+                        fontSize: changeLiveButtonFontSize,
+                        color: "white",
+                        width: changeLiveButtonWidth,
+                        height: changeLiveButtonHeight,
+                        lineHeight: "30px",
+                        borderRadius: "40px",
+                        texShadow: "0.1px 0.1px 4px #e892a4",
+                        marginTop: "20px",
+                      }}
+                      disabled={userData.userBirthday !== todayFormatted}
+                    >
+                      {userData.userBirthday !== todayFormatted ? (
+                        <>
+                          아직 생일이
+                          <br />
+                          아니예요!
+                        </>
+                      ) : (
+                        <>
+                          라이브
+                          <br />
+                          참가
+                        </>
+                      )}
+                    </Button>
+                  )}
                 </Grid>
                 {/* )} */}
               </Grid>
@@ -265,7 +353,11 @@ function UserPage() {
             <Grid container item xs={12}>
               <div
                 className="UserPage-side"
-                style={{ paddingTop: "10px", paddingBottom: "10px" }}
+                style={{
+                  paddingTop: "10px",
+                  paddingBottom: "10px",
+                  height: "47px",
+                }}
               >
                 <Grid
                   container
@@ -284,46 +376,33 @@ function UserPage() {
                   <div className="create-message-div">
                     {/* 추후에 메시지 이미 작성한 본인은 메시지 작성 버튼 대신에 수정 버튼이 보이게 수정,
                     수정을 누르면 본인이 작성했던 메시지 내용이 뜨게 하고,그 안에 메시지 삭제 버튼도 존재하게 */}
-                    <Button
-                      className="fix-message-button"
-                      onClick={handleModalOpen}
-                      variant="contained"
-                      style={{
-                        fontFamily: "MaplestoryOTFBold",
-                        fontSize: changeMessageButtonFontSize,
-                        color: "white",
-                        borderRadius: "40px",
-                        texShadow: "0.1px 0.1px 4px #e892a4",
-                        boxSizing: "border-box",
-                      }}
-                    >
-                      메시지 수정
-                    </Button>
-                    <Button
-                      className="create-message-button"
-                      onClick={handleModalOpen}
-                      variant="contained"
-                      style={{
-                        fontFamily: "MaplestoryOTFBold",
-                        fontSize: changeMessageButtonFontSize,
-                        color: "white",
-                        borderRadius: "40px",
-                        texShadow: "0.1px 0.1px 4px #e892a4",
-                        boxSizing: "border-box",
-                      }}
-                    >
-                      메시지 작성
-                    </Button>
+                    {parseInt(myUserNo) !== parseInt(userNo) && (
+                      <Button
+                        className={
+                          myMessages.length >= 1
+                            ? "fix-message-button"
+                            : "create-message-button"
+                        }
+                        onClick={handleModalOpen}
+                        variant="contained"
+                        style={{
+                          fontFamily: "MaplestoryOTFBold",
+                          fontSize: changeMessageButtonFontSize,
+                          color: "white",
+                          borderRadius: "40px",
+                          texShadow: "0.1px 0.1px 4px #e892a4",
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        {myMessages.length >= 1 ? "메시지 수정" : "메시지 작성"}
+                      </Button>
+                    )}
                   </div>
                 </Grid>
               </div>
             </Grid>
             <Grid container item xs={12}>
-              <MemoizedMessageBoard
-                userNo={userNo}
-                // 리덕스로 옮겨보려고 주석처리
-                // messages={recievedMessages}
-              />
+              <MemoizedMessageBoard userNo={userNo} myUserNo={myUserNo} />
             </Grid>
           </Grid>
           <Grid item lg={1}>
@@ -331,11 +410,15 @@ function UserPage() {
           </Grid>
         </Grid>
         <MessageModal
+          myMessages={myMessages ? myMessages : null}
           userNo={userNo}
+          pageOwner={pageOwner}
+          myUserNo={myUserNo}
           modalOpen={modalOpen}
           handleModalClose={handleModalClose}
           randomStickyNote={randomStickyNote}
           isMediumScreen={isMediumScreen}
+          isLargeScreen={isLargeScreen}
           // onSubmitText={handleSubmitModalText}
         />
       </div>

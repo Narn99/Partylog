@@ -44,7 +44,7 @@ public class FollowController {
             followService.addFollow(followNo, followeeNo);
             data = CommonResponse.createResponseWithNoContent("200", "팔로우에 성공했습니다.");
             status = HttpStatus.OK;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             data = CommonResponse.createResponseWithNoContent("400", "팔로우에 성공했습니다.");
             status = HttpStatus.BAD_REQUEST;
@@ -63,13 +63,13 @@ public class FollowController {
 
         //토큰 받기
         int followNo = Integer.parseInt(authentication.getName());
-        
+
         //팔로우 해제
         try {
             followService.removeFollow(followNo, followeeNo);
             data = CommonResponse.createResponseWithNoContent("200", "팔로우 해제 성공했습니다.");
             status = HttpStatus.OK;
-        } catch(Exception e) {
+        } catch (Exception e) {
             data = CommonResponse.createResponseWithNoContent("400", "팔로우 해제 도중 문제가 발생했습니다..");
             status = HttpStatus.OK;
         }
@@ -92,9 +92,9 @@ public class FollowController {
             List<FollowResponseBody> list = followService.searchFollowerList(followNo, followrequest.getLimit(), followrequest.getOffset());
             data = CommonResponse.createResponse("200", list, "팔로우 목록 호출에 성공했습니다.");
             status = HttpStatus.OK;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            data = CommonResponse.createResponse("400",null, "팔로우 목록 호출 도중 문제가 발생했습니다.");
+            data = CommonResponse.createResponse("400", null, "팔로우 목록 호출 도중 문제가 발생했습니다.");
             status = HttpStatus.BAD_REQUEST;
         }
 
@@ -116,9 +116,9 @@ public class FollowController {
             List<FollowResponseBody> list = followService.searchFolloweeList(followNo, followrequest.getLimit(), followrequest.getOffset());
             data = CommonResponse.createResponse("200", list,"팔로이 목록 호출에 성공했습니다.");
             status = HttpStatus.OK;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            data = CommonResponse.createResponse("400", null,"팔로이 목록 호출 도중 문제가 발생했습니다.");
+            data = CommonResponse.createResponse("400", null, "팔로이 목록 호출 도중 문제가 발생했습니다.");
             status = HttpStatus.BAD_REQUEST;
         }
 
@@ -138,13 +138,13 @@ public class FollowController {
             long counted = followService.getFollowerNumber(userNo);
             data = CommonResponse.createResponse("200", counted, "팔로우 목록의 갯수 호출에 성공했습니다.");
             status = HttpStatus.OK;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             data = CommonResponse.createResponse("400", null, "팔로우 목록의 갯수 호출 도중 문제가 발생했습니다.");
             status = HttpStatus.OK;
         }
 
-        return new ResponseEntity<CommonResponse<Long>> (data, status);
+        return new ResponseEntity<CommonResponse<Long>>(data, status);
     }
 
     //내가 팔로우하는 사람 수
@@ -159,7 +159,7 @@ public class FollowController {
             long counted = followService.getFolloweeNumber(userNo);
             data = CommonResponse.createResponse("200", counted, "팔로이 목록 갯수 호출에 성공했습니다.");
             status = HttpStatus.OK;
-        } catch(Exception e) {
+        } catch (Exception e) {
             data = CommonResponse.createResponse("400", null, "팔로이 목록 갯수 호출 도중 실패했습니다.");
             status = HttpStatus.OK;
         }

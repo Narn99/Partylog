@@ -2,6 +2,9 @@ import React, { memo } from "react";
 import Typography from "@mui/material/Typography";
 import { Grid, createTheme, useMediaQuery } from "@mui/material";
 
+// 화면 작아지면 폰트 및 이미지 크기 조절되도록 isScreen들 써서 바꿔야함.
+// 모달창이 급격히 작아지기 때문에..
+
 const style = {
   position: "fixed",
   top: "50%",
@@ -50,7 +53,7 @@ function ModalText(props) {
               alignItems={"center"}
             >
               <img
-                src={detailMessage.profile}
+                src={detailMessage.user_profile}
                 alt=""
                 style={{
                   width: "50px",
@@ -68,28 +71,29 @@ function ModalText(props) {
                 textOverflow: "ellipsis",
                 overflow: "hidden",
                 textAlign: "start",
+                fontSize: "20px",
               }}
             >
               &nbsp;&nbsp;&nbsp;
-              {detailMessage.nickname}
+              {detailMessage.user_nickname}
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} style={{ marginBottom: "20px" }}>
-          <Typography id="modal-modal-title" variant="h3">
+          <Typography id="modal-modal-title" variant="h5">
             제목
           </Typography>
         </Grid>
         <Grid container item xs={12} marginBottom={titleMargin}>
-          <p>{detailMessage.letterTitle}</p>
+          <p>{detailMessage.letter_title}</p>
         </Grid>
         <Grid item xs={12} style={{ marginBottom: "20px" }}>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }} variant="h3">
+          <Typography id="modal-modal-description" sx={{ mt: 2 }} variant="h5">
             내용
           </Typography>
         </Grid>
         <Grid container item xs={12}>
-          <p>{detailMessage.letterContent}</p>
+          <p>{detailMessage.letter_content}</p>
         </Grid>
       </Grid>
     </div>
