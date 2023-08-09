@@ -110,7 +110,7 @@ function UserPage() {
         console.log(err);
         setloading(false);
       });
-  }, []);
+  }, [userNo]);
 
   // console.log(userData);
 

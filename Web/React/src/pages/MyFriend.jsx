@@ -75,7 +75,7 @@ function MyFriend(props) {
     };
 
     fetchUserData(); // 함수를 호출하여 데이터를 불러옵니다.
-  }, [userNum]);
+  }, [userNum]); // 유저페이지로 이동하게 될 경우 그곳에도 바로 갱신되도록 이러한 부분 필요
 
   return (
     <div>
@@ -89,8 +89,8 @@ function MyFriend(props) {
               alt="profileimg"
               className="UserPage-profileimg"
               style={{
-                  maxWidth: "280px",
-                  maxHeight: "280px",
+                  Width: "260px",
+                  Height: "260px",
                     }}
                     />
            
