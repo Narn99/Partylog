@@ -1,11 +1,11 @@
-package com.ssafy.data.model.login
+package com.ssafy.data.model.login.resp
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class KakaoCheckRespDto(
+data class CommRespDto(
     @SerialName("data")
     val data: Int,
     @SerialName("message")
