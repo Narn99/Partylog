@@ -164,4 +164,25 @@ public class FollowController {
 
         return new ResponseEntity<CommonResponse<Long>>(data, status);
     }
+
+    @GetMapping("/checkFollow/{userNo}")
+    @Operation(summary = "팔로우 상태 확인", description = "해당 상대를 팔로우 중인지 아닌지 확인" )
+    public ResponseEntity<CommonResponse> checkFollowStatus(@PathVariable int userNo, Authentication authentication){
+        CommonResponse data;
+        HttpStatus status;
+
+        int loginUserNo = Integer.parseInt(authentication.getName());
+        try {
+            boolean check = followService.checkFollowStatus(userNo, loginUserNo);
+            data = CommonResponse.createResponse("200", check, "팔로우 상태 확인 완료했습니다.");
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            data = CommonResponse.createResponse("400", null, "팔로우 상태 확인 실패했습니다.");
+            status = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<CommonResponse>(data, status);
+
+    }
+
 }

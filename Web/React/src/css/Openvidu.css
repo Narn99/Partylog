@@ -237,3 +237,13 @@ a:hover .demo-logo {
 #local-video-undefined {
 	width: 100% !important;
 }
+
+#my-stream-container {
+	width: 30%;
+}
+
+.subscriber-stream-container {
+	width: 30%;
+	margin-left: 20px;
+	float: left;
+}
