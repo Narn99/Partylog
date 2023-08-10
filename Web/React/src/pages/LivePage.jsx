@@ -11,6 +11,7 @@ import '../css/Openvidu.css';
 import UserVideoComponent from '../components/openvidu/UserVideoComponent';
 import { useSelector } from "react-redux";
 import { OpenVidu } from 'openvidu-browser';
+import { useParams } from 'react-router-dom';
 
 
 // 나중에 CSS로 화면 + 버튼그룹 / 채팅창 + 나가기 버튼으로 세로열 맞추기
@@ -20,6 +21,7 @@ const APPLICATION_SERVER_URL = `${process.env.REACT_APP_API_SERVER_URL}/`;
 function LivePage() {
 
   var userInfo = useSelector(state => state.auth.userData);
+  const { userNo } = useParams();
   var OV = new OpenVidu();
   var [mySessionId, setMysessionId] = useState(`Session${userInfo.userNo}`);
   var [myUserName, setMyUserName] = useState(userInfo.userNickname);
@@ -70,6 +72,7 @@ function LivePage() {
   // ];
 
   const handleMainVideoStream = (stream) => {
+    console.log(stream);
     if (mainStreamManager !== stream) {
         setMainStreamManager(stream);
     }
@@ -156,6 +159,7 @@ const joinSession = () => {
                 setCurrentVideoDevice(currentVideoDevice);
                 setMainStreamManager(publisher);
                 setPublisher(publisher);
+                console.log(session);
             })
             .catch((error) => {
                 console.log('There was an error connecting to the session:', error.code, error.message);
@@ -214,7 +218,10 @@ const leaveSession = () => {
  * more about the integration of OpenVidu in your application server.
  */
 const getToken = async () => {
-   const sessionId = await createSession(mySessionId);
+   const sessionId = await createSession(userNo);
+   console.log("유저넘버는");
+   console.log(useParams);
+   console.log(userNo);
    return await createToken(sessionId);
 }
 
@@ -229,13 +236,14 @@ const createSession = async (sessionId) => {
 }
 
 const createToken = async (sessionId) => {
+  var stringId = String(sessionId);
    var liveInfo = {
-       "live_id" : sessionId,
+       "live_id" : stringId,
        "live_title" : null,
        "live_desc" : userInfo.userNickname + " 님의 생일 축하방입니다.",
        "live_host" : userInfo.userNo,
    };
-   const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', liveInfo, {
+   const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + stringId + '/connections', liveInfo, {
        headers: { 
            'Authorization': localStorage.getItem("access-token"),
            'Content-Type': 'application/json', 
@@ -309,19 +317,31 @@ const createToken = async (sessionId) => {
                   }}
                   className="live-display"
                 >
-                <div className="container" style={{height:"100%"}}>
-                    {session === undefined ? (
-                        <p>종료된 라이브 입니다.</p>
-                    ) : (
-                      <div className="container">
-                        <div id="session">
-                          <div id="main-video" className="col-md-6">
-                            <UserVideoComponent streamManager={mainStreamManager} />
+        <div className="container" style={{height:"100%"}}>
+            {session === undefined ? (
+                <p>종료된 라이브 입니다.</p>
+            ) : (
+                      <div className="container"style={{height:"100%"}}>
+                        <div id="session"style={{height:"100%"}} >
+                          <div id="main-video" className="col-md-6" style={{height:"100%"}}>
+                            <UserVideoComponent streamManager={mainStreamManager} style={{height:"100%"}}/>
                           </div>
+                        {/* {publisher !== undefined ? (
+                            <div className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(publisher)} style={{height:"100%"}}>
+                                <UserVideoComponent
+                                    streamManager={publisher} style={{height:"100%"}}/>
+                            </div>
+                        ) : null} */}
+                        {subscribers.map((sub, i) => (
+                            <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
+                                <span>{sub.id}</span>
+                                {/* <UserVideoComponent streamManager={sub}/> */}
+                            </div>
+                        ))}
+                    </div>
                         </div>
-                      </div>
-                    )}
-                </div>
+            )}
+        </div>
                 </Grid>
               </Grid>
               <Grid
@@ -334,7 +354,7 @@ const createToken = async (sessionId) => {
               >
                 {/* <ViewersCarousel viewers={viewers} /> */}
                 <div id="video-container" className="col-md-6">
-                {subscribers.map((sub, i) => (
+                 {subscribers.map((sub, i) => (
                             <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
                                 <span>{sub.id}</span>
                                 <UserVideoComponent streamManager={sub} />
@@ -403,7 +423,7 @@ const createToken = async (sessionId) => {
               }}
             >
               
-                <ChatBox session={session} />
+                <ChatBox session={session}/>
               
             </div>
           </div>
