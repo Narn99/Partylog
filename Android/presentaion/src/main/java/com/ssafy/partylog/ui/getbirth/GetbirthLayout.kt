@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.chargemap.compose.numberpicker.NumberPicker
 import com.orhanobut.logger.Logger
 import com.ssafy.partylog.R
@@ -31,7 +32,8 @@ import com.ssafy.partylog.ui.theme.maplestory
 import com.ssafy.partylog.ui.theme.themecolor
 
 @Composable
-fun Getbirth(modifier: Modifier = Modifier, viewModel: getbirthViewmodel = getbirthViewmodel()) {
+fun Getbirth(modifier: Modifier = Modifier, viewModel:GetbirthViewmodel = hiltViewModel(),
+             navToMain: () -> Unit = {}) {
     val stateHolder = PickerStateHolder()
     Column(
         modifier
@@ -56,7 +58,7 @@ fun Getbirth(modifier: Modifier = Modifier, viewModel: getbirthViewmodel = getbi
                 .weight(2f)
                 .padding(bottom = 70.dp)
                 .padding(horizontal = 55.dp), verticalAlignment = Alignment.Bottom) {
-            Button(gonext = { viewModel.goNext() })
+            Button(navToMain = navToMain, viewModel = viewModel, stateHolder = stateHolder)
         }
     }
 }
@@ -107,13 +109,13 @@ fun Picker(modifier: Modifier = Modifier, stateHolder: PickerStateHolder) {
 }
 
 @Composable
-fun Button(modifier: Modifier = Modifier, gonext: () -> Unit) {
+fun Button(modifier: Modifier = Modifier, navToMain: () -> Unit, viewModel: GetbirthViewmodel, stateHolder: PickerStateHolder) {
     Card( modifier = modifier
         .fillMaxWidth()
         .height(45.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
-        TextButton(onClick = { gonext() },
+        TextButton(onClick = { viewModel.goNext(stateHolder.year, stateHolder.month, stateHolder.day) { navToMain() } },
             modifier
                 .fillMaxSize()
                 .background(themecolor)) {

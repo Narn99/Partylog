@@ -29,15 +29,18 @@ fun PartylogApp(navHostController: NavHostController = rememberNavController()) 
         NavHost(navController = navHostController, startDestination = ScreenState.Login.name, modifier =Modifier.padding(it)) {
             composable(route = ScreenState.Login.name) {
                 Login(navToMain = {
+                    navHostController.popBackStack()
                     navHostController.navigate(route = ScreenState.Main.name)},
                     navToGetbirth = {
-                        navHostController.navigate(route= ScreenState.Getbirth.name)})
+                        navHostController.navigate(route= ScreenState.Getbirth.name) })
             }
             composable(route = ScreenState.Main.name) {
                 Main()
             }
             composable(route = ScreenState.Getbirth.name) {
-                Getbirth()
+                Getbirth(navToMain= {
+                    navHostController.popBackStack()
+                    navHostController.navigate(route = ScreenState.Main.name)})
             }
 
         }

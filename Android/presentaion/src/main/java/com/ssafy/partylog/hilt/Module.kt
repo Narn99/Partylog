@@ -1,13 +1,11 @@
 package com.ssafy.partylog.hilt
 
-import androidx.compose.runtime.Composable
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import com.ssafy.data.datasource.remote.LoginDatasource
 import com.ssafy.data.repository.LoginRepositoryImpl
 import com.ssafy.domain.repository.LoginRepository
 import com.ssafy.partylog.BuildConfig
-import com.ssafy.partylog.util.ScreenState
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,8 +20,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-
-
     @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
@@ -46,4 +42,5 @@ object ApiModule {
     fun provideLoginDataSource(): LoginDatasource {
         return LoginDatasource()
     }
+
 }
