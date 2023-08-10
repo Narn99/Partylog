@@ -14,8 +14,7 @@ export default function SearchFriend() {
   const handleSearch = async (e) => {
     setSearchTerm(e.target.value);
 
-    // 문자열이 비었을 때 서버 요청을 건너뛰기
-    if (e.target.value.length === 0) {
+    if (e.target.value.length === 0) { // 검색창에 입력된 것이 없으면 검색하지 않음
       setSearchResults([]);
       return;
     }
@@ -32,18 +31,19 @@ export default function SearchFriend() {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && searchResults.length > 0) {
-      window.location.href = `/user/${searchResults[0].user_no}`;
+  const handleAutocompleteChange = (event, newValue) => {
+    if (newValue) {
+      window.location.href = `/user/${newValue.user_no}`;
     }
-  };  // 엔터 키 눌러서 첫번째 항목으로 이동
+  };
 
   return (
     <div>
       <Autocomplete
         options={searchResults}
         getOptionLabel={(option) => option.user_nickname}
-        fullWidth 
+        fullWidth
+        onChange={handleAutocompleteChange} // 항목 선택 변경 시
         renderInput={(params) => (
           <TextField
             {...params}
@@ -51,7 +51,7 @@ export default function SearchFriend() {
             value={searchTerm}
             onChange={handleSearch}
             variant="outlined"
-            fullWidth 
+            fullWidth
             style={{ fontFamily: "MaplestoryOTFLight" }}
           />
         )}
@@ -62,7 +62,6 @@ export default function SearchFriend() {
             </li>
           </Link>
         )}
-        onKeyDown={handleKeyDown}
       />
     </div>
   );
