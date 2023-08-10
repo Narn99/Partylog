@@ -26,8 +26,11 @@ class LoginViewModel @Inject constructor(private val application: Application,
         get() = _uiState.asStateFlow()
 
     var loginCode by mutableStateOf(0)
+        private set
 
-
+    fun resetCode() {
+        loginCode = 0
+    }
     fun afterKakaoLogin(token: String) {
         Logger.d("토큰가지고 서버 호출")
 
