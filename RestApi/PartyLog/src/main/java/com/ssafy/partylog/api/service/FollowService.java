@@ -15,6 +15,8 @@ public interface FollowService {
 
     long getFollowerNumber(int userNo) throws Exception;
 
+    boolean checkFollowStatus(int userNo, int loginUserNo);
+
     List<FollowResponseBody> searchFollowerList(int userNo, int limit, int offset) throws Exception;
 
     List<FollowResponseBody> searchFolloweeList(int userNo, int limit, int offset) throws Exception;
