@@ -23,6 +23,7 @@ import Send from "@mui/icons-material/Send";
 
 function ChatBox(props) {
   const {session} = props;
+  // console.log(session);
   const [chatContent, setChatContent] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   
@@ -32,6 +33,7 @@ function ChatBox(props) {
     setChatContent(truncatedValue);
   };
   const handleSendMessages = () => {
+    // console.log(session);
     // Sender of the message (after 'session.connect')
     session.signal({
      data: chatContent,  // Any string (optional)
