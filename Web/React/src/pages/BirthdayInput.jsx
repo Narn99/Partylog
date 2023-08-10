@@ -11,6 +11,7 @@ import { Button } from "@mui/material";
 // import { ThemeProvider } from "@emotion/react";
 import { Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
+import { firework } from "../components/firework";
 
 // const theme = createTheme({
 //   palette: {
@@ -22,7 +23,7 @@ import { useParams } from "react-router-dom";
 
 function BirthdayInput(props) {
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
-
+  firework();
   const navigate = useNavigate();
 
   const { userNo } = useParams();

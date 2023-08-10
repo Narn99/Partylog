@@ -7,7 +7,7 @@ import FollowTabs from "../components/FollowTabs";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { firework } from "../components/firework";
+import  {firework2}  from "../components/firework2"
 
 const Box1 = styled(Box)(({ theme }) => ({
   backgroundColor: "#fbb3c2",
@@ -98,7 +98,7 @@ function MyFriend(props) {
       );
       setIsFollowing(true);
       setModalOpen(true);  // 팔로우 성공 시 모달을 보여줍니다.
-      firework(); //  firework 함수를 호출
+      firework2(); //  firework 함수를 호출
       setTimeout(() => {
         setModalOpen(false);
         window.location.reload();
