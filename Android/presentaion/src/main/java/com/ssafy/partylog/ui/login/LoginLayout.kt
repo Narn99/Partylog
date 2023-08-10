@@ -1,5 +1,6 @@
 package com.ssafy.partylog.ui.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,18 +26,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.partylog.R
-import com.ssafy.partylog.ui.login.stateholder.LoginFrameStateHolder
 import com.ssafy.partylog.ui.login.stateholder.LoginViewModel
 import com.ssafy.partylog.ui.theme.PartylogTheme
 import com.ssafy.partylog.ui.theme.loginTextColor
 import com.ssafy.partylog.ui.theme.maplestory
+import com.ssafy.partylog.util.Util
 
 @Composable
 fun Login(
-    modifier: Modifier = Modifier, font: FontFamily = maplestory
+    modifier: Modifier = Modifier, font: FontFamily = maplestory,
+    viewModel: LoginViewModel = hiltViewModel(),
+    navToMain: () -> Unit = {}, navToGetbirth: () -> Unit = {}
 ) {
 
-    val viewModel = hiltViewModel<LoginViewModel>()
+    val loginCode = viewModel.loginCode
 
     Image(
         painter = painterResource(id = R.drawable.bg_login_compose),
@@ -61,7 +64,7 @@ fun Login(
                 .fillMaxWidth(), verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LoginFrame(modifier, viewModel)
+            LoginFrame(modifier, viewModel, loginCode, navToGetbirth, navToMain)
         }
 
     }
@@ -69,18 +72,27 @@ fun Login(
 }
 
 @Composable
-fun LoginFrame(modifier: Modifier, viewModel: LoginViewModel) {
-    val stateHolder = LoginFrameStateHolder(viewModel)
+fun LoginFrame(modifier: Modifier, viewModel: LoginViewModel, loginCode: Int,
+               navToGetbirth: () -> Unit, navToMain: () -> Unit) {
     val context = LocalContext.current
+    when(loginCode) {
+        200 -> navToMain()
+        201 -> navToGetbirth()
+        0 -> {}
+        else -> {
+            Toast.makeText(LocalContext.current, "에러", Toast.LENGTH_SHORT).show()
+        }
+    }
+    viewModel.resetCode()
     Image(imageVector = ImageVector.vectorResource(id = R.drawable.ic_login_kakaologin),
-        contentDescription = "kakaoLogin",
+        contentDescription = "kakao",
         modifier = modifier
             .padding(bottom = 124.dp)
             .clickable {
-                stateHolder.onKakaoSelected(context)
+                Util(viewModel = viewModel).kakaoLogin(context)
             })
+    }
 
-}
 
 @Composable
 fun TitleFrame(modifier: Modifier = Modifier, font: FontFamily) {
