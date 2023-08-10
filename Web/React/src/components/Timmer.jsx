@@ -10,6 +10,9 @@ const CountdownTimer = (props) => {
   const { userBirthday } = props;
 
   const [targetTime, setTargetTime] = useState("00:00");
+  const [leftBirthdayTime, setLeftBirthdayTime] = useState(
+    new Date(userBirthday)
+  );
 
   const handleTimeChange = (event) => {
     const selectedTime = event.$d;
@@ -18,10 +21,16 @@ const CountdownTimer = (props) => {
     const hours = selectedTime.getHours();
     const minutes = selectedTime.getMinutes();
 
-    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}`;
-    setTargetTime(formattedTime);
+    const newLeftBirthdayTime = new Date(leftBirthdayTime);
+    newLeftBirthdayTime.setHours(hours);
+    newLeftBirthdayTime.setMinutes(minutes);
+
+    setTargetTime(
+      `${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}`
+    );
+    setLeftBirthdayTime(newLeftBirthdayTime);
   };
 
   const calculateTimeLeft = (targetDate) => {
@@ -63,10 +72,14 @@ const CountdownTimer = (props) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft(new Date(userBirthday)));
+      setTimeLeft(calculateTimeLeft(new Date(leftBirthdayTime)));
     }, 1000);
     return () => clearTimeout(timer);
-  }, [timeLeft, targetTime, userBirthday]);
+  }, [timeLeft, targetTime, leftBirthdayTime]);
+
+  // console.log(targetTime);
+  // console.log(timeLeft);
+  // 여기의 timeLeft가 남은 시간인데, useState로 관리하니까 남한테 안 보임.... 남들한테도 보낼 수 있게
 
   return (
     <Grid

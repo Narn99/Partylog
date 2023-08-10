@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 
 // 화면 작아지면 폰트 및 이미지 크기 조절되도록 isScreen들 써서 바꿔야함.
@@ -34,32 +34,40 @@ function ModalText(props) {
     ? "20px"
     : "24px";
 
-  const bigFontSize =
-    detailMessage.letter_content.length > 100
-      ? isSmallScreen
-        ? "15px"
-        : isMediumScreen
-        ? "18px"
-        : isLargeScreen
-        ? "21px"
-        : "25px"
-      : isSmallScreen
-      ? "18px"
-      : isMediumScreen
-      ? "22px"
-      : isLargeScreen
-      ? "25px"
-      : "30px";
+  // const bigFontSize =
+  //   detailMessage.letter_content.length > 100
+  //     ? isSmallScreen
+  //       ? "15px"
+  //       : isMediumScreen
+  //       ? "18px"
+  //       : isLargeScreen
+  //       ? "21px"
+  //       : "25px"
+  //     : isSmallScreen
+  //     ? "18px"
+  //     : isMediumScreen
+  //     ? "22px"
+  //     : isLargeScreen
+  //     ? "25px"
+  //     : "30px";
 
-  const smallFontSize =
+  const smallTitleFontSize = isSmallScreen
+    ? "20px"
+    : isMediumScreen
+    ? "25px"
+    : isLargeScreen
+    ? "30px"
+    : "40px";
+
+  const smallContentFontSize =
     detailMessage.letter_content.length > 100
       ? isSmallScreen
-        ? "12px"
+        ? "13px"
         : isMediumScreen
-        ? "14px"
+        ? "15px"
         : isLargeScreen
-        ? "17px"
-        : "19px"
+        ? "18px"
+        : "20px"
       : isSmallScreen
       ? "16px"
       : isMediumScreen
@@ -111,37 +119,48 @@ function ModalText(props) {
                 fontSize: "20px",
               }}
             >
-              &nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;
               {detailMessage.user_nickname}
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} style={{ marginBottom: `${bigFontMargin}` }}>
-          <Typography
+          {/* <Typography
             id="modal-modal-title"
             variant="h5"
             fontSize={bigFontSize}
           >
             제목
-          </Typography>
+          </Typography> */}
         </Grid>
-        <Grid container item xs={12} marginBottom={smallFontMargin}>
-          <p style={{ fontSize: `${smallFontSize}` }}>
+        <Grid
+          container
+          item
+          xs={12}
+          marginBottom={smallFontMargin}
+          justifyContent={"center"}
+        >
+          <p
+            style={{
+              fontSize: `${smallTitleFontSize}`,
+              fontFamily: "MaplestoryOTFBold",
+            }}
+          >
             {detailMessage.letter_title}
           </p>
         </Grid>
         <Grid item xs={12} style={{ marginBottom: `${bigFontMargin}` }}>
-          <Typography
+          {/* <Typography
             id="modal-modal-description"
             // sx={{ mt: 2 }}
             variant="h5"
             fontSize={bigFontSize}
           >
             내용
-          </Typography>
+          </Typography> */}
         </Grid>
         <Grid container item xs={12}>
-          <p style={{ fontSize: `${smallFontSize}` }}>
+          <p style={{ fontSize: `${smallContentFontSize}` }}>
             {detailMessage.letter_content}
           </p>
         </Grid>
