@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import { Modal, Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import FollowTabs from "../components/FollowTabs";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { firework } from "../components/firework";
 
 const Box1 = styled(Box)(({ theme }) => ({
   backgroundColor: "#fbb3c2",
@@ -33,7 +34,7 @@ function MyFriend(props) {
   const MyuserNum = useSelector((state) => {
     return state.auth.userData.userNo;
   });
-
+  const [modalOpen, setModalOpen] = useState(false);
   const { userNum } = useParams();
   const [isFollowing, setIsFollowing] = useState(false);
 
@@ -96,6 +97,12 @@ function MyFriend(props) {
         { headers: { Authorization: `${accessToken}` } }
       );
       setIsFollowing(true);
+      setModalOpen(true);  // 팔로우 성공 시 모달을 보여줍니다.
+      firework(); //  firework 함수를 호출
+      setTimeout(() => {
+        setModalOpen(false);
+        window.location.reload();
+      }, 2000);  // 1초 후에 모달을 닫고 페이지를 새로고침합니다.
     } catch (error) {
       console.error("Error following user:", error);
     }
@@ -152,6 +159,31 @@ function MyFriend(props) {
             </Box1>
           </Grid>
         </Grid>
+
+        <Modal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Box
+            sx={{
+              width: 400,
+              bgcolor: 'background.paper',
+              border: '2px solid #000',
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography variant="h6" align="center">
+              팔로우 감사합니다!
+            </Typography>
+          </Box>
+        </Modal>
+
       </div>
     </div>
   );

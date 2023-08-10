@@ -5,12 +5,14 @@ import axios from "axios";
 import { Link } from 'react-router-dom';
 
 export default function SearchFriend() {
+
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
-
+  
   const handleSearch = async (e) => {
     setSearchTerm(e.target.value);
 
@@ -36,7 +38,7 @@ export default function SearchFriend() {
       window.location.href = `/user/${newValue.user_no}`;
     }
   };
-
+ 
   return (
     <div>
       <Autocomplete
