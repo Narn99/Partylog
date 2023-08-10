@@ -233,3 +233,7 @@ a:hover .demo-logo {
 .stream-container {
 	padding: 0;
 }
+
+#local-video-undefined {
+	width: 100% !important;
+}
