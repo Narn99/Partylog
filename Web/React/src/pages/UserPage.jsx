@@ -125,6 +125,8 @@ function UserPage() {
               data.userProfile
             )
           );
+        } else {
+          setPageOwner(false);
         }
         setloading(false);
       })

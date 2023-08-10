@@ -148,7 +148,7 @@ function MessageModal(props) {
     // console.log(myUserNo);
     // console.log(messageWriterId);
     if (parseInt(myUserNo) === parseInt(messageWriterId)) {
-      console.log("goDelete");
+      // console.log("goDelete");
       axios({
         method: "delete",
         url: `${SERVER_API_URL}/letter/delete/${messageId}`,

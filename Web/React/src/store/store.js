@@ -7,3 +7,5 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+// 여기를 수정해야 non-serializable 에러가 해결될 듯. register를 무시하면 어떻게 될까?
