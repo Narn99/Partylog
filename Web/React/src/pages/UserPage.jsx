@@ -91,7 +91,7 @@ function UserPage() {
       .then((res) => {
         // console.log(res.status);
         const data = res.data.data;
-        console.log(data);
+        // console.log(data);
         setUserData({
           userNo: data.userNo,
           userNickname: data.userNickname,
