@@ -74,4 +74,10 @@ public class FollowServiceImpl implements FollowService {
         return list;
     }
 
+    @Override
+    public boolean checkFollowStatus(int userNo, int loginUserNo){
+        return followRepository.existsByFollowerNoAndAndFolloweeNo(loginUserNo, userNo);
+    }
+
+
 }
