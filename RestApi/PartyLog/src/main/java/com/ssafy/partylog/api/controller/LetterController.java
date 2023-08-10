@@ -3,6 +3,7 @@ package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.request.LetterGetRequest;
 import com.ssafy.partylog.api.request.LetterRequest;
+import com.ssafy.partylog.api.request.LetterUpdateRequest;
 import com.ssafy.partylog.api.response.LetterResponseBody;
 import com.ssafy.partylog.api.response.CommonResponse;
 import com.ssafy.partylog.api.service.LetterService;
@@ -55,6 +56,27 @@ public class LetterController {
         return new ResponseEntity<CommonResponse>(data, status);
     }
 
+    @PostMapping("/update")
+    @Operation(summary = "보낸 편지 수정하기", description = "보낸 편지 수정하기")
+    public ResponseEntity<CommonResponse> updateLetter(@RequestBody LetterUpdateRequest letterUpdateRequest) {
+
+        CommonResponse data;
+        HttpStatus status;
+
+        // 편지 저장
+        try {
+            List<LetterResponseBody> updateResult = letterService.updateLetter(letterUpdateRequest);
+            data = CommonResponse.createResponse("200",updateResult, "편지 수정 성공");
+            status = HttpStatus.OK;
+        } catch(Exception e) {
+            e.printStackTrace();
+            data = CommonResponse.createResponseWithNoContent("400","편지 수정 실패");
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<CommonResponse>(data, status);
+    }
+
     @DeleteMapping("/delete/{letterId}")
     @Operation(summary = "편지삭제(보내기취소)", description = "편지 보내기 취소")
     public ResponseEntity<CommonResponse> deleteLetter(@PathVariable String letterId)  {
@@ -64,10 +86,11 @@ public class LetterController {
 
         //편지 삭제
         try {
-            letterService.deleteLetter(letterId);
-            data = CommonResponse.createResponseWithNoContent("200","편지 삭제 성공");
+            List<LetterResponseBody> deleteResult = letterService.deleteLetter(letterId);
+            data = CommonResponse.createResponse("200", deleteResult, "편지 삭제 성공");
             status = HttpStatus.OK;
         } catch(Exception e) {
+            e.printStackTrace();
             data = CommonResponse.createResponseWithNoContent("400","편지 삭제 실패");
             status = HttpStatus.OK;
         }
