@@ -157,6 +157,10 @@ function UserPage() {
               navigate("/");
             } else {
               alert(response.message);
+              dispatch(logoutUser());
+              localStorage.setItem("access-token", null);
+              localStorage.setItem("refresh-token", null);
+              navigate("/");
             }
           })
         } else {

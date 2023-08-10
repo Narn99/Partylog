@@ -41,18 +41,9 @@ function LivePage() {
   const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
 
   useEffect(() => {
-    joinSession(); 
-    window.addEventListener('beforeunload', onbeforeunload);
-    return () => {
-      window.removeEventListener('beforeunload', onbeforeunload);
-    }
-    
+    joinSession();     
     // eslint-disable-next-line
   }, [subscribers]);
-
-  const onbeforeunload = (event) => {
-    this.leaveSession();
-  }
 
   // const viewers = [
   //   "강아지",
@@ -256,6 +247,11 @@ const createToken = async (sessionId) => {
    return response.data.data; // The token
 }
 
+const test = () => {
+  console.log("참가자 정보")
+  console.log(subscribers)
+}
+
   return (
     <div>
       <Grid
@@ -345,12 +341,18 @@ const createToken = async (sessionId) => {
               >
                 {/* <ViewersCarousel viewers={viewers} /> */}
                 <div id="video-container" className="col-md-6">
-                        {subscribers.map((sub, i) => (
-                            <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
-                                <span>{sub.id}</span>
-                                <UserVideoComponent streamManager={sub} />
-                            </div>
-                        ))}
+                {publisher !== undefined ? (
+                                <div className="stream-container col-md-6 col-xs-6" id="my-stream-container" onClick={() => handleMainVideoStream(publisher)}>
+                                    <UserVideoComponent
+                                        streamManager={publisher} />
+                                </div>
+                            ) : null}
+                            {subscribers.map((sub, i) => (
+                                <div key={sub.id} className="stream-container col-md-6 col-xs-6 subscriber-stream-container" onClick={() => handleMainVideoStream(sub)}>
+                                    <span>{sub.id}</span>
+                                    <UserVideoComponent streamManager={sub} />
+                                </div>
+                            ))}
                 </div>
                  
               </Grid>
@@ -465,6 +467,7 @@ const createToken = async (sessionId) => {
             >
               나가기
             </Button>
+            <button onClick={test}>test</button>
           </Grid>
         </Grid>
       )}
