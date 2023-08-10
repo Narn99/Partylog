@@ -72,6 +72,7 @@ function MessageOnBoard(props) {
       >
         <Grid
           container
+          justifyContent={"center"}
           style={{
             display: "flex",
             alignItems: "center",
@@ -97,7 +98,8 @@ function MessageOnBoard(props) {
           </Grid>
           <Grid
             item
-            xs={9}
+            xs={7}
+            lg={9}
             style={{
               whiteSpace: "nowrap",
               textOverflow: "ellipsis",

@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 // import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
+import { useNavigate } from "react-router";
 
 // 화면 작아지면 폰트 및 이미지 크기 조절되도록 isScreen들 써서 바꿔야함.
 // 모달창이 급격히 작아지기 때문에..
@@ -76,7 +77,14 @@ function ModalText(props) {
       ? "22px"
       : "25px";
 
-  // 일단 CSS 신경 안 쓰고 모달에 띄우는 것만 구현해둔 것이니 나중에 CSS 수정할 것.
+  const navigate = useNavigate();
+
+  const handleGoToMessageUser = () => {
+    if (detailMessage.letter_writer) {
+      navigate(`/user/${detailMessage.letter_writer}`);
+      window.location.reload();
+    }
+  };
 
   return (
     <div style={style}>
@@ -105,7 +113,9 @@ function ModalText(props) {
                   height: "50px",
                   borderRadius: "999px",
                   overflow: "hidden",
+                  cursor: "pointer",
                 }}
+                onClick={handleGoToMessageUser}
               />{" "}
             </Grid>
             <Grid
@@ -120,7 +130,12 @@ function ModalText(props) {
               }}
             >
               &nbsp;&nbsp;
-              {detailMessage.user_nickname}
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={handleGoToMessageUser}
+              >
+                {detailMessage.user_nickname}
+              </span>
             </Grid>
           </Grid>
         </Grid>

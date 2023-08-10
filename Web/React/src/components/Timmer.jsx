@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 // import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 // import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 // import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -9,13 +9,15 @@ import { Grid } from "@mui/material";
 const CountdownTimer = (props) => {
   const {
     userBirthday,
+    todayIsBirthday,
+    setTodayIsBirthday,
     // pageOwner
   } = props;
 
-  const [targetTime, setTargetTime] = useState("00:00");
-  const [leftBirthdayTime, setLeftBirthdayTime] = useState(
-    new Date(userBirthday)
-  );
+  // const [targetTime, setTargetTime] = useState("00:00");
+  // const [leftBirthdayTime, setLeftBirthdayTime] = useState(
+  //   new Date(userBirthday)
+  // );
 
   // const handleTimeChange = (event) => {
   //   const selectedTime = event.$d;
@@ -61,27 +63,46 @@ const CountdownTimer = (props) => {
     return timeLeft;
   };
 
-  const [timeLeft, setTimeLeft] = useState(
-    calculateTimeLeft(new Date(userBirthday))
-  );
+  // const [timeLeft, setTimeLeft] = useState(
+  //   calculateTimeLeft(new Date(userBirthday))
+  // );
+
+  const timeLeftBirthday = calculateTimeLeft(new Date(userBirthday));
+
+  // useEffect(() => {
+  //   const [hours, minutes] = targetTime.split(":");
+  //   const newDate = new Date(userBirthday);
+  //   newDate.setHours(parseInt(hours, 10));
+  //   newDate.setMinutes(parseInt(minutes, 10));
+  //   setTimeLeft(calculateTimeLeft(newDate));
+  // }, [targetTime, userBirthday]);
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setTimeLeft(calculateTimeLeft(new Date(leftBirthdayTime)));
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, [
+  //   timeLeft,
+  //   //  targetTime,
+  //   leftBirthdayTime,
+  // ]);
 
   useEffect(() => {
-    const [hours, minutes] = targetTime.split(":");
-    const newDate = new Date(userBirthday);
-    newDate.setHours(parseInt(hours, 10));
-    newDate.setMinutes(parseInt(minutes, 10));
-    setTimeLeft(calculateTimeLeft(newDate));
-  }, [targetTime, userBirthday]);
+    const todayDate = new Date();
+    const birthdayDate = new Date(userBirthday);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft(new Date(leftBirthdayTime)));
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [timeLeft, targetTime, leftBirthdayTime]);
+    if (
+      todayDate.getMonth() === birthdayDate.getMonth() &&
+      todayDate.getDate() === birthdayDate.getDate()
+    ) {
+      setTodayIsBirthday(true);
+    } else {
+      setTodayIsBirthday(false);
+    }
+  }, [userBirthday, setTodayIsBirthday]);
 
-  console.log(leftBirthdayTime);
-
+  // console.log(leftBirthdayTime);
   // console.log(targetTime);
   // console.log(timeLeft);
 
@@ -115,19 +136,26 @@ const CountdownTimer = (props) => {
       )} */}
 
       <Grid item>
-        <div style={{ textAlign: "center" }}>
-          생일까지
-          <br />
-          {timeLeft.days !== 0 && `${timeLeft.days}일`}
-          {timeLeft.days < 1 && (
-            <span>
-              {timeLeft.hours !== 0 && `${timeLeft.hours}시간`}{" "}
-              {timeLeft.minutes !== 0 && `${timeLeft.minutes}분`}{" "}
-              {timeLeft.seconds !== 0 && `${timeLeft.seconds}초`}
-            </span>
-          )}
-          <br />
-        </div>
+        {todayIsBirthday ? (
+          <div style={{ textAlign: "center" }}>오늘이 생일!!</div>
+        ) : (
+          <div style={{ textAlign: "center" }}>
+            생일까지
+            <br />
+            {timeLeftBirthday.days !== 0 && `${timeLeftBirthday.days}일`}
+            {timeLeftBirthday.days < 1 && (
+              <span>
+                {timeLeftBirthday.hours !== 0 &&
+                  `${timeLeftBirthday.hours}시간`}{" "}
+                {timeLeftBirthday.minutes !== 0 &&
+                  `${timeLeftBirthday.minutes}분`}{" "}
+                {timeLeftBirthday.seconds !== 0 &&
+                  `${timeLeftBirthday.seconds}초`}
+              </span>
+            )}
+            <br />
+          </div>
+        )}
       </Grid>
     </Grid>
   );
