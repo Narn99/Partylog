@@ -71,7 +71,7 @@ function UserFollowButton(props) {
             borderRadius: "40px",
             textShadow: isHovered
               ? "0.1px 0.1px 4px #e892a4"
-              : "0.5px 0.5px 30px #e892a4",
+              : "0.1px 0.1px 0.5px #e892a4",
             boxSizing: "border-box",
           }}
         >

@@ -21,7 +21,6 @@ import MessageBoard from "../components/MessageBoard";
 import axios from "axios";
 import Loading from "../components/Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { format } from "date-fns";
 import {
   setModalData,
   addMyMessageData,
@@ -63,7 +62,6 @@ function UserPage() {
   });
   const [followerCount, setFollowerCount] = useState("");
   const [followeeCount, setFolloweeCount] = useState("");
-  const todayFormatted = format(new Date(), "MM-dd");
   const [todayIsBirthday, setTodayIsBirthday] = useState(false);
   const dispatch = useDispatch();
   const { userNo } = useParams();
@@ -301,7 +299,7 @@ function UserPage() {
                   />
                 </Grid>
                 {/* 해당 유저 생일일 때만 버튼 보이기 */}
-                {/* {userData.userBirthday === todayFormatted && ( */}
+                {/* {todayIsBirthday && ( */}
                 <Grid item>
                   {pageOwner ? (
                     <Button
@@ -319,9 +317,9 @@ function UserPage() {
                         texShadow: "0.1px 0.1px 4px #e892a4",
                         marginTop: "20px",
                       }}
-                      // disabled={userData.userBirthday !== todayFormatted}
+                      // disabled={!todayIsBirthday}
                     >
-                      {userData.userBirthday !== todayFormatted ? (
+                      {!todayIsBirthday ? (
                         <>
                           아직 생일이
                           <br />
@@ -351,9 +349,9 @@ function UserPage() {
                         texShadow: "0.1px 0.1px 4px #e892a4",
                         marginTop: "20px",
                       }}
-                      disabled={userData.userBirthday !== todayFormatted}
+                      disabled={!todayIsBirthday}
                     >
-                      {userData.userBirthday !== todayFormatted ? (
+                      {!todayIsBirthday ? (
                         <>
                           아직 생일이
                           <br />

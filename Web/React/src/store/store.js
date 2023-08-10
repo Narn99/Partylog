@@ -4,8 +4,14 @@ import rootReducer from "../reducers/rootReducer";
 
 export const store = configureStore({
   reducer: rootReducer,
+
+  // non-serializable 에러 해결을 위해 쓴 코드.. 그냥 에러를 무시하는 코드인데, 찾아봐도 이런 해결법만 나옴..
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["persist/PERSIST"],
+      },
+    }),
 });
 
 export const persistor = persistStore(store);
-
-// 여기를 수정해야 non-serializable 에러가 해결될 듯. register를 무시하면 어떻게 될까?
