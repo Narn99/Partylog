@@ -1,28 +1,37 @@
 package com.ssafy.partylog.util
 
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.ssafy.partylog.R
 import com.ssafy.partylog.ui.getbirth.Getbirth
 import com.ssafy.partylog.ui.login.Login
 import com.ssafy.partylog.ui.main.Main
 
-enum class ScreenState {
-    Login,
-    Getbirth,
-    Main,
-    Live
+enum class ScreenState(@StringRes val title: Int) {
+    Login(title = R.string.app_login),
+    Getbirth(title = R.string.app_getBirth),
+    Main(title = R.string.app_main),
+    Live(title= R.string.app_live)
 }
 
-    @Composable
-    fun loginNav(): NavHostController {
-        val navHostController = rememberNavController()
-
-        NavHost(navController = navHostController, startDestination = ScreenState.Login.name) {
+@Composable
+fun PartylogApp(navHostController: NavHostController = rememberNavController()) {
+    Scaffold{
+        it -> 0.dp
+        NavHost(navController = navHostController, startDestination = ScreenState.Login.name, modifier =Modifier.padding(it)) {
             composable(route = ScreenState.Login.name) {
-                Login(navi = navHostController)
+                Login(navToMain = {
+                    navHostController.navigate(route = ScreenState.Main.name)},
+                    navToGetbirth = {
+                        navHostController.navigate(route= ScreenState.Getbirth.name)})
             }
             composable(route = ScreenState.Main.name) {
                 Main()
@@ -32,13 +41,5 @@ enum class ScreenState {
             }
 
         }
-
-        return navHostController
-    }
-
-
-object GetbirthNav {
-    operator fun invoke() {
-
     }
 }
