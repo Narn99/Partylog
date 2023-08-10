@@ -26,14 +26,12 @@ function NavBar() {
   const logout = () => {
     // 카카오 로그아웃 요청
     axios
-      .post(
-        `${SERVER_API_URL}/user/logout/${userNo}`
-      )
+      .post(`${SERVER_API_URL}/user/logout/${userNo}`)
       .then(() => {
         // 로컬 토큰 제거
         localStorage.removeItem("access-token");
         localStorage.removeItem("refresh-token");
-        
+
         // authReducer를 통한 유저정보 삭제
         dispatch(logoutUser());
       })
