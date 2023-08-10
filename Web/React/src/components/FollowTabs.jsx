@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import FollowTabsStyles from "../css/FollowTabsStyles.css";
 import Box from '@mui/material/Box';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 
 
 function FollowTabs(props) {
@@ -144,7 +144,9 @@ function FollowTabs(props) {
                     objectFit: 'cover'
                           }} 
                   />
-                <ListItemText primary={`${following.nickname} (# ${following.userNo})`} />
+                <ListItemText>
+                  <Link className='myLink' to={`/user/${following.userNo}`}>{`${following.nickname} (# ${following.userNo})`}</Link>
+                </ListItemText>
                   {parseInt(userNum) === parseInt(MyuserNum) && (
                     <Button onClick={() => handleUnfollow(following.userNo)}>
                       팔로우 해제
@@ -172,7 +174,9 @@ function FollowTabs(props) {
                     objectFit: 'cover'
                           }} 
                            /> 
-                 <ListItemText primary={`${follower.nickname} (# ${follower.userNo})`} />
+                 <ListItemText>
+                  <Link className='myLink' to={`/user/${follower.userNo}`}>{`${follower.nickname} (# ${follower.userNo})`}</Link>
+                </ListItemText>
                    {parseInt(userNum) === parseInt(MyuserNum) && (
                 <Button onClick={() => handleFollow(follower)}
                   variant={followings.some(following => following.userNo === follower.userNo) ? 'text' : 'outlined'}>

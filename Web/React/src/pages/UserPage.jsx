@@ -11,6 +11,7 @@ import CountdownTimer from "../components/Timmer";
 // import molru from "../assets/molru.webp";
 import MessageModal from "../components/MessageModal";
 import NavBar from "../components/NavBar";
+import UserFollowButton from "../components/UserFollowButton";
 import StickyNoteY from "../components/StickyNote/StickyNoteY";
 import StickyNoteG from "../components/StickyNote/StickyNoteG";
 import StickyNoteO from "../components/StickyNote/StickyNoteO";
@@ -20,7 +21,6 @@ import MessageBoard from "../components/MessageBoard";
 import axios from "axios";
 import Loading from "../components/Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { format } from "date-fns";
 import {
   setModalData,
   addMyMessageData,
@@ -63,7 +63,7 @@ function UserPage() {
   });
   const [followerCount, setFollowerCount] = useState("");
   const [followeeCount, setFolloweeCount] = useState("");
-  const todayFormatted = format(new Date(), "MM-dd");
+  const [todayIsBirthday, setTodayIsBirthday] = useState(false);
   const dispatch = useDispatch();
   const { userNo } = useParams();
   const myUserNo = useSelector((state) => {
@@ -127,6 +127,8 @@ function UserPage() {
               data.userProfile
             )
           );
+        } else {
+          setPageOwner(false);
         }
         setloading(false);
       })
@@ -172,10 +174,8 @@ function UserPage() {
   , []);
 
   useEffect(() => {
-    if (myMessage && myMessage.length >= 1) {
-      dispatch(
-        setModalData(myMessage[0].letter_title, myMessage[0].letter_content)
-      );
+    if (myMessage) {
+      dispatch(setModalData(myMessage.letter_title, myMessage.letter_content));
     } else {
       dispatch(setModalData("", ""));
     }
@@ -200,6 +200,8 @@ function UserPage() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
+    console.log("얍!");
+    console.log(myMessage);
     if (myMessage) {
       dispatch(setModalData(myMessage.letter_title, myMessage.letter_content));
     }
@@ -227,8 +229,10 @@ function UserPage() {
   const changeProfileImgSize = isSmallScreen ? "200px" : "250px";
   const changeLiveButtonFontSize = isSmallScreen ? "18px" : "25px";
   const changeLiveButtonHeight = isSmallScreen ? "50px" : "70px";
+  const changeLiveButtonLineHeight = isSmallScreen ? "23px" : "30px";
   const changeLiveButtonWidth = isSmallScreen ? "150px" : "180px";
   const changeMessageButtonFontSize = isSmallScreen ? "15px" : "20px";
+  const changeFollowButtonFontSize = isSmallScreen ? "15px" : "18px";
   const addMarginAboveBoard = isMediumScreen ? "20px" : "";
 
   // console.log("유저페이지의 마이메시지");
@@ -293,6 +297,15 @@ function UserPage() {
                     <span>{userData.userNickname}</span>{" "}
                     <span style={{ fontSize: "20px" }}>#{userData.userNo}</span>
                   </p>
+                  <UserFollowButton
+                    pageOwner={pageOwner}
+                    myUserNo={myUserNo}
+                    userNo={userNo}
+                    accessToken={accessToken}
+                    SERVER_API_URL={SERVER_API_URL}
+                    changeFollowButtonFontSize={changeFollowButtonFontSize}
+                    changeLiveButtonWidth={changeLiveButtonWidth}
+                  />
                 </Grid>
                 <Grid item>
                   <Link to={`/myfriend/${userNo}`} className="myLink">
@@ -308,12 +321,13 @@ function UserPage() {
                   <CountdownTimer
                     // API 연동 시 아래 주석 해제
                     userBirthday={userData.userBirthday}
-                    myUserNo={myUserNo}
-                    userNo={userNo}
+                    todayIsBirthday={todayIsBirthday}
+                    setTodayIsBirthday={setTodayIsBirthday}
+                    // pageOwner={pageOwner}
                   />
                 </Grid>
                 {/* 해당 유저 생일일 때만 버튼 보이기 */}
-                {/* {userData.userBirthday === todayFormatted && ( */}
+                {/* {todayIsBirthday && ( */}
                 <Grid item>
                   {pageOwner ? (
                     <Button
@@ -326,14 +340,14 @@ function UserPage() {
                         color: "white",
                         width: changeLiveButtonWidth,
                         height: changeLiveButtonHeight,
-                        lineHeight: "30px",
+                        lineHeight: changeLiveButtonLineHeight,
                         borderRadius: "40px",
                         texShadow: "0.1px 0.1px 4px #e892a4",
                         marginTop: "20px",
                       }}
-                      // disabled={userData.userBirthday !== todayFormatted}
+                      // disabled={!todayIsBirthday}
                     >
-                      {userData.userBirthday !== todayFormatted ? (
+                      {!todayIsBirthday ? (
                         <>
                           아직 생일이
                           <br />
@@ -363,9 +377,9 @@ function UserPage() {
                         texShadow: "0.1px 0.1px 4px #e892a4",
                         marginTop: "20px",
                       }}
-                      disabled={userData.userBirthday !== todayFormatted}
+                      disabled={!todayIsBirthday}
                     >
-                      {userData.userBirthday !== todayFormatted ? (
+                      {!todayIsBirthday ? (
                         <>
                           아직 생일이
                           <br />
@@ -395,6 +409,7 @@ function UserPage() {
           >
             <Grid item xs={12}>
               <MessageBoard
+                pageOwner={pageOwner}
                 userNo={userNo}
                 myUserNo={myUserNo}
                 myMessage={myMessage}
@@ -415,6 +430,7 @@ function UserPage() {
           modalOpen={modalOpen}
           handleModalClose={handleModalClose}
           randomStickyNote={randomStickyNote}
+          // isSmallScreen={isSmallScreen}
           isMediumScreen={isMediumScreen}
           isLargeScreen={isLargeScreen}
           // onSubmitText={handleSubmitModalText}

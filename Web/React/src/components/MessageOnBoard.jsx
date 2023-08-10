@@ -25,7 +25,7 @@ import { Grid } from "@mui/material";
 function MessageOnBoard(props) {
   // const RandomStickyNote = getRandomStickyNote();
 
-  const { message, onClick } = props;
+  const { message, onClick, pageOwner, myUserNo } = props;
 
   const getLength = (messageText, maxLength) => {
     if (messageText.length > maxLength) {
@@ -33,7 +33,7 @@ function MessageOnBoard(props) {
     }
     return messageText;
   };
-
+  // console.log(message);
   return (
     <div
       style={{
@@ -42,7 +42,11 @@ function MessageOnBoard(props) {
         left: "5%",
         width: "100%",
         height: "100%",
-        cursor: "pointer",
+        cursor: `${
+          pageOwner || parseInt(myUserNo) === parseInt(message.letter_writer)
+            ? "pointer"
+            : "default"
+        }`,
       }}
       onClick={onClick}
     >
@@ -68,6 +72,7 @@ function MessageOnBoard(props) {
       >
         <Grid
           container
+          justifyContent={"center"}
           style={{
             display: "flex",
             alignItems: "center",
@@ -93,7 +98,8 @@ function MessageOnBoard(props) {
           </Grid>
           <Grid
             item
-            xs={9}
+            xs={7}
+            lg={9}
             style={{
               whiteSpace: "nowrap",
               textOverflow: "ellipsis",

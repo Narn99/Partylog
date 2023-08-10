@@ -66,12 +66,9 @@ export const addMessageData = (modalTitle, modalDescription) => {
 };
 
 // 남긴 메시지 삭제하는 기능.. 추후에 본인 userNo를 비교해서 해당하는거 삭제하도록
-export const deleteMessageData = (userNo) => {
+export const deleteMessageData = () => {
   return {
     type: actionTypes.DELETE_MESSAGE_DATA,
-    payload: {
-      userNo,
-    },
   };
 };
 

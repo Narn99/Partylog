@@ -14,25 +14,11 @@ import {
   setModalData,
   resetModalData,
   addMyMessageData,
-  getAdditionalMessagesList,
+  getInitailMessagesList,
+  // getAdditionalMessagesList,
   deleteMessageData,
 } from "../actions/actions";
 import axios from "axios";
-
-const style = {
-  position: "fixed",
-  // top: "30%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "35%",
-  height: "30%",
-  minWidth: "300px",
-  minHeight: "300px",
-  // bgcolor: "background.paper",
-  // border: "2px solid #000",
-  // boxShadow: 24,
-  // p: 4,
-};
 
 function MessageModal(props) {
   const {
@@ -42,10 +28,26 @@ function MessageModal(props) {
     modalOpen,
     handleModalClose,
     randomStickyNote,
+    // isSmallScreen,
     isMediumScreen,
     isLargeScreen,
     myMessage,
   } = props;
+
+  const style = {
+    position: "fixed",
+    // top: "30%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "35%",
+    height: "30%",
+    minWidth: "300px",
+    minHeight: "300px",
+    // bgcolor: "background.paper",
+    // border: "2px solid #000",
+    // boxShadow: 24,
+    // p: 4,
+  };
 
   const modalTitle = useSelector((state) => state.modalData.modalTitle);
   const modalDescription = useSelector(
@@ -58,63 +60,9 @@ function MessageModal(props) {
     dispatch(setModalData(modalTitleText, modalDescriptionText));
   };
 
-  // 제출 버튼 클릭 시, 내용 비우기 + 모달창 닫기
-  const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
-
   //  추후 로컬스토리지에서 쿠키로 변경
   const accessToken = localStorage.getItem("access-token");
-
-  const handleSubmitModalText = () => {
-    if (modalTitle.length === 0 || modalDescription.length === 0) {
-      alert("메시지를 작성해주세요!");
-    } else {
-      axios({
-        method: "post",
-        url: `${SERVER_API_URL}/letter/send/`,
-        headers: {
-          Authorization: `${accessToken}`,
-        },
-        data: {
-          letterTitle: modalTitle,
-          letterContent: modalDescription,
-          letterReceiver: userNo,
-        },
-      })
-        .then((res) => {
-          console.log(res.data);
-          dispatch(addMyMessageData(res.data.data));
-
-          axios({
-            method: "post",
-            url: `${SERVER_API_URL}/letter/get/letters`,
-            headers: {
-              Authorization: `${accessToken}`,
-            },
-            data: {
-              receiverNo: userNo,
-              writerNo: myUserNo,
-              year: 0,
-              limit: 24,
-              offset: 0,
-            },
-          })
-            .then((res) => {
-              console.log(res.data.data);
-              const additionalMessagesData = res.data.data;
-              dispatch(getAdditionalMessagesList(additionalMessagesData));
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      handleModalClose();
-      dispatch(resetModalData());
-    }
-  };
+  const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
 
   // 내용 초기화 버튼
 
@@ -161,11 +109,45 @@ function MessageModal(props) {
   //   return state.messagesData.messages;
   // });
 
+  const handleSubmitModalText = () => {
+    if (modalTitle.length === 0 || modalDescription.length === 0) {
+      alert("메시지를 작성해주세요!");
+    } else {
+      axios({
+        method: "post",
+        url: `${SERVER_API_URL}/letter/send/`,
+        headers: {
+          Authorization: `${accessToken}`,
+        },
+        data: {
+          letterTitle: modalTitle,
+          letterContent: modalDescription,
+          letterReceiver: userNo,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          const addedMyMessage = res.data.data.filter(
+            (message) => message.letter_writer === myUserNo
+          );
+          dispatch(addMyMessageData(addedMyMessage[0]));
+          const newMessagesData = res.data.data;
+          dispatch(getInitailMessagesList(newMessagesData));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      handleModalClose();
+      dispatch(resetModalData());
+    }
+  };
+
   const handleDeleteMessage = () => {
     // console.log(myUserNo);
     // console.log(messageWriterId);
     if (parseInt(myUserNo) === parseInt(messageWriterId)) {
-      console.log("goDelete");
+      // console.log("goDelete");
       axios({
         method: "delete",
         url: `${SERVER_API_URL}/letter/delete/${messageId}`,
@@ -175,8 +157,10 @@ function MessageModal(props) {
       })
         .then((res) => {
           console.log(res);
+          const newMessagesData = res.data.data;
+          dispatch(getInitailMessagesList(newMessagesData));
           setIsConfirmDelete(false);
-          dispatch(deleteMessageData(myUserNo));
+          dispatch(deleteMessageData());
           dispatch(resetModalData());
           handleModalClose();
         })
@@ -188,12 +172,59 @@ function MessageModal(props) {
     }
   };
 
+  const handleFixMessage = () => {
+    if (modalTitle.length === 0 || modalDescription.length === 0) {
+      alert("메시지를 작성해주세요!");
+    } else {
+      if (parseInt(myUserNo) === parseInt(messageWriterId)) {
+        axios({
+          method: "post",
+          url: `${SERVER_API_URL}/letter/update`,
+          headers: {
+            Authorization: `${accessToken}`,
+          },
+          data: {
+            letterId: myMessage.letter_id,
+            letterTitle: modalTitle,
+            letterContent: modalDescription,
+          },
+        })
+          .then((res) => {
+            console.log(res);
+            const newMessagesData = res.data.data;
+            const addedMyMessage = res.data.data.filter(
+              (message) => message.letter_writer === myUserNo
+            );
+
+            dispatch(
+              setModalData(
+                addedMyMessage[0].letter_Title,
+                addedMyMessage[0].letter_content
+              )
+            );
+            dispatch(addMyMessageData(addedMyMessage[0]));
+            dispatch(getInitailMessagesList(newMessagesData));
+            handleModalClose();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        alert("메시지 작성자 본인이 아닙니다!");
+      }
+    }
+  };
+
   // console.log("메시지모달의 마이메시지");
   // console.log(myMessage);
 
   // myMessage가 갱신이 안 돼서 메시지 작성 버튼이 안 바뀜
 
-  const changeModalVerticalPosition = isMediumScreen ? "50%" : "30%";
+  const changeModalVerticalPosition = isMediumScreen
+    ? "50%"
+    : isLargeScreen
+    ? "40%"
+    : "30%";
   const changeButtonFontSize = isMediumScreen ? "15px" : "25px";
   const changeButtonSize = isMediumScreen
     ? "80px"
@@ -217,6 +248,27 @@ function MessageModal(props) {
           onChangeModalText={handleChangeModalText}
         />
         <Grid container justifyContent={"space-evenly"}>
+          {myMessage && (
+            <Button
+              className="MyPage-message-fix-button"
+              type="submit"
+              onClick={handleFixMessage}
+              style={{
+                cursor: "pointer",
+                backgroundColor: "#fbb3c2",
+                color: "white",
+                fontFamily: "MaplestoryOTFBold",
+                width: changeButtonSize,
+                fontSize: changeButtonFontSize,
+                borderRadius: "50px",
+                marginTop: "20px",
+                padding: "10px",
+              }}
+            >
+              수정
+            </Button>
+          )}
+
           {myMessage ? (
             <Button
               className="MyPage-message-delete-button"

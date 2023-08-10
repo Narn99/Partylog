@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../actions/actions";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 function NavBar() {
   const dispatch = useDispatch();
@@ -26,14 +28,12 @@ function NavBar() {
   const logout = () => {
     // 카카오 로그아웃 요청
     axios
-      .post(
-        `${SERVER_API_URL}/user/logout/${userNo}`
-      )
+      .post(`${SERVER_API_URL}/user/logout/${userNo}`)
       .then(() => {
         // 로컬 토큰 제거
         localStorage.removeItem("access-token");
         localStorage.removeItem("refresh-token");
-        
+
         // authReducer를 통한 유저정보 삭제
         dispatch(logoutUser());
       })
@@ -48,6 +48,21 @@ function NavBar() {
       window.location.reload();
     }
   };
+  const handleGoToSetting = () => {
+    if (userNo) {
+      navigate(`/profile-setting`);
+      window.location.reload();
+    }
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleProfileMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleProfileMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -58,7 +73,7 @@ function NavBar() {
   const changeNavbarPosition = isMediumScreen ? "static" : "sticky";
   // const changeNavbarBg = isMediumScreen ? "none" : `url(${bg})`;
   const changeNavbarBgColor = isMediumScreen ? "" : "white";
-  const changeIconSize = isSmallScreen ? "60px" : "80px";
+  const changeIconSize = isSmallScreen ? "60px" : "70px";
 
   return (
     <div
@@ -163,8 +178,36 @@ function NavBar() {
                   maxWidth: changeIconSize,
                   maxHeight: changeIconSize,
                 }}
-                onClick={logout}
+                onClick={handleProfileMenuClick}
               />
+              <Menu
+                id="profile-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleProfileMenuClose}
+                MenuListProps={{
+                  "aria-labelledby": "profile-button",
+                }}
+              >
+                <MenuItem
+                  onClick={handleClickLogo}
+                  sx={{ fontSize: "20px", justifyContent: "center" }}
+                >
+                  마이 페이지
+                </MenuItem>
+                <MenuItem
+                  onClick={handleGoToSetting}
+                  sx={{ fontSize: "20px", justifyContent: "center" }}
+                >
+                  설정
+                </MenuItem>
+                <MenuItem
+                  onClick={logout}
+                  sx={{ fontSize: "20px", justifyContent: "center" }}
+                >
+                  로그아웃
+                </MenuItem>
+              </Menu>
             </Grid>
           </Grid>
           <Grid item xs={4}></Grid>

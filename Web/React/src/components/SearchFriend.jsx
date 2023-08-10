@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-// import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 
 export default function SearchFriend() {
+
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
-
+  
   const handleSearch = async (e) => {
     setSearchTerm(e.target.value);
 
-    // 문자열이 비었을 때 서버 요청을 건너뛰기
-    if (e.target.value.length === 0) {
+    if (e.target.value.length === 0) { // 검색창에 입력된 것이 없으면 검색하지 않음
       setSearchResults([]);
       return;
     }
@@ -33,12 +33,19 @@ export default function SearchFriend() {
     }
   };
 
+  const handleAutocompleteChange = (event, newValue) => {
+    if (newValue) {
+      window.location.href = `/user/${newValue.user_no}`;
+    }
+  };
+ 
   return (
     <div>
       <Autocomplete
         options={searchResults}
         getOptionLabel={(option) => option.user_nickname}
-        fullWidth 
+        fullWidth
+        onChange={handleAutocompleteChange} // 항목 선택 변경 시
         renderInput={(params) => (
           <TextField
             {...params}
@@ -46,21 +53,16 @@ export default function SearchFriend() {
             value={searchTerm}
             onChange={handleSearch}
             variant="outlined"
-            fullWidth 
+            fullWidth
             style={{ fontFamily: "MaplestoryOTFLight" }}
           />
         )}
         renderOption={(props, option) => (
-          <li {...props}>
-            <Link to={`/user/${option.user_no}`} className="myLink">
+          <Link key={option.user_no} to={`/user/${option.user_no}`} className="myLink">
+            <li {...props}>
               {option.user_nickname}
-            </Link>
-            {/* <Link to={`/user/${option.user_no}`} className="myLink">
-              <Button variant="outlined" style={{marginLeft: "10px"}}>
-                친구의 페이지로 이동
-              </Button>
-            </Link> */}
-          </li>
+            </li>
+          </Link>
         )}
       />
     </div>

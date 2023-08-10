@@ -4,11 +4,13 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import axios from 'axios';
+import { useSelector } from "react-redux";
 
 function ProfileSetting() {
   const [uploadedImage, setUploadedImage] = useState(null);
   const navigate = useNavigate();
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
+  const MyuserNo = useSelector((state) => state.auth.userData.userNo);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -30,12 +32,12 @@ function ProfileSetting() {
       };
 
       const url = `${SERVER_API_URL}/user/upload/profile`;
-      const userNo = localStorage.getItem('userNo');
+     
 
       axios.post(url, formData, { headers: headers } )
         .then(response => {
           alert("프로필 저장됨!");
-          navigate(`/user/${userNo}`);
+          navigate(`/user/${ MyuserNo}`);
         })
         .catch(error => {
           alert("업로드에 실패했습니다.");
