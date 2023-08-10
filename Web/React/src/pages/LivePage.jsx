@@ -39,18 +39,10 @@ function LivePage() {
   const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
 
   useEffect(() => {
+    console.log("작동");
     joinSession();
-    window.addEventListener("beforeunload", onbeforeunload);
-    return () => {
-      window.removeEventListener("beforeunload", onbeforeunload);
-    };
-
     // eslint-disable-next-line
-  }, [subscribers]);
-
-  const onbeforeunload = (event) => {
-    this.leaveSession();
-  };
+  }, []);
 
   // const viewers = [
   //   "강아지",
@@ -108,10 +100,10 @@ function LivePage() {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       var subscriber = mySession.subscribe(event.stream, undefined);
-      subscribers.push(subscriber);
+      // subscribers.push(subscriber);
 
       // Update the state with the new subscribers
-      setSubscribers(subscribers);
+      setSubscribers((prev) => [...prev, subscriber]);
     });
 
     // On every Stream destroyed...
@@ -275,6 +267,11 @@ function LivePage() {
     return response.data.data; // The token
   };
 
+  const test = () => {
+    console.log("참가자 정보");
+    console.log(subscribers);
+  };
+
   return (
     <div>
       <Grid
@@ -371,10 +368,19 @@ function LivePage() {
               >
                 {/* <ViewersCarousel viewers={viewers} /> */}
                 <div id="video-container" className="col-md-6">
+                  {publisher !== undefined ? (
+                    <div
+                      className="stream-container col-md-6 col-xs-6"
+                      id="my-stream-container"
+                      onClick={() => handleMainVideoStream(publisher)}
+                    >
+                      <UserVideoComponent streamManager={publisher} />
+                    </div>
+                  ) : null}
                   {subscribers.map((sub, i) => (
                     <div
                       key={sub.id}
-                      className="stream-container col-md-6 col-xs-6"
+                      className="stream-container col-md-6 col-xs-6 subscriber-stream-container"
                       onClick={() => handleMainVideoStream(sub)}
                     >
                       <span>{sub.id}</span>
@@ -492,6 +498,7 @@ function LivePage() {
             >
               나가기
             </Button>
+            <button onClick={test}>test</button>
           </Grid>
         </Grid>
       )}

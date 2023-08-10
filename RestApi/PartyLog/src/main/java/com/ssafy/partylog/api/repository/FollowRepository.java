@@ -1,15 +1,20 @@
 package com.ssafy.partylog.api.repository;
 
 import com.ssafy.partylog.api.Entity.FollowEntity;
+import com.ssafy.partylog.api.Entity.LetterEntity;
 import com.ssafy.partylog.api.response.FollowResponseBody;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FollowRepository extends JpaRepository<FollowEntity, Long> {
     List<FollowEntity> deleteFollowByFollowerNoAndFolloweeNo(int followerNo, int followeeNo);
+
+    // 팔로우 중인지 확인
+    boolean existsByFollowerNoAndAndFolloweeNo(int followerNo, int followeeNo);
 
     //내가 팔로우 하는 사람들 수
     long countByFollowerNo(int followerNo);
