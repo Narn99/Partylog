@@ -33,7 +33,6 @@ function BirthdayInput(props) {
     const nextDate = new Date(selectedDate); // 선택한 날짜를 기반으로 새로운 날짜 객체 생성
     nextDate.setDate(selectedDate.getDate() + 1); // 선택한 날짜에 1일 추가
     setbirthday(nextDate.toISOString().split("T")[0]);
-    
   }
   
 

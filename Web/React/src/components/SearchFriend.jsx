@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
@@ -33,6 +32,12 @@ export default function SearchFriend() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && searchResults.length > 0) {
+      window.location.href = `/user/${searchResults[0].user_no}`;
+    }
+  };  // 엔터 키 눌러서 첫번째 항목으로 이동
+
   return (
     <div>
       <Autocomplete
@@ -57,7 +62,7 @@ export default function SearchFriend() {
             </li>
           </Link>
         )}
-        
+        onKeyDown={handleKeyDown}
       />
     </div>
   );
