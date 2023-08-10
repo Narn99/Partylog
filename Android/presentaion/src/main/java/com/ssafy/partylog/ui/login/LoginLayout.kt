@@ -35,7 +35,7 @@ import com.ssafy.partylog.util.Util
 @Composable
 fun Login(
     modifier: Modifier = Modifier, font: FontFamily = maplestory,
-    viewModel: LoginViewModel = hiltViewModel<LoginViewModel>(),
+    viewModel: LoginViewModel = hiltViewModel(),
     navToMain: () -> Unit = {}, navToGetbirth: () -> Unit = {}
 ) {
 
