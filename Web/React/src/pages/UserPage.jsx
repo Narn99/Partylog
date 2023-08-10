@@ -195,7 +195,7 @@ function UserPage() {
       navigate("/profile-setting");
     }
   };
-  
+
   const changeProfileImgSize = isSmallScreen ? "200px" : "250px";
   const changeLiveButtonFontSize = isSmallScreen ? "18px" : "25px";
   const changeLiveButtonHeight = isSmallScreen ? "50px" : "70px";
@@ -337,7 +337,6 @@ function UserPage() {
                       }}
                       disabled={userData.userBirthday !== todayFormatted}
                     >
-                    
                       {userData.userBirthday !== todayFormatted ? (
                         <>
                           아직 생일이
@@ -368,6 +367,7 @@ function UserPage() {
           >
             <Grid item xs={12}>
               <MessageBoard
+                pageOwner={pageOwner}
                 userNo={userNo}
                 myUserNo={myUserNo}
                 myMessage={myMessage}
