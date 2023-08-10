@@ -4,14 +4,19 @@ import com.ssafy.partylog.api.Entity.LetterEntity;
 import com.ssafy.partylog.api.repository.LetterRepository;
 import com.ssafy.partylog.api.repository.UserRepository;
 import com.ssafy.partylog.api.request.LetterRequest;
+import com.ssafy.partylog.api.request.LetterUpdateRequest;
 import com.ssafy.partylog.api.response.LetterResponseBody;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class LetterServiceImpl implements LetterService {
 
@@ -44,9 +49,31 @@ public class LetterServiceImpl implements LetterService {
         }
     }
 
+    public List<LetterResponseBody> updateLetter(LetterUpdateRequest letterUpdateRequest) {
+        LetterEntity letter = letterRepository.findByLetterId(letterUpdateRequest.getLetterId()).get();
+        letter.setLetterTitle(letterUpdateRequest.getLetterTitle());
+        letter.setLetterContent(letterUpdateRequest.getLetterContent());
+        letter.setLetterRegDate(LocalDateTime.now());
+
+        LetterEntity check = letterRepository.save(letter);
+
+        if(check == null) { // 저장된 값이 없다면
+            return null;
+        }else { // 저장된 값이 있다면
+            return searchLetterList(letter.getLetterReceiver(), letter.getLetterWriter(), 0, 24,0);
+        }
+
+    }
+
     @Override
-    public int deleteLetter(String letterId) {
-          return  letterRepository.deleteByLetterId(letterId);
+    public List<LetterResponseBody> deleteLetter(String letterId) {
+
+        LetterEntity letter = letterRepository.findByLetterId(letterId).get();
+
+        int receiverNo = letter.getLetterReceiver();
+        int writerNo = letter.getLetterWriter();;
+        letterRepository.deleteByLetterId(letterId);
+        return searchLetterList(receiverNo, writerNo, 0, 24, 0);
     }
 
     @Override

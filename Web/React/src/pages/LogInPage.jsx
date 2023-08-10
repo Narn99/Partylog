@@ -17,7 +17,7 @@ const LogInPage = () => {
   })
 
   useEffect(() => {
-    console.log("로그인페이지 현재 로그인 상태: " + isAuthenticated)
+    console.log("a")
     if(isAuthenticated) {
       navigate(`/user/${userNo}`);
     }
