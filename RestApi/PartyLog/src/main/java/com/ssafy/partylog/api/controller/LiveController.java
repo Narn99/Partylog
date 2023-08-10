@@ -1,7 +1,6 @@
 package com.ssafy.partylog.api.controller;
 
 import java.util.Map;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -12,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import io.openvidu.java.client.Connection;
@@ -64,31 +62,56 @@ public class LiveController {
      * @return The Token associated to the Connection
      */
     @PostMapping("/api/sessions/{sessionId}/connections")
-    public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params)
+    public ResponseEntity<CommonResponse> createConnection(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
         log.info("라이브 세션 실행: {}", sessionId);
         log.info("요청값: {}", params);
 
+        CommonResponse data;
+        HttpStatus status;
+
+        Boolean isHost = (Boolean) params.get("isHost");
         Session session = openvidu.getActiveSession(sessionId);
         if (session == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        // DB에 라이브 정보 저장
-        try {
-            liveService.createLive(params);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
         ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
         Connection connection = session.createConnection(properties);
-        return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
+
+        if(isHost) { // host일 때만 DB에 라이브 정보 저장
+            try {
+                liveService.createLive(params);
+                data = CommonResponse.createResponse("200", connection.getToken(), "방송이 생성되었습니다.");
+                status = HttpStatus.OK;
+            } catch(Exception e) {
+                e.printStackTrace();
+                data = CommonResponse.createResponseWithNoContent("400",  "방송 생성 중 문제가 발생했습니다.");
+                status = HttpStatus.BAD_REQUEST;
+            }
+        } else { // host가 아닐 경우 현재 방송 여부 체크
+            try {
+                LiveEntity live = liveService.checkLiveActive(sessionId);
+                if(live.isLiveActive()) {
+                    data = CommonResponse.createResponse("200", connection.getToken(), "현재 진행중인 방송입니다.");
+                } else {
+                    data = CommonResponse.createResponseWithNoContent("404",  "현재 방송이 종료되었습니다.");
+                }
+                status = HttpStatus.OK;
+            } catch(Exception e) {
+                e.printStackTrace();
+                data = CommonResponse.createResponseWithNoContent("400", "방송 활성화 여부 확인 중 문제가 발생했습니다.");
+                status = HttpStatus.BAD_REQUEST;
+            }
+        }
+
+        return new ResponseEntity<>(data, status);
     }
 
     @PutMapping("/api/end/{liveId}")
     public ResponseEntity<CommonResponse> endLiveSession(@PathVariable("liveId") String liveId) {
         log.info("라이브 세션 종료: {}", liveId);
+
         CommonResponse data;
         HttpStatus status;
 
@@ -104,25 +127,4 @@ public class LiveController {
         return new ResponseEntity<CommonResponse>(data, status);
     }
 
-    @PostMapping("/api/active/{liveId}")
-    public ResponseEntity<CommonResponse> checkLiveActive(@PathVariable("liveId") String liveId) {
-        log.info("라이브 방송 여부 체크: {}", liveId);
-        CommonResponse data;
-        HttpStatus status;
-
-        try {
-            LiveEntity live = liveService.checkLiveActive(liveId);
-            if(live.isLiveActive()) {
-                data = CommonResponse.createResponseWithNoContent("200", "현재 진행중인 방송입니다.");
-            } else {
-                data = CommonResponse.createResponseWithNoContent("404", "현재 방송이 종료되었습니다.");
-            }
-            status = HttpStatus.OK;
-        } catch(Exception e) {
-            e.printStackTrace();
-            data = CommonResponse.createResponseWithNoContent("400", "방송 활성화 여부 확인 중 문제가 발생했습니다.");
-            status = HttpStatus.BAD_REQUEST;
-        }
-        return new ResponseEntity<CommonResponse>(data, status);
-    }
 }

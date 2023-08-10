@@ -183,7 +183,6 @@ public class UserController {
 
         CommonResponse data;
         HttpStatus status;
-
         String refreshToken = request.getHeader("Authorization").split(" ")[1];
         String accessToken = userService.searchRefreshToken(refreshToken);
 
@@ -196,7 +195,6 @@ public class UserController {
         }
 
         response.setHeader("authorization", "Bearer " + accessToken);
-        response.setHeader("refresh-token", "Bearer " + refreshToken);
 
         return new ResponseEntity<CommonResponse>(data, status);
     }

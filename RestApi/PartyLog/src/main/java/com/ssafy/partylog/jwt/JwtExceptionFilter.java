@@ -30,6 +30,10 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             log.error("유효하지 않은 토큰이 입력되었습니다.");
             setErrorResponse(response, ErrorCode.INVALID_TOKEN);
         }
+//        } catch(NullPointerException e) {
+//            log.error("토큰 값이 null 입니다.");
+//            setErrorResponse(response, ErrorCode.NO_TOKEN);
+//        }
     }
 
     private void setErrorResponse(HttpServletResponse response, ErrorCode errorCode){

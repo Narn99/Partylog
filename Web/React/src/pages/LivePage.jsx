@@ -11,6 +11,7 @@ import '../css/Openvidu.css';
 import UserVideoComponent from '../components/openvidu/UserVideoComponent';
 import { useSelector } from "react-redux";
 import { OpenVidu } from 'openvidu-browser';
+import { useParams } from 'react-router-dom';
 
 
 // 나중에 CSS로 화면 + 버튼그룹 / 채팅창 + 나가기 버튼으로 세로열 맞추기
@@ -20,12 +21,13 @@ const APPLICATION_SERVER_URL = `${process.env.REACT_APP_API_SERVER_URL}/`;
 function LivePage() {
 
   var userInfo = useSelector(state => state.auth.userData);
+  const { userNo } = useParams();
   var OV = new OpenVidu();
-  var [mySessionId, setMysessionId] = useState(`Session${userInfo.userNo}`);
+  var [mySessionId, setMysessionId] = useState(`Session${userNo}`);
   var [myUserName, setMyUserName] = useState(userInfo.userNickname);
   var [session, setSession] = useState(OV.initSession());
   var [mainStreamManager, setMainStreamManager] = useState(undefined);
-  var [publisher, setPublisher] = useState(undefined);
+  var [publisher, setPublisher] = useState(undefined); // eslint-disable-line no-unused-vars
   var [subscribers, setSubscribers] = useState([]);
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
@@ -40,8 +42,17 @@ function LivePage() {
 
   useEffect(() => {
     joinSession(); 
+    window.addEventListener('beforeunload', onbeforeunload);
+    return () => {
+      window.removeEventListener('beforeunload', onbeforeunload);
+    }
+    
     // eslint-disable-next-line
-  }, []);
+  }, [subscribers]);
+
+  const onbeforeunload = (event) => {
+    this.leaveSession();
+  }
 
   // const viewers = [
   //   "강아지",
@@ -68,6 +79,7 @@ function LivePage() {
   // ];
 
   const handleMainVideoStream = (stream) => {
+    console.log(stream);
     if (mainStreamManager !== stream) {
         setMainStreamManager(stream);
     }
@@ -90,11 +102,11 @@ const joinSession = () => {
     // setSession(OV.initSession())
     
     var mySession = session;
-
     // --- 3) Specify the actions when events take place in the session ---
 
     // On every new Stream received...
     mySession.on('streamCreated', (event) => {
+        console.log("새로운 스트림 생성")
         // Subscribe to the Stream to receive it. Second parameter is undefined
         // so OpenVidu doesn't create an HTML video by its own
         var subscriber = mySession.subscribe(event.stream, undefined);
@@ -106,7 +118,7 @@ const joinSession = () => {
 
     // On every Stream destroyed...
     mySession.on('streamDestroyed', (event) => {
-
+      console.log("스트림 삭제")
         // Remove the stream from 'subscribers' array
         deleteSubscriber(event.stream.streamManager);
     });
@@ -183,15 +195,15 @@ const leaveSession = () => {
 
     // 종료 API 호출
     axios.put(`${APPLICATION_SERVER_URL}api/end/${mySessionId}`, {},
-    {
-        headers: { 
-            'Authorization': localStorage.getItem("access-token"),
-            'Content-Type': 'application/json', 
-        },
-    }
-    ).then(res => {
-        console.log(res);
-    })
+      {
+          headers: { 
+              'Authorization': localStorage.getItem("access-token"),
+              'Content-Type': 'application/json', 
+          },
+      }
+      ).then(res => {
+          console.log(res);
+      })
 
     window.close();
 }
@@ -232,6 +244,7 @@ const createToken = async (sessionId) => {
        "live_title" : null,
        "live_desc" : userInfo.userNickname + " 님의 생일 축하방입니다.",
        "live_host" : userInfo.userNo,
+       "isHost" : userNo === userInfo.userNo+"" ? true : false
    };
    const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', liveInfo, {
        headers: { 
@@ -239,9 +252,9 @@ const createToken = async (sessionId) => {
            'Content-Type': 'application/json', 
        },
    });
-   return response.data; // The token
+   console.log(response.data.message);
+   return response.data.data; // The token
 }
-
 
   return (
     <div>
@@ -307,30 +320,21 @@ const createToken = async (sessionId) => {
                   }}
                   className="live-display"
                 >
-        <div className="container" style={{height:"100%"}}>
+          <div className="container" style={{height:"100%"}}>
             {session === undefined ? (
                 <p>종료된 라이브 입니다.</p>
             ) : (
-                <div id="session" style={{height:"100%"}}>
-                    <div id="video-container" className="col-md-6" style={{height:"100%"}}>
-                        {publisher !== undefined ? (
-                            <div className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(publisher)} style={{height:"100%"}}>
-                                <UserVideoComponent
-                                    streamManager={publisher} style={{height:"100%"}}/>
-                            </div>
-                        ) : null}
-                        {/* {subscribers.map((sub, i) => (
-                            <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
-                                <span>{sub.id}</span>
-                                <UserVideoComponent streamManager={sub} />
-                            </div>
-                        ))} */}
-                    </div>
-                </div>
-            )}
-        </div>
-                </Grid>
-              </Grid>
+                      <div className="container"style={{height:"100%"}}>
+                        <div id="session"style={{height:"100%"}} >
+                          <div id="main-video" className="col-md-6" style={{height:"100%"}}>
+                            <UserVideoComponent streamManager={mainStreamManager} style={{height:"100%"}}/>
+                          </div>
+                        </div>
+                      </div>
+                 )}
+           </div>
+          </Grid>
+        </Grid>
               <Grid
                 container
                 item
@@ -340,12 +344,15 @@ const createToken = async (sessionId) => {
                 // style={{ height: "30%" }}
               >
                 {/* <ViewersCarousel viewers={viewers} /> */}
-                 {subscribers.map((sub, i) => (
+                <div id="video-container" className="col-md-6">
+                        {subscribers.map((sub, i) => (
                             <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => handleMainVideoStream(sub)}>
                                 <span>{sub.id}</span>
                                 <UserVideoComponent streamManager={sub} />
                             </div>
                         ))}
+                </div>
+                 
               </Grid>
             </Grid>
           </div>
@@ -407,7 +414,7 @@ const createToken = async (sessionId) => {
               }}
             >
               
-                <ChatBox session={session} />
+                <ChatBox session={session}/>
               
             </div>
           </div>

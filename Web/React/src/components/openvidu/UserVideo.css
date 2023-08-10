@@ -1,8 +1,9 @@
 video {
-    width: 30%;
+    width: 30% !important;
     height: auto;
     float: left;
     cursor: pointer;
+    margin-right: 20px;
 }
 .streamcomponent div {
     position: absolute;

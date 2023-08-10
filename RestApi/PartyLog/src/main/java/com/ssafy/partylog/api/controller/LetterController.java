@@ -3,6 +3,7 @@ package com.ssafy.partylog.api.controller;
 
 import com.ssafy.partylog.api.request.LetterGetRequest;
 import com.ssafy.partylog.api.request.LetterRequest;
+import com.ssafy.partylog.api.request.LetterUpdateRequest;
 import com.ssafy.partylog.api.response.LetterResponseBody;
 import com.ssafy.partylog.api.response.CommonResponse;
 import com.ssafy.partylog.api.service.LetterService;
@@ -41,13 +42,35 @@ public class LetterController {
 
         // 편지 저장
         try {
-            String id = letterService.addLetter(letterRequest, loginUserNo);
-            LetterResponseBody letterResponseBody = letterService.searchLetterById(id);
-            data = CommonResponse.createResponse("200",letterResponseBody, "편지 보내기 성공");
+            int addResult = letterService.addLetter(letterRequest, loginUserNo);
+            if(addResult == 0) throw new Exception("메시지 추가 실패");
+            List<LetterResponseBody> list = letterService.searchLetterList(letterRequest.getLetterReceiver(), loginUserNo, 0, 24, 0);
+            data = CommonResponse.createResponse("200",list, "편지 보내기 성공");
             status = HttpStatus.OK;
         } catch(Exception e) {
             e.printStackTrace();
             data = CommonResponse.createResponseWithNoContent("400","편지 보내기 실패");
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<CommonResponse>(data, status);
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "보낸 편지 수정하기", description = "보낸 편지 수정하기")
+    public ResponseEntity<CommonResponse> updateLetter(@RequestBody LetterUpdateRequest letterUpdateRequest) {
+
+        CommonResponse data;
+        HttpStatus status;
+
+        // 편지 저장
+        try {
+            List<LetterResponseBody> updateResult = letterService.updateLetter(letterUpdateRequest);
+            data = CommonResponse.createResponse("200",updateResult, "편지 수정 성공");
+            status = HttpStatus.OK;
+        } catch(Exception e) {
+            e.printStackTrace();
+            data = CommonResponse.createResponseWithNoContent("400","편지 수정 실패");
             status = HttpStatus.BAD_REQUEST;
         }
 
@@ -63,10 +86,11 @@ public class LetterController {
 
         //편지 삭제
         try {
-            letterService.deleteLetter(letterId);
-            data = CommonResponse.createResponseWithNoContent("200","편지 삭제 성공");
+            List<LetterResponseBody> deleteResult = letterService.deleteLetter(letterId);
+            data = CommonResponse.createResponse("200", deleteResult, "편지 삭제 성공");
             status = HttpStatus.OK;
         } catch(Exception e) {
+            e.printStackTrace();
             data = CommonResponse.createResponseWithNoContent("400","편지 삭제 실패");
             status = HttpStatus.OK;
         }

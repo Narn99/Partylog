@@ -169,10 +169,10 @@ public class UserServiceImpl implements UserService {
         long tokenValidTime = 0L;
         if(type.equals("access-token")) {
             tokenValidTime = 30 * 60 * 1000L; // Access 토큰 유효시간 30분
-//            tokenValidTime = 2 * 60 * 1000L; // Access 토큰 유효시간 30분
+//            tokenValidTime = 30 * 1000L; // Access 토큰 유효시간 1분
         } else {
-            tokenValidTime = 14 * 24 * 60 * 60 * 1000L; // Access 토큰 유효시간 2주
-//            tokenValidTime = 5* 60 * 1000L; // Access 토큰 유효시간 2주
+            tokenValidTime = 14 * 24 * 60 * 60 * 1000L; // Refresh 토큰 유효시간 2주
+//            tokenValidTime = 60 * 1000L; // Refresh 토큰 유효시간 5분
         }
         return JwtUtil.createJwt(userNo, type, JWT_SECRET_KEY, tokenValidTime);
     }
