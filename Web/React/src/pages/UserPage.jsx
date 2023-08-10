@@ -164,15 +164,8 @@ function UserPage() {
           navigate("/");
         }
       });
-  }, [
-    userNo,
-    myUserNo,
-    dispatch,
-    accessToken,
-    SERVER_API_URL,
-    pageOwner,
-    navigate,
-  ]);
+  } // eslint-disable-next-line react-hooks/exhaustive-deps
+  , []);
 
   useEffect(() => {
     if (myMessage && myMessage.length >= 1) {
