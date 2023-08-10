@@ -1,14 +1,19 @@
 package com.ssafy.partylog.ui.getbirth
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -16,65 +21,109 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chargemap.compose.numberpicker.NumberPicker
+import com.orhanobut.logger.Logger
 import com.ssafy.partylog.R
 import com.ssafy.partylog.ui.getbirth.stateholder.PickerStateHolder
 import com.ssafy.partylog.ui.theme.maplestory
+import com.ssafy.partylog.ui.theme.themecolor
 
 @Composable
 fun Getbirth(modifier: Modifier = Modifier, viewModel: getbirthViewmodel = getbirthViewmodel()) {
-    Column(modifier.background(Color.Red).fillMaxSize()) {
-        Title(modifier)
-        Picker(modifier)
-        Button { viewModel.goNext() }
+    val stateHolder = PickerStateHolder()
+    Column(
+        modifier
+            .background(Color.White)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(
+            modifier
+                .weight(2f)
+                .padding(bottom = 90.dp), verticalAlignment = Alignment.Bottom) {
+            Title()
+        }
+        Row(
+            modifier
+                .weight(1f)
+                .padding(horizontal = 80.dp)
+                .fillMaxWidth()) {
+            Picker(stateHolder = stateHolder)
+        }
+        Row(
+            modifier
+                .weight(2f)
+                .padding(bottom = 70.dp)
+                .padding(horizontal = 55.dp), verticalAlignment = Alignment.Bottom) {
+            Button(gonext = { viewModel.goNext() })
+        }
     }
 }
 
 @Composable
-fun Title(modifier: Modifier) {
-    Text(text = stringResource(id = R.string.getbirth_title),
-        fontFamily = maplestory,
-        fontSize = 24.sp,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center,
-        modifier = modifier.fillMaxWidth())
-    Text(text = stringResource(id = R.string.getbirth_subtitle),
-        fontFamily = maplestory,
-        fontSize = 16.sp,
-        fontWeight = FontWeight.Light,
-        textAlign = TextAlign.Center,
-        modifier = modifier.fillMaxWidth())
+fun Title(modifier: Modifier = Modifier) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Text(text = stringResource(id = R.string.getbirth_title),
+            fontFamily = maplestory,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = modifier.fillMaxWidth())
+        Text(text = stringResource(id = R.string.getbirth_subtitle),
+            fontFamily = maplestory,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Light,
+            textAlign = TextAlign.Center,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp))
+    }
 }
 
 @Composable
-fun Picker(modifier: Modifier) {
-    val stateHolder = PickerStateHolder()
-    Row {
-        NumberPicker(value = stateHolder.setDefaultYear(),
-            onValueChange = {stateHolder.setYear(it) },
+fun Picker(modifier: Modifier = Modifier, stateHolder: PickerStateHolder) {
+    Logger.d("pickercomp")
+    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        NumberPicker(value = stateHolder.year,
+            onValueChange = { stateHolder.year = it },
             range = stateHolder.getMinYear()..stateHolder.getMaxYear(),
             dividersColor = Color.Black,
-            textStyle = TextStyle(fontSize = 16.sp, fontFamily = maplestory))
-        Spacer(modifier = modifier)
-        NumberPicker(value = 1,
-            onValueChange = {stateHolder.setMonth(it)},
+            textStyle = TextStyle(fontSize = 16.sp, fontFamily = maplestory),
+            modifier = modifier)
+        NumberPicker(value = stateHolder.month,
+            onValueChange = {stateHolder.month = it},
             range = 1..12,
             dividersColor = Color.Black,
-            textStyle = TextStyle(fontSize = 16.sp, fontFamily = maplestory))
-        Spacer(modifier = modifier)
-        NumberPicker(value = 1,
-            onValueChange = {stateHolder.setDay(it)},
+            textStyle = TextStyle(fontSize = 16.sp, fontFamily = maplestory),
+            modifier = modifier)
+        NumberPicker(value = stateHolder.day,
+            onValueChange = {stateHolder.day = it},
             range = 1..stateHolder.getMaxday(),
             dividersColor = Color.Black,
-            textStyle = TextStyle(fontSize = 16.sp, fontFamily = maplestory))
+            textStyle = TextStyle(fontSize = 16.sp, fontFamily = maplestory),
+            modifier = modifier)
     }
 }
 
 @Composable
-fun Button(gonext: () -> Unit) {
-    TextButton(onClick = { gonext() }) {
-        Text(text = stringResource(id = R.string.getbirth_continue))
+fun Button(modifier: Modifier = Modifier, gonext: () -> Unit) {
+    Card( modifier = modifier
+        .fillMaxWidth()
+        .height(45.dp),
+        shape = RoundedCornerShape(10.dp)
+    ) {
+        TextButton(onClick = { gonext() },
+            modifier
+                .fillMaxSize()
+                .background(themecolor)) {
+            Text(text = stringResource(id = R.string.getbirth_continue),
+                color = Color.White,
+                fontFamily = maplestory,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Light
+            )
+        }
     }
 }
 
