@@ -27,6 +27,7 @@ import {
   getInitailMessagesList,
   saveUserData,
 } from "../actions/actions";
+import { logoutUser } from "../actions/actions";
 
 // serializableStateInvariantMiddleware.ts:234 A non-serializable value was detected in an action, in the path: `register`.
 // 브라우저에서 오류 발생하는데, 리덕스로 dispatch하는 데이터가 직렬화 안 되는 데이터를 보냈다고 그러는 듯 함?
@@ -71,7 +72,8 @@ function UserPage() {
 
   //  추후 로컬스토리지에서 쿠키로 변경
   const accessToken = localStorage.getItem("access-token");
-
+  const refreshToken = localStorage.getItem("refresh-token");
+  
   // 액세스 토큰 넣어서 인증받는 식으로 수정할 것.
   // 메시지 데이터는 일단 24개 받아와서 캐러셀에서 표시하게 할 것.
   // 인덱스 페이지가 다다음꺼가 없다면 다다음꺼 받아오고, 다 받아와서 못 받아오면 버튼 disabled로 바뀌게
@@ -86,9 +88,9 @@ function UserPage() {
       url: `${SERVER_API_URL}/user/board/${userNo}`,
       headers: {
         Authorization: `${accessToken}`,
-      },
-    })
+      }})
       .then((res) => {
+        console.log(res)
         // console.log(res.status);
         const data = res.data.data;
         // console.log(data);
@@ -129,9 +131,38 @@ function UserPage() {
         setloading(false);
       })
       .catch((err) => {
-        console.log(err);
-        setloading(false);
-        navigate("/404");
+        var response = err.response.data;
+        if(response.code === "J001") {
+          console.log("액세스 토큰 재발급 필요");
+          axios.get(`${SERVER_API_URL}/user/recreateAccessToken`,
+          {
+            headers: { 
+              'Authorization': refreshToken,
+             }
+          })
+          .then(res => {
+            console.log("액세스 토큰 재발급 성공");
+            localStorage.setItem("access-token", res.headers.get("authorization"));
+            setloading(false);
+          })
+          .catch((err) => {
+            console.log(err)
+            var response = err.response.data;
+            if(response.code === "J001") {
+              console.log("리프레시 토큰 만료");
+              dispatch(logoutUser());
+              localStorage.setItem("access-token", null);
+              localStorage.setItem("refresh-token", null);
+              alert("다시 로그인 해주세요");
+              navigate("/");
+            } else {
+              alert(response.message);
+            }
+          })
+        } else {
+          alert("문제가 발생했습니다.");
+          navigate("/");
+        }
       });
   }, [
     userNo,

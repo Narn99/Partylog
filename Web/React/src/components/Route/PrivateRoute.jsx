@@ -11,7 +11,6 @@ const PrivateRoute = () => {
         // 로그인이 된 상태라면 해당 컴포넌트 렌더링
         return <Outlet />;
     } else {
-        alert("로그인 후 이용가능합니다.");
         // 로그인 안된 상태라면 메인 페이지로 이동
         return <Navigate replace to="/" />;
     }
