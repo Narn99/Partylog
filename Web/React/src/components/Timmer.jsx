@@ -1,37 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
+// import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+// import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+// import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import { Grid } from "@mui/material";
 
 const CountdownTimer = (props) => {
-  const { userBirthday } = props;
+  const {
+    userBirthday,
+    // pageOwner
+  } = props;
 
   const [targetTime, setTargetTime] = useState("00:00");
   const [leftBirthdayTime, setLeftBirthdayTime] = useState(
     new Date(userBirthday)
   );
 
-  const handleTimeChange = (event) => {
-    const selectedTime = event.$d;
-    console.log(selectedTime);
-    console.log(event);
-    const hours = selectedTime.getHours();
-    const minutes = selectedTime.getMinutes();
+  // const handleTimeChange = (event) => {
+  //   const selectedTime = event.$d;
+  //   console.log(selectedTime);
+  //   console.log(event);
+  //   const hours = selectedTime.getHours();
+  //   const minutes = selectedTime.getMinutes();
 
-    const newLeftBirthdayTime = new Date(leftBirthdayTime);
-    newLeftBirthdayTime.setHours(hours);
-    newLeftBirthdayTime.setMinutes(minutes);
+  //   const newLeftBirthdayTime = new Date(leftBirthdayTime);
+  //   newLeftBirthdayTime.setHours(hours);
+  //   newLeftBirthdayTime.setMinutes(minutes);
 
-    setTargetTime(
-      `${hours.toString().padStart(2, "0")}:${minutes
-        .toString()
-        .padStart(2, "0")}`
-    );
-    setLeftBirthdayTime(newLeftBirthdayTime);
-  };
+  //   setTargetTime(
+  //     `${hours.toString().padStart(2, "0")}:${minutes
+  //       .toString()
+  //       .padStart(2, "0")}`
+  //   );
+  //   setLeftBirthdayTime(newLeftBirthdayTime);
+  // };
 
   const calculateTimeLeft = (targetDate) => {
     const currentDate = new Date();
@@ -77,9 +80,12 @@ const CountdownTimer = (props) => {
     return () => clearTimeout(timer);
   }, [timeLeft, targetTime, leftBirthdayTime]);
 
+  console.log(leftBirthdayTime);
+
   // console.log(targetTime);
   // console.log(timeLeft);
-  // 여기의 timeLeft가 남은 시간인데, useState로 관리하니까 남한테 안 보임.... 남들한테도 보낼 수 있게
+
+  // 시간을 고르고, 그 시간까지의 카운트다운, 그 시간에 방송할거라는 알림 이라는 기능이 추후에 만들어야하는 것.
 
   return (
     <Grid
@@ -88,25 +94,29 @@ const CountdownTimer = (props) => {
       alignItems={"center"}
       flexDirection={"column"}
     >
-      <Grid item style={{ marginBottom: "10px" }}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={["TimePicker"]}>
-            <TimePicker
-              label="파티 시간을 골라주세요!"
-              viewRenderers={{
-                hours: renderTimeViewClock,
-                minutes: renderTimeViewClock,
-                seconds: renderTimeViewClock,
-              }}
-              format="A hh:mm"
-              onChange={handleTimeChange}
-            />
-          </DemoContainer>
-        </LocalizationProvider>
-      </Grid>
+      {/* 시간 골라서 파티 열리는 알림은 일단 나중에 확장으로 */}
+      {/* {pageOwner && (
+        <Grid item style={{ marginBottom: "10px" }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={["TimePicker"]}>
+              <TimePicker
+                label="파티 시간을 골라주세요!"
+                viewRenderers={{
+                  hours: renderTimeViewClock,
+                  minutes: renderTimeViewClock,
+                  seconds: renderTimeViewClock,
+                }}
+                format="A hh:mm"
+                onChange={handleTimeChange}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+        </Grid>
+      )} */}
+
       <Grid item>
         <div style={{ textAlign: "center" }}>
-          생일파티까지
+          생일까지
           <br />
           {timeLeft.days !== 0 && `${timeLeft.days}일`}
           {timeLeft.days < 1 && (

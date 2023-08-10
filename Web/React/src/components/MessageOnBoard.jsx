@@ -25,7 +25,7 @@ import { Grid } from "@mui/material";
 function MessageOnBoard(props) {
   // const RandomStickyNote = getRandomStickyNote();
 
-  const { message, onClick, pageOwner } = props;
+  const { message, onClick, pageOwner, myUserNo } = props;
 
   const getLength = (messageText, maxLength) => {
     if (messageText.length > maxLength) {
@@ -33,7 +33,7 @@ function MessageOnBoard(props) {
     }
     return messageText;
   };
-
+  // console.log(message);
   return (
     <div
       style={{
@@ -42,7 +42,11 @@ function MessageOnBoard(props) {
         left: "5%",
         width: "100%",
         height: "100%",
-        cursor: `${pageOwner ? "pointer" : "default"}`,
+        cursor: `${
+          pageOwner || parseInt(myUserNo) === parseInt(message.letter_writer)
+            ? "pointer"
+            : "default"
+        }`,
       }}
       onClick={onClick}
     >

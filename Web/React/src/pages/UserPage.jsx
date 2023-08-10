@@ -146,10 +146,8 @@ function UserPage() {
   ]);
 
   useEffect(() => {
-    if (myMessage && myMessage.length >= 1) {
-      dispatch(
-        setModalData(myMessage[0].letter_title, myMessage[0].letter_content)
-      );
+    if (myMessage) {
+      dispatch(setModalData(myMessage.letter_title, myMessage.letter_content));
     } else {
       dispatch(setModalData("", ""));
     }
@@ -174,6 +172,8 @@ function UserPage() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
+    console.log("얍!");
+    console.log(myMessage);
     if (myMessage) {
       dispatch(setModalData(myMessage.letter_title, myMessage.letter_content));
     }
@@ -284,6 +284,7 @@ function UserPage() {
                     userBirthday={userData.userBirthday}
                     myUserNo={myUserNo}
                     userNo={userNo}
+                    pageOwner={pageOwner}
                   />
                 </Grid>
                 {/* 해당 유저 생일일 때만 버튼 보이기 */}

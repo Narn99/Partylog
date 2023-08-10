@@ -282,9 +282,12 @@ function MessageBoard(props) {
                           <MessageOnBoard
                             message={message}
                             pageOwner={pageOwner}
+                            myUserNo={myUserNo}
                             // PageOwner면 메시지 클릭해서 상세보기 가능
                             onClick={
-                              pageOwner
+                              pageOwner ||
+                              parseInt(myUserNo) ===
+                                parseInt(message.letter_writer)
                                 ? () => handleModalDetailOpen(message)
                                 : null
                             }

@@ -30,13 +30,8 @@ export const messagesDataReducer = (state = initialState, action) => {
         // messageDetail = action.payload.messageDetail,
       };
     case actionTypes.DELETE_MESSAGE_DATA:
-      const { userNo } = action.payload;
-      const updatedMessages = state.messages.filter(
-        (message) => message.letter_writer !== userNo
-      );
       return {
         ...state,
-        messages: updatedMessages,
         myMessage: null,
       };
     case actionTypes.GET_INITIAL_MESSAGES_LIST:
