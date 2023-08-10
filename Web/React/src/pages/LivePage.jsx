@@ -41,9 +41,10 @@ function LivePage() {
   const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
 
   useEffect(() => {
+    console.log("작동")
     joinSession();     
     // eslint-disable-next-line
-  }, [subscribers]);
+  }, []);
 
   // const viewers = [
   //   "강아지",
@@ -101,10 +102,13 @@ const joinSession = () => {
         // Subscribe to the Stream to receive it. Second parameter is undefined
         // so OpenVidu doesn't create an HTML video by its own
         var subscriber = mySession.subscribe(event.stream, undefined);
-        subscribers.push(subscriber);
+        // subscribers.push(subscriber);
 
         // Update the state with the new subscribers
-        setSubscribers(subscribers);
+        setSubscribers(prev => [
+          ...prev,
+          subscriber
+        ]);
     });
 
     // On every Stream destroyed...
