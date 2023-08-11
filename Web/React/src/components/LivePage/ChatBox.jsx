@@ -27,6 +27,13 @@ function ChatBox(props) {
   const [chatContent, setChatContent] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();  // 기본 'Enter' 키 동작을 막음
+        handleSendMessages();
+    }
+};
+
   const handleInputChat = (event) => {
     const { value } = event.target;
     const truncatedValue = value.slice(0, 50);
@@ -128,6 +135,7 @@ function ChatBox(props) {
         }}
         value={chatContent}
         onChange={handleInputChat}
+        onKeyDown={handleKeyDown}
         // defaultValue=""
       />
       {/* <StyledTextarea
