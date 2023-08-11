@@ -141,6 +141,20 @@ public class UserController {
         return new ResponseEntity<CommonResponse<Integer>>(data, status);
     }
 
+    @GetMapping("/mobile/tokenCheck")
+    @Operation(summary = "모바일 토큰 확인", description = "유효한 토큰 전송시 아이디 반환")
+    public ResponseEntity<CommonResponse> mobileTokenCheck(Authentication authentication){
+        int userNo = Integer.parseInt(authentication.getName());
+
+        CommonResponse data;
+        HttpStatus status;
+
+        data = CommonResponse.createResponse("200", userNo, "토큰확인완료");
+        status = HttpStatus.OK;
+
+        return new ResponseEntity<CommonResponse>(data, status);
+    }
+
     @PostMapping("/join")
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
     @ApiResponses(value = {
