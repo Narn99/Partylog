@@ -7,12 +7,8 @@ import React, { useEffect } from "react";
 import { Grid } from "@mui/material";
 
 const CountdownTimer = (props) => {
-  const {
-    userBirthday,
-    todayIsBirthday,
-    setTodayIsBirthday,
-    // pageOwner
-  } = props;
+  const { userBirthday, todayIsBirthday, setTodayIsBirthday, pageOwner } =
+    props;
 
   // const [targetTime, setTargetTime] = useState("00:00");
   // const [leftBirthdayTime, setLeftBirthdayTime] = useState(
@@ -137,9 +133,11 @@ const CountdownTimer = (props) => {
 
       <Grid item>
         {todayIsBirthday ? (
-          <div style={{ textAlign: "center" }}>오늘이 생일!!</div>
+          <div style={{ textAlign: "center", fontSize: pageOwner && "30px" }}>
+            오늘이 생일!!
+          </div>
         ) : (
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: "center", fontSize: pageOwner && "30px" }}>
             생일까지
             <br />
             {timeLeftBirthday.days !== 0 && `${timeLeftBirthday.days}일`}

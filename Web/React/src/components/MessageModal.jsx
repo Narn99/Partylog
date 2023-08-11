@@ -225,12 +225,16 @@ function MessageModal(props) {
     : isLargeScreen
     ? "40%"
     : "30%";
-  const changeButtonFontSize = isMediumScreen ? "15px" : "25px";
+  const changeButtonFontSize = isMediumScreen
+    ? "15px"
+    : isLargeScreen
+    ? "20px"
+    : "25px";
   const changeButtonSize = isMediumScreen
     ? "80px"
     : isLargeScreen
-    ? "120px"
-    : "180px";
+    ? "100px"
+    : "120px";
 
   return (
     <Modal

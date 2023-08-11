@@ -63,7 +63,7 @@ function MessageBoard(props) {
   });
 
   // console.log("메시지보드의 마이메시지");
-  // console.log(myMessage);
+  // console.log(myMessage);   xs sm md lg xl
 
   const updateCarouselMessages = useCallback(() => {
     const messagesPerPage = isSmallScreen ? 4 : isLargeScreen ? 6 : 8;

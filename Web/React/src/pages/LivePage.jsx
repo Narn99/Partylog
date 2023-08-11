@@ -29,6 +29,8 @@ function LivePage() {
   var [subscribers, setSubscribers] = useState([]);
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
+  const [isJoinCheck, setIsJoinCheck] = useState(false);
+
   const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -38,6 +40,36 @@ function LivePage() {
   const changeChatBoxSize = isMediumScreen ? "95%" : "90%";
   const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
 
+  useEffect(() => {
+    console.log("작동");
+    joinSession();
+    // eslint-disable-next-line
+  }, []);
+
+  // const viewers = [
+  //   "강아지",
+  //   "레서판다",
+  //   "닭",
+  //   "펭귄",
+  //   "익룡",
+  //   "호모사피엔스",
+  //   "감자",
+  //   "고구마",
+  //   "개미핥기",
+  //   "호모에렉투스",
+  //   "고대초전도체",
+  //   "터미네이터",
+  //   "구글",
+  //   "구글",
+  //   "구글",
+  //   "구글",
+  //   "구글",
+  //   "구글",
+  //   "쿼카",
+  //   "연세우유생크림빵",
+  //   "국뽕치사량흡입",
+  // ];
+
   const handleMainVideoStream = (stream) => {
     console.log(stream);
     if (mainStreamManager !== stream) {
@@ -46,10 +78,9 @@ function LivePage() {
   };
 
   const deleteSubscriber = (streamManager) => {
-    setSubscribers(prev => [
-      ...prev,
-      streamManager
-    ]);
+    setSubscribers((prevSubscribers) => {
+      return prevSubscribers.filter((sub) => sub !== streamManager);
+    });
   };
 
   const joinSession = () => {
@@ -292,13 +323,13 @@ function LivePage() {
               >
                 <Grid
                   item
-                  xs={10}
+                  xs={7}
                   style={{
                     height: "100%",
                     minHeight: "200px",
-                    minWidth: "300px",
+                    minWidth: "200px",
                     // height: "300px",
-                    backgroundColor: "green",
+                    backgroundColor: "black",
                     color: "white",
                     display: "flex",
                     justifyContent: "center",
@@ -340,16 +371,23 @@ function LivePage() {
                 {/* <ViewersCarousel viewers={viewers} /> */}
                 <div id="video-container" className="col-md-6">
                   {publisher !== undefined ? (
-                      <div className="stream-container col-md-6 col-xs-6" id="my-stream-container" onClick={() => handleMainVideoStream(publisher)}>
-                          <UserVideoComponent
-                              streamManager={publisher} />
-                      </div>
+                    <div
+                      className="stream-container col-md-6 col-xs-6"
+                      id="my-stream-container"
+                      onClick={() => handleMainVideoStream(publisher)}
+                    >
+                      <UserVideoComponent streamManager={publisher} />
+                    </div>
                   ) : null}
                   {subscribers.map((sub, i) => (
-                      <div key={sub.id} className="stream-container col-md-6 col-xs-6 subscriber-stream-container" onClick={() => handleMainVideoStream(sub)}>
-                          <span>{sub.id}</span>
-                          <UserVideoComponent streamManager={sub} />
-                      </div>
+                    <div
+                      key={sub.id}
+                      className="stream-container col-md-6 col-xs-6 subscriber-stream-container"
+                      onClick={() => handleMainVideoStream(sub)}
+                    >
+                      <span>{sub.id}</span>
+                      <UserVideoComponent streamManager={sub} />
+                    </div>
                   ))}
                 </div>
               </Grid>
@@ -416,6 +454,28 @@ function LivePage() {
             </div>
           </div>
         </Grid>
+        {isMediumScreen && (
+          <Grid item xs={12}>
+            <Button
+              className="exit-live-button"
+              variant="contained"
+              style={{
+                fontFamily: "MaplestoryOTFBold",
+                width: "100%",
+                height: "100%",
+                fontSize: "25px",
+                color: "white",
+                borderRadius: "20px",
+                texShadow: "0.1px 0.1px 4px #e892a4",
+                boxSizing: "border-box",
+                marginTop: "10px",
+              }}
+              onClick={leaveSession}
+            >
+              나가기
+            </Button>
+          </Grid>
+        )}
       </Grid>
 
       {!isMediumScreen && (
