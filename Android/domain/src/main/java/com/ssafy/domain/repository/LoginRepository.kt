@@ -7,4 +7,6 @@ import com.ssafy.domain.model.login.resp.JoinWithBirthResp
 interface LoginRepository {
     suspend fun checkKakaoToken(token: String): CheckBirth
     suspend fun joinWithBirth(dto: JoinWithBirthReq): JoinWithBirthResp
+    fun storeId(id: Int)
+    fun getId(): Int
 }

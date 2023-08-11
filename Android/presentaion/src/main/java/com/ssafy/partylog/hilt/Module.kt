@@ -1,7 +1,10 @@
 package com.ssafy.partylog.hilt
 
+import android.app.Application
+import android.content.SharedPreferences
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
+import com.ssafy.data.datasource.local.SharedPreference
 import com.ssafy.data.datasource.remote.LoginDatasource
 import com.ssafy.data.repository.LoginRepositoryImpl
 import com.ssafy.domain.repository.LoginRepository
@@ -33,8 +36,8 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideLoginRepository(loginDatasource: LoginDatasource): LoginRepository {
-        return LoginRepositoryImpl(loginDatasource)
+    fun provideLoginRepository(loginDatasource: LoginDatasource, sharedPreference: SharedPreference): LoginRepository {
+        return LoginRepositoryImpl(loginDatasource, sharedPreference)
     }
 
     @Singleton
@@ -43,4 +46,9 @@ object ApiModule {
         return LoginDatasource()
     }
 
+    @Singleton
+    @Provides
+    fun provideSharedPreferences(application: Application): SharedPreferences {
+        return application.getSharedPreferences("spref", 0)
+    }
 }

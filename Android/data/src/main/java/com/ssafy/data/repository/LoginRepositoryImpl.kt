@@ -4,17 +4,17 @@ import com.orhanobut.logger.Logger
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
+import com.ssafy.data.datasource.local.SharedPreference
 import com.ssafy.data.datasource.remote.LoginDatasource
 import com.ssafy.data.mapper.LoginMapper
 import com.ssafy.data.model.login.req.JoinReqDto
-import com.ssafy.data.model.login.resp.CommRespDto
 import com.ssafy.domain.model.login.resp.CheckBirth
 import com.ssafy.domain.model.login.req.JoinWithBirthReq
 import com.ssafy.domain.model.login.resp.JoinWithBirthResp
 import com.ssafy.domain.repository.LoginRepository
 import javax.inject.Inject
 
-class LoginRepositoryImpl @Inject constructor(private val loginDatasource: LoginDatasource
+class LoginRepositoryImpl @Inject constructor(private val loginDatasource: LoginDatasource, private val sharedPreference: SharedPreference
 ): LoginRepository {
     override suspend fun checkKakaoToken(token: String): CheckBirth {
 
@@ -49,4 +49,11 @@ class LoginRepositoryImpl @Inject constructor(private val loginDatasource: Login
         return result
     }
 
+    override fun storeId(id: Int) {
+        sharedPreference.setMyid(id)
+    }
+
+    override fun getId(): Int {
+        return sharedPreference.getMyid()
+    }
 }
