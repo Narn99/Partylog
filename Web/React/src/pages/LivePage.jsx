@@ -78,11 +78,9 @@ function LivePage() {
   };
 
   const deleteSubscriber = (streamManager) => {
-    let index = subscribers.indexOf(streamManager, 0);
-    if (index > -1) {
-      subscribers.splice(index, 1);
-      setSubscribers(subscribers);
-    }
+    setSubscribers((prevSubscribers) => {
+        return prevSubscribers.filter(sub => sub !== streamManager);
+    });
   };
 
   const joinSession = () => {
