@@ -1,5 +1,5 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
 import Button from "@mui/material/Button";
@@ -25,9 +25,11 @@ function LivePage() {
   var [myUserName, setMyUserName] = useState(userInfo.userNickname);
   var [session, setSession] = useState(OV.initSession());
   var [mainStreamManager, setMainStreamManager] = useState(undefined);
-  var [publisher, setPublisher] = useState(undefined); // eslint-disable-line no-unused-vars
+  var [publisher, setPublisher] = useState(undefined); 
   var [subscribers, setSubscribers] = useState([]);
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
+
+  const [isJoinCheck, setIsJoinCheck] = useState(false);
 
   const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -39,8 +41,8 @@ function LivePage() {
   const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
 
   useEffect(() => {
-    console.log("작동")
-    joinSession();     
+    console.log("작동");
+    joinSession();
     // eslint-disable-next-line
   }, []);
 
@@ -77,6 +79,7 @@ function LivePage() {
 
   const deleteSubscriber = (streamManager) => {
     setSubscribers((prevSubscribers) => {
+
         return prevSubscribers.filter(sub => sub !== streamManager);
     });
  };
@@ -98,8 +101,6 @@ function LivePage() {
         // Subscribe to the Stream to receive it. Second parameter is undefined
         // so OpenVidu doesn't create an HTML video by its own
         var subscriber = mySession.subscribe(event.stream, undefined);
-        // subscribers.push(subscriber);
-
         // Update the state with the new subscribers
         setSubscribers(prev => [
           ...prev,
@@ -110,6 +111,7 @@ function LivePage() {
     // On every Stream destroyed...
     mySession.on("streamDestroyed", (event) => {
       console.log("스트림 삭제");
+      console.log(subscribers)
       // Remove the stream from 'subscribers' array
       deleteSubscriber(event.stream.streamManager);
     });
@@ -177,7 +179,8 @@ function LivePage() {
 
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-
+    console.log("세션 종료");
+    console.log(subscribers)
     const mySession = session;
 
     if (mySession) {
@@ -187,7 +190,7 @@ function LivePage() {
     // Empty all properties...
     OV = null;
     setSession(undefined);
-    setSubscribers([]);
+    // setSubscribers([]);
     setMysessionId("");
     setMyUserName("");
     setMainStreamManager(undefined);
@@ -208,8 +211,8 @@ function LivePage() {
       .then((res) => {
         console.log(res);
       });
-
-    window.close();
+      console.log(subscribers)
+    // window.close();
   };
 
   /**
@@ -268,6 +271,10 @@ function LivePage() {
     return response.data.data; // The token
   };
 
+  const test = () => {
+    joinSession();
+  }
+
   return (
     <div>
       <Grid
@@ -317,13 +324,13 @@ function LivePage() {
               >
                 <Grid
                   item
-                  xs={10}
+                  xs={7}
                   style={{
                     height: "100%",
                     minHeight: "200px",
-                    minWidth: "300px",
+                    minWidth: "200px",
                     // height: "300px",
-                    backgroundColor: "green",
+                    backgroundColor: "black",
                     color: "white",
                     display: "flex",
                     justifyContent: "center",
@@ -364,18 +371,25 @@ function LivePage() {
               >
                 {/* <ViewersCarousel viewers={viewers} /> */}
                 <div id="video-container" className="col-md-6">
-                {publisher !== undefined ? (
-                                <div className="stream-container col-md-6 col-xs-6" id="my-stream-container" onClick={() => handleMainVideoStream(publisher)}>
-                                    <UserVideoComponent
-                                        streamManager={publisher} />
-                                </div>
-                            ) : null}
-                            {subscribers.map((sub, i) => (
-                                <div key={sub.id} className="stream-container col-md-6 col-xs-6 subscriber-stream-container" onClick={() => handleMainVideoStream(sub)}>
-                                    <span>{sub.id}</span>
-                                    <UserVideoComponent streamManager={sub} />
-                                </div>
-                            ))}
+                  {publisher !== undefined ? (
+                    <div
+                      className="stream-container col-md-6 col-xs-6"
+                      id="my-stream-container"
+                      onClick={() => handleMainVideoStream(publisher)}
+                    >
+                      <UserVideoComponent streamManager={publisher} />
+                    </div>
+                  ) : null}
+                  {subscribers.map((sub, i) => (
+                    <div
+                      key={sub.id}
+                      className="stream-container col-md-6 col-xs-6 subscriber-stream-container"
+                      onClick={() => handleMainVideoStream(sub)}
+                    >
+                      <span>{sub.id}</span>
+                      <UserVideoComponent streamManager={sub} />
+                    </div>
+                  ))}
                 </div>
               </Grid>
             </Grid>
@@ -441,6 +455,28 @@ function LivePage() {
             </div>
           </div>
         </Grid>
+        {isMediumScreen && (
+          <Grid item xs={12}>
+            <Button
+              className="exit-live-button"
+              variant="contained"
+              style={{
+                fontFamily: "MaplestoryOTFBold",
+                width: "100%",
+                height: "100%",
+                fontSize: "25px",
+                color: "white",
+                borderRadius: "20px",
+                texShadow: "0.1px 0.1px 4px #e892a4",
+                boxSizing: "border-box",
+                marginTop: "10px",
+              }}
+              onClick={leaveSession}
+            >
+              나가기
+            </Button>
+          </Grid>
+        )}
       </Grid>
 
       {!isMediumScreen && (
@@ -487,6 +523,7 @@ function LivePage() {
             >
               나가기
             </Button>
+            <button onClick={test}>test</button>
           </Grid>
         </Grid>
       )}

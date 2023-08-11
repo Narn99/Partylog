@@ -73,7 +73,7 @@ function UserPage() {
   //  추후 로컬스토리지에서 쿠키로 변경
   const accessToken = localStorage.getItem("access-token");
   const refreshToken = localStorage.getItem("refresh-token");
-  
+
   // 액세스 토큰 넣어서 인증받는 식으로 수정할 것.
   // 메시지 데이터는 일단 24개 받아와서 캐러셀에서 표시하게 할 것.
   // 인덱스 페이지가 다다음꺼가 없다면 다다음꺼 받아오고, 다 받아와서 못 받아오면 버튼 disabled로 바뀌게
@@ -91,30 +91,27 @@ function UserPage() {
       }})
       .then((res) => {
         console.log(res)
-        // console.log(res.status);
         const data = res.data.data;
-        // console.log(data);
         setUserData({
           userNo: data.userNo,
           userNickname: data.userNickname,
           userBirthday: data.userBirthday,
           userProfile: data.userProfile,
         });
-        // setRecivedMessages(data.letterResponseBody);
         setFolloweeCount(data.followeeSum);
         setFollowerCount(data.followerSum);
 
-        const lettersData = data.letterResponseBody;
-        dispatch(getInitailMessagesList(lettersData));
+          const lettersData = data.letterResponseBody;
+          dispatch(getInitailMessagesList(lettersData));
 
-        const helloMyMessage = lettersData.filter(
-          (message) => parseInt(message.letter_writer) === parseInt(myUserNo)
-        );
-        if (helloMyMessage) {
-          dispatch(addMyMessageData(helloMyMessage[0]));
-        }
+          const helloMyMessage = lettersData.filter(
+            (message) => parseInt(message.letter_writer) === parseInt(myUserNo)
+          );
+          if (helloMyMessage) {
+            dispatch(addMyMessageData(helloMyMessage[0]));
+          }
 
-        // console.log(userData);
+          // console.log(userData);
 
         // 본인 페이지면 받아온 데이터 저장
         if (parseInt(myUserNo) === parseInt(userNo)) {
@@ -133,42 +130,46 @@ function UserPage() {
         setloading(false);
       })
       .catch((err) => {
-        var response = err.response.data;
-        if(response.code === "J001") {
-          console.log("액세스 토큰 재발급 필요");
-          axios.get(`${SERVER_API_URL}/user/recreateAccessToken`,
-          {
-            headers: { 
-              'Authorization': refreshToken,
-             }
-          })
-          .then(res => {
-            console.log("액세스 토큰 재발급 성공");
-            localStorage.setItem("access-token", res.headers.get("authorization"));
-            setloading(false);
-          })
-          .catch((err) => {
-            console.log(err)
-            var response = err.response.data;
-            if(response.code === "J001") {
-              console.log("리프레시 토큰 만료");
-              dispatch(logoutUser());
-              localStorage.setItem("access-token", null);
-              localStorage.setItem("refresh-token", null);
-              alert("다시 로그인 해주세요");
-              navigate("/");
-            } else {
-              alert(response.message);
-              dispatch(logoutUser());
-              localStorage.setItem("access-token", null);
-              localStorage.setItem("refresh-token", null);
-              navigate("/");
-            }
-          })
-        } else {
-          alert("문제가 발생했습니다.");
-          navigate("/");
-        }
+        console.log(err);
+        localStorage.clear();
+        dispatch(logoutUser());
+        navigate("/");
+        /* 추후 수정 예정 */
+        // var response = err.response.data;
+        // if(response.code === "J001") {
+        //   console.log("액세스 토큰 재발급 필요");
+        //   axios.get(`${SERVER_API_URL}/user/recreateAccessToken`,
+        //   {
+        //     headers: { 
+        //       'Authorization': refreshToken,
+        //      }
+        //   })
+        //   .then(res => {
+        //     console.log("액세스 토큰 재발급 성공");
+        //     localStorage.setItem("access-token", res.headers.get("authorization"));
+        //     setloading(false);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err)
+        //     var response = err.response.data;
+        //     if(response.code === "J001") {
+        //       console.log("리프레시 토큰 만료");
+        //       dispatch(logoutUser());
+        //       localStorage.clear();
+        //       alert("다시 로그인 해주세요");
+        //       navigate("/");
+        //     } else {
+        //       alert(response.message);
+        //       dispatch(logoutUser());
+        //       localStorage.clear();
+        //       navigate("/");
+        //     }
+        //   })
+        // } else {
+        //   alert("문제가 발생했습니다.");
+        //   localStorage.clear();
+        //   navigate("/");
+        // }
       });
   } // eslint-disable-next-line react-hooks/exhaustive-deps
   , []);
@@ -297,15 +298,18 @@ function UserPage() {
                     <span>{userData.userNickname}</span>{" "}
                     <span style={{ fontSize: "20px" }}>#{userData.userNo}</span>
                   </p>
-                  <UserFollowButton
-                    pageOwner={pageOwner}
-                    myUserNo={myUserNo}
-                    userNo={userNo}
-                    accessToken={accessToken}
-                    SERVER_API_URL={SERVER_API_URL}
-                    changeFollowButtonFontSize={changeFollowButtonFontSize}
-                    changeLiveButtonWidth={changeLiveButtonWidth}
-                  />
+                  {!pageOwner && (
+                    <UserFollowButton
+                      setFollowerCount={setFollowerCount}
+                      pageOwner={pageOwner}
+                      myUserNo={myUserNo}
+                      userNo={userNo}
+                      accessToken={accessToken}
+                      SERVER_API_URL={SERVER_API_URL}
+                      changeFollowButtonFontSize={changeFollowButtonFontSize}
+                      changeLiveButtonWidth={changeLiveButtonWidth}
+                    />
+                  )}
                 </Grid>
                 <Grid item>
                   <Link to={`/myfriend/${userNo}`} className="myLink">
@@ -323,7 +327,7 @@ function UserPage() {
                     userBirthday={userData.userBirthday}
                     todayIsBirthday={todayIsBirthday}
                     setTodayIsBirthday={setTodayIsBirthday}
-                    // pageOwner={pageOwner}
+                    pageOwner={pageOwner}
                   />
                 </Grid>
                 {/* 해당 유저 생일일 때만 버튼 보이기 */}

@@ -5,52 +5,91 @@ import { Grid } from "@mui/material";
 
 function UserFollowButton(props) {
   const {
-    // pageOwner,
-    myUserNo,
     userNo,
+    setFollowerCount,
     accessToken,
     SERVER_API_URL,
     changeFollowButtonFontSize,
     changeLiveButtonWidth,
   } = props;
 
-  const [isFollowed, setIsFollowed] = useState(true);
-
+  const [isFollowed, setIsFollowed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleMouseEnterToCancel = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeaveToCancel = () => {
-    setIsHovered(false);
-  };
-
-  // 이거 바꿔야됨..
-  useEffect(() => {
+  const getFollowerCount = () => {
     axios({
-      method: "post",
-      url: `${SERVER_API_URL}/user/searchFolloweeList`,
+      method: "get",
+      url: `${SERVER_API_URL}/user/getFollowerNumber/${userNo}`,
       headers: {
-        Authorization: accessToken,
-      },
-      data: {
-        followerNo: userNo,
-        followeeNo: myUserNo,
-        limit: 5,
-        offset: 0,
+        Authorization: `${accessToken}`,
       },
     })
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        setFollowerCount(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
 
-  const handleUserFollow = () => {};
-  const handleCancelUserFollow = () => {};
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `${SERVER_API_URL}/user/checkFollow/${userNo}`,
+      headers: {
+        Authorization: `${accessToken}`,
+      },
+    })
+      .then((res) => {
+        setIsFollowed(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
+  const handleMouseEnterToCancel = () => {
+    setIsHovered(true);
+  };
+  const handleMouseLeaveToCancel = () => {
+    setIsHovered(false);
+  };
+
+  const handleUserFollow = () => {
+    axios({
+      method: "post",
+      url: `${SERVER_API_URL}/user/addFollow/${userNo}`,
+      headers: {
+        Authorization: `${accessToken}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        setIsFollowed(true);
+        getFollowerCount();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleCancelUserFollow = () => {
+    axios({
+      method: "delete",
+      url: `${SERVER_API_URL}/user/removeFollow/${userNo}`,
+      headers: {
+        Authorization: `${accessToken}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        setIsFollowed(false);
+        getFollowerCount();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <Grid container justifyContent={"center"} alignItems={"center"}>

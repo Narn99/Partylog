@@ -23,7 +23,7 @@ const KakaoCallback = () => {
         // console.log(res);
         const userNo = res.data.data;
 
-        // userNo를 비교용으로 사용하기 위해 세션 스토리지 저장
+        // userNo를 비교용으로 사용하기 위해 리덕스 저장
         dispatch(loginSaveUserNo(userNo));
 
         if (res.data.code === "201") {
