@@ -4,6 +4,8 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Send from "@mui/icons-material/Send";
+
+
 // const StyledTextarea = styled(TextField)(
 //   ({ theme }) => `
 //     width: 320px;
@@ -29,7 +31,7 @@ function ChatBox(props) {
   
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();  // 기본 'Enter' 키 동작을 막음
+        event.preventDefault();  // 엔터키 관련된 내용
         handleSendMessages();
     }
 };
@@ -137,6 +139,7 @@ function ChatBox(props) {
         onChange={handleInputChat}
         onKeyDown={handleKeyDown}
         // defaultValue=""
+        
       />
       {/* <StyledTextarea
         Grid
@@ -149,6 +152,7 @@ function ChatBox(props) {
         value={chatContent}
         onChange={setChatContent}
       /> */}
+
       </div>
       <Send onClick={handleSendMessages}/>
     </div>
