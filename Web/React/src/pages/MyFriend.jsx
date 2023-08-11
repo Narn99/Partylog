@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import Grid from "@mui/material/Grid";
-import { Modal, Box, Typography,  Button } from "@mui/material";
+import { Modal, Box, Typography, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import FollowTabs from "../components/FollowTabs";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import  {firework2}  from "../components/firework2"
+import { firework2 } from "../components/firework2";
 
 const Box1 = styled(Box)(({ theme }) => ({
   backgroundColor: "#fbb3c2",
@@ -40,7 +40,7 @@ function MyFriend(props) {
 
   const [userNickname, setUserNickname] = useState("");
   const [profileImg, setProfileImg] = useState("");
- 
+
   const [followings, setFollowings] = useState([]); // 팔로잉 목록을 저장할 상태 추가
   const [modalMessage, setModalMessage] = useState("");
   const [hoveringFollowButton, setHoveringFollowButton] = useState(false); // 팔로우 버튼에 마우스를 올렸는지 여부를 저장할 상태
@@ -102,37 +102,39 @@ function MyFriend(props) {
       );
       setIsFollowing(true);
       setModalMessage("팔로우 감사합니다!");
-      setModalOpen(true);  // 팔로우 성공 시 모달을 보여줍니다.
+      setModalOpen(true); // 팔로우 성공 시 모달을 보여줍니다.
       firework2(); //  firework 함수를 호출
       setTimeout(() => {
         setModalOpen(false);
         window.location.reload();
-      }, 1500);  // 1.5초 후에 모달을 닫고 페이지를 새로고침합니다.
+      }, 1500); // 1.5초 후에 모달을 닫고 페이지를 새로고침합니다.
     } catch (error) {
       console.error("Error following user:", error);
     }
   };
 
   const handleUnfollow = (followeeNo) => {
-    axios.delete(`${SERVER_API_URL}/user/removeFollow/${followeeNo}`, 
-    {
-      headers: {
-        'Authorization': `${accessToken}`
-      }
-    })
-    .then(() => {
-      setIsFollowing(false);
-      setFollowings(followings.filter(following => following.user_no !== followeeNo));
-      setModalMessage("슬퍼요, 다음에 다시 만나요!");  
-      setModalOpen(true);
-      setTimeout(() => {
+    axios
+      .delete(`${SERVER_API_URL}/user/removeFollow/${followeeNo}`, {
+        headers: {
+          Authorization: `${accessToken}`,
+        },
+      })
+      .then(() => {
+        setIsFollowing(false);
+        setFollowings(
+          followings.filter((following) => following.user_no !== followeeNo)
+        );
+        setModalMessage("슬퍼요, 다음에 다시 만나요!");
+        setModalOpen(true);
+        setTimeout(() => {
           setModalOpen(false);
           window.location.reload();
-      }, 1000);
-    })
-    .catch(error => {
-      console.error("팔로우 해제 중 오류 발생:", error);
-    });
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error("팔로우 해제 중 오류 발생:", error);
+      });
   };
 
   return (
@@ -162,34 +164,36 @@ function MyFriend(props) {
                 <span style={{ fontSize: "20px" }}>#{userNum}</span>
               </p>
 
-              {
-  parseInt(userNum) !== MyuserNum && (
-    <Button
-      onMouseEnter={() => setHoveringFollowButton(true)}
-      onMouseLeave={() => setHoveringFollowButton(false)}
-      onClick={() => {
-        if (isFollowing) {
-          handleUnfollow(userNum);
-        } else {
-          handleFollow();
-        }
-      }}
-      className="live-button"  // 두 클래스 이름을 추가합니다.
-      variant="contained"
-      style={{
-        fontFamily: "MaplestoryOTFBold",
-        fontSize: 20,
-        color: "white",
-        lineHeight: "30px",
-        borderRadius: "40px",
-        texShadow: "0.1px 0.1px 4px #e892a4",
-        marginTop: "20px",
-      }}
-    >
-      {isFollowing ? (hoveringFollowButton ? "팔로우 해제" : "팔로우됨") : "팔로우"}
-    </Button>
-  )
-}
+              {parseInt(userNum) !== MyuserNum && (
+                <Button
+                  onMouseEnter={() => setHoveringFollowButton(true)}
+                  onMouseLeave={() => setHoveringFollowButton(false)}
+                  onClick={() => {
+                    if (isFollowing) {
+                      handleUnfollow(userNum);
+                    } else {
+                      handleFollow();
+                    }
+                  }}
+                  className="live-button" // 두 클래스 이름을 추가합니다.
+                  variant="contained"
+                  style={{
+                    fontFamily: "MaplestoryOTFBold",
+                    fontSize: 20,
+                    color: "white",
+                    lineHeight: "30px",
+                    borderRadius: "40px",
+                    texShadow: "0.1px 0.1px 4px #e892a4",
+                    marginTop: "20px",
+                  }}
+                >
+                  {isFollowing
+                    ? hoveringFollowButton
+                      ? "팔로우 해제"
+                      : "팔로우됨"
+                    : "팔로우"}
+                </Button>
+              )}
             </Grid>
           </Grid>
 
@@ -206,26 +210,25 @@ function MyFriend(props) {
           open={modalOpen}
           onClose={() => setModalOpen(false)}
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <Box
             sx={{
               width: 400,
-              bgcolor: 'background.paper',
-              border: '2px solid #000',
+              bgcolor: "background.paper",
+              border: "2px solid #000",
               boxShadow: 24,
               p: 4,
             }}
           >
             <Typography variant="h6" align="center">
-               {modalMessage}
+              {modalMessage}
             </Typography>
           </Box>
         </Modal>
-
       </div>
     </div>
   );
