@@ -7,7 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
+import com.ssafy.domain.usecase.login.CheckAccessTokenUsecase
 import com.ssafy.domain.usecase.login.CheckKakaoTokenUsecase
+import com.ssafy.domain.usecase.login.CheckRefreshTokenUsecase
 import com.ssafy.domain.usecase.login.StoreIdUsecase
 import com.ssafy.partylog.ui.login.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val application: Application,
     private val checkKakaoTokenUsecase: CheckKakaoTokenUsecase,
-    private val storeIdUsecase: StoreIdUsecase): AndroidViewModel(
+    private val storeIdUsecase: StoreIdUsecase,
+    private val checkAccessTokenUsecase: CheckAccessTokenUsecase): AndroidViewModel(
         application
 ) {
     private val _uiState = MutableStateFlow(LoginState())
@@ -42,6 +45,11 @@ class LoginViewModel @Inject constructor(private val application: Application,
             if (loginCode == 201 || loginCode == 200) {
                 storeIdUsecase(data.id)
             }
+        }
+    }
+    fun autoLogin() {
+        viewModelScope.launch {
+            checkAccessTokenUsecase()
         }
     }
 }

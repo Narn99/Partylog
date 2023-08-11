@@ -18,4 +18,10 @@ interface LoginService {
     suspend fun joinWithbirth(
         @Body data: JoinReqDto
     ): ApiResponse<CommRespDto>
+
+    @GET("user/mobile/tokenCheck")
+    suspend fun checkAccessToken(): ApiResponse<CommRespDto>
+
+    @POST("user/recreateAccesstoken")
+    suspend fun checkRefreshToken(): ApiResponse<CommRespDto>
 }

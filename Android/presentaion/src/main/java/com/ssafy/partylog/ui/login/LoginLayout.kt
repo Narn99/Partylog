@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -40,6 +41,9 @@ fun Login(
 ) {
 
     val loginCode = viewModel.loginCode
+
+    autoLogin {viewModel.autoLogin()}
+
 
     Image(
         painter = painterResource(id = R.drawable.bg_login_compose),
@@ -115,6 +119,13 @@ fun TitleFrame(modifier: Modifier = Modifier, font: FontFamily) {
             .fillMaxWidth()
     )
 
+}
+
+@Composable
+fun autoLogin(autoLogin: () -> Unit)  {
+    LaunchedEffect(key1 = true) {
+        autoLogin()
+    }
 }
 
 @Composable

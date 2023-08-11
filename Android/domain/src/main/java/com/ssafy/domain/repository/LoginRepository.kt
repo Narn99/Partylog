@@ -9,4 +9,6 @@ interface LoginRepository {
     suspend fun joinWithBirth(dto: JoinWithBirthReq): JoinWithBirthResp
     fun storeId(id: Int)
     fun getId(): Int
+    suspend fun checkAccessToken()
+    suspend fun checkRefreshToken()
 }

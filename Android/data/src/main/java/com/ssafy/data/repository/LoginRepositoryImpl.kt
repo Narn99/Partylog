@@ -24,6 +24,8 @@ class LoginRepositoryImpl @Inject constructor(private val loginDatasource: Login
         data.onSuccess {
             result = LoginMapper.KakaoCheckRespDtoToCheckBirth(this.data)
             Logger.d("카카오토큰 체크 성공")
+            sharedPreference.setAccessToken(this.headers.get("authorization")!!.split(" ")[1])
+            sharedPreference.setRefreshToken(this.headers.get("refresh-token")!!.split(" ")[1])
 //            LoginMapper.checkKakaoRespToResult(this.data)
         }.onError {
             result = LoginMapper.KakaoCheckRespDtoToCheckBirth(this.response.body()!!)
@@ -40,6 +42,8 @@ class LoginRepositoryImpl @Inject constructor(private val loginDatasource: Login
 
         resp.onSuccess {
             result = LoginMapper.joinWithBirthToJoin(this.data)
+//            sharedPreference.setAccessToken(this.headers)
+            Logger.d(this.headers)
         }
             .onError {
                 result = LoginMapper.joinWithBirthToJoin(this.response.body()!!)
@@ -55,5 +59,20 @@ class LoginRepositoryImpl @Inject constructor(private val loginDatasource: Login
 
     override fun getId(): Int {
         return sharedPreference.getMyid()
+    }
+
+    override suspend fun checkAccessToken() {
+        val resp = loginDatasource.checkAccessToken()
+        resp.onSuccess {
+            Logger.d("success")
+        }.onError {
+            Logger.d("err")
+        }.onException {
+            Logger.d("exception")
+        }
+    }
+
+    override suspend fun checkRefreshToken() {
+        TODO("Not yet implemented")
     }
 }
