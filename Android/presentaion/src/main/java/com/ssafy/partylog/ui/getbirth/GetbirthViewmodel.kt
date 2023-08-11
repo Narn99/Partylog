@@ -4,16 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
 import com.ssafy.domain.model.login.req.JoinWithBirthReq
+import com.ssafy.domain.usecase.login.GetidUsecase
 import com.ssafy.domain.usecase.login.JoinWithBirthUsecase
-import com.ssafy.partylog.GlobalApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GetbirthViewmodel @Inject constructor(private val joinWithBirthUsecase: JoinWithBirthUsecase): ViewModel() {
+class GetbirthViewmodel @Inject constructor(private val joinWithBirthUsecase: JoinWithBirthUsecase,
+    private val getidUsecase: GetidUsecase): ViewModel() {
     fun goNext(yy: Int, mm: Int, dd: Int, navToMain: () -> Unit) {
-        val id = GlobalApplication.spref.getMyid()
+        val id = getidUsecase()
 
         var newmm = mm.toString()
         if (mm < 10) newmm = "0$newmm"
