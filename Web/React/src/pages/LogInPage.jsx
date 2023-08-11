@@ -8,19 +8,21 @@ import { useNavigate } from "react-router-dom";
 
 const LogInPage = () => {
 
-  const navigate = useNavigate();
-  const isAuthenticated = useSelector((state) => {
-    return state.auth.isAuthenticated;
-  });
-  const userNo = useSelector((state) => {
-    return state.auth.userNo;
-  })
+  /* 자동 로그인 추후에 개발 */
+  // const navigate = useNavigate();
+  // const isAuthenticated = useSelector((state) => {
+  //   return state.auth.isAuthenticated;
+  // });
+  // const userNo = useSelector((state) => {
+  //   return state.auth.userNo;
+  // })
 
-  useEffect(() => {
-    if(isAuthenticated) {
-      navigate(`/user/${userNo}`);
-    }
-  })
+  // useEffect(() => {
+  //   console.log("로그인 여부: " + isAuthenticated);
+  //   if(isAuthenticated) {
+  //     navigate(`/user/${userNo}`);
+  //   }
+  // })
 
   const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
   const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;

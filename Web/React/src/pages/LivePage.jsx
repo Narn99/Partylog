@@ -1,5 +1,5 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
 import Button from "@mui/material/Button";
@@ -25,7 +25,7 @@ function LivePage() {
   var [myUserName, setMyUserName] = useState(userInfo.userNickname);
   var [session, setSession] = useState(OV.initSession());
   var [mainStreamManager, setMainStreamManager] = useState(undefined);
-  var [publisher, setPublisher] = useState(undefined); // eslint-disable-line no-unused-vars
+  var [publisher, setPublisher] = useState(undefined); 
   var [subscribers, setSubscribers] = useState([]);
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
@@ -95,20 +95,22 @@ function LivePage() {
     // --- 3) Specify the actions when events take place in the session ---
 
     // On every new Stream received...
-    mySession.on("streamCreated", (event) => {
-      console.log("새로운 스트림 생성");
-      // Subscribe to the Stream to receive it. Second parameter is undefined
-      // so OpenVidu doesn't create an HTML video by its own
-      var subscriber = mySession.subscribe(event.stream, undefined);
-      // subscribers.push(subscriber);
-
-      // Update the state with the new subscribers
-      setSubscribers((prev) => [...prev, subscriber]);
+    mySession.on('streamCreated', (event) => {
+        console.log("새로운 스트림 생성")
+        // Subscribe to the Stream to receive it. Second parameter is undefined
+        // so OpenVidu doesn't create an HTML video by its own
+        var subscriber = mySession.subscribe(event.stream, undefined);
+        // Update the state with the new subscribers
+        setSubscribers(prev => [
+          ...prev,
+          subscriber
+        ]);
     });
 
     // On every Stream destroyed...
     mySession.on("streamDestroyed", (event) => {
       console.log("스트림 삭제");
+      console.log(subscribers)
       // Remove the stream from 'subscribers' array
       deleteSubscriber(event.stream.streamManager);
     });
@@ -176,7 +178,8 @@ function LivePage() {
 
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-
+    console.log("세션 종료");
+    console.log(subscribers)
     const mySession = session;
 
     if (mySession) {
@@ -186,7 +189,7 @@ function LivePage() {
     // Empty all properties...
     OV = null;
     setSession(undefined);
-    setSubscribers([]);
+    // setSubscribers([]);
     setMysessionId("");
     setMyUserName("");
     setMainStreamManager(undefined);
@@ -207,7 +210,7 @@ function LivePage() {
       .then((res) => {
         console.log(res);
       });
-
+      console.log(subscribers)
     // window.close();
   };
 
@@ -266,6 +269,10 @@ function LivePage() {
     console.log(response.data.message);
     return response.data.data; // The token
   };
+
+  const test = () => {
+    joinSession();
+  }
 
   return (
     <div>
@@ -515,6 +522,7 @@ function LivePage() {
             >
               나가기
             </Button>
+            <button onClick={test}>test</button>
           </Grid>
         </Grid>
       )}

@@ -82,29 +82,24 @@ function UserPage() {
 
   // 연동 추가 수정할 것.
 
-  useEffect(
-    () => {
-      axios({
-        method: "post",
-        url: `${SERVER_API_URL}/user/board/${userNo}`,
-        headers: {
-          Authorization: `${accessToken}`,
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          // console.log(res.status);
-          const data = res.data.data;
-          // console.log(data);
-          setUserData({
-            userNo: data.userNo,
-            userNickname: data.userNickname,
-            userBirthday: data.userBirthday,
-            userProfile: data.userProfile,
-          });
-          // setRecivedMessages(data.letterResponseBody);
-          setFolloweeCount(data.followeeSum);
-          setFollowerCount(data.followerSum);
+  useEffect(() => {
+    axios({
+      method: "post",
+      url: `${SERVER_API_URL}/user/board/${userNo}`,
+      headers: {
+        Authorization: `${accessToken}`,
+      }})
+      .then((res) => {
+        console.log(res)
+        const data = res.data.data;
+        setUserData({
+          userNo: data.userNo,
+          userNickname: data.userNickname,
+          userBirthday: data.userBirthday,
+          userProfile: data.userProfile,
+        });
+        setFolloweeCount(data.followeeSum);
+        setFollowerCount(data.followerSum);
 
           const lettersData = data.letterResponseBody;
           dispatch(getInitailMessagesList(lettersData));
@@ -118,63 +113,66 @@ function UserPage() {
 
           // console.log(userData);
 
-          // 본인 페이지면 받아온 데이터 저장
-          if (parseInt(myUserNo) === parseInt(userNo)) {
-            setPageOwner(true);
-            dispatch(
-              saveUserData(
-                data.userNo,
-                data.userNickname,
-                data.userBirthday,
-                data.userProfile
-              )
-            );
-          } else {
-            setPageOwner(false);
-          }
-          setloading(false);
-        })
-        .catch((err) => {
-          var response = err.response.data;
-          if (response.code === "J001") {
-            console.log("액세스 토큰 재발급 필요");
-            axios
-              .get(`${SERVER_API_URL}/user/recreateAccessToken`, {
-                headers: {
-                  Authorization: refreshToken,
-                },
-              })
-              .then((res) => {
-                console.log("액세스 토큰 재발급 성공");
-                localStorage.setItem(
-                  "access-token",
-                  res.headers.get("authorization")
-                );
-                window.location.reload();
-                setloading(false);
-              })
-              .catch((err) => {
-                console.log(err);
-                var response = err.response.data;
-                if (response.code === "J001") {
-                  console.log("리프레시 토큰 만료");
-                  dispatch(logoutUser());
-                  localStorage.setItem("access-token", null);
-                  localStorage.setItem("refresh-token", null);
-                  alert("다시 로그인 해주세요");
-                  navigate("/");
-                } else {
-                  alert(response.message);
-                }
-              });
-          } else {
-            alert("문제가 발생했습니다.");
-            navigate("/");
-          }
-        });
-    }, // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+        // 본인 페이지면 받아온 데이터 저장
+        if (parseInt(myUserNo) === parseInt(userNo)) {
+          setPageOwner(true);
+          dispatch(
+            saveUserData(
+              data.userNo,
+              data.userNickname,
+              data.userBirthday,
+              data.userProfile
+            )
+          );
+        } else {
+          setPageOwner(false);
+        }
+        setloading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        localStorage.clear();
+        dispatch(logoutUser());
+        navigate("/");
+        /* 추후 수정 예정 */
+        // var response = err.response.data;
+        // if(response.code === "J001") {
+        //   console.log("액세스 토큰 재발급 필요");
+        //   axios.get(`${SERVER_API_URL}/user/recreateAccessToken`,
+        //   {
+        //     headers: { 
+        //       'Authorization': refreshToken,
+        //      }
+        //   })
+        //   .then(res => {
+        //     console.log("액세스 토큰 재발급 성공");
+        //     localStorage.setItem("access-token", res.headers.get("authorization"));
+        //     setloading(false);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err)
+        //     var response = err.response.data;
+        //     if(response.code === "J001") {
+        //       console.log("리프레시 토큰 만료");
+        //       dispatch(logoutUser());
+        //       localStorage.clear();
+        //       alert("다시 로그인 해주세요");
+        //       navigate("/");
+        //     } else {
+        //       alert(response.message);
+        //       dispatch(logoutUser());
+        //       localStorage.clear();
+        //       navigate("/");
+        //     }
+        //   })
+        // } else {
+        //   alert("문제가 발생했습니다.");
+        //   localStorage.clear();
+        //   navigate("/");
+        // }
+      });
+  } // eslint-disable-next-line react-hooks/exhaustive-deps
+  , []);
 
   useEffect(() => {
     if (myMessage) {
