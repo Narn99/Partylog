@@ -79,7 +79,7 @@ function LivePage() {
 
   const deleteSubscriber = (streamManager) => {
     setSubscribers((prevSubscribers) => {
-        return prevSubscribers.filter(sub => sub !== streamManager);
+      return prevSubscribers.filter((sub) => sub !== streamManager);
     });
   };
 
