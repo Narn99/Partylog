@@ -267,11 +267,6 @@ function LivePage() {
     return response.data.data; // The token
   };
 
-  const test = () => {
-    console.log("참가자 정보");
-    console.log(subscribers);
-  };
-
   return (
     <div>
       <Grid
@@ -498,7 +493,6 @@ function LivePage() {
             >
               나가기
             </Button>
-            <button onClick={test}>test</button>
           </Grid>
         </Grid>
       )}
