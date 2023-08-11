@@ -7,19 +7,12 @@ import javax.annotation.PostConstruct;
 import com.ssafy.partylog.api.Entity.LiveEntity;
 import com.ssafy.partylog.api.response.CommonResponse;
 import com.ssafy.partylog.api.service.LiveService;
+import io.openvidu.java.client.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import io.openvidu.java.client.Connection;
-import io.openvidu.java.client.ConnectionProperties;
-import io.openvidu.java.client.OpenVidu;
-import io.openvidu.java.client.OpenViduHttpException;
-import io.openvidu.java.client.OpenViduJavaClientException;
-import io.openvidu.java.client.Session;
-import io.openvidu.java.client.SessionProperties;
 
 @Slf4j
 @RestController()
@@ -51,9 +44,43 @@ public class LiveController {
     @PostMapping("/api/sessions")
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
-        SessionProperties properties = SessionProperties.fromJson(params).build();
-        Session session = openvidu.createSession(properties);
+        RecordingProperties recordingProperties = new RecordingProperties.Builder()
+                .outputMode(Recording.OutputMode.COMPOSED)
+                .recordingLayout(RecordingLayout.CUSTOM)
+                .customLayout("https://i9a501.p.ssafy.io/partylog/live/1005")
+                .resolution("640x480")
+                .frameRate(24)
+                .build();
+        SessionProperties sessionProperties = new SessionProperties.Builder()
+                .recordingMode(RecordingMode.MANUAL) // RecordingMode.ALWAYS for automatic recording
+                .defaultRecordingProperties(recordingProperties)
+                .customSessionId(params.get("customSessionId").toString())
+                .build();
+        Session session = openvidu.createSession(sessionProperties);
+//        SessionProperties properties = SessionProperties.fromJson(params).build();
+//        Session session = openvidu.createSession(properties);
+        System.out.println(params.get("customSessionId")); //customSessionId
         return new ResponseEntity<>(session.getSessionId(), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/api/record/start/{sessionId}")
+    public ResponseEntity<String> startRecording(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
+        RecordingProperties properties = new RecordingProperties.Builder()
+                .name("MY_RECORDING_NAME")
+                .build();
+        System.out.println("녹화빌드" + sessionId);
+        Recording recording = openvidu.startRecording("Session" + sessionId, properties); // Starts recording
+        System.out.println("녹화빌드완");
+        return new ResponseEntity<String>("녹화 시작", HttpStatus.OK);
+    }
+
+    @PostMapping("/api/record/stop/{sessionId}")
+    public ResponseEntity<String> stopRecording(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
+        System.out.println("녹화중단" + sessionId);
+        openvidu.stopRecording("Session" +sessionId); // Stops recording
+        System.out.println("녹화중단완");
+        return new ResponseEntity<String>("녹화 중단", HttpStatus.OK);
     }
 
     /**
