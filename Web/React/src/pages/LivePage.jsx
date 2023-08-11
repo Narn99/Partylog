@@ -215,6 +215,30 @@ function LivePage() {
     // window.close();
   };
 
+  //녹화 시작 요청
+  const startRecording = () =>{
+    var stringId = String(userNo);
+    const response = axios.post(APPLICATION_SERVER_URL + 'api/record/start/' + stringId, {}, {
+      headers: { 
+          'Authorization': localStorage.getItem("access-token"),
+          'Content-Type': 'application/json', 
+      },
+  })
+  return response.data;
+  }
+  
+  //녹화 종료 요청 
+  const stopRecording = () =>{
+    var stringId = String(userNo);
+    const response = axios.post(APPLICATION_SERVER_URL + 'api/record/stop/' + stringId, {}, {
+      headers: { 
+          'Authorization': localStorage.getItem("access-token"),
+          'Content-Type': 'application/json', 
+      },
+  });
+  return response.data;
+  }
+
   /**
    * --------------------------------------------
    * GETTING A TOKEN FROM YOUR APPLICATION SERVER
@@ -522,6 +546,40 @@ function LivePage() {
               onClick={leaveSession}
             >
               나가기
+            </Button>
+            <Button
+              className="exit-live-button"
+              variant="contained"
+              style={{
+                fontFamily: "MaplestoryOTFBold",
+                width: "50%",
+                height: "100%",
+                fontSize: "25px",
+                color: "white",
+                borderRadius: "20px",
+                texShadow: "0.1px 0.1px 4px #e892a4",
+                boxSizing: "border-box",
+              }}
+              onClick={startRecording}
+            >
+              녹화시작
+            </Button>
+            <Button
+              className="exit-live-button"
+              variant="contained"
+              style={{
+                fontFamily: "MaplestoryOTFBold",
+                width: "50%",
+                height: "100%",
+                fontSize: "25px",
+                color: "white",
+                borderRadius: "20px",
+                texShadow: "0.1px 0.1px 4px #e892a4",
+                boxSizing: "border-box",
+              }}
+              onClick={stopRecording}
+            >
+              녹화중단
             </Button>
             <button onClick={test}>test</button>
           </Grid>
