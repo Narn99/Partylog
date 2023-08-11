@@ -17,10 +17,12 @@ const LogInPage = () => {
   })
 
   useEffect(() => {
+    console.log("로그인 여부: " + isAuthenticated);
     if(isAuthenticated) {
       navigate(`/user/${userNo}`);
     }
   })
+
 
   const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
   const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;

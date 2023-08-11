@@ -91,16 +91,13 @@ function UserPage() {
       }})
       .then((res) => {
         console.log(res)
-        // console.log(res.status);
         const data = res.data.data;
-        // console.log(data);
         setUserData({
           userNo: data.userNo,
           userNickname: data.userNickname,
           userBirthday: data.userBirthday,
           userProfile: data.userProfile,
         });
-        // setRecivedMessages(data.letterResponseBody);
         setFolloweeCount(data.followeeSum);
         setFollowerCount(data.followerSum);
 
@@ -153,20 +150,19 @@ function UserPage() {
             if(response.code === "J001") {
               console.log("리프레시 토큰 만료");
               dispatch(logoutUser());
-              localStorage.setItem("access-token", null);
-              localStorage.setItem("refresh-token", null);
+              localStorage.clear();
               alert("다시 로그인 해주세요");
               navigate("/");
             } else {
               alert(response.message);
               dispatch(logoutUser());
-              localStorage.setItem("access-token", null);
-              localStorage.setItem("refresh-token", null);
+              localStorage.clear();
               navigate("/");
             }
           })
         } else {
           alert("문제가 발생했습니다.");
+          localStorage.clear();
           navigate("/");
         }
       });

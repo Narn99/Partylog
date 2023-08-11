@@ -1,5 +1,5 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
 import Button from "@mui/material/Button";
@@ -25,7 +25,7 @@ function LivePage() {
   var [myUserName, setMyUserName] = useState(userInfo.userNickname);
   var [session, setSession] = useState(OV.initSession());
   var [mainStreamManager, setMainStreamManager] = useState(undefined);
-  var [publisher, setPublisher] = useState(undefined); // eslint-disable-line no-unused-vars
+  var [publisher, setPublisher] = useState(undefined); 
   var [subscribers, setSubscribers] = useState([]);
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
@@ -38,36 +38,6 @@ function LivePage() {
   const changeChatBoxSize = isMediumScreen ? "95%" : "90%";
   const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
 
-  useEffect(() => {
-    console.log("작동")
-    joinSession();     
-    // eslint-disable-next-line
-  }, []);
-
-  // const viewers = [
-  //   "강아지",
-  //   "레서판다",
-  //   "닭",
-  //   "펭귄",
-  //   "익룡",
-  //   "호모사피엔스",
-  //   "감자",
-  //   "고구마",
-  //   "개미핥기",
-  //   "호모에렉투스",
-  //   "고대초전도체",
-  //   "터미네이터",
-  //   "구글",
-  //   "구글",
-  //   "구글",
-  //   "구글",
-  //   "구글",
-  //   "구글",
-  //   "쿼카",
-  //   "연세우유생크림빵",
-  //   "국뽕치사량흡입",
-  // ];
-
   const handleMainVideoStream = (stream) => {
     console.log(stream);
     if (mainStreamManager !== stream) {
@@ -76,11 +46,10 @@ function LivePage() {
   };
 
   const deleteSubscriber = (streamManager) => {
-    let index = subscribers.indexOf(streamManager, 0);
-    if (index > -1) {
-      subscribers.splice(index, 1);
-      setSubscribers(subscribers);
-    }
+    setSubscribers(prev => [
+      ...prev,
+      streamManager
+    ]);
   };
 
   const joinSession = () => {
@@ -100,8 +69,6 @@ function LivePage() {
         // Subscribe to the Stream to receive it. Second parameter is undefined
         // so OpenVidu doesn't create an HTML video by its own
         var subscriber = mySession.subscribe(event.stream, undefined);
-        // subscribers.push(subscriber);
-
         // Update the state with the new subscribers
         setSubscribers(prev => [
           ...prev,
@@ -112,6 +79,7 @@ function LivePage() {
     // On every Stream destroyed...
     mySession.on("streamDestroyed", (event) => {
       console.log("스트림 삭제");
+      console.log(subscribers)
       // Remove the stream from 'subscribers' array
       deleteSubscriber(event.stream.streamManager);
     });
@@ -179,7 +147,8 @@ function LivePage() {
 
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-
+    console.log("세션 종료");
+    console.log(subscribers)
     const mySession = session;
 
     if (mySession) {
@@ -189,7 +158,7 @@ function LivePage() {
     // Empty all properties...
     OV = null;
     setSession(undefined);
-    setSubscribers([]);
+    // setSubscribers([]);
     setMysessionId("");
     setMyUserName("");
     setMainStreamManager(undefined);
@@ -210,8 +179,8 @@ function LivePage() {
       .then((res) => {
         console.log(res);
       });
-
-    window.close();
+      console.log(subscribers)
+    // window.close();
   };
 
   /**
@@ -269,6 +238,10 @@ function LivePage() {
     console.log(response.data.message);
     return response.data.data; // The token
   };
+
+  const test = () => {
+    joinSession();
+  }
 
   return (
     <div>
@@ -366,18 +339,18 @@ function LivePage() {
               >
                 {/* <ViewersCarousel viewers={viewers} /> */}
                 <div id="video-container" className="col-md-6">
-                {publisher !== undefined ? (
-                                <div className="stream-container col-md-6 col-xs-6" id="my-stream-container" onClick={() => handleMainVideoStream(publisher)}>
-                                    <UserVideoComponent
-                                        streamManager={publisher} />
-                                </div>
-                            ) : null}
-                            {subscribers.map((sub, i) => (
-                                <div key={sub.id} className="stream-container col-md-6 col-xs-6 subscriber-stream-container" onClick={() => handleMainVideoStream(sub)}>
-                                    <span>{sub.id}</span>
-                                    <UserVideoComponent streamManager={sub} />
-                                </div>
-                            ))}
+                  {publisher !== undefined ? (
+                      <div className="stream-container col-md-6 col-xs-6" id="my-stream-container" onClick={() => handleMainVideoStream(publisher)}>
+                          <UserVideoComponent
+                              streamManager={publisher} />
+                      </div>
+                  ) : null}
+                  {subscribers.map((sub, i) => (
+                      <div key={sub.id} className="stream-container col-md-6 col-xs-6 subscriber-stream-container" onClick={() => handleMainVideoStream(sub)}>
+                          <span>{sub.id}</span>
+                          <UserVideoComponent streamManager={sub} />
+                      </div>
+                  ))}
                 </div>
               </Grid>
             </Grid>
@@ -489,6 +462,7 @@ function LivePage() {
             >
               나가기
             </Button>
+            <button onClick={test}>test</button>
           </Grid>
         </Grid>
       )}
