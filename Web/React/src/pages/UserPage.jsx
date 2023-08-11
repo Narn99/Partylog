@@ -130,41 +130,46 @@ function UserPage() {
         setloading(false);
       })
       .catch((err) => {
-        var response = err.response.data;
-        if(response.code === "J001") {
-          console.log("액세스 토큰 재발급 필요");
-          axios.get(`${SERVER_API_URL}/user/recreateAccessToken`,
-          {
-            headers: { 
-              'Authorization': refreshToken,
-             }
-          })
-          .then(res => {
-            console.log("액세스 토큰 재발급 성공");
-            localStorage.setItem("access-token", res.headers.get("authorization"));
-            setloading(false);
-          })
-          .catch((err) => {
-            console.log(err)
-            var response = err.response.data;
-            if(response.code === "J001") {
-              console.log("리프레시 토큰 만료");
-              dispatch(logoutUser());
-              localStorage.clear();
-              alert("다시 로그인 해주세요");
-              navigate("/");
-            } else {
-              alert(response.message);
-              dispatch(logoutUser());
-              localStorage.clear();
-              navigate("/");
-            }
-          })
-        } else {
-          alert("문제가 발생했습니다.");
-          localStorage.clear();
-          navigate("/");
-        }
+        console.log(err);
+        localStorage.clear();
+        dispatch(logoutUser());
+        navigate("/");
+        /* 추후 수정 예정 */
+        // var response = err.response.data;
+        // if(response.code === "J001") {
+        //   console.log("액세스 토큰 재발급 필요");
+        //   axios.get(`${SERVER_API_URL}/user/recreateAccessToken`,
+        //   {
+        //     headers: { 
+        //       'Authorization': refreshToken,
+        //      }
+        //   })
+        //   .then(res => {
+        //     console.log("액세스 토큰 재발급 성공");
+        //     localStorage.setItem("access-token", res.headers.get("authorization"));
+        //     setloading(false);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err)
+        //     var response = err.response.data;
+        //     if(response.code === "J001") {
+        //       console.log("리프레시 토큰 만료");
+        //       dispatch(logoutUser());
+        //       localStorage.clear();
+        //       alert("다시 로그인 해주세요");
+        //       navigate("/");
+        //     } else {
+        //       alert(response.message);
+        //       dispatch(logoutUser());
+        //       localStorage.clear();
+        //       navigate("/");
+        //     }
+        //   })
+        // } else {
+        //   alert("문제가 발생했습니다.");
+        //   localStorage.clear();
+        //   navigate("/");
+        // }
       });
   } // eslint-disable-next-line react-hooks/exhaustive-deps
   , []);
