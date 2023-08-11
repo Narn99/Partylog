@@ -447,6 +447,28 @@ function LivePage() {
             </div>
           </div>
         </Grid>
+        {isMediumScreen && (
+          <Grid item xs={12}>
+            <Button
+              className="exit-live-button"
+              variant="contained"
+              style={{
+                fontFamily: "MaplestoryOTFBold",
+                width: "100%",
+                height: "100%",
+                fontSize: "25px",
+                color: "white",
+                borderRadius: "20px",
+                texShadow: "0.1px 0.1px 4px #e892a4",
+                boxSizing: "border-box",
+                marginTop: "10px",
+              }}
+              onClick={leaveSession}
+            >
+              나가기
+            </Button>
+          </Grid>
+        )}
       </Grid>
 
       {!isMediumScreen && (

@@ -5,7 +5,7 @@ import { Modal, Box, Typography, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import FollowTabs from "../components/FollowTabs";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { firework2 } from "../components/firework2";
 
@@ -13,19 +13,19 @@ const Box1 = styled(Box)(({ theme }) => ({
   backgroundColor: "#fbb3c2",
   borderRadius: "30px",
   padding: theme.spacing(2),
-  position: "relative",
-  [theme.breakpoints.down("sm")]: {
-    height: "500px",
-    width: "100%",
-  },
-  [theme.breakpoints.between("sm", "md")]: {
-    height: "500px",
-    width: "100%",
-  },
-  [theme.breakpoints.up("md")]: {
-    height: "500px",
-    width: "100%",
-  },
+  // border: "20px solid #fbb3c2",
+  // [theme.breakpoints.down("sm")]: {
+  height: "500px",
+  //   width: "100%",
+  // },
+  // [theme.breakpoints.between("sm", "md")]: {
+  //   height: "500px",
+  //   width: "100%",
+  // },
+  // [theme.breakpoints.up("md")]: {
+  //   height: "500px",
+  //   width: "100%",
+  // },
 }));
 
 function MyFriend(props) {
@@ -137,12 +137,24 @@ function MyFriend(props) {
       });
   };
 
+  const navigate = useNavigate();
+  const handleClickNickname = () => {
+    navigate(`/user/${userNum}`);
+  };
+
   return (
     <div>
       <NavBar />
       <div>
-        <Grid container spacing={2}>
-          <Grid item sm={12} md={3}>
+        <Grid container spacing={2} justifyContent={"space-evenly"}>
+          <Grid
+            container
+            item
+            xs={12}
+            md={3}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
             <Grid
               container
               direction="column"
@@ -154,12 +166,20 @@ function MyFriend(props) {
                 alt="profileimg"
                 className="UserPage-profileimg"
                 style={{
-                  Width: "260px",
-                  Height: "260px",
+                  minWidth: "240px",
+                  minHeight: "240px",
+                  height: "100%",
+                  width: "100%",
+                  maxWidth: "270px",
+                  maxHeight: "270px",
                 }}
               />
 
-              <p className="UserPage-nickname">
+              <p
+                className="UserPage-nickname"
+                onClick={handleClickNickname}
+                style={{ cursor: "pointer" }}
+              >
                 <span>{userNickname}</span>{" "}
                 <span style={{ fontSize: "20px" }}>#{userNum}</span>
               </p>
@@ -184,7 +204,7 @@ function MyFriend(props) {
                     lineHeight: "30px",
                     borderRadius: "40px",
                     texShadow: "0.1px 0.1px 4px #e892a4",
-                    marginTop: "20px",
+                    marginTop: "10px",
                   }}
                 >
                   {isFollowing
@@ -197,7 +217,7 @@ function MyFriend(props) {
             </Grid>
           </Grid>
 
-          <Grid item sm={12} md={8}>
+          <Grid item xs={12} md={8}>
             <Box1>
               <div className="follow-tabs-background">
                 <FollowTabs userNum={userNum} MyuserNum={MyuserNum} />
