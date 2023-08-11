@@ -29,6 +29,8 @@ function LivePage() {
   var [subscribers, setSubscribers] = useState([]);
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
+  const [isJoinCheck, setIsJoinCheck] = useState(false);
+
   const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
