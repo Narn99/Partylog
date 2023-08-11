@@ -150,6 +150,7 @@ function UserPage() {
                   "access-token",
                   res.headers.get("authorization")
                 );
+                window.location.reload();
                 setloading(false);
               })
               .catch((err) => {
@@ -299,15 +300,18 @@ function UserPage() {
                     <span>{userData.userNickname}</span>{" "}
                     <span style={{ fontSize: "20px" }}>#{userData.userNo}</span>
                   </p>
-                  <UserFollowButton
-                    pageOwner={pageOwner}
-                    myUserNo={myUserNo}
-                    userNo={userNo}
-                    accessToken={accessToken}
-                    SERVER_API_URL={SERVER_API_URL}
-                    changeFollowButtonFontSize={changeFollowButtonFontSize}
-                    changeLiveButtonWidth={changeLiveButtonWidth}
-                  />
+                  {!pageOwner && (
+                    <UserFollowButton
+                      setFollowerCount={setFollowerCount}
+                      pageOwner={pageOwner}
+                      myUserNo={myUserNo}
+                      userNo={userNo}
+                      accessToken={accessToken}
+                      SERVER_API_URL={SERVER_API_URL}
+                      changeFollowButtonFontSize={changeFollowButtonFontSize}
+                      changeLiveButtonWidth={changeLiveButtonWidth}
+                    />
+                  )}
                 </Grid>
                 <Grid item>
                   <Link to={`/myfriend/${userNo}`} className="myLink">
@@ -325,7 +329,7 @@ function UserPage() {
                     userBirthday={userData.userBirthday}
                     todayIsBirthday={todayIsBirthday}
                     setTodayIsBirthday={setTodayIsBirthday}
-                    // pageOwner={pageOwner}
+                    pageOwner={pageOwner}
                   />
                 </Grid>
                 {/* 해당 유저 생일일 때만 버튼 보이기 */}

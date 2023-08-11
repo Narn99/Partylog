@@ -208,7 +208,7 @@ function LivePage() {
         console.log(res);
       });
 
-    window.close();
+    // window.close();
   };
 
   /**
@@ -316,13 +316,13 @@ function LivePage() {
               >
                 <Grid
                   item
-                  xs={10}
+                  xs={7}
                   style={{
                     height: "100%",
                     minHeight: "200px",
-                    minWidth: "300px",
+                    minWidth: "200px",
                     // height: "300px",
-                    backgroundColor: "green",
+                    backgroundColor: "black",
                     color: "white",
                     display: "flex",
                     justifyContent: "center",
