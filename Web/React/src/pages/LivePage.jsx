@@ -1,5 +1,5 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import axios from "axios";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
 import Button from "@mui/material/Button";
@@ -31,6 +31,10 @@ function LivePage() {
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
   const [isJoinCheck, setIsJoinCheck] = useState(false);
+  
+  const [recorder, setRecorder] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordedChunks, setRecordedChunks] = useState([]);
 
   // const myUserNo = useSelector((state) => state.auth.userNo);
 
@@ -51,7 +55,6 @@ function LivePage() {
 
   useEffect(() => {
     if (isJoinCheck) {
-      console.log("얍!!!!");
       joinSession();
     }
   }, [isJoinCheck]);
@@ -76,7 +79,7 @@ function LivePage() {
 
     // --- 2) Init a session ---
     // setSession(OV.initSession())
-
+    
     var mySession = session;
     // --- 3) Specify the actions when events take place in the session ---
 
@@ -195,6 +198,94 @@ function LivePage() {
         window.close();
       });
     console.log(subscribers);
+  };
+
+  // //녹화 시작 요청
+  // const startRecording = () =>{
+  //   var stringId = String(userNo);
+  //   const response = axios.post(APPLICATION_SERVER_URL + 'api/record/start/' + stringId, {}, {
+  //     headers: { 
+  //         'Authorization': localStorage.getItem("access-token"),
+  //         'Content-Type': 'application/json', 
+  //     },
+  // })
+  // return response.data;
+  // }
+  
+  // //녹화 종료 요청 
+  // const stopRecording = () =>{
+  //   var stringId = String(userNo);
+  //   const response = axios.post(APPLICATION_SERVER_URL + 'api/record/stop/' + stringId, {}, {
+  //     headers: { 
+  //         'Authorization': localStorage.getItem("access-token"),
+  //         'Content-Type': 'application/json', 
+  //     },
+  //   });
+  //     return response.data;
+  //   }
+
+  const startRecording = async () => {
+    setIsRecording(true);
+  
+    const displayStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+    const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      // 오픈비두의 mainStreamManager에서 얻은 오디오 스트림을 가져옵니다
+    const openViduAudioStream = mainStreamManager && mainStreamManager.stream
+    ? mainStreamManager.stream.getMediaStream().getAudioTracks()[0]
+    : null;
+
+    const mixedStream = new MediaStream();
+    displayStream.getVideoTracks().forEach(track => mixedStream.addTrack(track));
+    audioStream.getAudioTracks().forEach(track => mixedStream.addTrack(track));
+    // if (openViduAudioStream) {
+    //   mixedStream.addTrack(openViduAudioStream);
+    // }
+    // 다른 참여자의 음성 스트림을 녹음 스트림에 추가
+   subscribers.forEach(sub => {
+    const audioTrack = sub.stream.getMediaStream().getAudioTracks()[0];
+    if (audioTrack) {
+      mixedStream.addTrack(audioTrack);
+    }
+  });
+  
+    const mediaRecorder = new MediaRecorder(mixedStream);
+    const chunks = [];
+  
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        chunks.push(event.data);
+        setRecordedChunks(chunks); // Reset recordedChunks when starting a new recording
+      }
+    };
+    
+    mediaRecorder.start();
+    setRecorder(mediaRecorder);
+  };
+  
+  const stopRecording = () => {
+    setIsRecording(false);
+  
+    if (recorder) {
+      recorder.stop();
+      recorder.stream.getTracks().forEach(track => track.stop());
+    }
+  };
+  
+  const downloadRecording = () => {
+    if (recordedChunks.length === 0) {
+      console.log("No recorded data to download.");
+      return;
+    }
+  
+    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = 'recorded-video.webm';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   /**
@@ -514,12 +605,73 @@ function LivePage() {
               >
                 나가기
               </Button>
+              {isRecording ? (
+              <Button
+              className="exit-live-button"
+              variant="contained"
+              style={{
+                fontFamily: "MaplestoryOTFBold",
+                width: "50%",
+                height: "100%",
+                fontSize: "25px",
+                color: "white",
+                borderRadius: "20px",
+                texShadow: "0.1px 0.1px 4px #e892a4",
+                boxSizing: "border-box",
+              }}
+              onClick={stopRecording}
+            >
+              녹화중단
+            </Button>
+             ) : (
+            <Button
+              className="exit-live-button"
+              variant="contained"
+              style={{
+                fontFamily: "MaplestoryOTFBold",
+                width: "50%",
+                height: "100%",
+                fontSize: "25px",
+                color: "white",
+                borderRadius: "20px",
+                texShadow: "0.1px 0.1px 4px #e892a4",
+                boxSizing: "border-box",
+              }}
+              onClick={startRecording}
+            >
+              녹화시작
+            </Button>
+            )}
+            {recordedChunks.length > 0 && (
+              <Button
+              className="exit-live-button"
+              variant="contained"
+              style={{
+                fontFamily: "MaplestoryOTFBold",
+                width: "50%",
+                height: "100%",
+                fontSize: "25px",
+                color: "white",
+                borderRadius: "20px",
+                texShadow: "0.1px 0.1px 4px #e892a4",
+                boxSizing: "border-box",
+              }}
+              onClick={downloadRecording}
+            >다운로드</Button>
+            )}
+           {/* <video ref={videoRef} controls style={{ maxWidth: '100%' }}>
+              {recordedChunks.map((chunk, index) => (
+          <source key={index} src={URL.createObjectURL(chunk)} type="video/webm" />
+            ))}
+           </video> */}
             </Grid>
           </Grid>
         )}
+
       </div>
     );
   }
+
 }
 
 export default LivePage;
