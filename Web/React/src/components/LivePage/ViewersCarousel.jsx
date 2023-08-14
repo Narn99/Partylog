@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 function ViewersCarousel(props) {
-  const { viewers } = props;
+  const { viewers, UserVideoComponent, handleMainVideoStream, userNo } = props;
 
   const theme = useTheme();
 
@@ -17,7 +17,7 @@ function ViewersCarousel(props) {
   const [carouselPageViewers, setCarouselPageViewers] = useState([]);
 
   const updateCarouselViewers = useCallback(() => {
-    const viewersPerPage = isSmallScreen ? 6 : isLargeScreen ? 8 : 12;
+    const viewersPerPage = isSmallScreen ? 2 : isLargeScreen ? 3 : 4;
     const carouselPage = Math.ceil(viewers.length / viewersPerPage);
     const carouselPages =
       carouselPage < 1
@@ -55,66 +55,81 @@ function ViewersCarousel(props) {
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-      }}
+    <Grid
+      container
+      style={{ width: "100%", height: "100%" }}
+      justifyContent={"center"}
+      alignItems={"center"}
     >
-      <Slider {...settings}>
-        {carouselPages.map((pageIndex) => (
-          <div
-            key={`viewersCarousel-${pageIndex}`}
-            style={{ width: "100%", height: "100%" }}
-          >
-            <Grid
-              container
-              justifyContent={"space-evenly"}
-              alignItems={"center"}
-              spacing={1}
+      {/* 세로 중앙 정렬 하려면 아래 div */}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <Slider {...settings}>
+          {carouselPages.map((pageIndex) => (
+            <div
+              key={`viewersCarousel-${pageIndex}`}
+              style={{ width: "100%", height: "100%" }}
             >
-              {carouselPageViewers[pageIndex].map((viewer, idx) => (
-                <Grid
-                  item
-                  xs={4}
-                  sm={3}
-                  lg={2}
-                  key={`viewer-${idx}`}
-                  style={{
-                    position: "relative",
-                    width: "90%",
-                    height: "90%",
-                    objectFit: "fill",
-                    // minHeight: "170px",
-                    // marginTop: "30px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "90%",
-                      backgroundColor: "black",
-                      color: "white",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "15px",
-                      flexWrap: "nowrap",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                      overflow: "hidden",
-                      maxHeight: "40px",
-                    }}
-                    className="viewer-display"
-                  >
-                    <p>{getLength(viewer, 8)}</p>
-                  </div>
-                </Grid>
-              ))}
-            </Grid>
-          </div>
-        ))}
-      </Slider>
-    </div>
+              <Grid
+                container
+                justifyContent={"space-evenly"}
+                alignItems={"center"}
+                spacing={1}
+              >
+                {carouselPageViewers[pageIndex].map(
+                  (viewer, idx) => (
+                    // parseInt(
+                    //   JSON.parse(viewer.stream.connection.data).clientNo
+                    // ) !== parseInt(userNo) && (
+                    <Grid
+                      item
+                      xs={6}
+                      sm={4}
+                      lg={3}
+                      key={`viewer-${idx}`}
+                      style={{
+                        position: "relative",
+                        width: "90%",
+                        height: "90%",
+                        objectFit: "fill",
+                        // minHeight: "170px",
+                        // marginTop: "30px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "90%",
+                          color: "white",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: "15px",
+                          flexWrap: "nowrap",
+                          whiteSpace: "nowrap",
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          maxHeight: "200px",
+                        }}
+                        className="viewer-display"
+                        onClick={() => handleMainVideoStream(viewer)}
+                      >
+                        <span>{viewer.id}</span>
+                        <UserVideoComponent streamManager={viewer} />
+                      </div>
+                    </Grid>
+                  )
+                  // )
+                )}
+              </Grid>
+            </div>
+          ))}
+        </Slider>
+      </div>
+    </Grid>
   );
 }
 

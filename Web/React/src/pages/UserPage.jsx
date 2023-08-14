@@ -393,7 +393,7 @@ function UserPage() {
                         texShadow: "0.1px 0.1px 4px #e892a4",
                         marginTop: "20px",
                       }}
-                      disabled={!todayIsBirthday}
+                      // disabled={!todayIsBirthday}
                     >
                       {!todayIsBirthday ? (
                         <>

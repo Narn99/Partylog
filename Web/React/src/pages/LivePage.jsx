@@ -5,7 +5,7 @@ import ButtonGroups from "../components/LivePage/ButtonGroups";
 import Button from "@mui/material/Button";
 import ChatBox from "../components/LivePage/ChatBox";
 import JoinCheck from "../components/LivePage/JoinCheck";
-// import ViewersCarousel from "../components/LivePage/ViewersCarousel";
+import ViewersCarousel from "../components/LivePage/ViewersCarousel";
 
 /* Openvidu 관련 컴포넌트 */
 import "../css/Openvidu.css";
@@ -25,8 +25,11 @@ function LivePage() {
   var [mySessionId, setMysessionId] = useState(`Session${userNo}`);
   var [myUserName, setMyUserName] = useState(userInfo.userNickname);
   var [session, setSession] = useState(OV.initSession());
+
+  // MainStreamManager를 방 만든 사람으로 고쳐야됨
   var [mainStreamManager, setMainStreamManager] = useState(undefined);
   var [publisher, setPublisher] = useState(undefined);
+  const [roomHostUserInfo, setRoomHostUserInfo] = useState(null);
   var [subscribers, setSubscribers] = useState([]);
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
@@ -44,22 +47,39 @@ function LivePage() {
   const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
 
   useEffect(() => {
-    return () => {
-      leaveSession();
-    };
-  }, []);
-
-  useEffect(() => {
     if (isJoinCheck) {
       console.log("얍!!!!");
       joinSession();
     }
   }, [isJoinCheck]);
 
+  useEffect(() => {
+    if (roomHostUserInfo) {
+      initialMainVideoStreamer();
+    }
+  }, [roomHostUserInfo]);
+
+  console.log("호잇");
+  console.log(mainStreamManager);
+
   const handleMainVideoStream = (stream) => {
     console.log(stream);
     if (mainStreamManager !== stream) {
       setMainStreamManager(stream);
+    }
+  };
+
+  // 본인이 방 주인이 아니라면 방 주인을 MainStreamer로 지정
+  const initialMainVideoStreamer = () => {
+    if (parseInt(userInfo.userNo) !== parseInt(userNo)) {
+      const mainStreamer = subscribers.filter((subscriber) => {
+        return (
+          parseInt(JSON.parse(subscriber.stream.connection.data).clientNo) ===
+          parseInt(JSON.parse(roomHostUserInfo.stream.connection.data).clientNo)
+        );
+      });
+      console.log(mainStreamer);
+      setMainStreamManager(mainStreamer[0]);
     }
   };
 
@@ -83,6 +103,12 @@ function LivePage() {
     // On every new Stream received...
     mySession.on("streamCreated", (event) => {
       console.log("새로운 스트림 생성");
+      // const creatorUserInfo = JSON.parse(event.stream.connection.data);
+      setRoomHostUserInfo(event);
+      // if (parseInt(creatorUserInfo.clientNo) === parseInt(userInfo.userNo)) {
+      //   console.log(`방장 id = ${creatorUserInfo.clientNo}`);
+      //   // initialMainVideoStreamer(event);
+      // }
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       var subscriber = mySession.subscribe(event.stream, undefined);
@@ -110,7 +136,7 @@ function LivePage() {
       // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
       // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
       mySession
-        .connect(token, { clientData: myUserName })
+        .connect(token, { clientData: myUserName, clientNo: userInfo.userNo })
         .then(async () => {
           // --- 5) Get your own camera stream ---
 
@@ -146,8 +172,13 @@ function LivePage() {
 
           // Set the main video in the page to display our webcam and store our Publisher
           setCurrentVideoDevice(currentVideoDevice);
-          setMainStreamManager(publisher);
+          if (parseInt(userNo) === parseInt(userInfo.userNo)) {
+            setMainStreamManager(publisher);
+          }
           setPublisher(publisher);
+          setSubscribers((prev) => [...prev, publisher]);
+
+          // initialMainVideoStreamer();
         })
         .catch((error) => {
           console.log(
@@ -158,6 +189,8 @@ function LivePage() {
         });
     });
   };
+
+  console.log(subscribers);
 
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
@@ -358,30 +391,14 @@ function LivePage() {
                   // xs={12}
                   justifyContent={"space-evenly"}
                   alignItems={"center"}
-                  // style={{ height: "30%" }}
+                  style={{ height: "30%" }}
                 >
-                  {/* <ViewersCarousel viewers={viewers} /> */}
-                  <div id="video-container" className="col-md-6">
-                    {publisher !== undefined ? (
-                      <div
-                        className="stream-container col-md-6 col-xs-6"
-                        id="my-stream-container"
-                        onClick={() => handleMainVideoStream(publisher)}
-                      >
-                        <UserVideoComponent streamManager={publisher} />
-                      </div>
-                    ) : null}
-                    {subscribers.map((sub, i) => (
-                      <div
-                        key={sub.id}
-                        className="stream-container col-md-6 col-xs-6 subscriber-stream-container"
-                        onClick={() => handleMainVideoStream(sub)}
-                      >
-                        <span>{sub.id}</span>
-                        <UserVideoComponent streamManager={sub} />
-                      </div>
-                    ))}
-                  </div>
+                  <ViewersCarousel
+                    viewers={subscribers}
+                    UserVideoComponent={UserVideoComponent}
+                    handleMainVideoStream={handleMainVideoStream}
+                    userNo={userNo}
+                  />
                 </Grid>
               </Grid>
             </div>
@@ -487,7 +504,7 @@ function LivePage() {
                 height: "100%",
               }}
             >
-              <ButtonGroups mainStreamManager={mainStreamManager} />
+              <ButtonGroups publisher={publisher} />
             </Grid>
 
             <Grid

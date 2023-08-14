@@ -34,7 +34,7 @@ function JoinCheck(props) {
       <Grid
         item
         container
-        xs={12}
+        xs={10}
         md={3}
         justifyContent={"center"}
         alignItems={"center"}
@@ -58,7 +58,7 @@ function JoinCheck(props) {
       <Grid
         item
         container
-        xs={12}
+        xs={10}
         md={3}
         justifyContent={"center"}
         alignItems={"center"}

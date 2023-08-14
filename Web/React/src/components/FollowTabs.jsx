@@ -220,6 +220,7 @@ function FollowTabs(props) {
                       borderRadius: "50%",
                       border: "1px solid #e0e0e0",
                       objectFit: "cover",
+                      marginRight: "10px",
                     }}
                   />
                   <ListItemText>
@@ -254,6 +255,7 @@ function FollowTabs(props) {
                       borderRadius: "50%",
                       border: "1px solid #e0e0e0",
                       objectFit: "cover",
+                      marginRight: "10px",
                     }}
                   />
                   <ListItemText>
