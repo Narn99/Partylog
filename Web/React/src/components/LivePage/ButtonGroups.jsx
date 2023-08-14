@@ -19,8 +19,7 @@ import CakeRoundedIcon from "@mui/icons-material/CakeRounded";
 // 일단 쓸지도 모르는 아이콘들 모아온 것
 
 function ButtonGroups(props) {
-
-  const {mainStreamManager } = props;
+  const { publisher } = props;
   const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -33,11 +32,11 @@ function ButtonGroups(props) {
   const [isVolumeOn, setIsVolumeOn] = useState(false);
 
   const handleMicToggle = () => {
-    mainStreamManager.publishAudio(isMicOn);
+    publisher.publishAudio(isMicOn);
     setIsMicOn(!isMicOn);
   };
   const handleCamToggle = () => {
-    mainStreamManager.publishVideo(isCamOn);
+    publisher.publishVideo(isCamOn);
     setIsCamOn(!isCamOn);
   };
   const handleMusicToggle = () => {
