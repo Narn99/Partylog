@@ -1,6 +1,8 @@
 import React from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import { Button } from "@mui/material";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Grid, createTheme, useMediaQuery } from "@mui/material";
 import MessageDetailText from "./MessageDetailText";
 
@@ -9,6 +11,7 @@ import MessageDetailText from "./MessageDetailText";
 function MessageDetail(props) {
   const {
     modalDetailOpen,
+    handleModalOpen,
     handleModalDetailClose,
     randomStickyNote,
     selectedMessage,
@@ -33,6 +36,17 @@ function MessageDetail(props) {
     ? "30%"
     : "27%";
 
+  const changeButtonFontSize = isMediumScreen
+    ? "13px"
+    : isLargeScreen
+    ? "18px"
+    : "23px";
+  const changeButtonSize = isMediumScreen
+    ? "80px"
+    : isLargeScreen
+    ? "100px"
+    : "120px";
+
   const style = {
     position: "fixed",
     top: "27%",
@@ -42,10 +56,11 @@ function MessageDetail(props) {
     height: "30%",
     minWidth: "300px",
     minHeight: "300px",
-    // bgcolor: "background.paper",
-    // border: "2px solid #000",
-    // boxShadow: 24,
-    // p: 4,
+  };
+
+  const handleFixModalText = () => {
+    handleModalOpen();
+    handleModalDetailClose();
   };
 
   return (
@@ -56,6 +71,16 @@ function MessageDetail(props) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={{ ...style, top: changeModalDetailVerticalPosition }}>
+        <CloseRoundedIcon
+          onClick={handleModalDetailClose}
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            cursor: "pointer",
+            fontSize: "35px",
+          }}
+        />
         {modalDetailOpen && <Grid container>{randomStickyNote}</Grid>}
         <MessageDetailText
           detailMessage={selectedMessage}
@@ -63,6 +88,27 @@ function MessageDetail(props) {
           isMediumScreen={isMediumScreen}
           isSmallScreen={isSmallScreen}
         />
+        <Grid container justifyContent={"center"}>
+          <Button
+            className="message-close-button"
+            type="submit"
+            onClick={handleFixModalText}
+            variant="contained"
+            style={{
+              position: "absolute",
+              cursor: "pointer",
+              color: "white",
+              fontFamily: "MaplestoryOTFBold",
+              width: changeButtonSize,
+              fontSize: changeButtonFontSize,
+              borderRadius: "50px",
+              padding: "10px",
+              transform: "translateY(-130%)",
+            }}
+          >
+            수정
+          </Button>
+        </Grid>
       </Box>
     </Modal>
   );

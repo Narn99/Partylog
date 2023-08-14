@@ -3,7 +3,7 @@ import { authReducer } from "./authReducer";
 import { modalDataReducer } from "./modalDataReducer";
 import { messagesDataReducer } from "./messagesDataReducer";
 import { persistReducer } from "redux-persist"; // redux-persist의 persistReducer import
-import storage from "redux-persist/lib/storage"; // storage engine
+import storage from "redux-persist/lib/storage/session"; // storage engine
 
 const persistConfig = {
   key: "root",

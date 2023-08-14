@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
 import ModalText from "./ModalText";
 import { Button } from "@mui/material";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useDispatch, useSelector } from "react-redux";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -15,7 +16,6 @@ import {
   resetModalData,
   addMyMessageData,
   getInitailMessagesList,
-  // getAdditionalMessagesList,
   deleteMessageData,
 } from "../actions/actions";
 import axios from "axios";
@@ -24,11 +24,9 @@ function MessageModal(props) {
   const {
     userNo,
     myUserNo,
-    // pageOwner,
     modalOpen,
     handleModalClose,
     randomStickyNote,
-    // isSmallScreen,
     isMediumScreen,
     isLargeScreen,
     myMessage,
@@ -36,17 +34,12 @@ function MessageModal(props) {
 
   const style = {
     position: "fixed",
-    // top: "30%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "35%",
     height: "30%",
     minWidth: "300px",
     minHeight: "300px",
-    // bgcolor: "background.paper",
-    // border: "2px solid #000",
-    // boxShadow: 24,
-    // p: 4,
   };
 
   const modalTitle = useSelector((state) => state.modalData.modalTitle);
@@ -68,6 +61,8 @@ function MessageModal(props) {
 
   const [isConfirmReset, setIsConfirmReset] = useState(false);
 
+  // 이벤트 함수들
+
   const handleRequestReset = () => {
     setIsConfirmReset(true);
   };
@@ -80,9 +75,6 @@ function MessageModal(props) {
   const handleCancelReset = () => {
     setIsConfirmReset(false);
   };
-
-  // 메시지 삭제용 버튼. 메시지 messageUserNo가 본인거랑 같다면 보이고, 삭제도 가능하게 수정해야됨.
-  // 일단 임시로 마지막 메시지가 삭제되게 해둠.
 
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
 
@@ -105,9 +97,7 @@ function MessageModal(props) {
 
   useEffect(() => {}, [myMessage]);
 
-  // const nowMessages = useSelector((state) => {
-  //   return state.messagesData.messages;
-  // });
+  // 메시지 제출
 
   const handleSubmitModalText = () => {
     if (modalTitle.length === 0 || modalDescription.length === 0) {
@@ -143,11 +133,10 @@ function MessageModal(props) {
     }
   };
 
+  // 메시지 삭제
+
   const handleDeleteMessage = () => {
-    // console.log(myUserNo);
-    // console.log(messageWriterId);
     if (parseInt(myUserNo) === parseInt(messageWriterId)) {
-      // console.log("goDelete");
       axios({
         method: "delete",
         url: `${SERVER_API_URL}/letter/delete/${messageId}`,
@@ -171,6 +160,8 @@ function MessageModal(props) {
       alert("메시지 작성자 본인이 아닙니다!");
     }
   };
+
+  // 메시지 수정
 
   const handleFixMessage = () => {
     if (modalTitle.length === 0 || modalDescription.length === 0) {
@@ -215,11 +206,6 @@ function MessageModal(props) {
     }
   };
 
-  // console.log("메시지모달의 마이메시지");
-  // console.log(myMessage);
-
-  // myMessage가 갱신이 안 돼서 메시지 작성 버튼이 안 바뀜
-
   const changeModalVerticalPosition = isMediumScreen
     ? "50%"
     : isLargeScreen
@@ -243,8 +229,17 @@ function MessageModal(props) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      {/* <Box sx={style}> */}
       <Box sx={{ ...style, top: changeModalVerticalPosition }}>
+        <CloseRoundedIcon
+          onClick={handleModalClose}
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            cursor: "pointer",
+            fontSize: "35px",
+          }}
+        />
         {modalOpen && <Grid container>{randomStickyNote}</Grid>}
         <ModalText
           modalTitle={modalTitle}
@@ -256,10 +251,10 @@ function MessageModal(props) {
             <Button
               className="MyPage-message-fix-button"
               type="submit"
+              variant="contained"
               onClick={handleFixMessage}
               style={{
                 cursor: "pointer",
-                backgroundColor: "#fbb3c2",
                 color: "white",
                 fontFamily: "MaplestoryOTFBold",
                 width: changeButtonSize,
@@ -277,10 +272,10 @@ function MessageModal(props) {
             <Button
               className="MyPage-message-delete-button"
               type="submit"
+              variant="contained"
               onClick={handleRequestDelete}
               style={{
                 cursor: "pointer",
-                backgroundColor: "#fbb3c2",
                 color: "white",
                 fontFamily: "MaplestoryOTFBold",
                 width: changeButtonSize,
@@ -299,7 +294,6 @@ function MessageModal(props) {
               onClick={handleSubmitModalText}
               style={{
                 cursor: "pointer",
-                backgroundColor: "#fbb3c2",
                 color: "white",
                 fontFamily: "MaplestoryOTFBold",
                 width: changeButtonSize,
@@ -315,10 +309,10 @@ function MessageModal(props) {
           <Button
             className="MyPage-message-reset-button"
             type="submit"
+            variant="contained"
             onClick={handleRequestReset}
             style={{
               cursor: "pointer",
-              backgroundColor: "#fbb3c2",
               color: "white",
               fontFamily: "MaplestoryOTFBold",
               width: changeButtonSize,
