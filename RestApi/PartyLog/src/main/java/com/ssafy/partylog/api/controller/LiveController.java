@@ -44,17 +44,17 @@ public class LiveController {
     @PostMapping("/api/sessions")
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
-        RecordingProperties recordingProperties = new RecordingProperties.Builder()
-                .outputMode(Recording.OutputMode.COMPOSED)
-                .recordingLayout(RecordingLayout.CUSTOM)
-                .customLayout("https://i9a501.p.ssafy.io/partylog/live/1005")
-                .resolution("640x480")
-                .frameRate(24)
-                .build();
+//        RecordingProperties recordingProperties = new RecordingProperties.Builder()
+//                .outputMode(Recording.OutputMode.INDIVIDUAL)
+//                .recordingLayout(RecordingLayout.BEST_FIT)
+//                .resolution("640x480")
+//                .frameRate(24)
+//                .build();
         SessionProperties sessionProperties = new SessionProperties.Builder()
-                .recordingMode(RecordingMode.MANUAL) // RecordingMode.ALWAYS for automatic recording
-                .defaultRecordingProperties(recordingProperties)
+//                .recordingMode(RecordingMode.MANUAL) // RecordingMode.ALWAYS for automatic recording
+//                .defaultRecordingProperties(recordingProperties)
                 .customSessionId(params.get("customSessionId").toString())
+                .forcedVideoCodec(VideoCodec.VP8)
                 .build();
         Session session = openvidu.createSession(sessionProperties);
 //        SessionProperties properties = SessionProperties.fromJson(params).build();
@@ -64,24 +64,24 @@ public class LiveController {
     }
 
 
-    @PostMapping("/api/record/start/{sessionId}")
-    public ResponseEntity<String> startRecording(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
-        RecordingProperties properties = new RecordingProperties.Builder()
-                .name("MY_RECORDING_NAME")
-                .build();
-        System.out.println("녹화빌드" + sessionId);
-        Recording recording = openvidu.startRecording("Session" + sessionId, properties); // Starts recording
-        System.out.println("녹화빌드완");
-        return new ResponseEntity<String>("녹화 시작", HttpStatus.OK);
-    }
-
-    @PostMapping("/api/record/stop/{sessionId}")
-    public ResponseEntity<String> stopRecording(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
-        System.out.println("녹화중단" + sessionId);
-        openvidu.stopRecording("Session" +sessionId); // Stops recording
-        System.out.println("녹화중단완");
-        return new ResponseEntity<String>("녹화 중단", HttpStatus.OK);
-    }
+//    @PostMapping("/api/record/start/{sessionId}")
+//    public ResponseEntity<String> startRecording(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
+//        RecordingProperties properties = new RecordingProperties.Builder()
+//                .name("MY_RECORDING_NAME")
+//                .build();
+//        System.out.println("녹화빌드" + sessionId);
+//        Recording recording = openvidu.startRecording("Session" + sessionId, properties); // Starts recording
+//        System.out.println("녹화빌드완");
+//        return new ResponseEntity<String>("녹화 시작", HttpStatus.OK);
+//    }
+//
+//    @PostMapping("/api/record/stop/{sessionId}")
+//    public ResponseEntity<String> stopRecording(@PathVariable("sessionId") String sessionId, @RequestBody(required = false) Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
+//        System.out.println("녹화중단" + sessionId);
+//        openvidu.stopRecording("Session" +sessionId); // Stops recording
+//        System.out.println("녹화중단완");
+//        return new ResponseEntity<String>("녹화 중단", HttpStatus.OK);
+//    }
 
     /**
      * @param sessionId The Session in which to create the Connection
