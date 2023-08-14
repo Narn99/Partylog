@@ -1,9 +1,13 @@
 package com.ssafy.data.repository
 
 import com.orhanobut.logger.Logger
+import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
+import com.skydoves.sandwich.suspendOnError
+import com.skydoves.sandwich.suspendOnException
+import com.skydoves.sandwich.suspendOnSuccess
 import com.ssafy.data.datasource.local.SharedPreference
 import com.ssafy.data.datasource.remote.LoginDatasource
 import com.ssafy.data.mapper.LoginMapper
@@ -12,6 +16,8 @@ import com.ssafy.domain.model.login.resp.CheckBirth
 import com.ssafy.domain.model.login.req.JoinWithBirthReq
 import com.ssafy.domain.model.login.resp.JoinWithBirthResp
 import com.ssafy.domain.repository.LoginRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(private val loginDatasource: LoginDatasource, private val sharedPreference: SharedPreference
@@ -61,18 +67,40 @@ class LoginRepositoryImpl @Inject constructor(private val loginDatasource: Login
         return sharedPreference.getMyid()
     }
 
-    override suspend fun checkAccessToken() {
+    override suspend fun checkAccessToken(): Flow<Int>  = flow {
+        Logger.d("access called")
         val resp = loginDatasource.checkAccessToken()
-        resp.onSuccess {
-            Logger.d("success")
-        }.onError {
-            Logger.d("err")
-        }.onException {
-            Logger.d("exception")
+        resp.suspendOnSuccess {
+            Logger.d("access success")
+            sharedPreference.setMyid(this.data.data)
+//            Logger.d(this.headers)
+//            sharedPreference.setAccessToken(this.headers.get("authorization")!!.split(" ")[1])
+//            sharedPreference.setRefreshToken(this.headers.get("refresh-token")!!.split(" ")[1])
+            emit(1)
+        }.suspendOnError {
+            Logger.d("access err")
+            emit(2)
+
+            Logger.d("access err${this.message()}")
+        }.suspendOnException {
+            Logger.d("access exception${this.message}")
+            emit(-1)
         }
     }
 
-    override suspend fun checkRefreshToken() {
-        TODO("Not yet implemented")
+    override suspend fun checkRefreshToken(): Flow<Int> = flow {
+        Logger.d("refresh called")
+        val resp = loginDatasource.checkRefreshToken()
+        resp.suspendOnSuccess {
+            Logger.d("refresh success")
+            sharedPreference.setAccessToken(this.headers.get("authorization")!!.split(" ")[1])
+            emit(1)
+        }.suspendOnError {
+            Logger.d("refresh err${this.message()}")
+            emit(2)
+        }.suspendOnException {
+            Logger.d("refresh exception")
+            emit(-1)
+        }
     }
 }
