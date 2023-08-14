@@ -71,6 +71,15 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideOkhttpCLient(authInterceptor: AuthInterceptor): OkHttpClient {
+        val logInterceptor = HttpLoggingInterceptor {
+            try {
+                JSONObject(it)
+                Logger.t("Interceptor").json(it)
+            } catch (error: JSONException) {
+            Logger.t("Interceptor").i(it)
+            }
+        }.setLevel(HttpLoggingInterceptor.Level.BODY)
+
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .addInterceptor(logInterceptor)
@@ -82,14 +91,6 @@ object ApiModule {
     fun provideAuthInterceptor(sharedPreference: SharedPreference): AuthInterceptor {
         return AuthInterceptor(sharedPreference)
     }
-    private val logInterceptor = HttpLoggingInterceptor {
-        try {
-            JSONObject(it)
-            Logger.t("Interceptor").json(it)
-        } catch (error: JSONException) {
-            Logger.t("Interceptor").i(it)
-        }
-    }.setLevel(HttpLoggingInterceptor.Level.BODY)
 }
 //            Logger.t("OKHTTP").i(it)
 //    }.setLevel(HttpLoggingInterceptor.Level.BODY)
