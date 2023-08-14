@@ -42,7 +42,7 @@ fun Login(
 
     val loginCode = viewModel.loginCode
 
-    autoLogin {viewModel.autoLogin()}
+    AutoLogin {viewModel.autoLogin(navToMain)}
 
 
     Image(
@@ -122,7 +122,7 @@ fun TitleFrame(modifier: Modifier = Modifier, font: FontFamily) {
 }
 
 @Composable
-fun autoLogin(autoLogin: () -> Unit)  {
+fun AutoLogin(autoLogin: () -> Unit)  {
     LaunchedEffect(key1 = true) {
         autoLogin()
     }
