@@ -258,20 +258,19 @@ function LivePage() {
     ? mainStreamManager.stream.getMediaStream().getAudioTracks()[0]
     : null;
 
+    const mixedStream = new MediaStream();
+    displayStream.getVideoTracks().forEach(track => mixedStream.addTrack(track));
+    audioStream.getAudioTracks().forEach(track => mixedStream.addTrack(track));
+    // if (openViduAudioStream) {
+    //   mixedStream.addTrack(openViduAudioStream);
+    // }
     // 다른 참여자의 음성 스트림을 녹음 스트림에 추가
-  subscribers.forEach(sub => {
+   subscribers.forEach(sub => {
     const audioTrack = sub.stream.getMediaStream().getAudioTracks()[0];
     if (audioTrack) {
       mixedStream.addTrack(audioTrack);
     }
   });
-
-    const mixedStream = new MediaStream();
-    displayStream.getVideoTracks().forEach(track => mixedStream.addTrack(track));
-    audioStream.getAudioTracks().forEach(track => mixedStream.addTrack(track));
-    if (openViduAudioStream) {
-      mixedStream.addTrack(openViduAudioStream);
-    }
   
     const mediaRecorder = new MediaRecorder(mixedStream);
     const chunks = [];
