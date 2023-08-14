@@ -1,5 +1,5 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect} from "react";
 import axios from "axios";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
 import Button from "@mui/material/Button";
@@ -12,7 +12,6 @@ import UserVideoComponent from "../components/openvidu/UserVideoComponent";
 import { useSelector } from "react-redux";
 import { OpenVidu } from "openvidu-browser";
 import { useParams } from "react-router-dom";
-import RecordRTC from 'recordrtc';
 
 // 나중에 CSS로 화면 + 버튼그룹 / 채팅창 + 나가기 버튼으로 세로열 맞추기
 
@@ -35,7 +34,6 @@ function LivePage() {
   const [recorder, setRecorder] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState([]);
-  const videoRef = useRef(null);
 
   const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -260,6 +258,14 @@ function LivePage() {
     ? mainStreamManager.stream.getMediaStream().getAudioTracks()[0]
     : null;
 
+    // 다른 참여자의 음성 스트림을 녹음 스트림에 추가
+  subscribers.forEach(sub => {
+    const audioTrack = sub.stream.getMediaStream().getAudioTracks()[0];
+    if (audioTrack) {
+      mixedStream.addTrack(audioTrack);
+    }
+  });
+
     const mixedStream = new MediaStream();
     displayStream.getVideoTracks().forEach(track => mixedStream.addTrack(track));
     audioStream.getAudioTracks().forEach(track => mixedStream.addTrack(track));
@@ -361,10 +367,6 @@ function LivePage() {
     console.log(response.data.message);
     return response.data.data; // The token
   };
-
-  const test = () => {
-    joinSession();
-  }
 
   return (
     <div>
