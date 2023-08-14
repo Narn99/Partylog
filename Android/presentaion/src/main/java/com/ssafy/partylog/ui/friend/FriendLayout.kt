@@ -1,9 +1,9 @@
-package com.ssafy.partylog.ui.main
+package com.ssafy.partylog.ui.friend
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun MainLayout() {
-    Text(text = "main")
+fun FriendLayout() {
+    Text(text = "friend")
 }

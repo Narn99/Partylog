@@ -1,9 +1,10 @@
-package com.ssafy.partylog.ui.main
+package com.ssafy.partylog.ui.search
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun MainLayout() {
-    Text(text = "main")
+fun SearchLayout()
+{
+    Text(text = "search")
 }
