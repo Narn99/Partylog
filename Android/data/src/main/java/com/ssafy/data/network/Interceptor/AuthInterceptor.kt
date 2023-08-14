@@ -1,11 +1,30 @@
 package com.ssafy.data.network.Interceptor
 
+import com.orhanobut.logger.Logger
+import com.ssafy.data.datasource.local.SharedPreference
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AuthInterceptor: Interceptor {
+class AuthInterceptor(private val sharedPreference: SharedPreference) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-      return chain.proceed(chain.request())
-        //임시땜빵
+        val origin = chain.request()
+
+        val req = if (origin.url.encodedPath.equals("user/mobile/login", true)||
+            origin.url.encodedPath.equals("user/join", true)) {
+            //jwt 필요없는 요청들
+            Logger.d("jwi없음")
+            origin.newBuilder().build()
+        }
+        else {
+            Logger.d("jwt추가")
+            origin.newBuilder().apply {
+                addHeader(
+                    "Authorization",
+                    "Bearer " + sharedPreference.getAccessToken()
+                )
+            }.build()
+        }
+
+      return chain.proceed(req)
     }
 }

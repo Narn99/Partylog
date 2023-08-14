@@ -65,7 +65,7 @@ kapt {
 }
 
 dependencies {
-    implementation project(':data')
+    api project(':data')
     implementation project(':domain')
 
 
