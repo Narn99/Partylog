@@ -13,3 +13,4 @@ val Pink40 = Color(0xFF7D5260)
 val loginTextColor = Color(0xFF9A4059)
 
 val themecolor = Color(0xFFFBB3C2)
+val bottomNavColor = Color(0xFFF7EBEC)
