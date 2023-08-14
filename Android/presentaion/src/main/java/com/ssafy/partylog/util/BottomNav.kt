@@ -74,8 +74,9 @@ fun BottomNavigation(navHostController: NavHostController) {
         val navBackStackEntry by navHostController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         bottomNavItems.forEach {it ->
+            val selected = currentRoute == it.route
             NavigationBarItem(
-                selected = currentRoute == it.route,
+                selected = selected,
                 onClick = {
                     navHostController.navigate(it.route)
                 },
@@ -89,7 +90,7 @@ fun BottomNavigation(navHostController: NavHostController) {
                     Text(text = stringResource(id = it.title),
                         fontSize = 12.sp,
                         fontFamily = maplestory,
-                        fontWeight = FontWeight.Light,
+                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Light,
                         color = Color.Black)
                 },
                 alwaysShowLabel = true,
