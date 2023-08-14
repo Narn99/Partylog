@@ -18,15 +18,19 @@ function FollowTabs(props) {
 
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
-  // console.log(userNum);
-  // console.log(MyuserNum );
+
+  // 탭 내 스크롤  밑에 도착하면, 팔로잉, 팔로워 목록 갱신하기 위한 변수
+  const [followeesCount, setFolloweesCount] = useState(0);
+  const [followersCount, setFollowersCount] = useState(0);
+  const [isFolloweesOver, setIsFolloweesOver] = useState(false);
+  const [isFollowersOver, setIsFollowersOver] = useState(false);
 
   // 팔로잉 목록을 불러오는 함수. 내가 팔로워
   const fetchFollowings = () => {
     const followingsRequestBody = {
       followerNo: userNum,
       limit: 30,
-      offset: 0,
+      offset: followeesCount,
     };
     axios
       .post(
@@ -39,14 +43,24 @@ function FollowTabs(props) {
         }
       )
       .then((response) => {
-        // console.log(response.data.data);
-        setFollowings(
-          response.data.data.map((following) => ({
-            userNo: following.user_no,
-            nickname: following.user_nickname,
-            profile: following.user_profile,
-          }))
-        );
+        const newFollowees = response.data.data.map((following) => ({
+          userNo: following.user_no,
+          nickname: following.user_nickname,
+          profile: following.user_profile,
+        }));
+
+        const followeeList = newFollowees.filter((newFollowing) => {
+          return !followings.some(
+            (following) => following.userNo === newFollowing.userNo
+          );
+        });
+
+        setFollowings([...followings, ...followeeList]);
+
+        setFolloweesCount(followeesCount + 30);
+        if (response.data.data.length < 30) {
+          setIsFolloweesOver(true);
+        }
       })
 
       .catch((error) => {
@@ -59,7 +73,7 @@ function FollowTabs(props) {
     const followersRequestBody = {
       followeeNo: userNum,
       limit: 30,
-      offset: 0,
+      offset: followersCount,
     };
     axios
       .post(`${SERVER_API_URL}/user/searchFollowerList`, followersRequestBody, {
@@ -68,17 +82,50 @@ function FollowTabs(props) {
         },
       })
       .then((response) => {
-        setFollowers(
-          response.data.data.map((follower) => ({
-            userNo: follower.user_no,
-            nickname: follower.user_nickname,
-            profile: follower.user_profile,
-          }))
-        );
+        const newFollowers = response.data.data.map((follower) => ({
+          userNo: follower.user_no,
+          nickname: follower.user_nickname,
+          profile: follower.user_profile,
+        }));
+        const followerList = newFollowers.filter((newFollower) => {
+          return !followers.some(
+            (follower) => follower.userNo === newFollower.userNo
+          );
+        });
+        setFollowers([...followers, ...followerList]);
+
+        setFollowersCount(followersCount + 30);
+        if (response.data.data.length < 30) {
+          setIsFollowersOver(true);
+        }
       })
       .catch((error) => {
         console.error("팔로워 목록을 가져오는 중 오류 발생:", error);
       });
+  };
+
+  // 스크롤 맨 아래 도착하면 다음 팔로잉, 팔로워 목록 불러오기
+
+  const checkRange = 0.9;
+  const handleLoadFolloweesList = (event) => {
+    const target = event.target;
+    if (
+      target.scrollHeight - target.scrollTop - target.clientHeight <
+        checkRange &&
+      !isFolloweesOver
+    ) {
+      fetchFollowings();
+    }
+  };
+  const handleLoadFollowersList = (event) => {
+    const target = event.target;
+    if (
+      target.scrollHeight - target.scrollTop - target.clientHeight <
+        checkRange &&
+      !isFollowersOver
+    ) {
+      fetchFollowers();
+    }
   };
 
   useEffect(() => {
@@ -155,6 +202,9 @@ function FollowTabs(props) {
           maxHeight: "450px",
           overflow: "auto",
         }}
+        onScroll={
+          tabValue === 0 ? handleLoadFolloweesList : handleLoadFollowersList
+        }
       >
         {tabValue === 0 &&
           (followings.length > 0 ? (

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import kakaoButton from "../assets/kakao_login.svg";
 import googleplay from "../assets/googleplay.png";
 import "../css/LogInPage.css";
@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const LogInPage = () => {
-
   /* 자동 로그인 추후에 개발 */
   // const navigate = useNavigate();
   // const isAuthenticated = useSelector((state) => {

@@ -6,11 +6,13 @@ body {
 } */
 
 body:not(.live-page) {
-  background-image: url(../image/TempBg.png);
+  background-image: url(../assets/TempBg.png);
+  background-color: none;
 }
 
 body.live-page {
-  background-image: none;
+  background-image: url(../assets/TempBg.png);
+  background-color: black;
 }
 
 .loginpage-container {
@@ -27,7 +29,7 @@ body.live-page {
   background: rgb(255, 255, 255);
   /* 다크일 시 밑에꺼 */
   /* background: rgb(31, 31, 31); */
-  background-image: url(../image/TempBg.png);
+  background-image: url(../assets/TempBg.png);
 }
 
 .loginpage-h1 {

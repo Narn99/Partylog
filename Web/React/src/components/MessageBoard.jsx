@@ -304,9 +304,11 @@ function MessageBoard(props) {
 
         <MessageDetail
           modalDetailOpen={modalDetailOpen}
+          handleModalOpen={handleModalOpen}
           handleModalDetailClose={handleModalDetailClose}
           randomStickyNote={randomStickyNote}
           selectedMessage={selectedMessage}
+          myUserNo={myUserNo}
         />
       </div>
     </div>

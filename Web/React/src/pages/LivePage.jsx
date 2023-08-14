@@ -4,6 +4,7 @@ import axios from "axios";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
 import Button from "@mui/material/Button";
 import ChatBox from "../components/LivePage/ChatBox";
+import JoinCheck from "../components/LivePage/JoinCheck";
 // import ViewersCarousel from "../components/LivePage/ViewersCarousel";
 
 /* Openvidu 관련 컴포넌트 */
@@ -25,7 +26,7 @@ function LivePage() {
   var [myUserName, setMyUserName] = useState(userInfo.userNickname);
   var [session, setSession] = useState(OV.initSession());
   var [mainStreamManager, setMainStreamManager] = useState(undefined);
-  var [publisher, setPublisher] = useState(undefined); 
+  var [publisher, setPublisher] = useState(undefined);
   var [subscribers, setSubscribers] = useState([]);
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
@@ -34,6 +35,8 @@ function LivePage() {
   const [recorder, setRecorder] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState([]);
+
+  // const myUserNo = useSelector((state) => state.auth.userNo);
 
   const theme = useTheme();
   // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -45,38 +48,16 @@ function LivePage() {
   const changeChatBoxMarginTop = isMediumScreen ? "10px" : "0";
 
   useEffect(() => {
-    console.log("작동");
-    joinSession();
-    // eslint-disable-next-line
+    return () => {
+      leaveSession();
+    };
   }, []);
 
   useEffect(() => {
-
-  }, [recordedChunks])
-
-  // const viewers = [
-  //   "강아지",
-  //   "레서판다",
-  //   "닭",
-  //   "펭귄",
-  //   "익룡",
-  //   "호모사피엔스",
-  //   "감자",
-  //   "고구마",
-  //   "개미핥기",
-  //   "호모에렉투스",
-  //   "고대초전도체",
-  //   "터미네이터",
-  //   "구글",
-  //   "구글",
-  //   "구글",
-  //   "구글",
-  //   "구글",
-  //   "구글",
-  //   "쿼카",
-  //   "연세우유생크림빵",
-  //   "국뽕치사량흡입",
-  // ];
+    if (isJoinCheck) {
+      joinSession();
+    }
+  }, [isJoinCheck]);
 
   const handleMainVideoStream = (stream) => {
     console.log(stream);
@@ -87,10 +68,9 @@ function LivePage() {
 
   const deleteSubscriber = (streamManager) => {
     setSubscribers((prevSubscribers) => {
-
-        return prevSubscribers.filter(sub => sub !== streamManager);
+      return prevSubscribers.filter((sub) => sub !== streamManager);
     });
- };
+  };
 
   const joinSession = () => {
     // --- 1) Get an OpenVidu object ---
@@ -104,22 +84,19 @@ function LivePage() {
     // --- 3) Specify the actions when events take place in the session ---
 
     // On every new Stream received...
-    mySession.on('streamCreated', (event) => {
-        console.log("새로운 스트림 생성")
-        // Subscribe to the Stream to receive it. Second parameter is undefined
-        // so OpenVidu doesn't create an HTML video by its own
-        var subscriber = mySession.subscribe(event.stream, undefined);
-        // Update the state with the new subscribers
-        setSubscribers(prev => [
-          ...prev,
-          subscriber
-        ]);
+    mySession.on("streamCreated", (event) => {
+      console.log("새로운 스트림 생성");
+      // Subscribe to the Stream to receive it. Second parameter is undefined
+      // so OpenVidu doesn't create an HTML video by its own
+      var subscriber = mySession.subscribe(event.stream, undefined);
+      // Update the state with the new subscribers
+      setSubscribers((prev) => [...prev, subscriber]);
     });
 
     // On every Stream destroyed...
     mySession.on("streamDestroyed", (event) => {
       console.log("스트림 삭제");
-      console.log(subscribers)
+      console.log(subscribers);
       // Remove the stream from 'subscribers' array
       deleteSubscriber(event.stream.streamManager);
     });
@@ -188,7 +165,7 @@ function LivePage() {
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     console.log("세션 종료");
-    console.log(subscribers)
+    console.log(subscribers);
     const mySession = session;
 
     if (mySession) {
@@ -218,9 +195,9 @@ function LivePage() {
       )
       .then((res) => {
         console.log(res);
+        window.close();
       });
-      console.log(subscribers)
-    // window.close();
+    console.log(subscribers);
   };
 
   // //녹화 시작 요청
@@ -367,132 +344,229 @@ function LivePage() {
     return response.data.data; // The token
   };
 
-  return (
-    <div>
-      <Grid
-        container
-        justifyContent={"space-evenly"}
-        alignItems={"center"}
-        // spacing={4}
-        style={{ height: `${changeHeightSize}` }}
-      >
+  if (!isJoinCheck) {
+    return <JoinCheck setIsJoinCheck={setIsJoinCheck} />;
+  } else {
+    return (
+      <div>
         <Grid
-          item
           container
-          justifyContent={"center"}
+          justifyContent={"space-evenly"}
           alignItems={"center"}
-          xs={12}
-          md={8}
-          style={{ height: "100%" }}
-          className="broadcast-grid"
+          // spacing={4}
+          style={{ height: `${changeHeightSize}` }}
         >
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: "#FFD9DF",
-              border: "20px solid #9A4058",
-              borderRadius: "40px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Grid
-              container
-              style={{
-                width: "95%",
-                height: "95%",
-                // flexDirection: "column",
-              }}
-            >
-              <Grid
-                item
-                container
-                // xs={12}
-                justifyContent={"center"}
-                alignItems={"center"}
-                style={{ height: "70%" }}
-              >
-                <Grid
-                  item
-                  xs={7}
-                  style={{
-                    height: "100%",
-                    minHeight: "200px",
-                    minWidth: "200px",
-                    // height: "300px",
-                    backgroundColor: "black",
-                    color: "white",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: "20px",
-                  }}
-                  className="live-display"
-                >
-                  <div className="container" style={{ height: "100%" }}>
-                    {session === undefined ? (
-                      <p>종료된 라이브 입니다.</p>
-                    ) : (
-                      <div className="container" style={{ height: "100%" }}>
-                        <div id="session" style={{ height: "100%" }}>
-                          <div
-                            id="main-video"
-                            className="col-md-6"
-                            style={{ height: "100%" }}
-                          >
-                            <UserVideoComponent
-                              streamManager={mainStreamManager}
-                              style={{ height: "100%" }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </Grid>
-              </Grid>
-              <Grid
-                container
-                item
-                // xs={12}
-                justifyContent={"space-evenly"}
-                alignItems={"center"}
-                // style={{ height: "30%" }}
-              >
-                {/* <ViewersCarousel viewers={viewers} /> */}
-                <div id="video-container" className="col-md-6">
-                  {publisher !== undefined ? (
-                    <div
-                      className="stream-container col-md-6 col-xs-6"
-                      id="my-stream-container"
-                      onClick={() => handleMainVideoStream(publisher)}
-                    >
-                      <UserVideoComponent streamManager={publisher} />
-                    </div>
-                  ) : null}
-                  {subscribers.map((sub, i) => (
-                    <div
-                      key={sub.id}
-                      className="stream-container col-md-6 col-xs-6 subscriber-stream-container"
-                      onClick={() => handleMainVideoStream(sub)}
-                    >
-                      <span>{sub.id}</span>
-                      <UserVideoComponent streamManager={sub} />
-                    </div>
-                  ))}
-                </div>
-              </Grid>
-            </Grid>
-          </div>
-        </Grid>
-        {isMediumScreen && (
           <Grid
+            item
             container
             justifyContent={"center"}
             alignItems={"center"}
-            style={{ marginTop: "10px", height: "" }}
+            xs={12}
+            md={8}
+            style={{ height: "100%" }}
+            className="broadcast-grid"
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#FFD9DF",
+                border: "20px solid #9A4058",
+                borderRadius: "40px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Grid
+                container
+                style={{
+                  width: "95%",
+                  height: "95%",
+                  // flexDirection: "column",
+                }}
+              >
+                <Grid
+                  item
+                  container
+                  // xs={12}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  style={{ height: "70%" }}
+                >
+                  <Grid
+                    item
+                    xs={7}
+                    style={{
+                      height: "100%",
+                      minHeight: "200px",
+                      minWidth: "200px",
+                      // height: "300px",
+                      backgroundColor: "black",
+                      color: "white",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "20px",
+                    }}
+                    className="live-display"
+                  >
+                    <div
+                      className="container"
+                      style={{
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      {session === undefined ? (
+                        <p style={{ fontSize: "20px" }}>
+                          종료된 라이브 입니다.
+                        </p>
+                      ) : (
+                        <div className="container" style={{ height: "100%" }}>
+                          <div id="session" style={{ height: "100%" }}>
+                            <div
+                              id="main-video"
+                              className="col-md-6"
+                              style={{ height: "100%" }}
+                            >
+                              <UserVideoComponent
+                                streamManager={mainStreamManager}
+                                style={{ height: "100%" }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  // xs={12}
+                  justifyContent={"space-evenly"}
+                  alignItems={"center"}
+                  // style={{ height: "30%" }}
+                >
+                  {/* <ViewersCarousel viewers={viewers} /> */}
+                  <div id="video-container" className="col-md-6">
+                    {publisher !== undefined ? (
+                      <div
+                        className="stream-container col-md-6 col-xs-6"
+                        id="my-stream-container"
+                        onClick={() => handleMainVideoStream(publisher)}
+                      >
+                        <UserVideoComponent streamManager={publisher} />
+                      </div>
+                    ) : null}
+                    {subscribers.map((sub, i) => (
+                      <div
+                        key={sub.id}
+                        className="stream-container col-md-6 col-xs-6 subscriber-stream-container"
+                        onClick={() => handleMainVideoStream(sub)}
+                      >
+                        <span>{sub.id}</span>
+                        <UserVideoComponent streamManager={sub} />
+                      </div>
+                    ))}
+                  </div>
+                </Grid>
+              </Grid>
+            </div>
+          </Grid>
+          {isMediumScreen && (
+            <Grid
+              container
+              justifyContent={"center"}
+              alignItems={"center"}
+              style={{ marginTop: "10px", height: "" }}
+              className="button-grid"
+            >
+              <Grid
+                item
+                md={5}
+                xs={10}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <ButtonGroups mainStreamManager={mainStreamManager} />
+              </Grid>
+            </Grid>
+          )}
+          <Grid
+            item
+            container
+            justifyContent={"center"}
+            alignItems={"center"}
+            xs={12}
+            md={3}
+            style={{ height: "100%" }}
+            className="chat-grid"
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#FFD9DF",
+                border: "20px solid #9A4058",
+                borderRadius: "30px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: `${changeChatBoxMarginTop}`,
+              }}
+            >
+              <div
+                style={{
+                  width: `${changeChatBoxSize}`,
+                  height: "95%",
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <ChatBox session={session} />
+              </div>
+            </div>
+          </Grid>
+          {isMediumScreen && (
+            <Grid item xs={12}>
+              <Button
+                className="exit-live-button"
+                variant="contained"
+                style={{
+                  fontFamily: "MaplestoryOTFBold",
+                  width: "100%",
+                  height: "100%",
+                  fontSize: "25px",
+                  color: "white",
+                  borderRadius: "20px",
+                  texShadow: "0.1px 0.1px 4px #e892a4",
+                  boxSizing: "border-box",
+                  marginTop: "10px",
+                }}
+                onClick={leaveSession}
+              >
+                나가기
+              </Button>
+            </Grid>
+          )}
+        </Grid>
+
+        {!isMediumScreen && (
+          <Grid
+            container
+            justifyContent={"space-evenly"}
+            alignItems={"center"}
+            style={{ marginTop: "60px", height: "10vh" }}
             className="button-grid"
           >
             <Grid
@@ -506,116 +580,32 @@ function LivePage() {
             >
               <ButtonGroups mainStreamManager={mainStreamManager} />
             </Grid>
-          </Grid>
-        )}
-        <Grid
-          item
-          container
-          justifyContent={"center"}
-          alignItems={"center"}
-          xs={12}
-          md={3}
-          style={{ height: "100%" }}
-          className="chat-grid"
-        >
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: "#FFD9DF",
-              border: "20px solid #9A4058",
-              borderRadius: "30px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: `${changeChatBoxMarginTop}`,
-            }}
-          >
-            <div
-              style={{
-                width: `${changeChatBoxSize}`,
-                height: "95%",
-                backgroundColor: "white",
-                borderRadius: "10px",
-                display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <ChatBox session={session} />
-            </div>
-          </div>
-        </Grid>
-        {isMediumScreen && (
-          <Grid item xs={12}>
-            <Button
-              className="exit-live-button"
-              variant="contained"
-              style={{
-                fontFamily: "MaplestoryOTFBold",
-                width: "100%",
-                height: "100%",
-                fontSize: "25px",
-                color: "white",
-                borderRadius: "20px",
-                texShadow: "0.1px 0.1px 4px #e892a4",
-                boxSizing: "border-box",
-                marginTop: "10px",
-              }}
-              onClick={leaveSession}
-            >
-              나가기
-            </Button>
-          </Grid>
-        )}
-      </Grid>
 
-      {!isMediumScreen && (
-        <Grid
-          container
-          justifyContent={"space-evenly"}
-          alignItems={"center"}
-          style={{ marginTop: "60px", height: "10vh" }}
-          className="button-grid"
-        >
-          <Grid
-            item
-            md={5}
-            xs={10}
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <ButtonGroups mainStreamManager={mainStreamManager} />
-          </Grid>
-
-          <Grid
-            container
-            item
-            xs={2}
-            justifyContent={"flex-end"}
-            alignItems={"center"}
-          >
-            <Button
-              className="exit-live-button"
-              variant="contained"
-              style={{
-                fontFamily: "MaplestoryOTFBold",
-                width: "100%",
-                height: "100%",
-                fontSize: "25px",
-                color: "white",
-                borderRadius: "20px",
-                texShadow: "0.1px 0.1px 4px #e892a4",
-                boxSizing: "border-box",
-              }}
-              onClick={leaveSession}
+            <Grid
+              container
+              item
+              xs={2}
+              justifyContent={"flex-end"}
+              alignItems={"center"}
             >
-              나가기
-            </Button>
-            {isRecording ? (
+              <Button
+                className="exit-live-button"
+                variant="contained"
+                style={{
+                  fontFamily: "MaplestoryOTFBold",
+                  width: "100%",
+                  height: "100%",
+                  fontSize: "25px",
+                  color: "white",
+                  borderRadius: "20px",
+                  texShadow: "0.1px 0.1px 4px #e892a4",
+                  boxSizing: "border-box",
+                }}
+                onClick={leaveSession}
+              >
+                나가기
+              </Button>
+              {isRecording ? (
               <Button
               className="exit-live-button"
               variant="contained"
@@ -674,11 +664,14 @@ function LivePage() {
           <source key={index} src={URL.createObjectURL(chunk)} type="video/webm" />
             ))}
            </video> */}
+            </Grid>
           </Grid>
-        </Grid>
-      )}
-    </div>
-  );
+        )}
+
+      </div>
+    );
+  }
+
 }
 
 export default LivePage;
