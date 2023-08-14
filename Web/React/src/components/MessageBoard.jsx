@@ -308,7 +308,7 @@ function MessageBoard(props) {
           handleModalDetailClose={handleModalDetailClose}
           randomStickyNote={randomStickyNote}
           selectedMessage={selectedMessage}
-          // changeMessageButtonFontSize={}
+          myUserNo={myUserNo}
         />
       </div>
     </div>

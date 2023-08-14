@@ -291,6 +291,7 @@ function MessageModal(props) {
             <Button
               className="MyPage-message-submit-button"
               type="submit"
+              variant="contained"
               onClick={handleSubmitModalText}
               style={{
                 cursor: "pointer",

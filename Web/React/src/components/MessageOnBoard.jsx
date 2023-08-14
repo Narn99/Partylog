@@ -1,30 +1,9 @@
 import React from "react";
 import StickyNote1 from "../assets/Sticky-Note-01-Yellow.png";
-// import StickyNote2 from "../assets/Sticky-Note-02-Green.png";
-// import StickyNote3 from "../assets/Sticky-Note-02-Pink.png";
-// import StickyNote4 from "../assets/Sticky-Note-03-Orange.png";
-// import StickyNote5 from "../assets/Sticky-Note-04-Purple.png";
-
 import { Grid } from "@mui/material";
-
-// 메시지보드에 뜨는 메시지 색을 알록달록하게 하니까 더 보기 안 좋아서 노란색으로 통일해둠..
-
-// const stickyNotes = [
-//   StickyNote1,
-//   StickyNote2,
-//   StickyNote3,
-//   StickyNote4,
-//   StickyNote5,
-// ];
-
-// const getRandomStickyNote = () => {
-//   const randomIndex = Math.floor(Math.random() * stickyNotes.length);
-//   return stickyNotes[randomIndex];
-// };
+import { useNavigate } from "react-router";
 
 function MessageOnBoard(props) {
-  // const RandomStickyNote = getRandomStickyNote();
-
   const { message, onClick, pageOwner, myUserNo } = props;
 
   const getLength = (messageText, maxLength) => {
@@ -33,7 +12,19 @@ function MessageOnBoard(props) {
     }
     return messageText;
   };
-  // console.log(message);
+
+  // 보드 위의 메시지 닉네임이나 프로필 이미지를 누르면 그 살마 페이지로 이동 가능한 함수
+  // 막상 넣어보니까 메시지 열어 보려다가 이동할 것 같아서 주석처리
+
+  // const navigate = useNavigate();
+
+  // const handleGoToMessageUser = () => {
+  //   if (message.letter_writer) {
+  //     navigate(`/user/${message.letter_writer}`);
+  //     window.location.reload();
+  //   }
+  // };
+
   return (
     <div
       style={{
@@ -52,7 +43,6 @@ function MessageOnBoard(props) {
     >
       <img
         src={StickyNote1}
-        // src={RandomStickyNote}
         alt=""
         style={{ width: "100%", height: "100%", objectFit: "contain" }}
       />
@@ -87,6 +77,7 @@ function MessageOnBoard(props) {
           >
             <img
               src={message.user_profile}
+              // onClick={handleGoToMessageUser}
               alt=""
               style={{
                 width: "30px",
@@ -108,7 +99,9 @@ function MessageOnBoard(props) {
             }}
           >
             &nbsp;&nbsp;&nbsp;
+            {/* <span onClick={handleGoToMessageUser}> */}
             {getLength(message.user_nickname, 10)}
+            {/* </span> */}
           </Grid>
         </Grid>
       </div>

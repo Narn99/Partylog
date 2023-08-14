@@ -15,7 +15,15 @@ function MessageDetail(props) {
     handleModalDetailClose,
     randomStickyNote,
     selectedMessage,
+    myUserNo,
   } = props;
+
+  // console.log(selectedMessage);
+
+  const isMessageOwner =
+    selectedMessage && myUserNo === selectedMessage.letter_writer
+      ? true
+      : false;
 
   const theme = createTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -88,27 +96,30 @@ function MessageDetail(props) {
           isMediumScreen={isMediumScreen}
           isSmallScreen={isSmallScreen}
         />
-        <Grid container justifyContent={"center"}>
-          <Button
-            className="message-close-button"
-            type="submit"
-            onClick={handleFixModalText}
-            variant="contained"
-            style={{
-              position: "absolute",
-              cursor: "pointer",
-              color: "white",
-              fontFamily: "MaplestoryOTFBold",
-              width: changeButtonSize,
-              fontSize: changeButtonFontSize,
-              borderRadius: "50px",
-              padding: "10px",
-              transform: "translateY(-130%)",
-            }}
-          >
-            수정
-          </Button>
-        </Grid>
+
+        {selectedMessage && isMessageOwner && (
+          <Grid container justifyContent={"center"}>
+            <Button
+              className="message-close-button"
+              type="submit"
+              onClick={handleFixModalText}
+              variant="contained"
+              style={{
+                position: "absolute",
+                cursor: "pointer",
+                color: "white",
+                fontFamily: "MaplestoryOTFBold",
+                width: changeButtonSize,
+                fontSize: changeButtonFontSize,
+                borderRadius: "50px",
+                padding: "10px",
+                transform: "translateY(-130%)",
+              }}
+            >
+              수정
+            </Button>
+          </Grid>
+        )}
       </Box>
     </Modal>
   );
