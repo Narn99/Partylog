@@ -9,8 +9,8 @@ class AuthInterceptor(private val sharedPreference: SharedPreference) : Intercep
     override fun intercept(chain: Interceptor.Chain): Response {
         val origin = chain.request()
 
-        val req = if (origin.url.encodedPath.equals("user/mobile/login", true)||
-            origin.url.encodedPath.equals("user/join", true)) {
+        val req = if (origin.url.encodedPath.equals("/partylog/user/mobile/login", true)||
+            origin.url.encodedPath.equals("/partylog/user/join", true)) {
             //jwt 필요없는 요청들
             Logger.d("jwi없음")
             origin.newBuilder().build()
