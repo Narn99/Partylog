@@ -1,120 +1,179 @@
-### npm install npm start 하시면 리액트 실행됩니다!
+### Web README
 
-# 2023.7.8
+1. **기획의도**
+   저희 서비스는 바쁜 일상 속에서 지인의 생일을 간단하게, 하지만 성의있게 축하해주자는
+   취지에서 기획되었습니다.
 
-1. React어플의 기본 틀을 만들고 홈/테스트용/로그인/회원가입 라우터를 만들었습니다.
-2. 로그인과 회원가입의 기본적인 구현을 위해 구조를 잡고 필요한 내용들을 조금씩 작성
-   하였습니다.
-3. 동작 중 오류가 발생하여 수정방안을 찾아보기로 하였습니다.  
-   store.js에서 스토어를 생성 후 index.js 파일에서 App 컴포넌트를 Provider 컴포넌트로 감싸는 형식의 코드로 변경하여 일부를 해결하였습니다.
+로그인 후 친구찾기 기능을 통해 다른 유저들을 검색하여 팔로우할 수 있고 그 친구의 페이지로
+이동하여 친구에게 메시지를 남길 수 있습니다. 또한 얼굴을 보며 축하해주고 싶은 경우 친구의
+라이브 방송 페이지로 이동하여 얼굴을 보며 다른 친구들과 함께 축하해줄 수 있습니다.
 
-# 2023.7.9
+2.  **피그마 UI 디자인**
 
-1. 오류 수정을 위해 리액트 문법을 최신 버전 기준으로 갱신하였습니다.
-   history->navigate, Switch->Routes, ReactDOM.render()->ReactDOM.createRoot()
-2. 에러메시지 해결 후 각 라우터로 제대로 이동하는지와 각 기능들이 제대로 동작하는지를
-   확인하였습니다.
-3. 로그인/회원가입 시 백으로 적절한 요청을 보내는지 확인하였습니다.
-   ![참고사진](./README_img/로그인_회원가입_서버에요청.png)
-   사진에서 undefined라고 되어있는 곳은 REACT_APP_SERVER_DOMAIN 입니다.
-   이는 환경변수 저장하는 폴더에서 관리할 계획입니다.
+![와이어 프레임1](./assets/피그마_와이어프레임.png)
 
-# 2023.7.10
+![와이어 프레임2](./assets/피그마_와이어프레임2.png)
 
-1. 패키지 트리 익스텐션 사용. ctrl + shift + p로 찾아서 사용하면 리드미에 자동으로 추가해줍니다.
-2. 부트스트랩 대신 material-ui를 자주 사용할 예정입니다.
+![디자인1](./assets/피그마_디자인1.png)
 
-# 2023.7.18
+![디자인2](./assets/피그마_디자인2.png)
 
-1. 임시 와이어 프레임 수정했습니다.
-   ![참고사진](./README_img/wireframe1.png)
-   웹 버전 와이어 프레임입니다. 반응형으로 모바일 크기로 줄어들 시, 화면 구성이 달라지게 작성했습니다.
+와이어프레임에서 기본적인 흐름과 기능,버튼의 위치 등을 정하고
+디자인을 확정하여 목업을 만들었습니다. 그 뒤 실제 개발 화면을 캡쳐해가며
+목업 대비 진행상황을 점검하며 진행하였습니다.
 
-# 현재 구조
+3. **반응형 웹 페이지**
+   저희는 웹 페이지의 디자인에서 반응형에 주의를 기울여 크기에 따라 자연스럽게 볍화된 화면이 보이도록 구성하였습니다.
 
-```
-test_for_React
-├─ .env.example
-├─ .git
-│  ├─ config
-│  ├─ description
-│  ├─ HEAD
-│  ├─ hooks
-│  │  ├─ applypatch-msg.sample
-│  │  ├─ commit-msg.sample
-│  │  ├─ fsmonitor-watchman.sample
-│  │  ├─ post-update.sample
-│  │  ├─ pre-applypatch.sample
-│  │  ├─ pre-commit.sample
-│  │  ├─ pre-merge-commit.sample
-│  │  ├─ pre-push.sample
-│  │  ├─ pre-rebase.sample
-│  │  ├─ pre-receive.sample
-│  │  ├─ prepare-commit-msg.sample
-│  │  ├─ push-to-checkout.sample
-│  │  ├─ sendemail-validate.sample
-│  │  └─ update.sample
-│  ├─ index
-│  ├─ info
-│  │  └─ exclude
-│  ├─ logs
-│  │  ├─ HEAD
-│  │  └─ refs
-│  │     ├─ heads
-│  │     │  └─ main
-│  │     └─ remotes
-│  │        └─ origin
-│  │           └─ HEAD
-│  ├─ objects
-│  │  ├─ info
-│  │  └─ pack
-│  │     ├─ pack-23fb19941d07948b696eb95035191af638389add.idx
-│  │     ├─ pack-23fb19941d07948b696eb95035191af638389add.pack
-│  │     └─ pack-23fb19941d07948b696eb95035191af638389add.rev
-│  ├─ packed-refs
-│  └─ refs
-│     ├─ heads
-│     │  └─ main
-│     ├─ remotes
-│     │  └─ origin
-│     │     └─ HEAD
-│     └─ tags
-├─ .gitignore
-├─ package-lock.json
-├─ package.json
-├─ public
-│  ├─ favicon.ico
-│  ├─ index.html
-│  ├─ logo192.png
-│  ├─ logo512.png
-│  ├─ manifest.json
-│  └─ robots.txt
-├─ README.md
-├─ README_img
-│  └─ 로그인_회원가입_서버에요청.png
-└─ src
+![유저페이지](./assets/유저페이지.gif)
+유저페이지에서 메시지 보드와 표시되는 메시지의 수와 크기를 세심한 주의를 기울여
+반응형으로 디자인하였습니다.
+
+![친구페이지](./assets/친구페이지.gif)
+친구페이지에 표시되는 팔로잉 팔로워 목록 역시 반응형으로 디자인하였습니다.
+
+4. **로고 변천사**
+   처음엔 ai로 로고를 생성해주는 사이트를 통해 만든 로고를 사용하려고 하였으나
+   ![로고샘플](./assets/로고샘플.png)
+   퍼스널 컬러와의 통일성이나 웹페이지에서 봤을 때의 크기나 가시성 등을 고려하여
+   보다 간결한 디자인이면서 색도 보다 저희의 퍼스널 컬러에 맞는 것으로 변경하였습니다.
+   ![LOGO3](./assets/LOGO3.png)
+   ![icon_no_logo](./assets/icon_no_logo.png)
+   또한 로고 디자인을 정한 후에도 편지모양 로고와 글자 로고를 합쳐서 보여줄 지
+   따로 보여줄지를 고민해본 결과 상단 내비 바에선 반응형으로 페이지 크기에 따라
+   각각을 보여주고 로딩 페이지에는 합쳐진 이미지를 보여주는 것으로 정하였습니다.
+   ![icon6](./assets/icon6.png)
+
+5. **어려웠던 점**
+
+- 프론트 멤버들이 다들 리액트가 처음이다보니 오류 해결하는 것이 특히 어려웠습니다.
+  다양한 종류의 오류를 경험해보게 되었고 무한 렌더링되는 곳에선 어떻게 해결해야하나
+  고민이 많이 되었습니다. 오류 메시지를 하나하나 찍어보고 다양한 방식을 시도해보며
+  실력 향샹에는 도움이 되었습니다.
+
+- 리덕스 사용이 생각보다 쉽지 않았습니다. 리액트의 중요한 기능 중 하나이지만 다루는 과정이
+  쉽게 이해가 가지 않아 사용에 어려움을 겪었지만 팀원들이 잘 도와줘서 고마웠고 협업의 중요성을 실감하였습니다.
+
+  6. **트리 구조**
+
+  ```
+  React
+  ├─ .env.local
+  ├─ .env.production
+  ├─ .gitignore
+  ├─ Dockerfile
+  ├─ nginx
+  │  └─ nginx.conf
+  ├─ output.txt
+  ├─ package-lock.json
+  ├─ package.json
+  ├─ public
+  │  ├─ favicon.ico
+  │  ├─ icon6.png
+  │  ├─ icon6_192.png
+  │  ├─ index.html
+  │  ├─ manifest.json
+  │  └─ robots.txt
+  ├─ README.md
+  └─ src
    ├─ actions
-   │  └─ index.js
+   │  ├─ actions.js
+   │  └─ actionTypes.js
    ├─ App.js
    ├─ App.test.js
+   ├─ assets
+   │  ├─ Cake.png
+   │  ├─ Frame_21.png
+   │  ├─ googleplay.png
+   │  ├─ icon.png
+   │  ├─ icon2.png
+   │  ├─ icon3.png
+   │  ├─ icon5.png
+   │  ├─ icon6.png
+   │  ├─ kakao_login.svg
+   │  ├─ kakao_login_large_narrow.png
+   │  ├─ LOGO3.png
+   │  ├─ molru.webp
+   │  ├─ Sticky-Note-01-Yellow.png
+   │  ├─ Sticky-Note-02-Green.png
+   │  ├─ Sticky-Note-02-Pink.png
+   │  ├─ Sticky-Note-03-Orange.png
+   │  ├─ Sticky-Note-04-Purple.png
+   │  └─ TempBg.png
    ├─ components
-   │  └─ Header.js
-   ├─ index.css
+   │  ├─ firework.jsx
+   │  ├─ firework2.jsx
+   │  ├─ firework3.jsx
+   │  ├─ FollowTabs.jsx
+   │  ├─ KakaoCallback.jsx
+   │  ├─ LivePage
+   │  │  ├─ ButtonGroups.jsx
+   │  │  ├─ ChatBox.jsx
+   │  │  ├─ ClapEmoji.jsx
+   │  │  ├─ JoinCheck.jsx
+   │  │  └─ ViewersCarousel.jsx
+   │  ├─ Loading.jsx
+   │  ├─ MessageBoard.jsx
+   │  ├─ MessageBoard_Before.jsx
+   │  ├─ MessageDetail.jsx
+   │  ├─ MessageDetailText.jsx
+   │  ├─ MessageModal.jsx
+   │  ├─ MessageOnBoard.jsx
+   │  ├─ ModalText.jsx
+   │  ├─ NavBar.jsx
+   │  ├─ openvidu
+   │  │  ├─ OvVideo.js
+   │  │  ├─ UserVideo.css
+   │  │  └─ UserVideoComponent.js
+   │  ├─ Route
+   │  │  └─ PrivateRoute.jsx
+   │  ├─ SearchFriend.jsx
+   │  ├─ StickyNote
+   │  │  ├─ StickyNoteG.jsx
+   │  │  ├─ StickyNoteO.jsx
+   │  │  ├─ StickyNotePink.jsx
+   │  │  ├─ StickyNotePurple.jsx
+   │  │  └─ StickyNoteY.jsx
+   │  ├─ Timmer.jsx
+   │  ├─ UserFollowButton.jsx
+   │  └─ YearChip.jsx
+   ├─ css
+   │  ├─ BirthdayInput.css
+   │  ├─ ClapEmoji.css
+   │  ├─ FollowTabsStyles.css
+   │  ├─ GlobalFont.css
+   │  ├─ LogInPage.css
+   │  ├─ MemoBoard.css
+   │  ├─ Openvidu.css
+   │  └─ UserPage.css
+   ├─ fonts
+   │  └─ Nikumaru.otf
    ├─ index.js
-   ├─ indexjs
    ├─ pages
-   │  ├─ About.js
-   │  ├─ Home.js
-   │  ├─ LogInPage.js
-   │  └─ SignUpPage.js
+   │  ├─ BirthdayInput.jsx
+   │  ├─ LivePage.jsx
+   │  ├─ LogInPage.jsx
+   │  ├─ LogInPage_Dark.jsx
+   │  ├─ MyFriend.jsx
+   │  ├─ NotFound404.jsx
+   │  ├─ ProfileSetting.jsx
+   │  └─ UserPage.jsx
    ├─ reducers
-   │  ├─ index.js
-   │  ├─ initialState.js
-   │  └─ logInStatusReducer.js
+   │  ├─ authReducer.js
+   │  ├─ messagesDataReducer.js
+   │  ├─ modalDataReducer.js
+   │  └─ rootReducer.js
    ├─ reportWebVitals.js
    ├─ setupTests.js
-   ├─ store.js
-   └─ utilities
-      └─ availCheck.js
+   └─ store
+      └─ store.js
+  ```
 
 ```
+
+
+```
+
+7. **리덕스**
+
+로그인과 메시지 작성에서 사용하고 있습니다. 로그인의 상태를 관리하는 기능과 메시지의 CRUD와 관련된 역할을 수행합니다.

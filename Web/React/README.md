@@ -68,3 +68,117 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+```
+React
+├─ .env.local
+├─ .env.production
+├─ .gitignore
+├─ Dockerfile
+├─ nginx
+│  └─ nginx.conf
+├─ output.txt
+├─ package-lock.json
+├─ package.json
+├─ public
+│  ├─ favicon.ico
+│  ├─ icon6.png
+│  ├─ icon6_192.png
+│  ├─ index.html
+│  ├─ manifest.json
+│  └─ robots.txt
+├─ README.md
+└─ src
+   ├─ actions
+   │  ├─ actions.js
+   │  └─ actionTypes.js
+   ├─ App.js
+   ├─ App.test.js
+   ├─ assets
+   │  ├─ Cake.png
+   │  ├─ Frame_21.png
+   │  ├─ googleplay.png
+   │  ├─ icon.png
+   │  ├─ icon2.png
+   │  ├─ icon3.png
+   │  ├─ icon5.png
+   │  ├─ icon6.png
+   │  ├─ kakao_login.svg
+   │  ├─ kakao_login_large_narrow.png
+   │  ├─ LOGO3.png
+   │  ├─ molru.webp
+   │  ├─ Sticky-Note-01-Yellow.png
+   │  ├─ Sticky-Note-02-Green.png
+   │  ├─ Sticky-Note-02-Pink.png
+   │  ├─ Sticky-Note-03-Orange.png
+   │  ├─ Sticky-Note-04-Purple.png
+   │  └─ TempBg.png
+   ├─ components
+   │  ├─ firework.jsx
+   │  ├─ firework2.jsx
+   │  ├─ firework3.jsx
+   │  ├─ FollowTabs.jsx
+   │  ├─ KakaoCallback.jsx
+   │  ├─ LivePage
+   │  │  ├─ ButtonGroups.jsx
+   │  │  ├─ ChatBox.jsx
+   │  │  ├─ ClapEmoji.jsx
+   │  │  ├─ JoinCheck.jsx
+   │  │  └─ ViewersCarousel.jsx
+   │  ├─ Loading.jsx
+   │  ├─ MessageBoard.jsx
+   │  ├─ MessageBoard_Before.jsx
+   │  ├─ MessageDetail.jsx
+   │  ├─ MessageDetailText.jsx
+   │  ├─ MessageModal.jsx
+   │  ├─ MessageOnBoard.jsx
+   │  ├─ ModalText.jsx
+   │  ├─ NavBar.jsx
+   │  ├─ openvidu
+   │  │  ├─ OvVideo.js
+   │  │  ├─ UserVideo.css
+   │  │  └─ UserVideoComponent.js
+   │  ├─ Route
+   │  │  └─ PrivateRoute.jsx
+   │  ├─ SearchFriend.jsx
+   │  ├─ StickyNote
+   │  │  ├─ StickyNoteG.jsx
+   │  │  ├─ StickyNoteO.jsx
+   │  │  ├─ StickyNotePink.jsx
+   │  │  ├─ StickyNotePurple.jsx
+   │  │  └─ StickyNoteY.jsx
+   │  ├─ Timmer.jsx
+   │  ├─ UserFollowButton.jsx
+   │  └─ YearChip.jsx
+   ├─ css
+   │  ├─ BirthdayInput.css
+   │  ├─ ClapEmoji.css
+   │  ├─ FollowTabsStyles.css
+   │  ├─ GlobalFont.css
+   │  ├─ LogInPage.css
+   │  ├─ MemoBoard.css
+   │  ├─ Openvidu.css
+   │  └─ UserPage.css
+   ├─ fonts
+   │  └─ Nikumaru.otf
+   ├─ index.js
+   ├─ pages
+   │  ├─ BirthdayInput.jsx
+   │  ├─ LivePage.jsx
+   │  ├─ LogInPage.jsx
+   │  ├─ LogInPage_Dark.jsx
+   │  ├─ MyFriend.jsx
+   │  ├─ NotFound404.jsx
+   │  ├─ ProfileSetting.jsx
+   │  └─ UserPage.jsx
+   ├─ reducers
+   │  ├─ authReducer.js
+   │  ├─ messagesDataReducer.js
+   │  ├─ modalDataReducer.js
+   │  └─ rootReducer.js
+   ├─ reportWebVitals.js
+   ├─ setupTests.js
+   └─ store
+      └─ store.js
+
+```
