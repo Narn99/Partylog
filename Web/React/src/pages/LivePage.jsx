@@ -361,7 +361,7 @@ function LivePage() {
     setShowBirthdayMusic(true);
     setTimeout(() => {
       setShowBirthdayMusic(false);
-    }, 40000);
+    }, 15000);
   };
 
   const handleBirthdayMusic = () => {
@@ -371,7 +371,7 @@ function LivePage() {
       setSendBirthdayMusic(true);
       setTimeout(() => {
         setSendBirthdayMusic(false);
-      }, 40000);
+      }, 15000);
     }
   };
 
