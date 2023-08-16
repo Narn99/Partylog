@@ -7,7 +7,7 @@ import React, {
 import MicRoundedIcon from "@mui/icons-material/MicRounded";
 import MicOffRoundedIcon from "@mui/icons-material/MicOffRounded";
 import CelebrationRoundedIcon from "@mui/icons-material/CelebrationRounded";
-import EmojiEmotionsRoundedIcon from "@mui/icons-material/EmojiEmotionsRounded";
+// import EmojiEmotionsRoundedIcon from "@mui/icons-material/EmojiEmotionsRounded";
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import VideocamOffRoundedIcon from "@mui/icons-material/VideocamOffRounded";
 import MusicNoteRoundedIcon from "@mui/icons-material/MusicNoteRounded";
@@ -29,8 +29,8 @@ function ButtonGroups(props) {
     handleFirework,
     handleClapEmoji,
     recieveClap,
-    // handleHappyFaces,
-    // recieveHappyFaces,
+    handleHappyFaces,
+    recieveHappyFace,
     handleBirthdayMusic,
     showBirthdayMusic,
   } = props;
@@ -46,20 +46,20 @@ function ButtonGroups(props) {
   const [isCamOn, setIsCamOn] = useState(false);
   // const [isVolumeOn, setIsVolumeOn] = useState(false);
 
-  // const [happyFaces, setHappyFaces] = useState([]);
+  const [happyFaces, setHappyFaces] = useState([]);
 
-  // useEffect(() => {
-  //   if (happyFaces.length > 30) {
-  //     setHappyFaces([]);
-  //   }
-  //   if (recieveHappyFaces) {
-  //     const newHappyFaces = {
-  //       id: Date.now(),
-  //       left: Math.random() * 90 + 5,
-  //     };
-  //     setHappyFaces((prevEmojis) => [...prevEmojis, newHappyFaces]);
-  //   }
-  // }, [recieveHappyFaces]);
+  useEffect(() => {
+    if (happyFaces.length > 30) {
+      setHappyFaces([]);
+    }
+    if (recieveHappyFace) {
+      const newHappyFace = {
+        id: Date.now(),
+        left: Math.random() * 90 + 5,
+      };
+      setHappyFaces((prevEmojis) => [...prevEmojis, newHappyFace]);
+    }
+  }, [recieveHappyFace]);
 
   const [clapEmojis, setClapEmojis] = useState([]);
 
@@ -161,7 +161,6 @@ function ButtonGroups(props) {
           {showBirthdayMusic ? (
             <MusicOffRoundedIcon
               sx={{ fontSize: `${changeIconSize}` }}
-              // onClick={handleBirthdayMusic}
               style={{ cursor: "wait", color: "gray" }}
             />
           ) : (
@@ -197,13 +196,13 @@ function ButtonGroups(props) {
             onClick={handleFirework}
           />
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <EmojiEmotionsRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
-        </Grid>
+        </Grid> */}
         {/* <Grid item>
           <CakeRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
         </Grid> */}
-        {/* <Grid item>
+        <Grid item>
           <span
             style={{ fontSize: `${changeEmojiSize}`, cursor: "pointer" }}
             onClick={handleHappyFaces}
@@ -214,7 +213,7 @@ function ButtonGroups(props) {
             happyFaces.map((happyFace) => (
               <HappyFace key={happyFace.id} left={happyFace.left} />
             ))}
-        </Grid> */}
+        </Grid>
         <Grid item>
           <span
             style={{ fontSize: `${changeEmojiSize}`, cursor: "pointer" }}

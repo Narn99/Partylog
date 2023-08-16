@@ -15,6 +15,8 @@ function ChatBox(props) {
     recieveClapEmoji,
     sendBirthdayMusic,
     recieveBirthdayMusic,
+    sendHappyFace,
+    recieveHappyFaces,
   } = props;
   // console.log(session);
   const [chatContent, setChatContent] = useState("");
@@ -66,6 +68,24 @@ function ChatBox(props) {
         });
     }
   }, [sendFirework, session]);
+
+  useEffect(() => {
+    if (sendHappyFace) {
+      session
+        .signal({
+          data: "(Happy_Happy)", // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: "my-chat", // The type of message (optional)
+        })
+        .then(() => {
+          console.log("Message successfully sent");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [sendHappyFace, session]);
+
   useEffect(() => {
     if (sendClapEmoji) {
       session
@@ -82,6 +102,7 @@ function ChatBox(props) {
         });
     }
   }, [sendClapEmoji, session]);
+
   useEffect(() => {
     if (sendBirthdayMusic) {
       session
@@ -126,6 +147,9 @@ function ChatBox(props) {
         recieveClapEmoji();
       } else if (chatMsg.content.trim() === "(Birthday_Birthday)") {
         recieveBirthdayMusic();
+      } else if (chatMsg.content.trim() === "(Happy_Happy)") {
+        recieveHappyFaces();
+        console.log("오나?");
       } else {
         setChatMessages((prevMessages) => [...prevMessages, chatMsg]); // 새 메시지를 배열에 추가
       }

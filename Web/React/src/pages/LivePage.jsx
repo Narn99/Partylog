@@ -375,6 +375,23 @@ function LivePage() {
     }
   };
 
+  const [sendHappyFace, setSendHappyFace] = useState(false);
+  const [recieveHappyFace, setRecieveHappyFace] = useState(false);
+
+  const recieveHappyFaces = () => {
+    setRecieveHappyFace(true);
+    setTimeout(() => {
+      setRecieveHappyFace(false);
+    }, 50);
+  };
+
+  const handleHappyFaces = () => {
+    setSendHappyFace(true);
+    setTimeout(() => {
+      setSendHappyFace(false);
+    }, 50);
+  };
+
   const [sendClapEmoji, setSendClapEmoji] = useState(false);
   const [recieveClap, setRecieveClap] = useState(false);
 
@@ -595,6 +612,8 @@ function LivePage() {
                   recieveClap={recieveClap}
                   handleBirthdayMusic={handleBirthdayMusic}
                   showBirthdayMusic={showBirthdayMusic}
+                  handleHappyFaces={handleHappyFaces}
+                  recieveHappyFace={recieveHappyFace}
                 />
               </Grid>
             </Grid>
@@ -641,6 +660,8 @@ function LivePage() {
                   sendFirework={sendFirework}
                   sendClapEmoji={sendClapEmoji}
                   recieveClapEmoji={recieveClapEmoji}
+                  sendHappyFace={sendHappyFace}
+                  recieveHappyFaces={recieveHappyFaces}
                   sendBirthdayMusic={sendBirthdayMusic}
                   recieveBirthdayMusic={recieveBirthdayMusic}
                 />
@@ -783,6 +804,8 @@ function LivePage() {
                   recieveClap={recieveClap}
                   handleBirthdayMusic={handleBirthdayMusic}
                   showBirthdayMusic={showBirthdayMusic}
+                  handleHappyFaces={handleHappyFaces}
+                  recieveHappyFace={recieveHappyFace}
                 />
               </Grid>
             </Grid>
