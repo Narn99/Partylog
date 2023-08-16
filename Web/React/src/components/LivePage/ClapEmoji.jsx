@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../css/ClapEmoji.css";
-import clap2 from "../../assets/clap/clap2.wav";
+// import clap2 from "../../assets/clap/clap2.wav";
 
 const ClapEmoji = ({ id, left }) => {
   const [visible, setVisible] = useState(true);

@@ -1,21 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import birthday1 from "../../assets/music/birthday1.mp3";
-import birthday2 from "../../assets/music/birthday2.mp3";
 import birthday3 from "../../assets/music/birthday3.mp3";
-import birthday4 from "../../assets/music/birthday4.mp3";
 
-function BrithdayMusic() {
-  const [audio] = useState(new Audio("/path/to/your/audio.mp3"));
+function BrithdayMusic({ showBirthdayMusic, setShowBirthdayMusic }) {
+  const birthdays = [birthday1, birthday3];
+  const audio = new Audio();
 
-  const handlePlay = () => {
-    audio.play();
+  const getRandomMusic = () => {
+    const randomIndex = Math.floor(Math.random() * birthdays.length);
+    return birthdays[randomIndex];
   };
+  const musicSource = getRandomMusic();
+  audio.src = musicSource;
+  audio.volume = 0.5;
 
-  return (
-    <div>
-      <button onClick={handlePlay}>Play Audio</button>
-    </div>
-  );
+  useEffect(() => {
+    if (showBirthdayMusic) {
+      const playAudio = async () => {
+        await audio.play();
+        console.log("Audio played successfully!");
+      };
+
+      playAudio(); // 오디오 재생
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+      setShowBirthdayMusic(false);
+    }
+  }, [showBirthdayMusic, setShowBirthdayMusic]);
+
+  useEffect(() => {
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
+
+  return null;
 }
 
 export default BrithdayMusic;

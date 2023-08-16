@@ -35,22 +35,22 @@ const LogInPage = () => {
     {
       color: "hsl(50, 75%, 55%)",
       textShadow:
-        "1px 1px 5px hsl(50, 75%, 45%), 2px 2px 5px hsl(50, 45%, 45%), 3px 3px 5px hsl(50, 45%, 45%), 4px 4px 5px hsl(50, 75%, 45%)",
+        "1px 1px 2px hsl(50, 75%, 45%), 2px 2px 2px hsl(50, 45%, 45%), 3px 3px 2px hsl(50, 45%, 45%), 4px 4px 2px hsl(50, 75%, 45%)",
     },
     {
       color: "hsl(135, 35%, 55%)",
       textShadow:
-        "1px 1px 5px hsl(135, 35%, 45%), 2px 2px 5px hsl(135, 35%, 45%), 3px 3px 5px hsl(135, 35%, 45%), 4px 4px 5px hsl(135, 35%, 45%)",
+        "1px 1px 2px hsl(135, 35%, 45%), 2px 2px 2px hsl(135, 35%, 45%), 3px 3px 2px hsl(135, 35%, 45%), 4px 4px 2px hsl(135, 35%, 45%)",
     },
     {
       color: "hsl(155, 35%, 60%)",
       textShadow:
-        "1px 1px 5px hsl(155, 25%, 50%), 2px 2px 5px hsl(155, 25%, 50%), 3px 3px 5px hsl(155, 25%, 50%), 4px 4px 5px hsl(140, 25%, 50%)",
+        "1px 1px 2px hsl(155, 25%, 50%), 2px 2px 2px hsl(155, 25%, 50%), 3px 3px 2px hsl(155, 25%, 50%), 4px 4px 2px hsl(140, 25%, 50%)",
     },
     {
       color: "hsl(30, 65%, 60%)",
       textShadow:
-        "1px 1px 5px hsl(30, 45%, 50%), 2px 2px 5px hsl(30, 45%, 50%), 3px 3px 5px hsl(30, 45%, 50%), 4px 4px 5px hsl(30, 45%, 50%)",
+        "1px 1px 2px hsl(30, 45%, 50%), 2px 2px 2px hsl(30, 45%, 50%), 3px 3px 2px hsl(30, 45%, 50%), 4px 4px 2px hsl(30, 45%, 50%)",
     },
   ];
 

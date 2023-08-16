@@ -7,6 +7,7 @@ import ChatBox from "../components/LivePage/ChatBox";
 import JoinCheck from "../components/LivePage/JoinCheck";
 import ViewersCarousel from "../components/LivePage/ViewersCarousel";
 import { firework3 } from "../components/firework3";
+import BirthdayMusic from "../components/LivePage/BrithdayMusic";
 
 /* Openvidu 관련 컴포넌트 */
 import "../css/Openvidu.css";
@@ -353,6 +354,27 @@ function LivePage() {
     }, 3500);
   };
 
+  const [sendBirthdayMusic, setSendBirthdayMusic] = useState(false);
+  const [showBirthdayMusic, setShowBirthdayMusic] = useState(false);
+
+  const recieveBirthdayMusic = () => {
+    setShowBirthdayMusic(true);
+    setTimeout(() => {
+      setShowBirthdayMusic(false);
+    }, 40000);
+  };
+
+  const handleBirthdayMusic = () => {
+    if (showBirthdayMusic) {
+      setShowBirthdayMusic(false);
+    } else {
+      setSendBirthdayMusic(true);
+      setTimeout(() => {
+        setSendBirthdayMusic(false);
+      }, 40000);
+    }
+  };
+
   const [sendClapEmoji, setSendClapEmoji] = useState(false);
   const [recieveClap, setRecieveClap] = useState(false);
 
@@ -431,6 +453,10 @@ function LivePage() {
   } else {
     return (
       <div>
+        <BirthdayMusic
+          showBirthdayMusic={showBirthdayMusic}
+          setShowBirthdayMusic={setShowBirthdayMusic}
+        />
         <Grid
           container
           justifyContent={"space-evenly"}
@@ -567,6 +593,8 @@ function LivePage() {
                   handleFirework={handleFirework}
                   handleClapEmoji={handleClapEmoji}
                   recieveClap={recieveClap}
+                  handleBirthdayMusic={handleBirthdayMusic}
+                  showBirthdayMusic={showBirthdayMusic}
                 />
               </Grid>
             </Grid>
@@ -613,6 +641,8 @@ function LivePage() {
                   sendFirework={sendFirework}
                   sendClapEmoji={sendClapEmoji}
                   recieveClapEmoji={recieveClapEmoji}
+                  sendBirthdayMusic={sendBirthdayMusic}
+                  recieveBirthdayMusic={recieveBirthdayMusic}
                 />
               </div>
             </div>
@@ -751,6 +781,8 @@ function LivePage() {
                   handleFirework={handleFirework}
                   handleClapEmoji={handleClapEmoji}
                   recieveClap={recieveClap}
+                  handleBirthdayMusic={handleBirthdayMusic}
+                  showBirthdayMusic={showBirthdayMusic}
                 />
               </Grid>
             </Grid>

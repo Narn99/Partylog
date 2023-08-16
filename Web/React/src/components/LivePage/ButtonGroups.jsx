@@ -12,10 +12,11 @@ import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import VideocamOffRoundedIcon from "@mui/icons-material/VideocamOffRounded";
 import MusicNoteRoundedIcon from "@mui/icons-material/MusicNoteRounded";
 import MusicOffRoundedIcon from "@mui/icons-material/MusicOffRounded";
-import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
-import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
-import CakeRoundedIcon from "@mui/icons-material/CakeRounded";
+// import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
+// import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
+// import CakeRoundedIcon from "@mui/icons-material/CakeRounded";
 import ClapEmoji from "./ClapEmoji";
+import HappyFace from "./HappyFace";
 
 // import { firework3 } from "../firework3";
 
@@ -25,10 +26,13 @@ function ButtonGroups(props) {
   const {
     publisher,
     showFirework,
-    //  setShowFirework,
     handleFirework,
     handleClapEmoji,
     recieveClap,
+    // handleHappyFaces,
+    // recieveHappyFaces,
+    handleBirthdayMusic,
+    showBirthdayMusic,
   } = props;
 
   const theme = useTheme();
@@ -40,8 +44,22 @@ function ButtonGroups(props) {
 
   const [isMicOn, setIsMicOn] = useState(false);
   const [isCamOn, setIsCamOn] = useState(false);
-  const [isMusicOn, setIsMusicOn] = useState(false);
-  const [isVolumeOn, setIsVolumeOn] = useState(false);
+  // const [isVolumeOn, setIsVolumeOn] = useState(false);
+
+  // const [happyFaces, setHappyFaces] = useState([]);
+
+  // useEffect(() => {
+  //   if (happyFaces.length > 30) {
+  //     setHappyFaces([]);
+  //   }
+  //   if (recieveHappyFaces) {
+  //     const newHappyFaces = {
+  //       id: Date.now(),
+  //       left: Math.random() * 90 + 5,
+  //     };
+  //     setHappyFaces((prevEmojis) => [...prevEmojis, newHappyFaces]);
+  //   }
+  // }, [recieveHappyFaces]);
 
   const [clapEmojis, setClapEmojis] = useState([]);
 
@@ -68,12 +86,9 @@ function ButtonGroups(props) {
     publisher.publishVideo(isCamOn);
     setIsCamOn(!isCamOn);
   };
-  const handleMusicToggle = () => {
-    setIsMusicOn(!isMusicOn);
-  };
-  const handleVolumeToggle = () => {
-    setIsVolumeOn(!isVolumeOn);
-  };
+  // const handleVolumeToggle = () => {
+  //   setIsVolumeOn(!isVolumeOn);
+  // };
 
   // const handleFirework = () => {
   //   setShowFirework(true);
@@ -115,9 +130,9 @@ function ButtonGroups(props) {
         <Grid item>
           {isMicOn ? (
             <MicOffRoundedIcon
-              sx={{ fontSize: `${changeIconSize}`, margin: "5px" }}
+              sx={{ fontSize: `${changeIconSize}` }}
               onClick={handleMicToggle}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", color: "gray" }}
             />
           ) : (
             <MicRoundedIcon
@@ -132,7 +147,7 @@ function ButtonGroups(props) {
             <VideocamOffRoundedIcon
               sx={{ fontSize: `${changeIconSize}` }}
               onClick={handleCamToggle}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", color: "gray" }}
             />
           ) : (
             <VideocamRoundedIcon
@@ -143,21 +158,21 @@ function ButtonGroups(props) {
           )}
         </Grid>
         <Grid item>
-          {isMusicOn ? (
+          {showBirthdayMusic ? (
             <MusicOffRoundedIcon
               sx={{ fontSize: `${changeIconSize}` }}
-              onClick={handleMusicToggle}
-              style={{ cursor: "pointer" }}
+              // onClick={handleBirthdayMusic}
+              style={{ cursor: "wait", color: "gray" }}
             />
           ) : (
             <MusicNoteRoundedIcon
               sx={{ fontSize: `${changeIconSize}` }}
-              onClick={handleMusicToggle}
+              onClick={handleBirthdayMusic}
               style={{ cursor: "pointer" }}
             />
           )}
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           {isVolumeOn ? (
             <VolumeOffRoundedIcon
               sx={{ fontSize: `${changeIconSize}` }}
@@ -171,7 +186,7 @@ function ButtonGroups(props) {
               style={{ cursor: "pointer" }}
             />
           )}
-        </Grid>
+        </Grid> */}
         <Grid item>
           <CelebrationRoundedIcon
             sx={{
@@ -185,9 +200,21 @@ function ButtonGroups(props) {
         <Grid item>
           <EmojiEmotionsRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <CakeRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
-        </Grid>
+        </Grid> */}
+        {/* <Grid item>
+          <span
+            style={{ fontSize: `${changeEmojiSize}`, cursor: "pointer" }}
+            onClick={handleHappyFaces}
+          >
+            🥰
+          </span>
+          {happyFaces &&
+            happyFaces.map((happyFace) => (
+              <HappyFace key={happyFace.id} left={happyFace.left} />
+            ))}
+        </Grid> */}
         <Grid item>
           <span
             style={{ fontSize: `${changeEmojiSize}`, cursor: "pointer" }}
