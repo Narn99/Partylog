@@ -8,7 +8,7 @@
 ![image-1.png](./image-1.png)
 
 ### 기술스택
-![image-2.png](./image-2.png)
+![image-3.png](./image-3.png)
 
 
 # 핵심 기능 소개
@@ -28,3 +28,4 @@
 
 ### 배포
 - Doker/Jenkins 기반의 CI/CD 파이프라인 구축
+- SSL 인증서를 통한 https 적용
