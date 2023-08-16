@@ -77,7 +77,6 @@ React
 ├─ Dockerfile
 ├─ nginx
 │  └─ nginx.conf
-├─ output.txt
 ├─ package-lock.json
 ├─ package.json
 ├─ public
@@ -96,6 +95,8 @@ React
    ├─ App.test.js
    ├─ assets
    │  ├─ Cake.png
+   │  ├─ clap
+   │  │  └─ clap2.wav
    │  ├─ Frame_21.png
    │  ├─ googleplay.png
    │  ├─ icon.png
@@ -107,6 +108,9 @@ React
    │  ├─ kakao_login_large_narrow.png
    │  ├─ LOGO3.png
    │  ├─ molru.webp
+   │  ├─ music
+   │  │  ├─ birthday1.mp3
+   │  │  └─ birthday3.mp3
    │  ├─ Sticky-Note-01-Yellow.png
    │  ├─ Sticky-Note-02-Green.png
    │  ├─ Sticky-Note-02-Pink.png
@@ -120,9 +124,11 @@ React
    │  ├─ FollowTabs.jsx
    │  ├─ KakaoCallback.jsx
    │  ├─ LivePage
+   │  │  ├─ BrithdayMusic.jsx
    │  │  ├─ ButtonGroups.jsx
    │  │  ├─ ChatBox.jsx
    │  │  ├─ ClapEmoji.jsx
+   │  │  ├─ HappyFace.jsx
    │  │  ├─ JoinCheck.jsx
    │  │  └─ ViewersCarousel.jsx
    │  ├─ Loading.jsx

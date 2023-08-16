@@ -44,136 +44,129 @@
    각각을 보여주고 로딩 페이지에는 합쳐진 이미지를 보여주는 것으로 정하였습니다.
    ![icon6](./assets/icon6.png)
 
-5. **어려웠던 점**
+5. **트리 구조**
 
-- 프론트 멤버들이 다들 리액트가 처음이다보니 오류 해결하는 것이 특히 어려웠습니다.
-  다양한 종류의 오류를 경험해보게 되었고 무한 렌더링되는 곳에선 어떻게 해결해야하나
-  고민이 많이 되었습니다. 오류 메시지를 하나하나 찍어보고 다양한 방식을 시도해보며
-  실력 향샹에는 도움이 되었습니다.
-
-- 리덕스 사용이 생각보다 쉽지 않았습니다. 리액트의 중요한 기능 중 하나이지만 다루는 과정이
-  쉽게 이해가 가지 않아 사용에 어려움을 겪었지만 팀원들이 잘 도와줘서 고마웠고 협업의 중요성을 실감하였습니다.
-
-  6. **트리 구조**
-
-  ```
-  React
-  ├─ .env.local
-  ├─ .env.production
-  ├─ .gitignore
-  ├─ Dockerfile
-  ├─ nginx
-  │  └─ nginx.conf
-  ├─ output.txt
-  ├─ package-lock.json
-  ├─ package.json
-  ├─ public
-  │  ├─ favicon.ico
+```
+React
+├─ .env.local
+├─ .env.production
+├─ .gitignore
+├─ Dockerfile
+├─ nginx
+│  └─ nginx.conf
+├─ package-lock.json
+├─ package.json
+├─ public
+│  ├─ favicon.ico
+│  ├─ icon6.png
+│  ├─ icon6_192.png
+│  ├─ index.html
+│  ├─ manifest.json
+│  └─ robots.txt
+├─ README.md
+└─ src
+  ├─ actions
+  │  ├─ actions.js
+  │  └─ actionTypes.js
+  ├─ App.js
+  ├─ App.test.js
+  ├─ assets
+  │  ├─ Cake.png
+  │  ├─ clap
+  │  │  └─ clap2.wav
+  │  ├─ Frame_21.png
+  │  ├─ googleplay.png
+  │  ├─ icon.png
+  │  ├─ icon2.png
+  │  ├─ icon3.png
+  │  ├─ icon5.png
   │  ├─ icon6.png
-  │  ├─ icon6_192.png
-  │  ├─ index.html
-  │  ├─ manifest.json
-  │  └─ robots.txt
-  ├─ README.md
-  └─ src
-   ├─ actions
-   │  ├─ actions.js
-   │  └─ actionTypes.js
-   ├─ App.js
-   ├─ App.test.js
-   ├─ assets
-   │  ├─ Cake.png
-   │  ├─ Frame_21.png
-   │  ├─ googleplay.png
-   │  ├─ icon.png
-   │  ├─ icon2.png
-   │  ├─ icon3.png
-   │  ├─ icon5.png
-   │  ├─ icon6.png
-   │  ├─ kakao_login.svg
-   │  ├─ kakao_login_large_narrow.png
-   │  ├─ LOGO3.png
-   │  ├─ molru.webp
-   │  ├─ Sticky-Note-01-Yellow.png
-   │  ├─ Sticky-Note-02-Green.png
-   │  ├─ Sticky-Note-02-Pink.png
-   │  ├─ Sticky-Note-03-Orange.png
-   │  ├─ Sticky-Note-04-Purple.png
-   │  └─ TempBg.png
-   ├─ components
-   │  ├─ firework.jsx
-   │  ├─ firework2.jsx
-   │  ├─ firework3.jsx
-   │  ├─ FollowTabs.jsx
-   │  ├─ KakaoCallback.jsx
-   │  ├─ LivePage
-   │  │  ├─ ButtonGroups.jsx
-   │  │  ├─ ChatBox.jsx
-   │  │  ├─ ClapEmoji.jsx
-   │  │  ├─ JoinCheck.jsx
-   │  │  └─ ViewersCarousel.jsx
-   │  ├─ Loading.jsx
-   │  ├─ MessageBoard.jsx
-   │  ├─ MessageBoard_Before.jsx
-   │  ├─ MessageDetail.jsx
-   │  ├─ MessageDetailText.jsx
-   │  ├─ MessageModal.jsx
-   │  ├─ MessageOnBoard.jsx
-   │  ├─ ModalText.jsx
-   │  ├─ NavBar.jsx
-   │  ├─ openvidu
-   │  │  ├─ OvVideo.js
-   │  │  ├─ UserVideo.css
-   │  │  └─ UserVideoComponent.js
-   │  ├─ Route
-   │  │  └─ PrivateRoute.jsx
-   │  ├─ SearchFriend.jsx
-   │  ├─ StickyNote
-   │  │  ├─ StickyNoteG.jsx
-   │  │  ├─ StickyNoteO.jsx
-   │  │  ├─ StickyNotePink.jsx
-   │  │  ├─ StickyNotePurple.jsx
-   │  │  └─ StickyNoteY.jsx
-   │  ├─ Timmer.jsx
-   │  ├─ UserFollowButton.jsx
-   │  └─ YearChip.jsx
-   ├─ css
-   │  ├─ BirthdayInput.css
-   │  ├─ ClapEmoji.css
-   │  ├─ FollowTabsStyles.css
-   │  ├─ GlobalFont.css
-   │  ├─ LogInPage.css
-   │  ├─ MemoBoard.css
-   │  ├─ Openvidu.css
-   │  └─ UserPage.css
-   ├─ fonts
-   │  └─ Nikumaru.otf
-   ├─ index.js
-   ├─ pages
-   │  ├─ BirthdayInput.jsx
-   │  ├─ LivePage.jsx
-   │  ├─ LogInPage.jsx
-   │  ├─ LogInPage_Dark.jsx
-   │  ├─ MyFriend.jsx
-   │  ├─ NotFound404.jsx
-   │  ├─ ProfileSetting.jsx
-   │  └─ UserPage.jsx
-   ├─ reducers
-   │  ├─ authReducer.js
-   │  ├─ messagesDataReducer.js
-   │  ├─ modalDataReducer.js
-   │  └─ rootReducer.js
-   ├─ reportWebVitals.js
-   ├─ setupTests.js
-   └─ store
-      └─ store.js
-  ```
-
-```
+  │  ├─ kakao_login.svg
+  │  ├─ kakao_login_large_narrow.png
+  │  ├─ LOGO3.png
+  │  ├─ molru.webp
+  │  ├─ music
+  │  │  ├─ birthday1.mp3
+  │  │  └─ birthday3.mp3
+  │  ├─ Sticky-Note-01-Yellow.png
+  │  ├─ Sticky-Note-02-Green.png
+  │  ├─ Sticky-Note-02-Pink.png
+  │  ├─ Sticky-Note-03-Orange.png
+  │  ├─ Sticky-Note-04-Purple.png
+  │  └─ TempBg.png
+  ├─ components
+  │  ├─ firework.jsx
+  │  ├─ firework2.jsx
+  │  ├─ firework3.jsx
+  │  ├─ FollowTabs.jsx
+  │  ├─ KakaoCallback.jsx
+  │  ├─ LivePage
+  │  │  ├─ BrithdayMusic.jsx
+  │  │  ├─ ButtonGroups.jsx
+  │  │  ├─ ChatBox.jsx
+  │  │  ├─ ClapEmoji.jsx
+  │  │  ├─ HappyFace.jsx
+  │  │  ├─ JoinCheck.jsx
+  │  │  └─ ViewersCarousel.jsx
+  │  ├─ Loading.jsx
+  │  ├─ MessageBoard.jsx
+  │  ├─ MessageBoard_Before.jsx
+  │  ├─ MessageDetail.jsx
+  │  ├─ MessageDetailText.jsx
+  │  ├─ MessageModal.jsx
+  │  ├─ MessageOnBoard.jsx
+  │  ├─ ModalText.jsx
+  │  ├─ NavBar.jsx
+  │  ├─ openvidu
+  │  │  ├─ OvVideo.js
+  │  │  ├─ UserVideo.css
+  │  │  └─ UserVideoComponent.js
+  │  ├─ Route
+  │  │  └─ PrivateRoute.jsx
+  │  ├─ SearchFriend.jsx
+  │  ├─ StickyNote
+  │  │  ├─ StickyNoteG.jsx
+  │  │  ├─ StickyNoteO.jsx
+  │  │  ├─ StickyNotePink.jsx
+  │  │  ├─ StickyNotePurple.jsx
+  │  │  └─ StickyNoteY.jsx
+  │  ├─ Timmer.jsx
+  │  ├─ UserFollowButton.jsx
+  │  └─ YearChip.jsx
+  ├─ css
+  │  ├─ BirthdayInput.css
+  │  ├─ ClapEmoji.css
+  │  ├─ FollowTabsStyles.css
+  │  ├─ GlobalFont.css
+  │  ├─ LogInPage.css
+  │  ├─ MemoBoard.css
+  │  ├─ Openvidu.css
+  │  └─ UserPage.css
+  ├─ fonts
+  │  └─ Nikumaru.otf
+  ├─ index.js
+  ├─ pages
+  │  ├─ BirthdayInput.jsx
+  │  ├─ LivePage.jsx
+  │  ├─ LogInPage.jsx
+  │  ├─ LogInPage_Dark.jsx
+  │  ├─ MyFriend.jsx
+  │  ├─ NotFound404.jsx
+  │  ├─ ProfileSetting.jsx
+  │  └─ UserPage.jsx
+  ├─ reducers
+  │  ├─ authReducer.js
+  │  ├─ messagesDataReducer.js
+  │  ├─ modalDataReducer.js
+  │  └─ rootReducer.js
+  ├─ reportWebVitals.js
+  ├─ setupTests.js
+  └─ store
+     └─ store.js
 
 
 ```
 
-7. **리덕스**
+6. **리덕스**
 
 로그인과 메시지 작성에서 사용하고 있습니다. 로그인의 상태를 관리하는 기능과 메시지의 CRUD와 관련된 역할을 수행합니다.
