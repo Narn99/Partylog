@@ -1,11 +1,12 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ButtonGroups from "../components/LivePage/ButtonGroups";
 import Button from "@mui/material/Button";
 import ChatBox from "../components/LivePage/ChatBox";
 import JoinCheck from "../components/LivePage/JoinCheck";
 import ViewersCarousel from "../components/LivePage/ViewersCarousel";
+import { firework3 } from "../components/firework3";
 
 /* Openvidu 관련 컴포넌트 */
 import "../css/Openvidu.css";
@@ -34,7 +35,9 @@ function LivePage() {
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
   const [isJoinCheck, setIsJoinCheck] = useState(false);
-  
+
+  const [showFirework, setShowFirework] = useState(false);
+
   const [recorder, setRecorder] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState([]);
@@ -62,15 +65,21 @@ function LivePage() {
     }
   }, [roomHostUserInfo]);
 
-  console.log("호잇");
-  console.log(mainStreamManager);
-
   const handleMainVideoStream = (stream) => {
     console.log(stream);
     if (mainStreamManager !== stream) {
       setMainStreamManager(stream);
     }
   };
+
+  // 폭죽 이펙트
+
+  useEffect(() => {
+    if (showFirework) {
+      firework3();
+      console.log(1);
+    }
+  }, [showFirework]);
 
   // 본인이 방 주인이 아니라면 방 주인을 MainStreamer로 지정
   const initialMainVideoStreamer = () => {
@@ -99,7 +108,7 @@ function LivePage() {
 
     // --- 2) Init a session ---
     // setSession(OV.initSession())
-    
+
     var mySession = session;
     // --- 3) Specify the actions when events take place in the session ---
 
@@ -193,8 +202,6 @@ function LivePage() {
     });
   };
 
-  console.log(subscribers);
-
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     console.log("세션 종료");
@@ -230,28 +237,27 @@ function LivePage() {
         console.log(res);
         window.close();
       });
-    console.log(subscribers);
   };
 
   // //녹화 시작 요청
   // const startRecording = () =>{
   //   var stringId = String(userNo);
   //   const response = axios.post(APPLICATION_SERVER_URL + 'api/record/start/' + stringId, {}, {
-  //     headers: { 
+  //     headers: {
   //         'Authorization': localStorage.getItem("access-token"),
-  //         'Content-Type': 'application/json', 
+  //         'Content-Type': 'application/json',
   //     },
   // })
   // return response.data;
   // }
-  
-  // //녹화 종료 요청 
+
+  // //녹화 종료 요청
   // const stopRecording = () =>{
   //   var stringId = String(userNo);
   //   const response = axios.post(APPLICATION_SERVER_URL + 'api/record/stop/' + stringId, {}, {
-  //     headers: { 
+  //     headers: {
   //         'Authorization': localStorage.getItem("access-token"),
-  //         'Content-Type': 'application/json', 
+  //         'Content-Type': 'application/json',
   //     },
   //   });
   //     return response.data;
@@ -259,68 +265,93 @@ function LivePage() {
 
   const startRecording = async () => {
     setIsRecording(true);
-  
-    const displayStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-    const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-      // 오픈비두의 mainStreamManager에서 얻은 오디오 스트림을 가져옵니다
-    const openViduAudioStream = mainStreamManager && mainStreamManager.stream
-    ? mainStreamManager.stream.getMediaStream().getAudioTracks()[0]
-    : null;
+    const displayStream = await navigator.mediaDevices.getDisplayMedia({
+      video: true,
+    });
+    const audioStream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+
+    // 오픈비두의 mainStreamManager에서 얻은 오디오 스트림을 가져옵니다
+    const openViduAudioStream =
+      mainStreamManager && mainStreamManager.stream
+        ? mainStreamManager.stream.getMediaStream().getAudioTracks()[0]
+        : null;
 
     const mixedStream = new MediaStream();
-    displayStream.getVideoTracks().forEach(track => mixedStream.addTrack(track));
-    audioStream.getAudioTracks().forEach(track => mixedStream.addTrack(track));
+    displayStream
+      .getVideoTracks()
+      .forEach((track) => mixedStream.addTrack(track));
+    audioStream
+      .getAudioTracks()
+      .forEach((track) => mixedStream.addTrack(track));
     // if (openViduAudioStream) {
     //   mixedStream.addTrack(openViduAudioStream);
     // }
     // 다른 참여자의 음성 스트림을 녹음 스트림에 추가
-   subscribers.forEach(sub => {
-    const audioTrack = sub.stream.getMediaStream().getAudioTracks()[0];
-    if (audioTrack) {
-      mixedStream.addTrack(audioTrack);
-    }
-  });
-  
+    subscribers.forEach((sub) => {
+      const audioTrack = sub.stream.getMediaStream().getAudioTracks()[0];
+      if (audioTrack) {
+        mixedStream.addTrack(audioTrack);
+      }
+    });
+
     const mediaRecorder = new MediaRecorder(mixedStream);
     const chunks = [];
-  
+
     mediaRecorder.ondataavailable = (event) => {
       if (event.data.size > 0) {
         chunks.push(event.data);
         setRecordedChunks(chunks); // Reset recordedChunks when starting a new recording
       }
     };
-    
+
     mediaRecorder.start();
     setRecorder(mediaRecorder);
   };
-  
+
   const stopRecording = () => {
     setIsRecording(false);
-  
+
     if (recorder) {
       recorder.stop();
-      recorder.stream.getTracks().forEach(track => track.stop());
+      recorder.stream.getTracks().forEach((track) => track.stop());
     }
   };
-  
+
   const downloadRecording = () => {
     if (recordedChunks.length === 0) {
       console.log("No recorded data to download.");
       return;
     }
-  
-    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+
+    const blob = new Blob(recordedChunks, { type: "video/webm" });
     const blobUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = blobUrl;
-    a.download = 'recorded-video.webm';
+    a.download = "recorded-video.webm";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
   };
 
+  const [sendFirework, setSendFirework] = useState(false);
+
+  const sendToFirework = () => {
+    setSendFirework(true);
+    setTimeout(() => {
+      setSendFirework(false);
+    }, 3000);
+  };
+
+  const handleFirework = () => {
+    sendToFirework();
+    setShowFirework(true);
+    setTimeout(() => {
+      setShowFirework(false);
+    }, 3500);
+  };
   /**
    * --------------------------------------------
    * GETTING A TOKEN FROM YOUR APPLICATION SERVER
@@ -511,7 +542,12 @@ function LivePage() {
                   height: "100%",
                 }}
               >
-                <ButtonGroups mainStreamManager={mainStreamManager} />
+                <ButtonGroups
+                  publisher={publisher}
+                  showFirework={showFirework}
+                  // setShowFirework={setShowFirework}
+                  handleFirework={handleFirework}
+                />
               </Grid>
             </Grid>
           )}
@@ -550,7 +586,12 @@ function LivePage() {
                   flexDirection: "column",
                 }}
               >
-                <ChatBox session={session} />
+                <ChatBox
+                  session={session}
+                  showFirework={showFirework}
+                  setShowFirework={setShowFirework}
+                  sendFirework={sendFirework}
+                />
               </div>
             </div>
           </Grid>
@@ -587,108 +628,134 @@ function LivePage() {
             className="button-grid"
           >
             <Grid
+              container
               item
-              md={5}
+              md={8}
               xs={10}
+              justifyContent={"center"}
+              alignItems={"center"}
               style={{
                 width: "100%",
                 height: "100%",
               }}
             >
-              <ButtonGroups publisher={publisher} />
+              <Grid
+                container
+                item
+                xs={8}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <ButtonGroups
+                  publisher={publisher}
+                  showFirework={showFirework}
+                  // setShowFirework={setShowFirework}
+                  handleFirework={handleFirework}
+                />
+              </Grid>
             </Grid>
 
             <Grid
               container
               item
+              md={3}
               xs={2}
-              justifyContent={"flex-end"}
+              justifyContent={"center"}
               alignItems={"center"}
             >
-              <Button
-                className="exit-live-button"
-                variant="contained"
-                style={{
-                  fontFamily: "MaplestoryOTFBold",
-                  width: "100%",
-                  height: "100%",
-                  fontSize: "25px",
-                  color: "white",
-                  borderRadius: "20px",
-                  texShadow: "0.1px 0.1px 4px #e892a4",
-                  boxSizing: "border-box",
-                }}
-                onClick={leaveSession}
+              <Grid
+                container
+                item
+                md={10}
+                xs={2}
+                justifyContent={"center"}
+                alignItems={"center"}
               >
-                나가기
-              </Button>
-              {isRecording ? (
-              <Button
-              className="exit-live-button"
-              variant="contained"
-              style={{
-                fontFamily: "MaplestoryOTFBold",
-                width: "50%",
-                height: "100%",
-                fontSize: "25px",
-                color: "white",
-                borderRadius: "20px",
-                texShadow: "0.1px 0.1px 4px #e892a4",
-                boxSizing: "border-box",
-              }}
-              onClick={stopRecording}
-            >
-              녹화중단
-            </Button>
-             ) : (
-            <Button
-              className="exit-live-button"
-              variant="contained"
-              style={{
-                fontFamily: "MaplestoryOTFBold",
-                width: "50%",
-                height: "100%",
-                fontSize: "25px",
-                color: "white",
-                borderRadius: "20px",
-                texShadow: "0.1px 0.1px 4px #e892a4",
-                boxSizing: "border-box",
-              }}
-              onClick={startRecording}
-            >
-              녹화시작
-            </Button>
-            )}
-            {recordedChunks.length > 0 && (
-              <Button
-              className="exit-live-button"
-              variant="contained"
-              style={{
-                fontFamily: "MaplestoryOTFBold",
-                width: "50%",
-                height: "100%",
-                fontSize: "25px",
-                color: "white",
-                borderRadius: "20px",
-                texShadow: "0.1px 0.1px 4px #e892a4",
-                boxSizing: "border-box",
-              }}
-              onClick={downloadRecording}
-            >다운로드</Button>
-            )}
-           {/* <video ref={videoRef} controls style={{ maxWidth: '100%' }}>
+                <Button
+                  className="exit-live-button"
+                  variant="contained"
+                  style={{
+                    fontFamily: "MaplestoryOTFBold",
+                    width: "100%",
+                    height: "100%",
+                    fontSize: "20px",
+                    color: "white",
+                    borderRadius: "20px",
+                    texShadow: "0.1px 0.1px 4px #e892a4",
+                    boxSizing: "border-box",
+                  }}
+                  onClick={leaveSession}
+                >
+                  나가기
+                </Button>
+                {isRecording ? (
+                  <Button
+                    className="exit-live-button"
+                    variant="contained"
+                    style={{
+                      fontFamily: "MaplestoryOTFBold",
+                      width: "50%",
+                      height: "100%",
+                      fontSize: "20px",
+                      color: "white",
+                      borderRadius: "20px",
+                      texShadow: "0.1px 0.1px 4px #e892a4",
+                      boxSizing: "border-box",
+                    }}
+                    onClick={stopRecording}
+                  >
+                    녹화중단
+                  </Button>
+                ) : (
+                  <Button
+                    className="exit-live-button"
+                    variant="contained"
+                    style={{
+                      fontFamily: "MaplestoryOTFBold",
+                      width: "50%",
+                      height: "100%",
+                      fontSize: "20px",
+                      color: "white",
+                      borderRadius: "15px",
+                      texShadow: "0.1px 0.1px 4px #e892a4",
+                      boxSizing: "border-box",
+                    }}
+                    onClick={startRecording}
+                  >
+                    녹화시작
+                  </Button>
+                )}
+                {recordedChunks.length > 0 && (
+                  <Button
+                    className="exit-live-button"
+                    variant="contained"
+                    style={{
+                      fontFamily: "MaplestoryOTFBold",
+                      width: "50%",
+                      height: "100%",
+                      fontSize: "20px",
+                      color: "white",
+                      borderRadius: "15px",
+                      texShadow: "0.1px 0.1px 4px #e892a4",
+                      boxSizing: "border-box",
+                    }}
+                    onClick={downloadRecording}
+                  >
+                    다운로드
+                  </Button>
+                )}
+                {/* <video ref={videoRef} controls style={{ maxWidth: '100%' }}>
               {recordedChunks.map((chunk, index) => (
           <source key={index} src={URL.createObjectURL(chunk)} type="video/webm" />
             ))}
            </video> */}
+              </Grid>
             </Grid>
           </Grid>
         )}
-
       </div>
     );
   }
-
 }
 
 export default LivePage;

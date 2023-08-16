@@ -62,9 +62,6 @@ function MessageBoard(props) {
     return state.messagesData.messages;
   });
 
-  // console.log("메시지보드의 마이메시지");
-  // console.log(myMessage);   xs sm md lg xl
-
   const updateCarouselMessages = useCallback(() => {
     const messagesPerPage = isSmallScreen ? 4 : isLargeScreen ? 6 : 8;
     const carouselPage = Math.ceil(messages.length / messagesPerPage);
@@ -114,7 +111,6 @@ function MessageBoard(props) {
           },
         })
           .then((res) => {
-            console.log(res.data.data);
             const additionalMessagesData = res.data.data;
             dispatch(getAdditionalMessagesList(additionalMessagesData));
             if (additionalMessagesData.length < 24) {
@@ -212,7 +208,7 @@ function MessageBoard(props) {
       <div
         style={{
           width: "100%",
-          height: "500px",
+          height: "70vh",
           backgroundColor: "#a27e4f",
           display: "flex",
           justifyContent: "center",

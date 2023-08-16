@@ -76,7 +76,7 @@ function MessageOnBoard(props) {
             alignItems={"center"}
           >
             <img
-              src={message.user_profile}
+              src={message.user_profile && message.user_profile}
               // onClick={handleGoToMessageUser}
               alt=""
               style={{
@@ -100,7 +100,7 @@ function MessageOnBoard(props) {
           >
             &nbsp;&nbsp;&nbsp;
             {/* <span onClick={handleGoToMessageUser}> */}
-            {getLength(message.user_nickname, 10)}
+            {message.user_nickname && getLength(message.user_nickname, 10)}
             {/* </span> */}
           </Grid>
         </Grid>
@@ -123,7 +123,7 @@ function MessageOnBoard(props) {
           marginTop: "15px",
         }}
       >
-        {getLength(message.letter_title, 15)}
+        {message.letter_title && getLength(message.letter_title, 15)}
       </div>
     </div>
   );

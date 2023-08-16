@@ -87,7 +87,6 @@ function UserPage() {
         },
       })
         .then((res) => {
-          console.log(res);
           const data = res.data.data;
           setUserData({
             userNo: data.userNo,
@@ -107,8 +106,6 @@ function UserPage() {
           if (helloMyMessage) {
             dispatch(addMyMessageData(helloMyMessage[0]));
           }
-
-          // console.log(userData);
 
           // 본인 페이지면 받아온 데이터 저장
           if (parseInt(myUserNo) === parseInt(userNo)) {
@@ -180,9 +177,6 @@ function UserPage() {
     }
   }, [myMessage, dispatch]);
 
-  // console.log(userData);
-  // console.log(userData.userBirthday);
-
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -199,8 +193,6 @@ function UserPage() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
-    console.log("얍!");
-    console.log(myMessage);
     if (myMessage) {
       dispatch(setModalData(myMessage.letter_title, myMessage.letter_content));
     }
@@ -234,8 +226,7 @@ function UserPage() {
   const changeFollowButtonFontSize = isSmallScreen ? "15px" : "18px";
   const addMarginAboveBoard = isMediumScreen ? "20px" : "";
 
-  // console.log("유저페이지의 마이메시지");
-  // console.log(myMessage);
+  // 노트북으로만 개발하느라 몰랐는데, height값을 지정해서 작성하니 모니터가 커지니까 아랫 공간이 남게 됨.
 
   // 로딩 중일 시 띄우는 컴포넌트
   if (loading) {
@@ -251,7 +242,8 @@ function UserPage() {
             xs={12}
             md={4}
             justifyContent={"center"}
-            style={{ height: "100%" }}
+            alignItems={"center"}
+            style={{ height: "80vh" }}
           >
             <div>
               <Grid
@@ -363,7 +355,7 @@ function UserPage() {
                       }}
                       // disabled={!todayIsBirthday}
                     >
-                      {!todayIsBirthday ? (
+                      {/* {!todayIsBirthday ? (
                         <>
                           아직 생일이
                           <br />
@@ -375,7 +367,8 @@ function UserPage() {
                           <br />
                           시작
                         </>
-                      )}
+                      )} */}
+                      라이브 <br /> 시작
                     </Button>
                   ) : (
                     <Button
@@ -395,7 +388,7 @@ function UserPage() {
                       }}
                       // disabled={!todayIsBirthday}
                     >
-                      {!todayIsBirthday ? (
+                      {/* {!todayIsBirthday ? (
                         <>
                           아직 생일이
                           <br />
@@ -407,7 +400,8 @@ function UserPage() {
                           <br />
                           참가
                         </>
-                      )}
+                      )} */}
+                      라이브 <br /> 참가
                     </Button>
                   )}
                 </Grid>
@@ -421,7 +415,9 @@ function UserPage() {
             item
             xs={12}
             md={7}
-            style={{ marginTop: addMarginAboveBoard }}
+            justifyContent={"center"}
+            alignItems={"center"}
+            style={{ marginTop: addMarginAboveBoard, height: "80vh" }}
           >
             <Grid item xs={12}>
               <MessageBoard

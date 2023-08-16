@@ -25,7 +25,6 @@ function UserFollowButton(props) {
       },
     })
       .then((res) => {
-        console.log(res.data);
         setFollowerCount(res.data.data);
       })
       .catch((err) => {
@@ -65,7 +64,6 @@ function UserFollowButton(props) {
       },
     })
       .then((res) => {
-        console.log(res.data);
         setIsFollowed(true);
         getFollowerCount();
       })
@@ -82,7 +80,6 @@ function UserFollowButton(props) {
       },
     })
       .then((res) => {
-        console.log(res.data);
         setIsFollowed(false);
         getFollowerCount();
       })
