@@ -354,16 +354,20 @@ function LivePage() {
   };
 
   const [sendClapEmoji, setSendClapEmoji] = useState(false);
+  const [recieveClap, setRecieveClap] = useState(false);
 
-  const sendToClapEmoji = () => {
-    setSendClapEmoji(true);
+  const recieveClapEmoji = () => {
+    setRecieveClap(true);
     setTimeout(() => {
-      setSendClapEmoji(false);
+      setRecieveClap(false);
     }, 50);
   };
 
   const handleClapEmoji = () => {
-    sendToClapEmoji();
+    setSendClapEmoji(true);
+    setTimeout(() => {
+      setSendClapEmoji(false);
+    }, 50);
   };
 
   /**
@@ -562,7 +566,7 @@ function LivePage() {
                   // setShowFirework={setShowFirework}
                   handleFirework={handleFirework}
                   handleClapEmoji={handleClapEmoji}
-                  sendClapEmoji={sendClapEmoji}
+                  recieveClap={recieveClap}
                 />
               </Grid>
             </Grid>
@@ -608,7 +612,7 @@ function LivePage() {
                   setShowFirework={setShowFirework}
                   sendFirework={sendFirework}
                   sendClapEmoji={sendClapEmoji}
-                  sendToClapEmoji={sendToClapEmoji}
+                  recieveClapEmoji={recieveClapEmoji}
                 />
               </div>
             </div>
@@ -670,7 +674,7 @@ function LivePage() {
                   // setShowFirework={setShowFirework}
                   handleFirework={handleFirework}
                   handleClapEmoji={handleClapEmoji}
-                  sendClapEmoji={sendClapEmoji}
+                  recieveClap={recieveClap}
                 />
               </Grid>
             </Grid>

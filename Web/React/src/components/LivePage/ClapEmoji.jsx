@@ -1,8 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "../../css/ClapEmoji.css";
+import clap2 from "../../assets/clap/clap2.wav";
 
 const ClapEmoji = ({ id, left }) => {
   const [visible, setVisible] = useState(true);
+
+  // 오디오 자꾸 터짐
+
+  // const [audio] = useState(new Audio(clap2));
+
+  // useEffect(() => {
+  //   if (visible) {
+  //     audio.play();
+  //   }
+
+  //   return () => {
+  //     audio.pause();
+  //     audio.currentTime = 0;
+  //   };
+  // }, [visible, audio]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

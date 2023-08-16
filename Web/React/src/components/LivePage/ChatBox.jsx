@@ -13,6 +13,8 @@ function ChatBox(props) {
     sendFirework,
     sendClapEmoji,
     sendToClapEmoji,
+    setRecieveClapEmoji,
+    recieveClapEmoji,
   } = props;
   // console.log(session);
   const [chatContent, setChatContent] = useState("");
@@ -57,7 +59,6 @@ function ChatBox(props) {
           type: "my-chat", // The type of message (optional)
         })
         .then(() => {
-          setChatContent("");
           console.log("Message successfully sent");
         })
         .catch((error) => {
@@ -74,7 +75,6 @@ function ChatBox(props) {
           type: "my-chat", // The type of message (optional)
         })
         .then(() => {
-          setChatContent("");
           console.log("Message successfully sent");
         })
         .catch((error) => {
@@ -107,7 +107,7 @@ function ChatBox(props) {
           setShowFirework(false);
         }, 3500);
       } else if (chatMsg.content.trim() === "(Clap_Clap)") {
-        sendToClapEmoji();
+        recieveClapEmoji();
       } else {
         setChatMessages((prevMessages) => [...prevMessages, chatMsg]); // 새 메시지를 배열에 추가
       }

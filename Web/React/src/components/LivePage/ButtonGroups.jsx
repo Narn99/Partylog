@@ -28,7 +28,7 @@ function ButtonGroups(props) {
     //  setShowFirework,
     handleFirework,
     handleClapEmoji,
-    sendClapEmoji,
+    recieveClap,
   } = props;
 
   const theme = useTheme();
@@ -46,18 +46,17 @@ function ButtonGroups(props) {
   const [clapEmojis, setClapEmojis] = useState([]);
 
   useEffect(() => {
-    console.log(clapEmojis);
-    if (clapEmojis.length > 50) {
+    if (clapEmojis.length > 30) {
       setClapEmojis([]);
     }
-    if (sendClapEmoji) {
+    if (recieveClap) {
       const newClapEmoji = {
         id: Date.now(),
         left: Math.random() * 90 + 5,
       };
       setClapEmojis((prevEmojis) => [...prevEmojis, newClapEmoji]);
     }
-  }, [sendClapEmoji]);
+  }, [recieveClap]);
 
   // const [showFirework, setShowFirework] = useState(false);
 
