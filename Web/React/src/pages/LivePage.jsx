@@ -629,14 +629,90 @@ function LivePage() {
                   fontSize: "25px",
                   color: "white",
                   borderRadius: "20px",
-                  texShadow: "0.1px 0.1px 4px #e892a4",
+                  textShadow: "0.1px 0.1px 4px #e892a4",
                   boxSizing: "border-box",
                   marginTop: "10px",
+                  marginBottom: "10px",
                 }}
                 onClick={leaveSession}
               >
                 나가기
               </Button>
+              {isRecording ? (
+                <Button
+                  className="exit-live-button"
+                  variant="contained"
+                  style={{
+                    fontFamily: "MaplestoryOTFBold",
+                    width: "50%",
+                    height: "100%",
+                    fontSize: "20px",
+                    color: "white",
+                    borderRadius: "20px",
+                    textShadow: "0.1px 0.1px 4px #e892a4",
+                    boxSizing: "border-box",
+                  }}
+                  onClick={stopRecording}
+                >
+                  녹화중단
+                </Button>
+              ) : (
+                <Button
+                  className="exit-live-button"
+                  variant="contained"
+                  style={{
+                    fontFamily: "MaplestoryOTFBold",
+                    width: "50%",
+                    height: "100%",
+                    fontSize: "20px",
+                    color: "white",
+                    borderRadius: "15px",
+                    textShadow: "0.1px 0.1px 4px #e892a4",
+                    boxSizing: "border-box",
+                  }}
+                  onClick={startRecording}
+                >
+                  녹화시작
+                </Button>
+              )}
+              {recordedChunks.length > 0 ? (
+                <Button
+                  className="exit-live-button"
+                  variant="contained"
+                  style={{
+                    fontFamily: "MaplestoryOTFBold",
+                    width: "50%",
+                    height: "100%",
+                    fontSize: "20px",
+                    color: "white",
+                    borderRadius: "15px",
+                    textShadow: "0.1px 0.1px 4px #e892a4",
+                    boxSizing: "border-box",
+                  }}
+                  onClick={downloadRecording}
+                >
+                  다운로드
+                </Button>
+              ) : (
+                <Button
+                  className="exit-live-button"
+                  variant="contained"
+                  style={{
+                    fontFamily: "MaplestoryOTFBold",
+                    width: "50%",
+                    height: "100%",
+                    fontSize: "20px",
+                    color: "white",
+                    borderRadius: "15px",
+                    textShadow: "0.1px 0.1px 4px #e892a4",
+                    boxSizing: "border-box",
+                  }}
+                  onClick={downloadRecording}
+                  disabled={true}
+                >
+                  다운로드
+                </Button>
+              )}
             </Grid>
           )}
         </Grid>
@@ -705,7 +781,7 @@ function LivePage() {
                     fontSize: "20px",
                     color: "white",
                     borderRadius: "20px",
-                    texShadow: "0.1px 0.1px 4px #e892a4",
+                    textShadow: "0.1px 0.1px 4px #e892a4",
                     boxSizing: "border-box",
                   }}
                   onClick={leaveSession}
@@ -723,7 +799,7 @@ function LivePage() {
                       fontSize: "20px",
                       color: "white",
                       borderRadius: "20px",
-                      texShadow: "0.1px 0.1px 4px #e892a4",
+                      textShadow: "0.1px 0.1px 4px #e892a4",
                       boxSizing: "border-box",
                     }}
                     onClick={stopRecording}
@@ -741,7 +817,7 @@ function LivePage() {
                       fontSize: "20px",
                       color: "white",
                       borderRadius: "15px",
-                      texShadow: "0.1px 0.1px 4px #e892a4",
+                      textShadow: "0.1px 0.1px 4px #e892a4",
                       boxSizing: "border-box",
                     }}
                     onClick={startRecording}
@@ -749,7 +825,7 @@ function LivePage() {
                     녹화시작
                   </Button>
                 )}
-                {recordedChunks.length > 0 && (
+                {recordedChunks.length > 0 ? (
                   <Button
                     className="exit-live-button"
                     variant="contained"
@@ -760,10 +836,29 @@ function LivePage() {
                       fontSize: "20px",
                       color: "white",
                       borderRadius: "15px",
-                      texShadow: "0.1px 0.1px 4px #e892a4",
+                      textShadow: "0.1px 0.1px 4px #e892a4",
                       boxSizing: "border-box",
                     }}
                     onClick={downloadRecording}
+                  >
+                    다운로드
+                  </Button>
+                ) : (
+                  <Button
+                    className="exit-live-button"
+                    variant="contained"
+                    style={{
+                      fontFamily: "MaplestoryOTFBold",
+                      width: "50%",
+                      height: "100%",
+                      fontSize: "20px",
+                      color: "white",
+                      borderRadius: "15px",
+                      textShadow: "0.1px 0.1px 4px #e892a4",
+                      boxSizing: "border-box",
+                    }}
+                    onClick={downloadRecording}
+                    disabled={true}
                   >
                     다운로드
                   </Button>

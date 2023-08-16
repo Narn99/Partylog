@@ -5,7 +5,7 @@ import clap2 from "../../assets/clap/clap2.wav";
 const ClapEmoji = ({ id, left }) => {
   const [visible, setVisible] = useState(true);
 
-  // 오디오 자꾸 터짐
+  // 오디오 자꾸 터져서 주석처리
 
   // const [audio] = useState(new Audio(clap2));
 
