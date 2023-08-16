@@ -142,14 +142,13 @@ function ChatBox(props) {
         setShowFirework(true);
         setTimeout(() => {
           setShowFirework(false);
-        }, 3500);
+        }, 4000);
       } else if (chatMsg.content.trim() === "(Clap_Clap)") {
         recieveClapEmoji();
       } else if (chatMsg.content.trim() === "(Birthday_Birthday)") {
         recieveBirthdayMusic();
       } else if (chatMsg.content.trim() === "(Happy_Happy)") {
         recieveHappyFaces();
-        console.log("오나?");
       } else {
         setChatMessages((prevMessages) => [...prevMessages, chatMsg]); // 새 메시지를 배열에 추가
       }

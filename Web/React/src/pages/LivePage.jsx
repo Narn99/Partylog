@@ -43,12 +43,8 @@ function LivePage() {
   const [isRecording, setIsRecording] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState([]);
 
-  // const myUserNo = useSelector((state) => state.auth.userNo);
-
   const theme = useTheme();
-  // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-  // const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const changeHeightSize = isMediumScreen ? "" : "75vh";
   const changeChatBoxSize = isMediumScreen ? "95%" : "90%";
@@ -78,7 +74,6 @@ function LivePage() {
   useEffect(() => {
     if (showFirework) {
       firework3();
-      console.log(1);
     }
   }, [showFirework]);
 
@@ -339,19 +334,11 @@ function LivePage() {
 
   const [sendFirework, setSendFirework] = useState(false);
 
-  const sendToFirework = () => {
+  const handleFirework = () => {
     setSendFirework(true);
     setTimeout(() => {
       setSendFirework(false);
     }, 3000);
-  };
-
-  const handleFirework = () => {
-    sendToFirework();
-    setShowFirework(true);
-    setTimeout(() => {
-      setShowFirework(false);
-    }, 3500);
   };
 
   const [sendBirthdayMusic, setSendBirthdayMusic] = useState(false);
@@ -606,7 +593,6 @@ function LivePage() {
                 <ButtonGroups
                   publisher={publisher}
                   showFirework={showFirework}
-                  // setShowFirework={setShowFirework}
                   handleFirework={handleFirework}
                   handleClapEmoji={handleClapEmoji}
                   recieveClap={recieveClap}
@@ -798,7 +784,6 @@ function LivePage() {
                 <ButtonGroups
                   publisher={publisher}
                   showFirework={showFirework}
-                  // setShowFirework={setShowFirework}
                   handleFirework={handleFirework}
                   handleClapEmoji={handleClapEmoji}
                   recieveClap={recieveClap}

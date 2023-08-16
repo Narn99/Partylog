@@ -1,26 +1,15 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import React, {
-  // useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import MicRoundedIcon from "@mui/icons-material/MicRounded";
 import MicOffRoundedIcon from "@mui/icons-material/MicOffRounded";
 import CelebrationRoundedIcon from "@mui/icons-material/CelebrationRounded";
-// import EmojiEmotionsRoundedIcon from "@mui/icons-material/EmojiEmotionsRounded";
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import VideocamOffRoundedIcon from "@mui/icons-material/VideocamOffRounded";
 import MusicNoteRoundedIcon from "@mui/icons-material/MusicNoteRounded";
 import MusicOffRoundedIcon from "@mui/icons-material/MusicOffRounded";
-// import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
-// import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 // import CakeRoundedIcon from "@mui/icons-material/CakeRounded";
 import ClapEmoji from "./ClapEmoji";
 import HappyFace from "./HappyFace";
-
-// import { firework3 } from "../firework3";
-
-// 일단 쓸지도 모르는 아이콘들 모아온 것
 
 function ButtonGroups(props) {
   const {
@@ -36,7 +25,6 @@ function ButtonGroups(props) {
   } = props;
 
   const theme = useTheme();
-  // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const changeIconSize = isSmallScreen ? "35px" : "45px";
@@ -44,7 +32,6 @@ function ButtonGroups(props) {
 
   const [isMicOn, setIsMicOn] = useState(false);
   const [isCamOn, setIsCamOn] = useState(false);
-  // const [isVolumeOn, setIsVolumeOn] = useState(false);
 
   const [happyFaces, setHappyFaces] = useState([]);
 
@@ -76,8 +63,6 @@ function ButtonGroups(props) {
     }
   }, [recieveClap]);
 
-  // const [showFirework, setShowFirework] = useState(false);
-
   const handleMicToggle = () => {
     publisher.publishAudio(isMicOn);
     setIsMicOn(!isMicOn);
@@ -86,22 +71,6 @@ function ButtonGroups(props) {
     publisher.publishVideo(isCamOn);
     setIsCamOn(!isCamOn);
   };
-  // const handleVolumeToggle = () => {
-  //   setIsVolumeOn(!isVolumeOn);
-  // };
-
-  // const handleFirework = () => {
-  //   setShowFirework(true);
-  //   setTimeout(() => {
-  //     setShowFirework(false);
-  //   }, 3500);
-  // };
-
-  // useEffect(() => {
-  //   if (showFirework) {
-  //     firework3();
-  //   }
-  // }, [showFirework]);
 
   return (
     <div
@@ -171,21 +140,7 @@ function ButtonGroups(props) {
             />
           )}
         </Grid>
-        {/* <Grid item>
-          {isVolumeOn ? (
-            <VolumeOffRoundedIcon
-              sx={{ fontSize: `${changeIconSize}` }}
-              onClick={handleVolumeToggle}
-              style={{ cursor: "pointer" }}
-            />
-          ) : (
-            <VolumeUpRoundedIcon
-              sx={{ fontSize: `${changeIconSize}` }}
-              onClick={handleVolumeToggle}
-              style={{ cursor: "pointer" }}
-            />
-          )}
-        </Grid> */}
+
         <Grid item>
           <CelebrationRoundedIcon
             sx={{
@@ -196,9 +151,6 @@ function ButtonGroups(props) {
             onClick={handleFirework}
           />
         </Grid>
-        {/* <Grid item>
-          <EmojiEmotionsRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
-        </Grid> */}
         {/* <Grid item>
           <CakeRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
         </Grid> */}

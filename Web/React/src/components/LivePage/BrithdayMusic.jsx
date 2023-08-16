@@ -18,7 +18,6 @@ function BrithdayMusic({ showBirthdayMusic, setShowBirthdayMusic }) {
     if (showBirthdayMusic) {
       const playAudio = async () => {
         await audio.play();
-        console.log("Audio played successfully!");
       };
 
       playAudio(); // 오디오 재생
