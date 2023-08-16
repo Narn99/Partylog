@@ -6,7 +6,14 @@ import React, { useState, useEffect, useRef } from "react";
 import Send from "@mui/icons-material/Send";
 
 function ChatBox(props) {
-  const { session, showFirework, setShowFirework, sendFirework } = props;
+  const {
+    session,
+    // showFirework,
+    setShowFirework,
+    sendFirework,
+    sendClapEmoji,
+    sendToClapEmoji,
+  } = props;
   // console.log(session);
   const [chatContent, setChatContent] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
@@ -58,6 +65,23 @@ function ChatBox(props) {
         });
     }
   }, [sendFirework, session]);
+  useEffect(() => {
+    if (sendClapEmoji) {
+      session
+        .signal({
+          data: "(Clap_Clap)", // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: "my-chat", // The type of message (optional)
+        })
+        .then(() => {
+          setChatContent("");
+          console.log("Message successfully sent");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [sendClapEmoji, session]);
 
   // 새 메시지가 도착할 때마다 채팅 메시지 목록을 업데이트
   useEffect(() => {
@@ -82,6 +106,8 @@ function ChatBox(props) {
         setTimeout(() => {
           setShowFirework(false);
         }, 3500);
+      } else if (chatMsg.content.trim() === "(Clap_Clap)") {
+        sendToClapEmoji();
       } else {
         setChatMessages((prevMessages) => [...prevMessages, chatMsg]); // 새 메시지를 배열에 추가
       }
@@ -116,6 +142,8 @@ function ChatBox(props) {
         style={{
           width: "95%",
           height: "75%",
+          minHeight: "10vh",
+          maxHeight: "60vh",
           overflowY: "scroll",
         }}
         ref={chatDisplayRef}

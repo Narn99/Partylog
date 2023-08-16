@@ -15,6 +15,7 @@ import MusicOffRoundedIcon from "@mui/icons-material/MusicOffRounded";
 import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
 import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import CakeRoundedIcon from "@mui/icons-material/CakeRounded";
+import ClapEmoji from "./ClapEmoji";
 
 // import { firework3 } from "../firework3";
 
@@ -26,6 +27,8 @@ function ButtonGroups(props) {
     showFirework,
     //  setShowFirework,
     handleFirework,
+    handleClapEmoji,
+    sendClapEmoji,
   } = props;
 
   const theme = useTheme();
@@ -39,6 +42,22 @@ function ButtonGroups(props) {
   const [isCamOn, setIsCamOn] = useState(false);
   const [isMusicOn, setIsMusicOn] = useState(false);
   const [isVolumeOn, setIsVolumeOn] = useState(false);
+
+  const [clapEmojis, setClapEmojis] = useState([]);
+
+  useEffect(() => {
+    console.log(clapEmojis);
+    if (clapEmojis.length > 50) {
+      setClapEmojis([]);
+    }
+    if (sendClapEmoji) {
+      const newClapEmoji = {
+        id: Date.now(),
+        left: Math.random() * 90 + 5,
+      };
+      setClapEmojis((prevEmojis) => [...prevEmojis, newClapEmoji]);
+    }
+  }, [sendClapEmoji]);
 
   // const [showFirework, setShowFirework] = useState(false);
 
@@ -159,6 +178,7 @@ function ButtonGroups(props) {
             sx={{
               fontSize: `${changeIconSize}`,
               cursor: showFirework ? "wait" : "pointer",
+              color: showFirework ? "gray" : "black",
             }}
             onClick={handleFirework}
           />
@@ -170,7 +190,16 @@ function ButtonGroups(props) {
           <CakeRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
         </Grid>
         <Grid item>
-          <span style={{ fontSize: `${changeEmojiSize}` }}>👏</span>
+          <span
+            style={{ fontSize: `${changeEmojiSize}`, cursor: "pointer" }}
+            onClick={handleClapEmoji}
+          >
+            👏
+          </span>
+          {clapEmojis &&
+            clapEmojis.map((clapEmoji) => (
+              <ClapEmoji key={clapEmoji.id} left={clapEmoji.left} />
+            ))}
         </Grid>
       </Grid>
     </div>

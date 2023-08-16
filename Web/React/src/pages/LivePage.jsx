@@ -352,6 +352,20 @@ function LivePage() {
       setShowFirework(false);
     }, 3500);
   };
+
+  const [sendClapEmoji, setSendClapEmoji] = useState(false);
+
+  const sendToClapEmoji = () => {
+    setSendClapEmoji(true);
+    setTimeout(() => {
+      setSendClapEmoji(false);
+    }, 50);
+  };
+
+  const handleClapEmoji = () => {
+    sendToClapEmoji();
+  };
+
   /**
    * --------------------------------------------
    * GETTING A TOKEN FROM YOUR APPLICATION SERVER
@@ -547,6 +561,8 @@ function LivePage() {
                   showFirework={showFirework}
                   // setShowFirework={setShowFirework}
                   handleFirework={handleFirework}
+                  handleClapEmoji={handleClapEmoji}
+                  sendClapEmoji={sendClapEmoji}
                 />
               </Grid>
             </Grid>
@@ -591,6 +607,8 @@ function LivePage() {
                   showFirework={showFirework}
                   setShowFirework={setShowFirework}
                   sendFirework={sendFirework}
+                  sendClapEmoji={sendClapEmoji}
+                  sendToClapEmoji={sendToClapEmoji}
                 />
               </div>
             </div>
@@ -651,6 +669,8 @@ function LivePage() {
                   showFirework={showFirework}
                   // setShowFirework={setShowFirework}
                   handleFirework={handleFirework}
+                  handleClapEmoji={handleClapEmoji}
+                  sendClapEmoji={sendClapEmoji}
                 />
               </Grid>
             </Grid>
