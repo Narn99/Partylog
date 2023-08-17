@@ -234,7 +234,7 @@ function MessageBoard(props) {
             <div
               style={{
                 position: "absolute",
-                width: "100vw",
+                width: "65vw",
                 height: "65vh",
                 display: "flex",
                 justifyContent: "center",
