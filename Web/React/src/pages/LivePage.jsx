@@ -57,7 +57,7 @@ function LivePage() {
   }, [isJoinCheck]);
 
   useEffect(() => {
-    if (roomHostUserInfo && !mainStreamManager) {
+    if (roomHostUserInfo) {
       initialMainVideoStreamer();
     }
   }, [roomHostUserInfo]);

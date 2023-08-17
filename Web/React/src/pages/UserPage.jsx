@@ -364,9 +364,9 @@ function UserPage() {
                         texShadow: "0.1px 0.1px 4px #e892a4",
                         marginTop: "20px",
                       }}
-                      // disabled={!todayIsBirthday}
+                      disabled={!todayIsBirthday}
                     >
-                      {/* {!todayIsBirthday ? (
+                      {!todayIsBirthday ? (
                         <>
                           아직 생일이
                           <br />
@@ -378,9 +378,7 @@ function UserPage() {
                           <br />
                           시작
                         </>
-                      )} */}
-                      라이브 <br /> 시작
-                      {/* 시연용으로 임시로 다 열어둠 */}
+                      )}
                     </Button>
                   ) : (
                     <Button
@@ -398,9 +396,9 @@ function UserPage() {
                         texShadow: "0.1px 0.1px 4px #e892a4",
                         marginTop: "20px",
                       }}
-                      // disabled={!todayIsBirthday}
+                      disabled={!todayIsBirthday}
                     >
-                      {/* {!todayIsBirthday ? (
+                      {!todayIsBirthday ? (
                         <>
                           아직 생일이
                           <br />
@@ -412,9 +410,7 @@ function UserPage() {
                           <br />
                           참가
                         </>
-                      )} */}
-                      라이브 <br /> 참가
-                      {/* 시연용으로 임시로 다 열어둠 */}
+                      )}
                     </Button>
                   )}
                 </Grid>
