@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -29,14 +30,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.orhanobut.logger.Logger
 import com.ssafy.partylog.R
+import com.ssafy.partylog.ui.main.stateholder.ChipState
 import com.ssafy.partylog.ui.theme.maplestory
 import com.ssafy.partylog.ui.theme.themecolor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainLayout(modifier: Modifier = Modifier) {
+fun MainLayout(modifier: Modifier = Modifier, viewmodel: MainViewmodel = hiltViewModel()) {
     Column(modifier = modifier
         .fillMaxSize()
         .padding(horizontal = 16.dp)
@@ -55,14 +57,7 @@ fun MainLayout(modifier: Modifier = Modifier) {
             Divider(modifier = Modifier.height(2.dp))
         }
         Column(modifier = modifier.weight(5f)) {
-            FilterChip(
-                selected = true,
-                onClick = {
-                    Logger.d("filteredClick")
-                },
-                label =  {
-                    Text(text = "test")
-                })
+            Chips()
         }
     }
 }
@@ -210,6 +205,22 @@ fun InfoButtons() {
             }
         }
 
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Chips(datas: List<ChipState>) {
+    LazyRow() {
+        FilterChip(
+            selected = true,
+            onClick = {
+                Logger.d("filteredClick")
+            },
+            label =  {
+                Text(text = "test")
+            }
+        )
     }
 }
 
