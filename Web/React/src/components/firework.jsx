@@ -1,4 +1,3 @@
-// npm install canvas-confetti --save
 import confetti from "canvas-confetti";
 
 export function firework() {

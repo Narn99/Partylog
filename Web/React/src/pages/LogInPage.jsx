@@ -169,7 +169,6 @@ const LogInPage = () => {
                 <hr
                   style={{
                     border: "1px solid #fbb3c2",
-                    // boxShadow: "10px 10px 20px #fbb3c2 ",
                     margin: "10px 0",
                   }}
                 />

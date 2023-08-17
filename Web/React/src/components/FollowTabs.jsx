@@ -214,8 +214,6 @@ function FollowTabs(props) {
                   <img
                     src={following.profile}
                     alt={`${following.nickname}'s profile`}
-                    // width="51.6"
-                    // height="51.6"
                     width="50vw"
                     height="50vh"
                     style={{
@@ -251,8 +249,6 @@ function FollowTabs(props) {
                   <img
                     src={follower.profile}
                     alt={`${follower.nickname}'s profile`}
-                    // width="51.6"
-                    // height="51.6"
                     width="50vw"
                     height="50vh"
                     style={{

@@ -8,7 +8,6 @@ import Send from "@mui/icons-material/Send";
 function ChatBox(props) {
   const {
     session,
-    // showFirework,
     setShowFirework,
     sendFirework,
     sendClapEmoji,
@@ -17,8 +16,9 @@ function ChatBox(props) {
     recieveBirthdayMusic,
     sendHappyFace,
     recieveHappyFaces,
+    userInfo,
+    userNo,
   } = props;
-  // console.log(session);
   const [chatContent, setChatContent] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const chatDisplayRef = useRef(null);
@@ -29,7 +29,6 @@ function ChatBox(props) {
     setChatContent(truncatedValue);
   };
   const handleSendMessages = () => {
-    // console.log(session);
     // Sender of the message (after 'session.connect')
     session
       .signal({
@@ -61,7 +60,7 @@ function ChatBox(props) {
           type: "my-chat", // The type of message (optional)
         })
         .then(() => {
-          console.log("Message successfully sent");
+          console.log("Firework successfully sent");
         })
         .catch((error) => {
           console.error(error);
@@ -78,7 +77,7 @@ function ChatBox(props) {
           type: "my-chat", // The type of message (optional)
         })
         .then(() => {
-          console.log("Message successfully sent");
+          console.log("Happy successfully sent");
         })
         .catch((error) => {
           console.error(error);
@@ -95,7 +94,7 @@ function ChatBox(props) {
           type: "my-chat", // The type of message (optional)
         })
         .then(() => {
-          console.log("Message successfully sent");
+          console.log("Clap successfully sent");
         })
         .catch((error) => {
           console.error(error);
@@ -112,7 +111,7 @@ function ChatBox(props) {
           type: "my-chat", // The type of message (optional)
         })
         .then(() => {
-          console.log("Message successfully sent");
+          console.log("Birthday successfully sent");
         })
         .catch((error) => {
           console.error(error);
@@ -143,10 +142,13 @@ function ChatBox(props) {
         setTimeout(() => {
           setShowFirework(false);
         }, 4000);
+        // 해당 채팅을 받으면 박수 이모지
       } else if (chatMsg.content.trim() === "(Clap_Clap)") {
         recieveClapEmoji();
+        // 해당 채팅을 받으면 생일 폭죽
       } else if (chatMsg.content.trim() === "(Birthday_Birthday)") {
         recieveBirthdayMusic();
+        // 해당 채팅을 받으면 웃는 얼굴 이모지
       } else if (chatMsg.content.trim() === "(Happy_Happy)") {
         recieveHappyFaces();
       } else {
@@ -192,10 +194,13 @@ function ChatBox(props) {
       >
         {/* 채팅 메시지 렌더링 */}
         {chatMessages.map((message, index) => (
-          <p
-            key={index}
-            style={{ marginLeft: "5px" }}
-          >{`${message.writer} : ${message.content}`}</p>
+          <p key={index} style={{ marginLeft: "5px" }}>
+            {/* 생일자만 채팅에서 구분하는 것 넣어봤으나, 이모지가 작아서 구분이 잘 안 돼서 임시 중지 */}
+            {/* {parseInt(userNo) === parseInt(userInfo.userNo)
+              ? `🎉${message.writer}🎉 : ${message.content}`
+              : `${message.writer} : ${message.content}`} */}
+            {`${message.writer} : ${message.content}`}
+          </p>
         ))}
       </div>
 

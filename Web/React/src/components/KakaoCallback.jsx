@@ -20,7 +20,6 @@ const KakaoCallback = () => {
     axios
       .get(`${SERVER_API_URL}/user/login?code=${code}`)
       .then((res) => {
-        // console.log(res);
         const userNo = res.data.data;
 
         // userNo를 비교용으로 사용하기 위해 리덕스 저장

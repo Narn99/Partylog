@@ -18,11 +18,11 @@ export default function ClickableChips() {
 
   const handleClick = (label) => {
     setSelected(label);
-    // console.info("You clicked the Chip.");
   };
 
   // 추후에 연도별로 나눠서 데이터를 받을 수 있어야 하므로, 연도에 따른 데이터를 처리할 수 있도록 재사용 가능하게 수정해야합니다.
-  // 연도 값을 여기서 설정하면, 그걸 MessageBoard쪽에서 메시지 데이터를 요청해서 redux에 저장된 messages를 바꿔야?
+  // 연도 값을 여기서 설정하면, 그걸 MessageBoard쪽에서 메시지 데이터를 요청해서 redux에 저장된 messages를 바꿔야
+  // 아직 미구현
 
   return (
     <ThemeProvider theme={theme}>

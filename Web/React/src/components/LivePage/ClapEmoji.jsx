@@ -5,7 +5,7 @@ import "../../css/ClapEmoji.css";
 const ClapEmoji = ({ id, left }) => {
   const [visible, setVisible] = useState(true);
 
-  // 오디오 자꾸 터져서 주석처리
+  // 박수 소리를 넣으면, 버튼 연타 시에 audio가 쌓여서 터져서 임시 중지
 
   // const [audio] = useState(new Audio(clap2));
 
@@ -23,7 +23,7 @@ const ClapEmoji = ({ id, left }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setVisible(false);
-    }, 900); // 클랩 이모지가 화면에 보여지는 시간 (밀리초 단위)
+    }, 900);
 
     return () => {
       clearTimeout(timeout);

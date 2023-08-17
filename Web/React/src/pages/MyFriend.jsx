@@ -168,7 +168,7 @@ function MyFriend(props) {
                 style={{
                   minWidth: "240px",
                   minHeight: "240px",
-                  width: "auto", 
+                  width: "auto",
                   height: "25vw",
                   // maxWidth: "270px",
                   // maxHeight: "270px",

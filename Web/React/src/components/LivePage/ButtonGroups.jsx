@@ -7,7 +7,6 @@ import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import VideocamOffRoundedIcon from "@mui/icons-material/VideocamOffRounded";
 import MusicNoteRoundedIcon from "@mui/icons-material/MusicNoteRounded";
 import MusicOffRoundedIcon from "@mui/icons-material/MusicOffRounded";
-// import CakeRoundedIcon from "@mui/icons-material/CakeRounded";
 import ClapEmoji from "./ClapEmoji";
 import HappyFace from "./HappyFace";
 
@@ -99,44 +98,53 @@ function ButtonGroups(props) {
         <Grid item>
           {isMicOn ? (
             <MicOffRoundedIcon
-              sx={{ fontSize: `${changeIconSize}` }}
+              sx={{
+                fontSize: `${changeIconSize}`,
+                cursor: "pointer",
+                color: "gray",
+              }}
               onClick={handleMicToggle}
-              style={{ cursor: "pointer", color: "gray" }}
             />
           ) : (
             <MicRoundedIcon
-              sx={{ fontSize: `${changeIconSize}` }}
+              sx={{ fontSize: `${changeIconSize}`, cursor: "pointer" }}
               onClick={handleMicToggle}
-              style={{ cursor: "pointer" }}
             />
           )}
         </Grid>
         <Grid item>
           {isCamOn ? (
             <VideocamOffRoundedIcon
-              sx={{ fontSize: `${changeIconSize}` }}
+              sx={{
+                fontSize: `${changeIconSize}`,
+                cursor: "pointer",
+                color: "gray",
+              }}
               onClick={handleCamToggle}
-              style={{ cursor: "pointer", color: "gray" }}
             />
           ) : (
             <VideocamRoundedIcon
-              sx={{ fontSize: `${changeIconSize}` }}
+              sx={{
+                fontSize: `${changeIconSize}`,
+                cursor: "pointer",
+              }}
               onClick={handleCamToggle}
-              style={{ cursor: "pointer" }}
             />
           )}
         </Grid>
         <Grid item>
           {showBirthdayMusic ? (
             <MusicOffRoundedIcon
-              sx={{ fontSize: `${changeIconSize}` }}
-              style={{ cursor: "wait", color: "gray" }}
+              sx={{
+                fontSize: `${changeIconSize}`,
+                cursor: "wait",
+                color: "gray",
+              }}
             />
           ) : (
             <MusicNoteRoundedIcon
-              sx={{ fontSize: `${changeIconSize}` }}
+              sx={{ fontSize: `${changeIconSize}`, cursor: "pointer" }}
               onClick={handleBirthdayMusic}
-              style={{ cursor: "pointer" }}
             />
           )}
         </Grid>
@@ -151,9 +159,6 @@ function ButtonGroups(props) {
             onClick={handleFirework}
           />
         </Grid>
-        {/* <Grid item>
-          <CakeRoundedIcon sx={{ fontSize: `${changeIconSize}` }} />
-        </Grid> */}
         <Grid item>
           <span
             style={{ fontSize: `${changeEmojiSize}`, cursor: "pointer" }}

@@ -13,6 +13,7 @@ import StickyNoteG from "../components/StickyNote/StickyNoteG";
 import StickyNoteO from "../components/StickyNote/StickyNoteO";
 import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
+import birthdayAsset from "../assets/birthday_asset2.png";
 import MessageDetail from "./MessageDetail";
 import axios from "axios";
 import { getAdditionalMessagesList } from "../actions/actions";
@@ -40,6 +41,7 @@ function MessageBoard(props) {
     myMessage,
     handleModalOpen,
     changeMessageButtonFontSize,
+    todayIsBirthday,
   } = props;
 
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
@@ -48,6 +50,7 @@ function MessageBoard(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   // 메시지보드 캐러셀
@@ -86,8 +89,7 @@ function MessageBoard(props) {
 
   useEffect(() => {}, [myMessage]);
 
-  // 버튼을 누르면 다음 메시지 목록 불러오기 로직
-  // 아마 버튼 누를 때마다 새 메시지 데이터 가져오게 하면, 계속 새로 렌더링되지 않을까?
+  // 버튼을 누르면 다음 메시지 목록 불러오기
 
   const handleClickPageButton = () => {
     setCarouselClick(carouselClick + 1);
@@ -164,9 +166,8 @@ function MessageBoard(props) {
           </Grid>
           <Grid container justifyContent={"flex-end"} alignItems={"center"}>
             <div className="create-message-div">
-              {/* 추후에 메시지 이미 작성한 본인은 메시지 작성 버튼 대신에 수정 버튼이 보이게 수정,
-                    수정을 누르면 본인이 작성했던 메시지 내용이 뜨게 하고,그 안에 메시지 삭제 버튼도 존재하게 */}
               {parseInt(myUserNo) !== parseInt(userNo) &&
+                // 본인 메시지가 있다면 수정, 없으면 작성 버튼
                 (myMessage ? (
                   <Button
                     className={"fix-message-button"}
@@ -226,8 +227,40 @@ function MessageBoard(props) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            overflow: "hidden",
           }}
         >
+          {todayIsBirthday && (
+            <div
+              style={{
+                position: "absolute",
+                width: "100vw",
+                height: "65vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1,
+                pointerEvents: "none",
+              }}
+            >
+              <img
+                src={birthdayAsset}
+                alt="Birthday Asset"
+                style={{
+                  objectFit: "contain",
+                  width: isMediumScreen
+                    ? "90vw"
+                    : isLargeScreen
+                    ? "53vw"
+                    : "54vw",
+
+                  height: "500px",
+                  opacity: 0.75,
+                }}
+              />
+            </div>
+          )}
+
           <div style={{ width: "95%", height: "95%" }}>
             {messages.length === 0 ? (
               // messages 배열이 비어있을 때, "아직 메시지가 없네요..." 문장 출력
@@ -247,6 +280,7 @@ function MessageBoard(props) {
                 아직 메시지가 없네요...
               </div>
             ) : (
+              // 메시지들 캐러셀로 출력
               <Slider {...settings} afterChange={handleClickPageButton}>
                 {carouselPages.map((pageIndex) => (
                   <div

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Button, Grid } from "@mui/material";
-// import { useNavigate } from "react-router-dom";
 
 function JoinCheck(props) {
   const { setIsJoinCheck } = props;
@@ -13,8 +12,6 @@ function JoinCheck(props) {
       bodyToDark.classList.remove("live-page");
     };
   }, []);
-
-  // const navigate = useNavigate();
 
   const handleJoinButton = () => {
     setIsJoinCheck(true);

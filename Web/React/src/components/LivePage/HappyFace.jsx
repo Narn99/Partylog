@@ -7,7 +7,7 @@ const HappyFace = ({ id, left }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setVisible(false);
-    }, 900); // 해피 이모지가 화면에 보여지는 시간 (밀리초 단위)
+    }, 900);
 
     return () => {
       clearTimeout(timeout);

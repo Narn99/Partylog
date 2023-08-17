@@ -18,8 +18,6 @@ function MessageDetail(props) {
     myUserNo,
   } = props;
 
-  // console.log(selectedMessage);
-
   const isMessageOwner =
     selectedMessage && myUserNo === selectedMessage.letter_writer
       ? true

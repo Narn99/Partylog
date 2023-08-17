@@ -1,5 +1,4 @@
 import * as actionTypes from "../actions/actionTypes";
-import molru from "../assets/molru.webp";
 
 const initialState = {
   // 연도 데이터도 받을텐데, 추후에 그걸 토대로 YearChips를 통한 정렬 기능 구현
