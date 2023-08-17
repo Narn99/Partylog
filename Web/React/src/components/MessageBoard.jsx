@@ -271,7 +271,7 @@ function MessageBoard(props) {
                   alignItems: "center",
                   width: "100%",
                   height: "100%",
-                  fontSize: "40px",
+                  fontSize: isSmallScreen ? "25px" : "40px",
                   fontFamily: "MaplestoryOTFBold",
                   color: "white",
                   textShadow: "2px 2px 10px grey",
