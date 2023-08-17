@@ -393,7 +393,7 @@ function UserPage() {
                         color: "white",
                         width: changeLiveButtonWidth,
                         height: changeLiveButtonHeight,
-                        lineHeight: "30px",
+                        lineHeight: changeLiveButtonLineHeight,
                         borderRadius: "40px",
                         texShadow: "0.1px 0.1px 4px #e892a4",
                         marginTop: "20px",
