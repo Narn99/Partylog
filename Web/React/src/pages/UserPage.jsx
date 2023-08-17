@@ -259,6 +259,7 @@ function UserPage() {
                     item
                     justifyContent={"center"}
                     alignItems={"center"}
+                    direction={"column"}
                     sm={11}
                   >
                     {todayIsBirthday && (
