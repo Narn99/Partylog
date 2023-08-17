@@ -2,7 +2,7 @@
   position: relative;
   width: 50px;
   height: 60px;
-  animation: sparkle 2s infinite;   /* 위아래로 움직이는 애니메이션 적용 */
+  animation: sparkle 2s infinite; /* 위아래로 움직이는 애니메이션 적용 */
 }
 
 .party-hat-icon {
@@ -15,7 +15,8 @@
 }
 
 @keyframes sparkle {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -28,6 +29,6 @@
     opacity: 1;
   }
   to {
-    opacity: 0.5;
+    opacity: 0.6;
   }
 }

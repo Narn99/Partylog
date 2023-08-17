@@ -13,6 +13,7 @@ import StickyNoteO from "../components/StickyNote/StickyNoteO";
 import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
 import { firework4 } from "../components/firework4";
+import partyhat from "../assets/partyhat.png";
 import MessageBoard from "../components/MessageBoard";
 import axios from "axios";
 import Loading from "../components/Loading";
@@ -260,6 +261,25 @@ function UserPage() {
                     alignItems={"center"}
                     sm={11}
                   >
+                    {todayIsBirthday && (
+                      <div className="party-hat">
+                        <img
+                          src={partyhat}
+                          alt="partyhat"
+                          className="party-hat-icon"
+                          style={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform:
+                              "translateX(-15%) translateY(-55%) rotate(12deg)",
+                            width: "100px",
+                            zIndex: 1,
+                          }}
+                        />
+                      </div>
+                    )}
+
                     <img
                       src={userData.userProfile}
                       alt="profileimg"
