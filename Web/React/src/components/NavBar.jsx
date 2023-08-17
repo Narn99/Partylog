@@ -177,6 +177,7 @@ function NavBar() {
                   borderRadius: "35%",
                   maxWidth: changeIconSize,
                   maxHeight: changeIconSize,
+                  cursor: "pointer",
                 }}
                 onClick={handleProfileMenuClick}
               />

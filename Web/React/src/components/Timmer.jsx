@@ -147,8 +147,6 @@ const CountdownTimer = (props) => {
                   `${timeLeftBirthday.hours}시간`}{" "}
                 {timeLeftBirthday.minutes !== 0 &&
                   `${timeLeftBirthday.minutes}분`}{" "}
-                {timeLeftBirthday.seconds !== 0 &&
-                  `${timeLeftBirthday.seconds}초`}
               </span>
             )}
             <br />

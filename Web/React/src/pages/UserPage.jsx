@@ -13,6 +13,7 @@ import StickyNoteG from "../components/StickyNote/StickyNoteG";
 import StickyNoteO from "../components/StickyNote/StickyNoteO";
 import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
+import { firework4 } from "../components/firework4";
 import MessageBoard from "../components/MessageBoard";
 import axios from "axios";
 import Loading from "../components/Loading";
@@ -76,6 +77,8 @@ function UserPage() {
   // 이거 자꾸 메시지 작성 버튼을 누르면 메시지보드가 리렌더링 됨.
 
   // 연동 추가 수정할 것.
+
+  useEffect(() => {});
 
   useEffect(
     () => {
@@ -176,6 +179,22 @@ function UserPage() {
       dispatch(setModalData("", ""));
     }
   }, [myMessage, dispatch]);
+
+  useEffect(() => {
+    let interval;
+
+    if (todayIsBirthday) {
+      interval = setInterval(() => {
+        firework4(); // firework4 함수 실행
+      }, 3000); // 3초마다 실행
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [todayIsBirthday]); // todayIsBirthday 상태가 변경될 때마다 실행
 
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));

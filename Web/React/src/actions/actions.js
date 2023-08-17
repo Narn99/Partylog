@@ -55,16 +55,6 @@ export const setModalData = (modalTitle, modalDescription) => {
   };
 };
 
-export const addMessageData = (modalTitle, modalDescription) => {
-  return {
-    type: actionTypes.ADD_MESSAGE_DATA,
-    payload: {
-      modalTitle,
-      modalDescription,
-    },
-  };
-};
-
 // 남긴 메시지 삭제하는 기능.. 추후에 본인 userNo를 비교해서 해당하는거 삭제하도록
 export const deleteMessageData = () => {
   return {
@@ -92,13 +82,6 @@ export const getAdditionalMessagesList = (additionalMessagesList) => {
   return {
     type: actionTypes.GET_ADDITIONAL_MESSAGES_LIST,
     payload: additionalMessagesList,
-  };
-};
-
-export const getMessageDetail = () => {
-  return {
-    type: actionTypes.GET_MESSAGE_DETAIL,
-    // payload: messageDetail,
   };
 };
 
