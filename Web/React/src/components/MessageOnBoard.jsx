@@ -1,7 +1,7 @@
 import React from "react";
 import StickyNote1 from "../assets/Sticky-Note-01-Yellow.png";
 import { Grid } from "@mui/material";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 
 function MessageOnBoard(props) {
   const { message, onClick, pageOwner, myUserNo } = props;
@@ -14,7 +14,7 @@ function MessageOnBoard(props) {
   };
 
   // 보드 위의 메시지 닉네임이나 프로필 이미지를 누르면 그 살마 페이지로 이동 가능한 함수
-  // 막상 넣어보니까 메시지 열어 보려다가 이동할 것 같아서 주석처리
+  // 막상 넣어보니까 메시지 열어 보려다가 이동할 것 같아서 주석처리.. 필요하면 다시 풀고 사용
 
   // const navigate = useNavigate();
 
@@ -49,8 +49,8 @@ function MessageOnBoard(props) {
       <div
         style={{
           position: "absolute",
-          top: "20%", // 위에서의 위치를 조정할 수 있습니다.
-          left: "50%", // 왼쪽에서의 위치를 조정할 수 있습니다.
+          top: "20%", // 위에서부터 위치를 조정
+          left: "50%", // 왼쪽에서부터 위치를 조정
           transform: "translate(-50%, -50%)",
           textAlign: "start",
           fontSize: "15px",
@@ -77,7 +77,6 @@ function MessageOnBoard(props) {
           >
             <img
               src={message.user_profile && message.user_profile}
-              // onClick={handleGoToMessageUser}
               alt=""
               style={{
                 width: "30px",
@@ -99,9 +98,7 @@ function MessageOnBoard(props) {
             }}
           >
             &nbsp;&nbsp;&nbsp;
-            {/* <span onClick={handleGoToMessageUser}> */}
             {message.user_nickname && getLength(message.user_nickname, 10)}
-            {/* </span> */}
           </Grid>
         </Grid>
       </div>
@@ -109,8 +106,8 @@ function MessageOnBoard(props) {
       <div
         style={{
           position: "absolute",
-          top: "50%", // 위에서의 위치를 조정할 수 있습니다.
-          left: "50%", // 왼쪽에서의 위치를 조정할 수 있습니다.
+          top: "50%", // 위에서의 위치를 조정
+          left: "50%", // 왼쪽에서의 위치를 조정
           transform: "translate(-50%, -50%)",
           textAlign: "center",
           fontSize: "17px",

@@ -28,10 +28,11 @@ function LivePage() {
   var [myUserName, setMyUserName] = useState(userInfo.userNickname);
   var [session, setSession] = useState(OV.initSession());
 
-  // MainStreamManager를 방 만든 사람으로 고쳐야됨
+  // MainStreamManager는 본인 userNo가 url에 있는 번호와 같은 사람으로
   var [mainStreamManager, setMainStreamManager] = useState(undefined);
   var [publisher, setPublisher] = useState(undefined);
   const [roomHostUserInfo, setRoomHostUserInfo] = useState(null);
+  const [roomUsersInfo, setRoomUsersInfo] = useState([]);
   var [subscribers, setSubscribers] = useState([]);
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
@@ -56,14 +57,41 @@ function LivePage() {
     }
   }, [isJoinCheck]);
 
+  // 언마운트 시에 leaveSession 추가..
+
+  useEffect(() => {
+    return () => {
+      if (session) {
+        leaveSession();
+      }
+    };
+  }, []);
+
+  // 유저 추가될 때, host를 특정 못 했다면 찾기
+
+  useEffect(() => {
+    if (roomUsersInfo && !roomHostUserInfo) {
+      const hostUser = roomUsersInfo.filter((roomUserInfo) => {
+        return (
+          parseInt(JSON.parse(roomUserInfo.stream.connection.data).clientNo) ===
+          parseInt(JSON.parse(userNo))
+        );
+      });
+      setRoomHostUserInfo(hostUser[0]);
+    }
+  }, [roomUsersInfo]);
+
+  // 호스트를 찾았다면 MainStreamManager로 설정
+
   useEffect(() => {
     if (roomHostUserInfo) {
       initialMainVideoStreamer();
     }
   }, [roomHostUserInfo]);
 
+  // 클릭하면 그 사람을 큰 화면으로 바꾸는 함수
+
   const handleMainVideoStream = (stream) => {
-    console.log(stream);
     if (mainStreamManager !== stream) {
       setMainStreamManager(stream);
     }
@@ -86,7 +114,6 @@ function LivePage() {
           parseInt(JSON.parse(roomHostUserInfo.stream.connection.data).clientNo)
         );
       });
-      console.log(mainStreamer);
       setMainStreamManager(mainStreamer[0]);
     }
   };
@@ -111,12 +138,7 @@ function LivePage() {
     // On every new Stream received...
     mySession.on("streamCreated", (event) => {
       console.log("새로운 스트림 생성");
-      // const creatorUserInfo = JSON.parse(event.stream.connection.data);
-      setRoomHostUserInfo(event);
-      // if (parseInt(creatorUserInfo.clientNo) === parseInt(userInfo.userNo)) {
-      //   console.log(`방장 id = ${creatorUserInfo.clientNo}`);
-      //   // initialMainVideoStreamer(event);
-      // }
+      setRoomUsersInfo((prev) => [...prev, event]);
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       var subscriber = mySession.subscribe(event.stream, undefined);
@@ -127,7 +149,6 @@ function LivePage() {
     // On every Stream destroyed...
     mySession.on("streamDestroyed", (event) => {
       console.log("스트림 삭제");
-      console.log(subscribers);
       // Remove the stream from 'subscribers' array
       deleteSubscriber(event.stream.streamManager);
     });
@@ -185,8 +206,6 @@ function LivePage() {
           }
           setPublisher(publisher);
           setSubscribers((prev) => [...prev, publisher]);
-
-          // initialMainVideoStreamer();
         })
         .catch((error) => {
           console.log(
@@ -201,7 +220,6 @@ function LivePage() {
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     console.log("세션 종료");
-    console.log(subscribers);
     const mySession = session;
 
     if (mySession) {
@@ -211,7 +229,6 @@ function LivePage() {
     // Empty all properties...
     OV = null;
     setSession(undefined);
-    // setSubscribers([]);
     setMysessionId("");
     setMyUserName("");
     setMainStreamManager(undefined);
@@ -230,34 +247,11 @@ function LivePage() {
         }
       )
       .then((res) => {
-        console.log(res);
         window.close();
       });
   };
 
-  // //녹화 시작 요청
-  // const startRecording = () =>{
-  //   var stringId = String(userNo);
-  //   const response = axios.post(APPLICATION_SERVER_URL + 'api/record/start/' + stringId, {}, {
-  //     headers: {
-  //         'Authorization': localStorage.getItem("access-token"),
-  //         'Content-Type': 'application/json',
-  //     },
-  // })
-  // return response.data;
-  // }
-
-  // //녹화 종료 요청
-  // const stopRecording = () =>{
-  //   var stringId = String(userNo);
-  //   const response = axios.post(APPLICATION_SERVER_URL + 'api/record/stop/' + stringId, {}, {
-  //     headers: {
-  //         'Authorization': localStorage.getItem("access-token"),
-  //         'Content-Type': 'application/json',
-  //     },
-  //   });
-  //     return response.data;
-  //   }
+  // 화면 공유를 통한 화면 전체 녹화 코드
 
   const startRecording = async () => {
     setIsRecording(true);
@@ -282,9 +276,7 @@ function LivePage() {
     audioStream
       .getAudioTracks()
       .forEach((track) => mixedStream.addTrack(track));
-    // if (openViduAudioStream) {
-    //   mixedStream.addTrack(openViduAudioStream);
-    // }
+
     // 다른 참여자의 음성 스트림을 녹음 스트림에 추가
     subscribers.forEach((sub) => {
       const audioTrack = sub.stream.getMediaStream().getAudioTracks()[0];
@@ -448,7 +440,6 @@ function LivePage() {
         },
       }
     );
-    console.log(response.data.message);
     return response.data.data; // The token
   };
 
@@ -465,7 +456,6 @@ function LivePage() {
           container
           justifyContent={"space-evenly"}
           alignItems={"center"}
-          // spacing={4}
           style={{ height: `${changeHeightSize}` }}
         >
           <Grid
@@ -495,13 +485,11 @@ function LivePage() {
                 style={{
                   width: "95%",
                   height: "95%",
-                  // flexDirection: "column",
                 }}
               >
                 <Grid
                   item
                   container
-                  // xs={12}
                   justifyContent={"center"}
                   alignItems={"center"}
                   style={{ height: "70%" }}
@@ -513,7 +501,6 @@ function LivePage() {
                       height: "100%",
                       minHeight: "200px",
                       minWidth: "200px",
-                      // height: "300px",
                       backgroundColor: "black",
                       color: "white",
                       display: "flex",
@@ -558,7 +545,6 @@ function LivePage() {
                 <Grid
                   container
                   item
-                  // xs={12}
                   justifyContent={"space-evenly"}
                   alignItems={"center"}
                   style={{ height: "30%" }}
@@ -650,6 +636,8 @@ function LivePage() {
                   recieveHappyFaces={recieveHappyFaces}
                   sendBirthdayMusic={sendBirthdayMusic}
                   recieveBirthdayMusic={recieveBirthdayMusic}
+                  userInfo={userInfo}
+                  userNo={userNo}
                 />
               </div>
             </div>
@@ -903,11 +891,6 @@ function LivePage() {
                     다운로드
                   </Button>
                 )}
-                {/* <video ref={videoRef} controls style={{ maxWidth: '100%' }}>
-              {recordedChunks.map((chunk, index) => (
-          <source key={index} src={URL.createObjectURL(chunk)} type="video/webm" />
-            ))}
-           </video> */}
               </Grid>
             </Grid>
           </Grid>

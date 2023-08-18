@@ -1,11 +1,12 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 function ViewersCarousel(props) {
+  // 방송 참가자들 캐러셀로 표시
+
   const { viewers, UserVideoComponent, handleMainVideoStream, userNo } = props;
 
   const theme = useTheme();
@@ -46,13 +47,14 @@ function ViewersCarousel(props) {
     slidesToScroll: 1,
   };
 
-  // 닉네임 너무 길면 자르기
-  const getLength = (nickname, maxLength) => {
-    if (nickname.length > maxLength) {
-      return nickname.slice(0, maxLength) + "...";
-    }
-    return nickname;
-  };
+  // 닉네임 너무 길면 자르기 기능. null값 nickname이 가끔 있어서 일시 중지
+
+  // const getLength = (nickname, maxLength) => {
+  //   if (nickname.length > maxLength) {
+  //     return nickname.slice(0, maxLength) + "...";
+  //   }
+  //   return nickname;
+  // };
 
   return (
     <Grid
@@ -82,6 +84,7 @@ function ViewersCarousel(props) {
               >
                 {carouselPageViewers[pageIndex].map(
                   (viewer, idx) => (
+                    // 추후에 생일자만 큰 화면에, 참가자는 아래 캐러셀로 표현하고, 화면 전환 막는 식으로 간다면 아래 주석 풀기
                     // parseInt(
                     //   JSON.parse(viewer.stream.connection.data).clientNo
                     // ) !== parseInt(userNo) && (
@@ -96,8 +99,6 @@ function ViewersCarousel(props) {
                         width: "90%",
                         height: "90%",
                         objectFit: "fill",
-                        // minHeight: "170px",
-                        // marginTop: "30px",
                       }}
                     >
                       <div

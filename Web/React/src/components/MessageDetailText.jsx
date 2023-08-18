@@ -1,10 +1,6 @@
 import React, { memo } from "react";
-// import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 import { useNavigate } from "react-router";
-
-// 화면 작아지면 폰트 및 이미지 크기 조절되도록 isScreen들 써서 바꿔야함.
-// 모달창이 급격히 작아지기 때문에..
 
 const style = {
   position: "fixed",
@@ -34,23 +30,6 @@ function ModalText(props) {
     : isLargeScreen
     ? "20px"
     : "24px";
-
-  // const bigFontSize =
-  //   detailMessage.letter_content.length > 100
-  //     ? isSmallScreen
-  //       ? "15px"
-  //       : isMediumScreen
-  //       ? "18px"
-  //       : isLargeScreen
-  //       ? "21px"
-  //       : "25px"
-  //     : isSmallScreen
-  //     ? "18px"
-  //     : isMediumScreen
-  //     ? "22px"
-  //     : isLargeScreen
-  //     ? "25px"
-  //     : "30px";
 
   const smallTitleFontSize = isSmallScreen
     ? "20px"
@@ -139,15 +118,7 @@ function ModalText(props) {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} style={{ marginBottom: `${bigFontMargin}` }}>
-          {/* <Typography
-            id="modal-modal-title"
-            variant="h5"
-            fontSize={bigFontSize}
-          >
-            제목
-          </Typography> */}
-        </Grid>
+        <Grid item xs={12} style={{ marginBottom: `${bigFontMargin}` }}></Grid>
         <Grid
           container
           item
@@ -164,16 +135,7 @@ function ModalText(props) {
             {detailMessage.letter_title}
           </p>
         </Grid>
-        <Grid item xs={12} style={{ marginBottom: `${bigFontMargin}` }}>
-          {/* <Typography
-            id="modal-modal-description"
-            // sx={{ mt: 2 }}
-            variant="h5"
-            fontSize={bigFontSize}
-          >
-            내용
-          </Typography> */}
-        </Grid>
+        <Grid item xs={12} style={{ marginBottom: `${bigFontMargin}` }}></Grid>
         <Grid container item xs={12}>
           <p style={{ fontSize: `${smallContentFontSize}` }}>
             {detailMessage.letter_content}

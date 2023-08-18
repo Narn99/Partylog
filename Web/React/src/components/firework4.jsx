@@ -1,7 +1,7 @@
 import confetti from "canvas-confetti";
 
-export function firework() {
-  const duration = 30 * 1000;
+export function firework4() {
+  const duration = 3 * 1000;
   const animationEnd = Date.now() + duration;
   const defaults = { startVelocity: 25, spread: 360, ticks: 50, zIndex: 0 };
 
@@ -16,7 +16,7 @@ export function firework() {
       return clearInterval(interval);
     }
 
-    const particleCount = 30 * (timeLeft / duration);
+    const particleCount = 150 * (timeLeft / duration);
     confetti(
       Object.assign({}, defaults, {
         particleCount,

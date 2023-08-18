@@ -82,7 +82,6 @@ function ModalText(props) {
             id="modal-modal-title"
             aria-label="modal-modal-title"
             placeholder="제목을 입력해주세요."
-            // maxLength={10}
             value={modalTitle}
             onChange={handleChangeTitle}
           />
@@ -101,7 +100,6 @@ function ModalText(props) {
             maxRows={textMaxRow}
             placeholder="메시지를 입력해주세요."
             variant="standard"
-            // maxLength={200}
             value={modalDescription}
             onChange={handleChangeDescription}
           />

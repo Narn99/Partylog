@@ -116,12 +116,14 @@ function MessageModal(props) {
         },
       })
         .then((res) => {
-          console.log(res.data);
           const addedMyMessage = res.data.data.filter(
             (message) => message.letter_writer === myUserNo
           );
           dispatch(addMyMessageData(addedMyMessage[0]));
-          const newMessagesData = res.data.data;
+          const notMyMessages = res.data.data.filter(
+            (message) => message.letter_writer !== myUserNo
+          );
+          const newMessagesData = [...addedMyMessage, ...notMyMessages];
           dispatch(getInitailMessagesList(newMessagesData));
         })
         .catch((err) => {
@@ -181,8 +183,6 @@ function MessageModal(props) {
           },
         })
           .then((res) => {
-            console.log(res);
-            const newMessagesData = res.data.data;
             const addedMyMessage = res.data.data.filter(
               (message) => message.letter_writer === myUserNo
             );
@@ -193,7 +193,12 @@ function MessageModal(props) {
                 addedMyMessage[0].letter_content
               )
             );
+
             dispatch(addMyMessageData(addedMyMessage[0]));
+            const notMyMessages = res.data.data.filter(
+              (message) => message.letter_writer !== myUserNo
+            );
+            const newMessagesData = [...addedMyMessage, ...notMyMessages];
             dispatch(getInitailMessagesList(newMessagesData));
             handleModalClose();
           })

@@ -1,14 +1,19 @@
 import React, { useEffect } from "react";
+import { Grid } from "@mui/material";
+
+// 시간이 되면 열리는걸 TimePicker를 이용해서 하려다 임시 중지
+
 // import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 // import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 // import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 // import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 // import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
-import { Grid } from "@mui/material";
 
 const CountdownTimer = (props) => {
   const { userBirthday, todayIsBirthday, setTodayIsBirthday, pageOwner } =
     props;
+
+  // 시간이 되면 열리는걸 TimePicker를 이용해서 하려다 임시 중지
 
   // const [targetTime, setTargetTime] = useState("00:00");
   // const [leftBirthdayTime, setLeftBirthdayTime] = useState(
@@ -59,11 +64,15 @@ const CountdownTimer = (props) => {
     return timeLeft;
   };
 
+  // 시간이 되면 열리는걸 TimePicker를 이용해서 하려다 임시 중지
+
   // const [timeLeft, setTimeLeft] = useState(
   //   calculateTimeLeft(new Date(userBirthday))
   // );
 
   const timeLeftBirthday = calculateTimeLeft(new Date(userBirthday));
+
+  // 시간이 되면 열리는걸 TimePicker를 이용해서 하려다 임시 중지
 
   // useEffect(() => {
   //   const [hours, minutes] = targetTime.split(":");
@@ -97,10 +106,6 @@ const CountdownTimer = (props) => {
       setTodayIsBirthday(false);
     }
   }, [userBirthday, setTodayIsBirthday]);
-
-  // console.log(leftBirthdayTime);
-  // console.log(targetTime);
-  // console.log(timeLeft);
 
   // 시간을 고르고, 그 시간까지의 카운트다운, 그 시간에 방송할거라는 알림 이라는 기능이 추후에 만들어야하는 것.
 
@@ -147,8 +152,6 @@ const CountdownTimer = (props) => {
                   `${timeLeftBirthday.hours}시간`}{" "}
                 {timeLeftBirthday.minutes !== 0 &&
                   `${timeLeftBirthday.minutes}분`}{" "}
-                {timeLeftBirthday.seconds !== 0 &&
-                  `${timeLeftBirthday.seconds}초`}
               </span>
             )}
             <br />

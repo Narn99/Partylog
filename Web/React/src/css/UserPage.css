@@ -1,9 +1,4 @@
-/* CSS로 강제로 크기 조절을 하나로 해둔게 많아서, 추후에 반응형을 위해 수정해야합니다.
-이미지를 넣은건 그리드에 따라 크기가 줄어드는데, 폰트 크기같은게 안 바뀌니까 글이 있는 쪽만 쭉 길어지고 있음.
-UserPage에서 is 크기 Screen들을 써서 크기에 따른 style을 만들어서 적용하도록 합시다.
-className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어놓고 바꾼다던가,
-혹은 리액트 컴포넌트 자체에 css 적어놓고 동적으로 바꾸던가. 
-*/
+/* 추후에 깔끔하게 인라인 style로 작성한 css들은 css 파일로 따로 빼는게 나을 듯 함. */
 
 .test {
   text-align: center;
@@ -23,7 +18,6 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
   max-height: 320px;
   border-radius: 50%;
   border: 0.1px solid rgb(230, 230, 230);
-  /* box-shadow: 0.1px 0.1px 50px #fbb3c2; */
 }
 
 .UserPage-nickname {
@@ -39,16 +33,7 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
   margin-top: 10px;
   margin-bottom: 10px;
 }
-/* 
 
-
-.UserPage-profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 30%;
-  margin: 0;
-}
 /* 프로필 사진&닉네임&팔로잉 팔로워&타이머&라이브로 이동 버튼 한 세트로 묶여있어요 */
 
 .UserPage {
@@ -65,24 +50,6 @@ className을 동적으로 바꿔서 여기에 변수명에 따른 css를 적어�
   margin-top: -20px;
   flex-grow: 1;
 }
-/* 여기 조정해서 칩이랑 버튼 배치해야되요 */
-
-/* .UserPage-chips {
-  margin-right: 600px;
-} */
-
-/* .UserPage-message-button {
-  font-family: "MaplestoryOTFBold";
-  font-size: 1.5rem;
-  background-color: #fbb3c2;
-  color: white;
-  border: none;
-  width: 150px;
-  height: 60px;
-  border-radius: 50px;
-  cursor: pointer;
-  text-shadow: 0.1px 0.1px 2px #e892a4;
-} */
 
 .ProfileSetting-button {
   font-family: "MaplestoryOTFBold";

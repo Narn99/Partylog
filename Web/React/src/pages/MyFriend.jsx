@@ -8,27 +8,20 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { firework2 } from "../components/firework2";
+import "../css/PartyHat.css";
+import crown from "../assets/crown.png";
 
 const Box1 = styled(Box)(({ theme }) => ({
   backgroundColor: "#fbb3c2",
   borderRadius: "30px",
   padding: theme.spacing(2),
-  // border: "20px solid #fbb3c2",
-  // [theme.breakpoints.down("sm")]: {
   height: "500px",
-  //   width: "100%",
-  // },
-  // [theme.breakpoints.between("sm", "md")]: {
-  //   height: "500px",
-  //   width: "100%",
-  // },
-  // [theme.breakpoints.up("md")]: {
-  //   height: "500px",
-  //   width: "100%",
-  // },
 }));
 
 function MyFriend(props) {
+  const [todayIsBirthday, setTodayIsBirthday] = useState(false);
+  const [userBirthday, setUserBirthday] = useState(null);
+
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const accessToken = localStorage.getItem("access-token");
   const MyuserNum = useSelector((state) => {
@@ -60,6 +53,7 @@ function MyFriend(props) {
         if (response.data && response.data.data) {
           setUserNickname(response.data.data.userNickname);
           setProfileImg(response.data.data.userProfile);
+          setUserBirthday(response.data.data.userBirthday);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -69,6 +63,22 @@ function MyFriend(props) {
     fetchUserData();
     fetchFollowers();
   }, [userNum]);
+
+  useEffect(() => {
+    if (userBirthday) {
+      const todayDate = new Date();
+      const birthdayDate = new Date(userBirthday);
+
+      if (
+        todayDate.getMonth() === birthdayDate.getMonth() &&
+        todayDate.getDate() === birthdayDate.getDate()
+      ) {
+        setTodayIsBirthday(true);
+      } else {
+        setTodayIsBirthday(false);
+      }
+    }
+  }, [userBirthday]);
 
   const fetchFollowers = () => {
     const followersRequestBody = {
@@ -154,6 +164,7 @@ function MyFriend(props) {
             md={3}
             justifyContent={"center"}
             alignItems={"center"}
+            style={{ position: "relative" }}
           >
             <Grid
               container
@@ -161,6 +172,23 @@ function MyFriend(props) {
               justifyContent="center"
               alignItems="center"
             >
+              {todayIsBirthday && (
+                <div className="party-hat">
+                  <img
+                    src={crown}
+                    alt="crown"
+                    className="party-hat-icon"
+                    style={{
+                      position: "absolute",
+                      top: "-80px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: "180px",
+                      zIndex: 1,
+                    }}
+                  />
+                </div>
+              )}
               <img
                 src={profileImg}
                 alt="profileimg"
@@ -168,10 +196,8 @@ function MyFriend(props) {
                 style={{
                   minWidth: "240px",
                   minHeight: "240px",
-                  width: "auto", 
-                  height: "25vw",
-                  // maxWidth: "270px",
-                  // maxHeight: "270px",
+                  width: "auto",
+                  height: "25vh",
                 }}
               />
 

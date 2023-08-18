@@ -1,9 +1,7 @@
 import React from "react";
 import SearchFriend from "../components/SearchFriend";
 import logo from "../assets/LOGO3.png";
-// import icon5 from "../assets/icon5.png";
 import icon6 from "../assets/icon6.png";
-// import bg from "../image/TempBg.png";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -65,13 +63,11 @@ function NavBar() {
   };
 
   const theme = useTheme();
-  // const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const changeLogoSize = isMediumScreen ? "200px" : "300px";
   const changeNavbarPosition = isMediumScreen ? "static" : "sticky";
-  // const changeNavbarBg = isMediumScreen ? "none" : `url(${bg})`;
   const changeNavbarBgColor = isMediumScreen ? "" : "white";
   const changeIconSize = isSmallScreen ? "60px" : "70px";
 
@@ -80,13 +76,11 @@ function NavBar() {
       className="nav-bar"
       style={{
         position: changeNavbarPosition,
-        // backgroundImage: changeNavbarBg,
         backgroundColor: changeNavbarBgColor,
         top: 0,
         zIndex: 999,
         paddingBottom: "10px",
         marginBottom: "25px",
-        // borderBottom: "1px solid lightgrey",
       }}
     >
       <Grid container justifyContent={"space-between"} alignItems={"center"}>
@@ -98,7 +92,6 @@ function NavBar() {
           className="logo-and-icon"
         >
           <Grid item container justifyContent={"center"} alignItems={"center"}>
-            {/* <h1 className="nav-bar-logo">Partylog</h1> */}
             {isSmallScreen && (
               <img
                 src={icon6}
@@ -153,15 +146,6 @@ function NavBar() {
             justifyContent={"flex-end"}
             alignItems={"center"}
           >
-            {/* <Grid
-              item
-              container
-              xs={7}
-              justifyContent={"center"}
-              alignItems={"center"}
-            >
-              <h3>{tempUserName} 님</h3>
-            </Grid> */}
             <Grid
               item
               container
@@ -177,6 +161,7 @@ function NavBar() {
                   borderRadius: "35%",
                   maxWidth: changeIconSize,
                   maxHeight: changeIconSize,
+                  cursor: "pointer",
                 }}
                 onClick={handleProfileMenuClick}
               />

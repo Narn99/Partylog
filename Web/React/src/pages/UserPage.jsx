@@ -4,7 +4,6 @@ import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
 import "../css/UserPage.css";
 import CountdownTimer from "../components/Timmer";
-// import molru from "../assets/molru.webp";
 import MessageModal from "../components/MessageModal";
 import NavBar from "../components/NavBar";
 import UserFollowButton from "../components/UserFollowButton";
@@ -13,6 +12,8 @@ import StickyNoteG from "../components/StickyNote/StickyNoteG";
 import StickyNoteO from "../components/StickyNote/StickyNoteO";
 import StickyNotePink from "../components/StickyNote/StickyNotePink";
 import StickyNotePurple from "../components/StickyNote/StickyNotePurple";
+import { firework4 } from "../components/firework4";
+import partyhat from "../assets/partyhat.png";
 import MessageBoard from "../components/MessageBoard";
 import axios from "axios";
 import Loading from "../components/Loading";
@@ -24,12 +25,6 @@ import {
   saveUserData,
 } from "../actions/actions";
 import { logoutUser } from "../actions/actions";
-
-// serializableStateInvariantMiddleware.ts:234 A non-serializable value was detected in an action, in the path: `register`.
-// 브라우저에서 오류 발생하는데, 리덕스로 dispatch하는 데이터가 직렬화 안 되는 데이터를 보냈다고 그러는 듯 함?
-// 일단 현재는 굴러가니까 추후 찾아보고 수정할 것 (GPT가 하라는대로 고치니까 터짐)
-
-// 모달창을 열 때마다 StickyNote가 바뀌게 설정
 
 const stickyNotes = [
   StickyNoteY,
@@ -46,11 +41,9 @@ const getRandomStickyNote = () => {
 
 function UserPage() {
   const navigate = useNavigate();
-
-  // API 연동하면 아래 주석 해제하고 수정해서 사용할 것
+  const dispatch = useDispatch();
 
   const [pageOwner, setPageOwner] = useState(false);
-
   const [loading, setloading] = useState(true);
   const SERVER_API_URL = `${process.env.REACT_APP_API_SERVER_URL}`;
   const [userData, setUserData] = useState({});
@@ -60,22 +53,15 @@ function UserPage() {
   const [followerCount, setFollowerCount] = useState("");
   const [followeeCount, setFolloweeCount] = useState("");
   const [todayIsBirthday, setTodayIsBirthday] = useState(false);
-  const dispatch = useDispatch();
+
   const { userNo } = useParams();
   const myUserNo = useSelector((state) => {
     return state.auth.userNo;
   });
 
-  //  추후 로컬스토리지에서 쿠키로 변경
+  //  추후 로컬스토리지에서 쿠키로 변경 예정
   const accessToken = localStorage.getItem("access-token");
   const refreshToken = localStorage.getItem("refresh-token");
-
-  // 액세스 토큰 넣어서 인증받는 식으로 수정할 것.
-  // 메시지 데이터는 일단 24개 받아와서 캐러셀에서 표시하게 할 것.
-  // 인덱스 페이지가 다다음꺼가 없다면 다다음꺼 받아오고, 다 받아와서 못 받아오면 버튼 disabled로 바뀌게
-  // 이거 자꾸 메시지 작성 버튼을 누르면 메시지보드가 리렌더링 됨.
-
-  // 연동 추가 수정할 것.
 
   useEffect(
     () => {
@@ -98,14 +84,19 @@ function UserPage() {
           setFollowerCount(data.followerSum);
 
           const lettersData = data.letterResponseBody;
-          dispatch(getInitailMessagesList(lettersData));
 
-          const helloMyMessage = lettersData.filter(
+          const addedMyMessage = lettersData.filter(
             (message) => parseInt(message.letter_writer) === parseInt(myUserNo)
           );
-          if (helloMyMessage) {
-            dispatch(addMyMessageData(helloMyMessage[0]));
+          if (addedMyMessage) {
+            dispatch(addMyMessageData(addedMyMessage[0]));
           }
+
+          const notMyMessages = lettersData.filter(
+            (message) => message.letter_writer !== myUserNo
+          );
+          const newMessagesData = [...addedMyMessage, ...notMyMessages];
+          dispatch(getInitailMessagesList(newMessagesData));
 
           // 본인 페이지면 받아온 데이터 저장
           if (parseInt(myUserNo) === parseInt(userNo)) {
@@ -169,13 +160,23 @@ function UserPage() {
     []
   );
 
+  // 생일이면 폭죽 효과
+
   useEffect(() => {
-    if (myMessage) {
-      dispatch(setModalData(myMessage.letter_title, myMessage.letter_content));
-    } else {
-      dispatch(setModalData("", ""));
+    let interval;
+
+    if (todayIsBirthday) {
+      interval = setInterval(() => {
+        firework4();
+      }, 3000);
     }
-  }, [myMessage, dispatch]);
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [todayIsBirthday]);
 
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -188,8 +189,6 @@ function UserPage() {
   const [randomStickyNote, setRandomStickyNote] = useState(
     getRandomStickyNote()
   );
-
-  // const MemoizedMessageBoard = memo(MessageBoard);
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -227,6 +226,7 @@ function UserPage() {
   const addMarginAboveBoard = isMediumScreen ? "20px" : "";
 
   // 노트북으로만 개발하느라 몰랐는데, height값을 지정해서 작성하니 모니터가 커지니까 아랫 공간이 남게 됨.
+  // height 값을 직접 설정하기보다 vh, vw로 설정해서 반응형으로 설정하던가, 아예 반응형이 아니게 작성하던가 해야할 듯.
 
   // 로딩 중일 시 띄우는 컴포넌트
   if (loading) {
@@ -259,11 +259,29 @@ function UserPage() {
                     item
                     justifyContent={"center"}
                     alignItems={"center"}
+                    direction={"column"}
                     sm={11}
                   >
+                    {todayIsBirthday && (
+                      <div className="party-hat">
+                        <img
+                          src={partyhat}
+                          alt="partyhat"
+                          className="party-hat-icon"
+                          style={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform:
+                              "translateX(-15%) translateY(-55%) rotate(12deg)",
+                            width: "100px",
+                            zIndex: 1,
+                          }}
+                        />
+                      </div>
+                    )}
+
                     <img
-                      // src={molru}
-                      // API 연동 시 아래 주석 해제
                       src={userData.userProfile}
                       alt="profileimg"
                       className="UserPage-profileimg"
@@ -280,10 +298,6 @@ function UserPage() {
                   </Grid>
                 </Grid>
                 <Grid item>
-                  {/* <p className="UserPage-nickname" style={{ fontSize: "30px" }}>
-                  몰?루 #{userNo}
-                </p> */}
-                  {/* API 연동 시 아래 주석 해제 */}
                   <p
                     className="UserPage-nickname"
                     style={{ textAlign: "center" }}
@@ -327,15 +341,12 @@ function UserPage() {
                 </Grid>
                 <Grid item>
                   <CountdownTimer
-                    // API 연동 시 아래 주석 해제
                     userBirthday={userData.userBirthday}
                     todayIsBirthday={todayIsBirthday}
                     setTodayIsBirthday={setTodayIsBirthday}
                     pageOwner={pageOwner}
                   />
                 </Grid>
-                {/* 해당 유저 생일일 때만 버튼 보이기 */}
-                {/* {todayIsBirthday && ( */}
                 <Grid item>
                   {pageOwner ? (
                     <Button
@@ -353,9 +364,9 @@ function UserPage() {
                         texShadow: "0.1px 0.1px 4px #e892a4",
                         marginTop: "20px",
                       }}
-                      // disabled={!todayIsBirthday}
+                      disabled={!todayIsBirthday}
                     >
-                      {/* {!todayIsBirthday ? (
+                      {!todayIsBirthday ? (
                         <>
                           아직 생일이
                           <br />
@@ -367,8 +378,7 @@ function UserPage() {
                           <br />
                           시작
                         </>
-                      )} */}
-                      라이브 <br /> 시작
+                      )}
                     </Button>
                   ) : (
                     <Button
@@ -381,14 +391,14 @@ function UserPage() {
                         color: "white",
                         width: changeLiveButtonWidth,
                         height: changeLiveButtonHeight,
-                        lineHeight: "30px",
+                        lineHeight: changeLiveButtonLineHeight,
                         borderRadius: "40px",
                         texShadow: "0.1px 0.1px 4px #e892a4",
                         marginTop: "20px",
                       }}
-                      // disabled={!todayIsBirthday}
+                      disabled={!todayIsBirthday}
                     >
-                      {/* {!todayIsBirthday ? (
+                      {!todayIsBirthday ? (
                         <>
                           아직 생일이
                           <br />
@@ -400,12 +410,10 @@ function UserPage() {
                           <br />
                           참가
                         </>
-                      )} */}
-                      라이브 <br /> 참가
+                      )}
                     </Button>
                   )}
                 </Grid>
-                {/* )} */}
               </Grid>
             </div>
           </Grid>
@@ -427,6 +435,7 @@ function UserPage() {
                 myMessage={myMessage}
                 handleModalOpen={handleModalOpen}
                 changeMessageButtonFontSize={changeMessageButtonFontSize}
+                todayIsBirthday={todayIsBirthday}
               />
             </Grid>
           </Grid>
@@ -442,10 +451,8 @@ function UserPage() {
           modalOpen={modalOpen}
           handleModalClose={handleModalClose}
           randomStickyNote={randomStickyNote}
-          // isSmallScreen={isSmallScreen}
           isMediumScreen={isMediumScreen}
           isLargeScreen={isLargeScreen}
-          // onSubmitText={handleSubmitModalText}
         />
       </div>
     );
