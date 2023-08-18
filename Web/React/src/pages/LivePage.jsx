@@ -32,6 +32,7 @@ function LivePage() {
   var [mainStreamManager, setMainStreamManager] = useState(undefined);
   var [publisher, setPublisher] = useState(undefined);
   const [roomHostUserInfo, setRoomHostUserInfo] = useState(null);
+  const [roomUsersInfo, setRoomUsersInfo] = useState([]);
   var [subscribers, setSubscribers] = useState([]);
   var [currentVideoDevice, setCurrentVideoDevice] = useState({}); // eslint-disable-line no-unused-vars
 
@@ -55,6 +56,18 @@ function LivePage() {
       joinSession();
     }
   }, [isJoinCheck]);
+
+  useEffect(() => {
+    if (roomUsersInfo && !roomHostUserInfo) {
+      const hostUser = roomUsersInfo.filter((roomUserInfo) => {
+        return (
+          parseInt(JSON.parse(roomUserInfo.stream.connection.data).clientNo) ===
+          parseInt(JSON.parse(userNo))
+        );
+      });
+      setRoomHostUserInfo(hostUser[0]);
+    }
+  }, [roomUsersInfo]);
 
   useEffect(() => {
     if (roomHostUserInfo) {
@@ -109,7 +122,7 @@ function LivePage() {
     // On every new Stream received...
     mySession.on("streamCreated", (event) => {
       console.log("새로운 스트림 생성");
-      setRoomHostUserInfo(event);
+      setRoomUsersInfo((prev) => [...prev, event]);
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       var subscriber = mySession.subscribe(event.stream, undefined);
