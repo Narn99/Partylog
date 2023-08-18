@@ -57,6 +57,18 @@ function LivePage() {
     }
   }, [isJoinCheck]);
 
+  // 언마운트 시에 leaveSession 추가..
+
+  useEffect(() => {
+    return () => {
+      if (session) {
+        leaveSession();
+      }
+    };
+  }, []);
+
+  // 유저 추가될 때, host를 특정 못 했다면 찾기
+
   useEffect(() => {
     if (roomUsersInfo && !roomHostUserInfo) {
       const hostUser = roomUsersInfo.filter((roomUserInfo) => {
@@ -69,11 +81,15 @@ function LivePage() {
     }
   }, [roomUsersInfo]);
 
+  // 호스트를 찾았다면 MainStreamManager로 설정
+
   useEffect(() => {
     if (roomHostUserInfo) {
       initialMainVideoStreamer();
     }
   }, [roomHostUserInfo]);
+
+  // 클릭하면 그 사람을 큰 화면으로 바꾸는 함수
 
   const handleMainVideoStream = (stream) => {
     if (mainStreamManager !== stream) {
